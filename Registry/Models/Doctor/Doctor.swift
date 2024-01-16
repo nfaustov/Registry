@@ -24,10 +24,11 @@ public final class Doctor: Person {
     public var agentFee: Double
     public var balance: Double
     public var info: String
-    public var image: Data
+    @Attribute(.externalStorage)
+    public var image: Data?
     
     public init(
-        id: UUID,
+        id: UUID = UUID(),
         secondName: String,
         firstName: String,
         patronymicName: String,
@@ -41,7 +42,7 @@ public final class Doctor: Person {
         agentFee: Double = 0,
         balance: Double = 0,
         info: String = "",
-        image: Data
+        image: Data? = nil
     ) {
         self.id = id
         self.secondName = secondName

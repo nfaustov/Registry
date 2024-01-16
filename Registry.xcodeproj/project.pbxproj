@@ -7,7 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */; };
+		8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E42B56F5B8003F474B /* SearchBar.swift */; };
+		8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */; };
+		8B0FE9EB2B56F6CC003F474B /* DoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9EA2B56F6CC003F474B /* DoctorView.swift */; };
+		8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */; };
 		8B285F412B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */; };
+		8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* DoctorImageView.swift */; };
+		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
+		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
 		8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673852B36187D00FD2E7C /* RegistryApp.swift */; };
 		8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673872B36187D00FD2E7C /* ContentView.swift */; };
 		8B96738C2B36187E00FD2E7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B96738B2B36187E00FD2E7C /* Assets.xcassets */; };
@@ -30,7 +38,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBySideScreen.swift; sourceTree = "<group>"; };
+		8B0FE9E42B56F5B8003F474B /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
+		8B0FE9EA2B56F6CC003F474B /* DoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorView.swift; sourceTree = "<group>"; };
+		8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerDateView.swift; sourceTree = "<group>"; };
 		8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSCheckBoxToggleStyle.swift; sourceTree = "<group>"; };
+		8B285F432B4DC81800C29E20 /* DoctorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorImageView.swift; sourceTree = "<group>"; };
+		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
+		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
 		8B9673822B36187D00FD2E7C /* Registry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Registry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B9673852B36187D00FD2E7C /* RegistryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryApp.swift; sourceTree = "<group>"; };
 		8B9673872B36187D00FD2E7C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,12 +82,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B0FE9E02B56F52E003F474B /* SideBySideScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */,
+			);
+			path = SideBySideScreen;
+			sourceTree = "<group>";
+		};
+		8B0FE9E32B56F596003F474B /* SearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FE9E42B56F5B8003F474B /* SearchBar.swift */,
+			);
+			path = SearchBar;
+			sourceTree = "<group>";
+		};
+		8B0FE9E62B56F642003F474B /* PhoneNumberTextField */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */,
+			);
+			path = PhoneNumberTextField;
+			sourceTree = "<group>";
+		};
+		8B0FE9E92B56F69B003F474B /* DoctorView */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FE9EA2B56F6CC003F474B /* DoctorView.swift */,
+			);
+			path = DoctorView;
+			sourceTree = "<group>";
+		};
+		8B0FE9EC2B56F73C003F474B /* PriceListView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PriceListView;
+			sourceTree = "<group>";
+		};
+		8B0FE9ED2B56F774003F474B /* DatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */,
+			);
+			path = DatePicker;
+			sourceTree = "<group>";
+		};
 		8B285F3F2B4DB8A300C29E20 /* iOSCheckBoxToggleStyle */ = {
 			isa = PBXGroup;
 			children = (
 				8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */,
 			);
 			path = iOSCheckBoxToggleStyle;
+			sourceTree = "<group>";
+		};
+		8B285F422B4DC80200C29E20 /* DoctorImageView */ = {
+			isa = PBXGroup;
+			children = (
+				8B285F432B4DC81800C29E20 /* DoctorImageView.swift */,
+			);
+			path = DoctorImageView;
+			sourceTree = "<group>";
+		};
+		8B285F452B4DCD2800C29E20 /* DateFormatViews */ = {
+			isa = PBXGroup;
+			children = (
+				8B285F462B4DCD3D00C29E20 /* DateText.swift */,
+				8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */,
+			);
+			path = DateFormatViews;
 			sourceTree = "<group>";
 		};
 		8B9673792B36187D00FD2E7C = {
@@ -192,6 +272,14 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B0FE9ED2B56F774003F474B /* DatePicker */,
+				8B0FE9E92B56F69B003F474B /* DoctorView */,
+				8B285F422B4DC80200C29E20 /* DoctorImageView */,
+				8B285F452B4DCD2800C29E20 /* DateFormatViews */,
+				8B0FE9E02B56F52E003F474B /* SideBySideScreen */,
+				8B0FE9E32B56F596003F474B /* SearchBar */,
+				8B0FE9E62B56F642003F474B /* PhoneNumberTextField */,
+				8B0FE9EC2B56F73C003F474B /* PriceListView */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -317,22 +405,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */,
 				8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */,
+				8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
+				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
 				8B9673A12B361C2300FD2E7C /* Salary.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
+				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
+				8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */,
 				8B96739D2B361BB200FD2E7C /* Doctor.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
+				8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */,
+				8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */,
 				8B285F412B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift in Sources */,
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
 				8B9673A92B361F6700FD2E7C /* Screen.swift in Sources */,
 				8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */,
+				8B0FE9EB2B56F6CC003F474B /* DoctorView.swift in Sources */,
 				8BA53DA22B494EBF006BE983 /* SideSheetView.swift in Sources */,
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 			);
