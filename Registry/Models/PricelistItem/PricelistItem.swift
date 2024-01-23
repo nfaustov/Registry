@@ -30,7 +30,7 @@ public final class PricelistItem: Codable {
         self.costPrice = costPrice
     }
 
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case id, category, title, price, costPrice
     }
 

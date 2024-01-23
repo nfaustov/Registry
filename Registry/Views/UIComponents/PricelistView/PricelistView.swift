@@ -33,16 +33,14 @@ struct PricelistView: View {
                 } else {
                     return $0.title.localizedStandardContains(filterText) || $0.id.localizedStandardContains(filterText)
                 }
-            },
-            sort: \PricelistItem.category,
-            order: .forward
+            }
         )
     }
 
     var body: some View {
         List(categories) { category in
             Section {
-                ForEach(pricelistItems) { item in
+                ForEach(pricelistItems.filter { $0.category == category }) { item in
                     Button {
                         if size == .regular {
                             selectedPricelistItem = item
