@@ -36,6 +36,8 @@
 		8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AA2B361F8D00FD2E7C /* Route.swift */; };
 		8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AC2B361FD200FD2E7C /* Sheet.swift */; };
 		8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AE2B3623F200FD2E7C /* Person.swift */; };
+		8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */; };
+		8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */; };
 		8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53D972B494DE6006BE983 /* ExampleData.swift */; };
 		8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53D992B494DFC006BE983 /* WorkingHours.swift */; };
 		8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53D9B2B494E28006BE983 /* DateFormatter+Shared.swift */; };
@@ -76,6 +78,8 @@
 		8B9673AA2B361F8D00FD2E7C /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		8B9673AC2B361FD200FD2E7C /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		8B9673AE2B3623F200FD2E7C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalServicesScreen.swift; sourceTree = "<group>"; };
+		8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePricelistItemView.swift; sourceTree = "<group>"; };
 		8BA53D972B494DE6006BE983 /* ExampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleData.swift; sourceTree = "<group>"; };
 		8BA53D992B494DFC006BE983 /* WorkingHours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingHours.swift; sourceTree = "<group>"; };
 		8BA53D9B2B494E28006BE983 /* DateFormatter+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Shared.swift"; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 				8B9673AC2B361FD200FD2E7C /* Sheet.swift */,
 				8B9673A32B361CBB00FD2E7C /* DoctorsScreen */,
 				8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */,
+				8BA0AAE72B5FA39500E9FD7E /* MedicalServicesScreen */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -318,6 +323,23 @@
 				8BA53D922B494C83006BE983 /* Subviews */,
 			);
 			path = DoctorsScreen;
+			sourceTree = "<group>";
+		};
+		8BA0AAE72B5FA39500E9FD7E /* MedicalServicesScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */,
+				8BA0AAEA2B5FA47D00E9FD7E /* Subviews */,
+			);
+			path = MedicalServicesScreen;
+			sourceTree = "<group>";
+		};
+		8BA0AAEA2B5FA47D00E9FD7E /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		8BA53D922B494C83006BE983 /* Subviews */ = {
@@ -480,6 +502,7 @@
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B9673A12B361C2300FD2E7C /* Salary.swift in Sources */,
+				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
@@ -502,6 +525,7 @@
 				8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */,
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
+				8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */,
 				8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
