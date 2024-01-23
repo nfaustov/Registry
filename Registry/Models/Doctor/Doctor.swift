@@ -10,20 +10,20 @@ import SwiftData
 
 @Model
 public final class Doctor: Person {
-    public let id: UUID
-    public var secondName: String
-    public var firstName: String
-    public var patronymicName: String
-    public var phoneNumber: String
-    public var birthDate: Date
-    public var department: Department
-    public var basicServiceId: String
-    public var serviceDuration: TimeInterval
-    public var defaultCabinet: Int
-    public var salary: Salary
-    public var agentFee: Double
-    public var balance: Double
-    public var info: String
+    public let id: UUID = UUID()
+    public var secondName: String = ""
+    public var firstName: String = ""
+    public var patronymicName: String = ""
+    public var phoneNumber: String = ""
+    public var birthDate: Date = Date(timeIntervalSinceReferenceDate: 0)
+    public var department: Department = Department.gynecology
+    public var basicService: PricelistItem?
+    public var serviceDuration: TimeInterval = 600
+    public var defaultCabinet: Int = 1
+    public var salary: Salary = Salary.pieceRate(rate: 0.4)
+    public var agentFee: Double = 0
+    public var balance: Double = 0
+    public var info: String = ""
     @Attribute(.externalStorage)
     public var image: Data?
     
@@ -35,7 +35,7 @@ public final class Doctor: Person {
         phoneNumber: String,
         birthDate: Date,
         department: Department,
-        basicServiceId: String = "",
+        basicService: PricelistItem?,
         serviceDuration: TimeInterval,
         defaultCabinet: Int,
         salary: Salary,
@@ -51,7 +51,7 @@ public final class Doctor: Person {
         self.phoneNumber = phoneNumber
         self.birthDate = birthDate
         self.department = department
-        self.basicServiceId = basicServiceId
+        self.basicService = basicService
         self.serviceDuration = serviceDuration
         self.defaultCabinet = defaultCabinet
         self.salary = salary

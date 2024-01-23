@@ -8,6 +8,14 @@
 import Foundation
 
 struct ExampleData {
+    static var service = PricelistItem(
+        id: "А01.001.001", 
+        category: .gynecology,
+        title: "Прием гинеколога",
+        price: 1400,
+        costPrice: 0
+    )
+
     static var doctor = Doctor(
         secondName: "Сегеда",
         firstName: "Светлана",
@@ -15,7 +23,7 @@ struct ExampleData {
         phoneNumber: "+7 (999) 999-99-99",
         birthDate: Date(),
         department: .gynecology,
-        basicServiceId: "",
+        basicService: service,
         serviceDuration: 1800,
         defaultCabinet: 2,
         salary: .monthly(amount: 39000),

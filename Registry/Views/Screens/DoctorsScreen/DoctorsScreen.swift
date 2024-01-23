@@ -43,9 +43,9 @@ struct DoctorsScreen: View {
                                         GridRow {
                                             ForEach(specializationDoctors[rangeInRow(row, rowItems: doctorsCount)]) { doctor in
                                                 Button {
-//                                                    coordinator.push(.doctorDetail(doctor: doctor))
+                                                    coordinator.push(.doctorDetail(doctor: doctor))
                                                 } label: {
-//                                                    DoctorView(doctor: doctor, presentation: .gridItem)
+                                                    DoctorView(doctor: doctor, presentation: .gridItem)
                                                 }
                                             }
                                         }
@@ -66,9 +66,9 @@ struct DoctorsScreen: View {
             }
             .searchable(text: $searchText)
         }
-//        .catalogToolbar {
-//            coordinator.present(.createDoctor)
-//        }
+        .catalogToolbar {
+            coordinator.present(.createDoctor)
+        }
     }
 }
 

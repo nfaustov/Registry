@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Department: String, Codable, Hashable, CaseIterable, Identifiable {
+public enum Department: String, Codable, Hashable, CaseIterable, Identifiable, Comparable {
     case gynecology = "Гинекология"
     case obstetrics = "Акушерство"
     case therapy = "Терапия"
@@ -40,7 +40,42 @@ public enum Department: String, Codable, Hashable, CaseIterable, Identifiable {
         }
     }
 
+    private var order: Int {
+        switch self {
+        case .gynecology:
+            1
+        case .obstetrics:
+            2
+        case .therapy:
+            4
+        case .urology:
+            3
+        case .ultrasound:
+            0
+        case .gastroenterology:
+            10
+        case .endocrinology:
+            9
+        case .cardiology:
+            5
+        case .vascularSurgery:
+            6
+        case .functionalDiagnostics:
+            7
+        case .neurology:
+            8
+        case .laboratory:
+            12
+        case .procedure:
+            11
+        }
+    }
+
     public var id: Self {
         self
+    }
+
+    public static func < (lhs: Department, rhs: Department) -> Bool {
+        lhs.order > rhs.order
     }
 }

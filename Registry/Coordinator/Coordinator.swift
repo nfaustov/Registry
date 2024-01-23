@@ -35,7 +35,7 @@ extension Coordinator {
         switch screen {
         case .specialists:
             DoctorsScreen()
-        default: 
+        default:
             EmptyView()
         }
     }
@@ -48,6 +48,8 @@ extension Coordinator {
 
     @ViewBuilder func sheetContent(_ sheet: Sheet) -> some View {
         switch sheet {
+        case .createDoctor:
+            CreateDoctorView()
         default: EmptyView()
         }
     }

@@ -13,9 +13,7 @@ struct RegistryApp: App {
     @StateObject private var coordinator = Coordinator()
 
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Doctor.self,
-        ])
+        let schema = Schema([Doctor.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {

@@ -16,6 +16,13 @@
 		8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* DoctorImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
+		8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7D5C7C2B592B3400E46AD8 /* Algorithms */; };
+		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
+		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
+		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
+		8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */; };
+		8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE98E2B58486A001A9143 /* CatalogToolbarViewModifier.swift */; };
+		8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9902B584BFC001A9143 /* PricelistView.swift */; };
 		8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673852B36187D00FD2E7C /* RegistryApp.swift */; };
 		8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673872B36187D00FD2E7C /* ContentView.swift */; };
 		8B96738C2B36187E00FD2E7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B96738B2B36187E00FD2E7C /* Assets.xcassets */; };
@@ -47,6 +54,12 @@
 		8B285F432B4DC81800C29E20 /* DoctorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
+		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
+		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
+		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
+		8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItem.swift; sourceTree = "<group>"; };
+		8B8AE98E2B58486A001A9143 /* CatalogToolbarViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogToolbarViewModifier.swift; sourceTree = "<group>"; };
+		8B8AE9902B584BFC001A9143 /* PricelistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistView.swift; sourceTree = "<group>"; };
 		8B9673822B36187D00FD2E7C /* Registry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Registry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B9673852B36187D00FD2E7C /* RegistryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryApp.swift; sourceTree = "<group>"; };
 		8B9673872B36187D00FD2E7C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,11 +128,12 @@
 			path = DoctorView;
 			sourceTree = "<group>";
 		};
-		8B0FE9EC2B56F73C003F474B /* PriceListView */ = {
+		8B0FE9EC2B56F73C003F474B /* PricelistView */ = {
 			isa = PBXGroup;
 			children = (
+				8B8AE9902B584BFC001A9143 /* PricelistView.swift */,
 			);
-			path = PriceListView;
+			path = PricelistView;
 			sourceTree = "<group>";
 		};
 		8B0FE9ED2B56F774003F474B /* DatePicker */ = {
@@ -152,6 +167,47 @@
 				8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */,
 			);
 			path = DateFormatViews;
+			sourceTree = "<group>";
+		};
+		8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */,
+			);
+			path = DoctorDetailScreen;
+			sourceTree = "<group>";
+		};
+		8B8AE9842B57FA26001A9143 /* CreateDoctorView */ = {
+			isa = PBXGroup;
+			children = (
+				8B8AE9852B57FA33001A9143 /* VIewModel */,
+				8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */,
+			);
+			path = CreateDoctorView;
+			sourceTree = "<group>";
+		};
+		8B8AE9852B57FA33001A9143 /* VIewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */,
+			);
+			path = VIewModel;
+			sourceTree = "<group>";
+		};
+		8B8AE98A2B57FCAE001A9143 /* PricelistItem */ = {
+			isa = PBXGroup;
+			children = (
+				8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */,
+			);
+			path = PricelistItem;
+			sourceTree = "<group>";
+		};
+		8B8AE98D2B58482C001A9143 /* CatalogToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				8B8AE98E2B58486A001A9143 /* CatalogToolbarViewModifier.swift */,
+			);
+			path = CatalogToolbar;
 			sourceTree = "<group>";
 		};
 		8B9673792B36187D00FD2E7C = {
@@ -200,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				8B96739B2B361BA700FD2E7C /* Doctor */,
+				8B8AE98A2B57FCAE001A9143 /* PricelistItem */,
 				8B96739E2B361C0900FD2E7C /* Department.swift */,
 				8B9673A02B361C2300FD2E7C /* Salary.swift */,
 				8B9673AE2B3623F200FD2E7C /* Person.swift */,
@@ -245,10 +302,11 @@
 		8B9673A22B361CA300FD2E7C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				8B9673A32B361CBB00FD2E7C /* DoctorsScreen */,
 				8B9673A82B361F6700FD2E7C /* Screen.swift */,
 				8B9673AA2B361F8D00FD2E7C /* Route.swift */,
 				8B9673AC2B361FD200FD2E7C /* Sheet.swift */,
+				8B9673A32B361CBB00FD2E7C /* DoctorsScreen */,
+				8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -265,6 +323,7 @@
 		8BA53D922B494C83006BE983 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				8B8AE9842B57FA26001A9143 /* CreateDoctorView */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -279,7 +338,7 @@
 				8B0FE9E02B56F52E003F474B /* SideBySideScreen */,
 				8B0FE9E32B56F596003F474B /* SearchBar */,
 				8B0FE9E62B56F642003F474B /* PhoneNumberTextField */,
-				8B0FE9EC2B56F73C003F474B /* PriceListView */,
+				8B0FE9EC2B56F73C003F474B /* PricelistView */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -287,7 +346,8 @@
 		8BA53D942B494CD9006BE983 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
-				8BA53DA42B494F22006BE983 /* SheetToolbarViewModifier */,
+				8B8AE98D2B58482C001A9143 /* CatalogToolbar */,
+				8BA53DA42B494F22006BE983 /* SheetToolbar */,
 				8BA53DA02B494EAC006BE983 /* SideSheet */,
 				8BA53D9D2B494E4E006BE983 /* NavTitle */,
 			);
@@ -327,12 +387,12 @@
 			path = SideSheet;
 			sourceTree = "<group>";
 		};
-		8BA53DA42B494F22006BE983 /* SheetToolbarViewModifier */ = {
+		8BA53DA42B494F22006BE983 /* SheetToolbar */ = {
 			isa = PBXGroup;
 			children = (
 				8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */,
 			);
-			path = SheetToolbarViewModifier;
+			path = SheetToolbar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,6 +411,9 @@
 			dependencies = (
 			);
 			name = Registry;
+			packageProductDependencies = (
+				8B7D5C7C2B592B3400E46AD8 /* Algorithms */,
+			);
 			productName = Registry;
 			productReference = 8B9673822B36187D00FD2E7C /* Registry.app */;
 			productType = "com.apple.product-type.application";
@@ -379,6 +442,9 @@
 				Base,
 			);
 			mainGroup = 8B9673792B36187D00FD2E7C;
+			packageReferences = (
+				8B7D5C7B2B592B3400E46AD8 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+			);
 			productRefGroup = 8B9673832B36187D00FD2E7C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -407,10 +473,12 @@
 			files = (
 				8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */,
 				8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */,
+				8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */,
 				8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
+				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B9673A12B361C2300FD2E7C /* Salary.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
@@ -427,10 +495,14 @@
 				8B285F412B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift in Sources */,
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
 				8B9673A92B361F6700FD2E7C /* Screen.swift in Sources */,
+				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
 				8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */,
 				8B0FE9EB2B56F6CC003F474B /* DoctorView.swift in Sources */,
 				8BA53DA22B494EBF006BE983 /* SideSheetView.swift in Sources */,
+				8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */,
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
+				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
+				8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,6 +718,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8B7D5C7B2B592B3400E46AD8 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8B7D5C7C2B592B3400E46AD8 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B7D5C7B2B592B3400E46AD8 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8B96737A2B36187D00FD2E7C /* Project object */;
 }
