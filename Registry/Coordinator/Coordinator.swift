@@ -46,6 +46,8 @@ extension Coordinator {
 
     @ViewBuilder func destinationView(_ route: Route) -> some View {
         switch route {
+        case .patientCard(let patient):
+            PatientCardScreen(patient: patient)
         default: EmptyView()
         }
     }

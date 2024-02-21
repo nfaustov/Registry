@@ -30,10 +30,10 @@ struct ExampleData {
         image: Data()
     )
 
-//    static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99")
-//    static var patient2 = Patient(secondName: "Petrov", firstName: "Petr", patronymicName: "Petrovich", phoneNumber: "+7 (900) 900-90-90")
-//    static var patient3 = Patient(secondName: "Fedorov", firstName: "Fedor", patronymicName: "Fedorovich", phoneNumber: "+7 (920) 920-92-92")
-//
+    static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99")
+    static var patient2 = Patient(secondName: "Petrov", firstName: "Petr", patronymicName: "Petrovich", phoneNumber: "+7 (900) 900-90-90")
+    static var patient3 = Patient(secondName: "Fedorov", firstName: "Fedor", patronymicName: "Fedorovich", phoneNumber: "+7 (920) 920-92-92")
+
 //    static var appointment = PatientAppointment(scheduledTime: Date(), duration: 1800, patient: patient, status: .completed)
 //
 //    static var doctorSchedule = DoctorSchedule(

@@ -44,11 +44,14 @@ struct PatientsScreen: View {
             .onChange(of: selection) { _, newValue in
                 if let selection = newValue,
                    let patient = patients.first(where: { $0.id == selection }) {
-                    coordinator.push(.patientCard(patientModel: patient))
+                    coordinator.push(.patientCard(patient: patient))
                 }
             }
             .catalogToolbar {
                 coordinator.present(.createPatient)
+            }
+            .onAppear {
+                selection = nil
             }
         }
     }

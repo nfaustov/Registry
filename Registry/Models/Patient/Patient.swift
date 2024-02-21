@@ -16,8 +16,8 @@ public final class Patient: Person {
     public var patronymicName: String = ""
     public var phoneNumber: String = ""
     public var balance: Double = Double.zero
-    public var passport: PassportData?
-    public var placeOfResidence: PlaceOfResidence?
+    public var passport: PassportData = PassportData()
+    public var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     public var treatmentPlan: TreatmentPlan?
     public var createdAt: Date = Date.now
     public var visits: [Visit]
@@ -29,8 +29,8 @@ public final class Patient: Person {
         patronymicName: String,
         phoneNumber: String,
         balance: Double = 0,
-        passport: PassportData? = nil,
-        placeOfResidence: PlaceOfResidence? = nil,
+        passport: PassportData = PassportData(),
+        placeOfResidence: PlaceOfResidence = PlaceOfResidence(),
         treatmentPlan: TreatmentPlan? = nil,
         visits: [Visit] = []
     ) {

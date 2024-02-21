@@ -16,11 +16,11 @@ public extension Patient {
         public let appartment: String
 
         public init(
-            region: String,
-            locality: String,
-            streetAdress: String,
-            house: String,
-            appartment: String
+            region: String = "",
+            locality: String = "",
+            streetAdress: String = "",
+            house: String = "",
+            appartment: String = ""
         ) {
             self.region = region
             self.locality = locality

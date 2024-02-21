@@ -16,11 +16,11 @@ public extension Patient {
         public var authority: String
 
         public init(
-            gender: Gender,
-            seriesNumber: String,
-            birthday: Date,
-            issueDate: Date,
-            authority: String
+            gender: Gender = .unknown,
+            seriesNumber: String = "",
+            birthday: Date = Date(timeIntervalSinceReferenceDate: 0),
+            issueDate: Date = Date(timeIntervalSinceReferenceDate: 0),
+            authority: String = ""
         ) {
             self.gender = gender
             self.seriesNumber = seriesNumber
