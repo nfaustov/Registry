@@ -11,5 +11,5 @@ enum Route: Hashable {
     case appointments
     case bill//(appointment: PatientAppointment, doctor: Doctor)
     case doctorDetail(doctor: Doctor)
-    case patientCard//(patientModel: Patient.DBModel)
+    case patientCard(patientModel: Patient)
 }

@@ -35,6 +35,8 @@ extension Coordinator {
         switch screen {
         case .specialists:
             DoctorsScreen()
+        case .patients:
+            PatientsScreen()
         case .medicalServices:
             MedicalServicesScreen()
         default:
@@ -52,6 +54,8 @@ extension Coordinator {
         switch sheet {
         case .createDoctor:
             CreateDoctorView()
+        case .createPatient:
+            CreatePatientView()
         case .createPricelistItem:
             CreatePricelistItemView()
         default: EmptyView()

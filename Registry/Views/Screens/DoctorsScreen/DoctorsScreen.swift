@@ -27,7 +27,7 @@ struct DoctorsScreen: View {
             ForEach(Department.allCases) { department in
                 let doctorsPredicate = #Predicate<Doctor> { doctor in
                     doctor.department == department &&
-                    (searchText.isEmpty ? true : doctor.fullName.contains(searchText))
+                    (searchText.isEmpty ? true : doctor.fullName.localizedStandardContains(searchText))
                 }
                 let descriptor = FetchDescriptor(predicate: doctorsPredicate)
 

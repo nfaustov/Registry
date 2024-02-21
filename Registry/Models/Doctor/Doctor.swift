@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public final class Doctor: Person {
+public final class Doctor: Employee {
     public let id: UUID = UUID()
     public var secondName: String = ""
     public var firstName: String = ""
@@ -24,6 +24,7 @@ public final class Doctor: Person {
     public var agentFee: Double = 0
     public var balance: Double = 0
     public var info: String = ""
+    public var createdAt: Date = Date.now
     @Attribute(.externalStorage)
     public var image: Data?
     
@@ -58,6 +59,20 @@ public final class Doctor: Person {
         self.agentFee = agentFee
         self.balance = balance
         self.info = info
+        self.createdAt = .now
         self.image = image
+    }
+
+    public var employee: AnyEmployee {
+        AnyEmployee(
+            id: id,
+            secondName: secondName,
+            firstName: firstName,
+            patronymicName: patronymicName,
+            phoneNumber: phoneNumber,
+            balance: balance,
+            salary: salary,
+            agentFee: agentFee
+        )
     }
 }
