@@ -25,14 +25,7 @@ struct DoctorsScreen: View {
     var body: some View {
         ScrollView {
             ForEach(Department.allCases) { department in
-                let doctorsPredicate = #Predicate<Doctor> { doctor in
-                    doctor.department == department &&
-                    (searchText.isEmpty ? true : 
-                        (doctor.secondName + " " + doctor.firstName + " " + doctor.secondName).localizedStandardContains(searchText))
-                }
-                let descriptor = FetchDescriptor(predicate: doctorsPredicate)
-
-                if let specializationDoctors = try? modelContext.fetch(descriptor) {
+                if let specializationDoctors = try? modelContext.fetch(searchDescriptor(with: department)) {
                     let doctorsCount = specializationDoctors.count
                     let rows = doctorsCount % Constant.maxRowItems > 0 ? (doctorsCount / Constant.maxRowItems) + 1 : doctorsCount / Constant.maxRowItems
 
@@ -84,6 +77,20 @@ struct DoctorsScreen: View {
 // MARK: - Calculations
 
 private extension DoctorsScreen {
+    func searchDescriptor(with department: Department) -> FetchDescriptor<Doctor> {
+        let doctorsPredicate = #Predicate<Doctor> { doctor in
+            doctor.department == department && (
+                searchText.isEmpty ? true :
+                doctor.secondName.localizedStandardContains(searchText) ||
+                doctor.firstName.localizedStandardContains(searchText) ||
+                doctor.patronymicName.localizedStandardContains(searchText)
+            )
+        }
+        let descriptor = FetchDescriptor<Doctor>(predicate: doctorsPredicate)
+
+        return descriptor
+    }
+
     func rangeInRow(_ row: Int, rowItems: Int) -> Range<Int> {
         let start = row * Constant.maxRowItems
         let end = min(Constant.maxRowItems * (row + 1), rowItems)

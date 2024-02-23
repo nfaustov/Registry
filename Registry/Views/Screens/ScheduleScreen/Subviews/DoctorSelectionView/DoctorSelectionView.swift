@@ -12,6 +12,7 @@ struct DoctorSelectionView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
 
     @Query private var doctors: [Doctor]
 
@@ -26,21 +27,17 @@ struct DoctorSelectionView: View {
 
     var body: some View {
         NavigationStack {
-            let doctorsPredicate = #Predicate<Doctor> { doctor in
-                searchText.isEmpty ? true :
-                (doctor.secondName + " " + doctor.firstName + " " + doctor.patronymicName).localizedStandardContains(searchText)
-            }
-            let descriptor = FetchDescriptor(predicate: doctorsPredicate)
-
-            if let searchedDoctors = try? modelContext.fetch(descriptor) {
-                List(searchedDoctors) { doctor in
+            if let searchedDoctors = try? modelContext.fetch(searchDescriptor) {
+                List(searchText.isEmpty ? doctors : searchedDoctors) { doctor in
                     Button {
                         createSchedule = true
                     } label: {
                         DoctorView(doctor: doctor, presentation: .listRow)
                     }
                     .sheet(isPresented: $createSchedule) {
-                        CreateDoctorScheduleView(doctor: doctor, date: date)
+                        CreateDoctorScheduleView(doctor: doctor, date: date) {
+                            dismiss()
+                        }
                     }
                 }
                 .listStyle(.inset)
@@ -56,4 +53,20 @@ struct DoctorSelectionView: View {
 
 #Preview {
     DoctorSelectionView(date: .now)
+}
+
+// MARK: - Calculations
+
+private extension DoctorSelectionView {
+    var searchDescriptor: FetchDescriptor<Doctor> {
+        let predicate = #Predicate<Doctor> { doctor in
+            searchText.isEmpty ? true :
+            doctor.secondName.localizedStandardContains(searchText) ||
+            doctor.firstName.localizedStandardContains(searchText) ||
+            doctor.patronymicName.localizedStandardContains(searchText)
+        }
+        let descriptor = FetchDescriptor<Doctor>(predicate: predicate)
+
+        return descriptor
+    }
 }

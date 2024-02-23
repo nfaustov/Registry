@@ -64,7 +64,7 @@ private extension WeekdayPickerView {
                         day.isToday ? .orange : day.isSameDayAs(currentDate) ? .white : .primary
                     )
                     .background(
-                        day.isSameDayAs(currentDate) ? Color("black") : .clear,
+                        day.isSameDayAs(currentDate) ? Color("appBlack") : .clear,
                         in: Capsule(style: .continuous)
                     )
                     .onTapGesture {

@@ -14,6 +14,7 @@ struct CreateDoctorScheduleView: View {
 
     let doctor: Doctor
     let date: Date
+    var onConfirm: () -> Void
     
     // MARK: - State
     
@@ -23,9 +24,10 @@ struct CreateDoctorScheduleView: View {
     
     // MARK: -
     
-    init(doctor: Doctor, date: Date) {
+    init(doctor: Doctor, date: Date, onConfirm: @escaping () -> Void) {
         self.doctor = doctor
         self.date = date
+        self.onConfirm = onConfirm
         _cabinet = State(initialValue: doctor.defaultCabinet)
 
         UIDatePicker.appearance().minuteInterval = 5
@@ -75,6 +77,7 @@ struct CreateDoctorScheduleView: View {
                     cabinet: cabinet
                 )
                 modelContext.insert(schedule)
+                onConfirm()
             }
             .onAppear {
                 if doctor.department == .procedure {
@@ -93,7 +96,7 @@ struct CreateDoctorScheduleView: View {
 }
 
 #Preview {
-    CreateDoctorScheduleView(doctor: ExampleData.doctor, date: .now)
+    CreateDoctorScheduleView(doctor: ExampleData.doctor, date: .now, onConfirm: { })
 }
 
 // MARK: - Subviews

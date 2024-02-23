@@ -11,9 +11,9 @@ import SwiftData
 struct ScheduleScreen: View {
     // MARK: - Dependencies
 
-    @EnvironmentObject private var coordinator: Coordinator
+    @Environment(\.modelContext) private var modelContext
 
-    @Query private var schedules: [DoctorSchedule]
+    @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
 
@@ -21,62 +21,54 @@ struct ScheduleScreen: View {
 
     // MARK: -
 
-    init() {
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        let endOfDay = Calendar.current.startOfDay(for: date.addingTimeInterval(86_400))
-        _schedules = Query(
-            filter: #Predicate { $0.starting > startOfDay && $0.ending < endOfDay },
-            sort: \.starting,
-            order: .forward
-        )
-    }
-
     var body: some View {
         VStack {
             WeekdayPickerView(currentDate: $date)
                 .padding(.bottom)
 
-            if schedules.count == 0,
-               date >= Calendar.current.startOfDay(for: .now) {
-                emptyStateView
-            } else {
-                VStack {
-                    HStack {
-                        DatePickerDateView(date: date)
+            if let daySchedules = try? modelContext.fetch(descriptor) {
+                if daySchedules.count == 0,
+                   date >= Calendar.current.startOfDay(for: .now) {
+                    emptyStateView
+                } else {
+                    VStack {
+                        HStack {
+                            DatePickerDateView(date: date)
 
-                        Spacer()
+                            Spacer()
 
-                        Button {
-                            coordinator.present(.doctorSelection(date: date))
-                        } label: {
-                            Label("Добавить", systemImage: "plus.circle")
+                            Button {
+                                coordinator.present(.doctorSelection(date: date))
+                            } label: {
+                                Label("Добавить", systemImage: "plus.circle")
+                            }
+                            .disabled(date < Calendar.current.startOfDay(for: .now))
                         }
-                        .disabled(date < Calendar.current.startOfDay(for: .now))
-                    }
-                    .padding(.bottom)
+                        .padding(.bottom)
 
-                    ScheduleChart(schedules: schedules, date: date)
+                        ScheduleChart(schedules: daySchedules, date: date)
 
-                    HStack {
-                        Spacer()
+                        HStack {
+                            Spacer()
 
-                        Button {
-                            coordinator.push(.appointments)
-                        } label: {
-                            Label("Запись на прием", systemImage: "person.crop.rectangle.stack")
+                            Button {
+                                coordinator.push(.appointments)
+                            } label: {
+                                Label("Запись на прием", systemImage: "person.crop.rectangle.stack")
+                            }
+                            .padding(.top)
+                            .buttonStyle(.bordered)
+                            .disabled(daySchedules.isEmpty)
                         }
-                        .padding(.top)
-                        .buttonStyle(.bordered)
-                        .disabled(schedules.isEmpty)
                     }
+                    .padding()
+                    .background(
+                        Color(.tertiarySystemBackground),
+                        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    )
+                    .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+                    .padding(.horizontal)
                 }
-                .padding()
-                .background(
-                    Color(.tertiarySystemBackground),
-                    in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-                )
-                .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-                .padding(.horizontal)
             }
         }
     }
@@ -107,5 +99,20 @@ private extension ScheduleScreen {
             .buttonStyle(.borderedProminent)
         }
         .frame(maxHeight: .infinity)
+    }
+}
+
+// MARK: - Calculations
+
+private extension ScheduleScreen {
+    var descriptor: FetchDescriptor<DoctorSchedule> {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let endOfDay = Calendar.current.startOfDay(for: date.addingTimeInterval(86_400))
+        let schedulesPredicate = #Predicate<DoctorSchedule> { schedule in
+            schedule.starting > startOfDay && schedule.ending < endOfDay
+        }
+        let descriptor = FetchDescriptor(predicate: schedulesPredicate)
+
+        return descriptor
     }
 }

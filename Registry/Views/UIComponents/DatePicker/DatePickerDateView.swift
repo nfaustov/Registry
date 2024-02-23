@@ -23,7 +23,7 @@ struct DatePickerDateView: View {
                 ZStack {
                     Rectangle()
                         .frame(width: 32, height: 24)
-                        .foregroundColor(Color("black"))
+                        .foregroundColor(Color("appBlack"))
                         .cornerRadius(4)
                     Text(dateStrings[1])
                         .foregroundColor(.white)

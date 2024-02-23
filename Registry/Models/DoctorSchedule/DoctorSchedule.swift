@@ -11,18 +11,7 @@ import SwiftData
 @Model
 public final class DoctorSchedule {
     public var id: UUID = UUID()
-    public var doctor: Doctor = Doctor(
-        secondName: "",
-        firstName: "",
-        patronymicName: "",
-        phoneNumber: "",
-        birthDate: .now,
-        department: .gynecology,
-        basicService: nil,
-        serviceDuration: 0,
-        defaultCabinet: 1,
-        salary: .pieceRate(rate: 0.4)
-    )
+    public var doctor: Doctor
     public var cabinet: Int = 1
     public var starting: Date = Date.now
     public var ending: Date = Date.now.addingTimeInterval(1800)
@@ -41,10 +30,23 @@ public final class DoctorSchedule {
         self.cabinet = cabinet
         self.starting = starting
         self.ending = ending
-        self.patientAppointments = patientAppointments
 
-        if self.patientAppointments.isEmpty {
-            createAppointments()
+        if patientAppointments.isEmpty {
+            var appointmentTime = starting
+            var appointments = [PatientAppointment]()
+
+            repeat {
+                let appointment = PatientAppointment(
+                    scheduledTime: appointmentTime,
+                    duration: doctor.serviceDuration,
+                    patient: nil
+                )
+                appointments.append(appointment)
+                appointmentTime.addTimeInterval(doctor.serviceDuration)
+            } while appointmentTime < ending
+            self.patientAppointments = appointments
+        } else {
+            self.patientAppointments = patientAppointments
         }
     }
 
@@ -98,20 +100,6 @@ public final class DoctorSchedule {
 // MARK: - Private methods
 
 private extension DoctorSchedule {
-    func createAppointments() {
-        var appointmentTime = starting
-
-        repeat {
-            let appointment = PatientAppointment(
-                scheduledTime: appointmentTime,
-                duration: doctor.serviceDuration,
-                patient: nil
-            )
-            patientAppointments.append(appointment)
-            appointmentTime.addTimeInterval(doctor.serviceDuration)
-        } while appointmentTime < ending
-    }
-
     func createAppointments(on interval: DateInterval) -> [PatientAppointment] {
         var appointmentTime = interval.start
         var appointments = [PatientAppointment]()

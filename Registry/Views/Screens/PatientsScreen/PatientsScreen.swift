@@ -15,7 +15,7 @@ struct PatientsScreen: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query(descriptor) private var patients: [Patient]
+    @Query(initialDescriptor) private var patients: [Patient]
 
     // MARK: - State
 
@@ -25,13 +25,7 @@ struct PatientsScreen: View {
     // MARK: -
 
     var body: some View {
-        let patientsPredicate = #Predicate<Patient> { patient in
-            searchText.isEmpty ? false :
-            (patient.secondName + " " + patient.firstName + " " + patient.patronymicName).localizedStandardContains(searchText)
-        }
-        let descriptor = FetchDescriptor(predicate: patientsPredicate)
-
-        if let searchedPatients = try? modelContext.fetch(descriptor) {
+        if let searchedPatients = try? modelContext.fetch(searchDescriptor) {
             Table(searchText.isEmpty ? patients : searchedPatients, selection: $selection) {
                 TableColumn("Фамилия", value: \.secondName)
                 TableColumn("Имя", value: \.firstName)
@@ -67,9 +61,22 @@ struct PatientsScreen: View {
 // MARK: - Calculations
 
 private extension PatientsScreen {
-    static var descriptor: FetchDescriptor<Patient> {
+    static var initialDescriptor: FetchDescriptor<Patient> {
         var descriptor = FetchDescriptor<Patient>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         descriptor.fetchLimit = 100
+
+        return descriptor
+    }
+
+    var searchDescriptor: FetchDescriptor<Patient> {
+        let patientsPredicate = #Predicate<Patient> { patient in
+            searchText.isEmpty ? false :
+            patient.secondName.localizedStandardContains(searchText) ||
+            patient.firstName.localizedStandardContains(searchText) ||
+            patient.patronymicName.localizedStandardContains(searchText)
+        }
+        let descriptor = FetchDescriptor(predicate: patientsPredicate)
+
         return descriptor
     }
 }
