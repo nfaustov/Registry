@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */; };
+		8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */; };
+		8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */; };
 		8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */; };
 		8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E42B56F5B8003F474B /* SearchBar.swift */; };
 		8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */; };
@@ -32,6 +35,8 @@
 		8B7801492B87B9A60064DBFB /* PatientAppointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801482B87B9A60064DBFB /* PatientAppointment.swift */; };
 		8B78014C2B87BFD70064DBFB /* CreateDoctorScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78014B2B87BFD70064DBFB /* CreateDoctorScheduleView.swift */; };
 		8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78014E2B87C32B0064DBFB /* DoctorSelectionView.swift */; };
+		8B7A3C002B8C7C5300A48646 /* DoctorPayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */; };
+		8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */; };
 		8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7D5C7C2B592B3400E46AD8 /* Algorithms */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
@@ -39,6 +44,10 @@
 		8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */; };
 		8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE98E2B58486A001A9143 /* CatalogToolbarViewModifier.swift */; };
 		8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9902B584BFC001A9143 /* PricelistView.swift */; };
+		8B8B188A2B88D4B0006ABD82 /* SchedulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B18892B88D4B0006ABD82 /* SchedulesListView.swift */; };
+		8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B188B2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift */; };
+		8B8B188F2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B188E2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift */; };
+		8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B18912B88D8F0006ABD82 /* AppointmentView.swift */; };
 		8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B5692B8797C8004E0675 /* CashboxScreen.swift */; };
 		8B92B56C2B87A8A5004E0675 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56B2B87A8A5004E0675 /* AccountView.swift */; };
 		8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56D2B87AB1F004E0675 /* ReportView.swift */; };
@@ -56,6 +65,7 @@
 		8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AA2B361F8D00FD2E7C /* Route.swift */; };
 		8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AC2B361FD200FD2E7C /* Sheet.swift */; };
 		8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AE2B3623F200FD2E7C /* Person.swift */; };
+		8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */; };
 		8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */; };
 		8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */; };
 		8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53D972B494DE6006BE983 /* ExampleData.swift */; };
@@ -81,6 +91,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsListView.swift; sourceTree = "<group>"; };
+		8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPatientView.swift; sourceTree = "<group>"; };
+		8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsList.swift; sourceTree = "<group>"; };
 		8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBySideScreen.swift; sourceTree = "<group>"; };
 		8B0FE9E42B56F5B8003F474B /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
@@ -106,12 +119,18 @@
 		8B7801482B87B9A60064DBFB /* PatientAppointment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientAppointment.swift; sourceTree = "<group>"; };
 		8B78014B2B87BFD70064DBFB /* CreateDoctorScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorScheduleView.swift; sourceTree = "<group>"; };
 		8B78014E2B87C32B0064DBFB /* DoctorSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSelectionView.swift; sourceTree = "<group>"; };
+		8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorPayoutView.swift; sourceTree = "<group>"; };
+		8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorFutureSchedulesView.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
 		8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItem.swift; sourceTree = "<group>"; };
 		8B8AE98E2B58486A001A9143 /* CatalogToolbarViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogToolbarViewModifier.swift; sourceTree = "<group>"; };
 		8B8AE9902B584BFC001A9143 /* PricelistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistView.swift; sourceTree = "<group>"; };
+		8B8B18892B88D4B0006ABD82 /* SchedulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesListView.swift; sourceTree = "<group>"; };
+		8B8B188B2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsRegisterScreen.swift; sourceTree = "<group>"; };
+		8B8B188E2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorScheduleHeaderView.swift; sourceTree = "<group>"; };
+		8B8B18912B88D8F0006ABD82 /* AppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentView.swift; sourceTree = "<group>"; };
 		8B92B5692B8797C8004E0675 /* CashboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxScreen.swift; sourceTree = "<group>"; };
 		8B92B56B2B87A8A5004E0675 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		8B92B56D2B87AB1F004E0675 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -132,6 +151,7 @@
 		8B9673AA2B361F8D00FD2E7C /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		8B9673AC2B361FD200FD2E7C /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		8B9673AE2B3623F200FD2E7C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalServicesScreen.swift; sourceTree = "<group>"; };
 		8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePricelistItemView.swift; sourceTree = "<group>"; };
 		8BA53D972B494DE6006BE983 /* ExampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleData.swift; sourceTree = "<group>"; };
@@ -168,6 +188,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B01B9B12B8B96A4008A0AA7 /* AppointmentsListView */ = {
+			isa = PBXGroup;
+			children = (
+				8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */,
+			);
+			path = AppointmentsListView;
+			sourceTree = "<group>";
+		};
+		8B01B9B42B8BB7B7008A0AA7 /* AddPatientView */ = {
+			isa = PBXGroup;
+			children = (
+				8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */,
+				8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */,
+			);
+			path = AddPatientView;
+			sourceTree = "<group>";
+		};
 		8B0FE9E02B56F52E003F474B /* SideBySideScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,6 +396,22 @@
 			path = DoctorSelectionView;
 			sourceTree = "<group>";
 		};
+		8B7A3BFE2B8C7C4000A48646 /* DoctorPayoutView */ = {
+			isa = PBXGroup;
+			children = (
+				8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */,
+			);
+			path = DoctorPayoutView;
+			sourceTree = "<group>";
+		};
+		8B7A3C012B8C8EA300A48646 /* DoctorFutureSchedulesView */ = {
+			isa = PBXGroup;
+			children = (
+				8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */,
+			);
+			path = DoctorFutureSchedulesView;
+			sourceTree = "<group>";
+		};
 		8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +453,53 @@
 			path = CatalogToolbar;
 			sourceTree = "<group>";
 		};
+		8B8B18862B88D422006ABD82 /* AppointmentsRegisterScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8B8B188B2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift */,
+				8B8B18872B88D465006ABD82 /* Subviews */,
+			);
+			path = AppointmentsRegisterScreen;
+			sourceTree = "<group>";
+		};
+		8B8B18872B88D465006ABD82 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8B01B9B42B8BB7B7008A0AA7 /* AddPatientView */,
+				8B01B9B12B8B96A4008A0AA7 /* AppointmentsListView */,
+				8B8B18902B88D8CD006ABD82 /* AppointmentView */,
+				8B8B18882B88D49A006ABD82 /* SchedulesListView */,
+				8B8B188D2B88D78F006ABD82 /* DoctorScheduleHeaderView */,
+				8B7A3BFE2B8C7C4000A48646 /* DoctorPayoutView */,
+				8B7A3C012B8C8EA300A48646 /* DoctorFutureSchedulesView */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		8B8B18882B88D49A006ABD82 /* SchedulesListView */ = {
+			isa = PBXGroup;
+			children = (
+				8B8B18892B88D4B0006ABD82 /* SchedulesListView.swift */,
+			);
+			path = SchedulesListView;
+			sourceTree = "<group>";
+		};
+		8B8B188D2B88D78F006ABD82 /* DoctorScheduleHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				8B8B188E2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift */,
+			);
+			path = DoctorScheduleHeaderView;
+			sourceTree = "<group>";
+		};
+		8B8B18902B88D8CD006ABD82 /* AppointmentView */ = {
+			isa = PBXGroup;
+			children = (
+				8B8B18912B88D8F0006ABD82 /* AppointmentView.swift */,
+			);
+			path = AppointmentView;
+			sourceTree = "<group>";
+		};
 		8B9673792B36187D00FD2E7C = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +521,7 @@
 			children = (
 				8B9673852B36187D00FD2E7C /* RegistryApp.swift */,
 				8B9673872B36187D00FD2E7C /* ContentView.swift */,
+				8B9FA36F2B8CFAD200FF3C0B /* Controllers */,
 				8B96739A2B361B6500FD2E7C /* Coordinator */,
 				8B9673972B361B1F00FD2E7C /* Models */,
 				8B9673982B361B3100FD2E7C /* Views */,
@@ -503,6 +604,7 @@
 				8B9673AA2B361F8D00FD2E7C /* Route.swift */,
 				8B9673AC2B361FD200FD2E7C /* Sheet.swift */,
 				8B78013B2B87B75F0064DBFB /* ScheduleScreen */,
+				8B8B18862B88D422006ABD82 /* AppointmentsRegisterScreen */,
 				8B183BA22B865D8000FA1D46 /* CashboxScreen */,
 				8B9673A32B361CBB00FD2E7C /* DoctorsScreen */,
 				8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */,
@@ -520,6 +622,14 @@
 				8BA53D922B494C83006BE983 /* Subviews */,
 			);
 			path = DoctorsScreen;
+			sourceTree = "<group>";
+		};
+		8B9FA36F2B8CFAD200FF3C0B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		8BA0AAE72B5FA39500E9FD7E /* MedicalServicesScreen */ = {
@@ -768,7 +878,9 @@
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
+				8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */,
 				8B9673A12B361C2300FD2E7C /* Salary.swift in Sources */,
+				8B7A3C002B8C7C5300A48646 /* DoctorPayoutView.swift in Sources */,
 				8B7801412B87B7EA0064DBFB /* OffsetKey.swift in Sources */,
 				8B7801462B87B8BC0064DBFB /* ScheduleChart.swift in Sources */,
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
@@ -776,7 +888,10 @@
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8BDCCFE42B84A3860086BF4D /* Visit.swift in Sources */,
+				8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */,
+				8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */,
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
+				8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */,
 				8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */,
 				8B96739D2B361BB200FD2E7C /* Doctor.swift in Sources */,
 				8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */,
@@ -787,6 +902,7 @@
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,
 				8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */,
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
+				8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,
 				8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */,
@@ -800,6 +916,7 @@
 				8B183BB12B8661E800FA1D46 /* Payment.Method.swift in Sources */,
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
 				8B9673A92B361F6700FD2E7C /* Screen.swift in Sources */,
+				8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */,
 				8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */,
 				8BDCCFDD2B84A0C40086BF4D /* PassportData.swift in Sources */,
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
@@ -814,13 +931,16 @@
 				8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */,
 				8B183BA92B86601B00FA1D46 /* Ledger.swift in Sources */,
 				8BDCCFD82B849F6C0086BF4D /* DoctorSchedule.swift in Sources */,
+				8B8B188F2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift in Sources */,
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */,
 				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
 				8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */,
 				8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */,
 				8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */,
+				8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */,
 				8B183BAF2B8661C000FA1D46 /* Payment.Purpose.swift in Sources */,
+				8B8B188A2B88D4B0006ABD82 /* SchedulesListView.swift in Sources */,
 				8B78014C2B87BFD70064DBFB /* CreateDoctorScheduleView.swift in Sources */,
 				8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */,
 			);

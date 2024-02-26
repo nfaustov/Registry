@@ -14,39 +14,36 @@ struct ScheduleScreen: View {
     @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject private var coordinator: Coordinator
-
-    // MARK: - State
-
-    @State private var date: Date = .now
+    @EnvironmentObject private var scheduleController: ScheduleController
 
     // MARK: -
 
     var body: some View {
         VStack {
-            WeekdayPickerView(currentDate: $date)
+            WeekdayPickerView(currentDate: $scheduleController.date)
                 .padding(.bottom)
 
             if let daySchedules = try? modelContext.fetch(descriptor) {
                 if daySchedules.count == 0,
-                   date >= Calendar.current.startOfDay(for: .now) {
+                   scheduleController.date >= Calendar.current.startOfDay(for: .now) {
                     emptyStateView
                 } else {
                     VStack {
                         HStack {
-                            DatePickerDateView(date: date)
+                            DatePickerDateView(date: scheduleController.date)
 
                             Spacer()
 
                             Button {
-                                coordinator.present(.doctorSelection(date: date))
+                                coordinator.present(.doctorSelection(date: scheduleController.date))
                             } label: {
                                 Label("Добавить", systemImage: "plus.circle")
                             }
-                            .disabled(date < Calendar.current.startOfDay(for: .now))
+                            .disabled(scheduleController.date < Calendar.current.startOfDay(for: .now))
                         }
                         .padding(.bottom)
 
-                        ScheduleChart(schedules: daySchedules, date: date)
+                        ScheduleChart(schedules: daySchedules, date: scheduleController.date)
 
                         HStack {
                             Spacer()
@@ -85,14 +82,14 @@ struct ScheduleScreen: View {
 private extension ScheduleScreen {
     var emptyStateView: some View {
         VStack {
-            DatePickerDateView(date: date)
+            DatePickerDateView(date: scheduleController.date)
                 .padding(.bottom, 16)
 
             Text("На выбранную дату нет созданных расписаний врачей")
                 .foregroundColor(.secondary)
 
             Button {
-                coordinator.present(.doctorSelection(date: date))
+                coordinator.present(.doctorSelection(date: scheduleController.date))
             } label: {
                 Text("Создать расписание")
             }
@@ -106,8 +103,8 @@ private extension ScheduleScreen {
 
 private extension ScheduleScreen {
     var descriptor: FetchDescriptor<DoctorSchedule> {
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        let endOfDay = Calendar.current.startOfDay(for: date.addingTimeInterval(86_400))
+        let startOfDay = Calendar.current.startOfDay(for: scheduleController.date)
+        let endOfDay = Calendar.current.startOfDay(for: scheduleController.date.addingTimeInterval(86_400))
         let schedulesPredicate = #Predicate<DoctorSchedule> { schedule in
             schedule.starting > startOfDay && schedule.ending < endOfDay
         }

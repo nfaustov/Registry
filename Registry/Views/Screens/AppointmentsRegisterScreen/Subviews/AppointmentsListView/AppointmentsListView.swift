@@ -1,0 +1,166 @@
+//
+//  AppointmentsListView.swift
+//  Registry
+//
+//  Created by Николай Фаустов on 25.02.2024.
+//
+
+import SwiftUI
+import SwiftData
+
+struct AppointmentsListView: View {
+    // MARK: - Dependencies
+
+    @Environment(\.modelContext) private var modelContext
+
+    @EnvironmentObject private var coordinator: Coordinator
+
+    @Bindable var schedule: DoctorSchedule
+
+    @Query private var appointments: [PatientAppointment]
+
+    // MARK: -
+
+    var body: some View {
+        List(scheduleAppointments) { appointment in
+            AppointmentView(appointment: appointment)
+                .swipeActions(edge: .trailing) {
+                    if scheduleAppointments.count > 1 {
+                        trailingSwipeActions(for: appointment)
+                    }
+                }
+                .swipeActions(edge: .leading) {
+                    leadingSwipeActions(for: appointment)
+                }
+                .contextMenu {
+                    menuView(for: appointment)
+                }
+        }
+        .listStyle(.plain)
+        .scrollBounceBehavior(.basedOnSize)
+    }
+}
+
+#Preview {
+    AppointmentsListView(schedule: ExampleData.doctorSchedule)
+}
+
+// MARK: - Calculations
+
+private extension AppointmentsListView {
+    var scheduleAppointments: [PatientAppointment] {
+        appointments
+            .filter { $0.schedule?.id == schedule.id }
+            .filter { $0.status != .cancelled }
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+    }
+
+    var cancelledAppointments: [PatientAppointment] {
+        appointments
+            .filter { $0.schedule?.id == schedule.id }
+            .filter { $0.status == .cancelled }
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+    }
+
+    var isAvailableToExtendStarting: Bool {
+        schedule.starting.addingTimeInterval(-(schedule.doctor?.serviceDuration ?? 0)) >=
+        WorkingHours(for: schedule.starting).start && schedule.patientAppointments.count > 1
+    }
+
+    var isAvailableToExtendEnding: Bool {
+        schedule.ending.addingTimeInterval(schedule.doctor?.serviceDuration ?? 0) <=
+        WorkingHours(for: schedule.starting).end
+    }
+}
+
+// MARK: - Subviews
+
+private extension AppointmentsListView {
+    @ViewBuilder func menuView(for appointment: PatientAppointment) -> some View {
+        if let patient = appointment.patient, appointment.status != .completed {
+            Section {
+                Button {
+//                        coordinator.push(.bill(appointment: appointment, doctor: doctor))
+                } label: {
+                    Label("Счет", systemImage: "list.bullet.rectangle.portrait")
+                }
+
+                Button {
+                    coordinator.push(.patientCard(patient))
+                } label: {
+                    Label("Карта пациента", systemImage: "info.circle")
+                }
+            }
+
+            Section {
+                Button(role: .destructive) {
+                    appointment.status = .cancelled
+                    patient.cancelVisit(for: appointment.scheduledTime)
+                    appointment.schedule?.splitToBasicDurationAppointments(appointment)
+                } label: {
+                    Label("Отменить прием", systemImage: "person.badge.minus")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder func trailingSwipeActions(for appointment: PatientAppointment) -> some View {
+        if scheduleAppointments.first == appointment, appointment.patient == nil {
+            removeAppointmentButton(at: .starting)
+        }
+        if scheduleAppointments.last == appointment, appointment.patient == nil {
+            removeAppointmentButton(at: .ending)
+        }
+    }
+
+    @ViewBuilder func leadingSwipeActions(for appointment: PatientAppointment) -> some View {
+        if scheduleAppointments.first == appointment, isAvailableToExtendStarting {
+            extendSchehuleButton(at: .starting)
+        }
+        if scheduleAppointments.last == appointment, isAvailableToExtendEnding {
+            extendSchehuleButton(at: .ending)        }
+    }
+
+    func extendSchehuleButton(at edge: ScheduleEdge) -> some View {
+        Button {
+            let scheduledTime = edge == .starting ? schedule.starting.addingTimeInterval(-(schedule.doctor?.serviceDuration ?? 0)) : schedule.ending
+
+            let appointment = PatientAppointment(
+                scheduledTime: scheduledTime,
+                duration: schedule.doctor?.serviceDuration ?? 0,
+                patient: nil
+            )
+            appointment.schedule = schedule
+
+            switch edge {
+            case .starting:
+                schedule.starting.addTimeInterval(-appointment.duration)
+            case .ending:
+                schedule.ending.addTimeInterval(appointment.duration)
+            }
+            
+        } label: {
+            Label("Добавить время", systemImage: "plus.circle.fill")
+        }
+        .tint(.green)
+    }
+
+    func removeAppointmentButton(at edge: ScheduleEdge) -> some View {
+        Button(role: .destructive) {
+            switch edge {
+            case .starting:
+                if let appointment = scheduleAppointments.first {
+                    modelContext.delete(appointment)
+                    schedule.starting.addTimeInterval(appointment.duration)
+                }
+            case .ending:
+                if let appointment = scheduleAppointments.last {
+                    modelContext.delete(appointment)
+                    schedule.ending.addTimeInterval(-appointment.duration)
+                }
+            }
+        } label: {
+            Label("Удалить ячейку", systemImage: "trash")
+        }
+    }
+}

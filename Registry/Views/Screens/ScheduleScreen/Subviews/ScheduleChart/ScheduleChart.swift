@@ -19,22 +19,24 @@ struct ScheduleChart: View {
     var body: some View {
         ScrollView(.vertical) {
             Chart(schedules) { schedule in
-                BarMark(
-                    xStart: .value(
-                        "ScheduleStarting",
-                        schedule.starting,
-                        unit: .minute
-                    ),
-                    xEnd: .value(
-                        "ScheduleEnding",
-                        schedule.ending,
-                        unit: .minute
-                    ),
-                    y: .value("Doctor", schedule.doctor.initials),
-                    height: .ratio(0.3)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                .foregroundStyle(schedule.ending <= Date.now ? .gray : schedule.doctor.department == .procedure ? .clear : .blue)
+                if let doctor = schedule.doctor {
+                    BarMark(
+                        xStart: .value(
+                            "ScheduleStarting",
+                            schedule.starting,
+                            unit: .minute
+                        ),
+                        xEnd: .value(
+                            "ScheduleEnding",
+                            schedule.ending,
+                            unit: .minute
+                        ),
+                        y: .value("Doctor", doctor.initials),
+                        height: .ratio(0.3)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                    .foregroundStyle(schedule.ending <= Date.now ? .gray : doctor.department == .procedure ? .clear : .blue)
+                }
 
                 if workingHours.range.contains(.now) {
                     RuleMark(x: .value("TimeNow", Date.now))

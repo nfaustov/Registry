@@ -16,6 +16,8 @@ public final class PatientAppointment {
     public var patient: Patient?
     public var status: PatientAppointment.Status = PatientAppointment.Status.none
 
+    public var schedule: DoctorSchedule?
+
     public var endTime: Date {
         scheduledTime.addingTimeInterval(duration)
     }

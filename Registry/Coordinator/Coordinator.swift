@@ -48,6 +48,8 @@ extension Coordinator {
 
     @ViewBuilder func destinationView(_ route: Route) -> some View {
         switch route {
+        case .appointments:
+            AppointmentsRegisterScreen()
         case .doctorDetail(let doctor):
             DoctorDetailScreen(doctor: doctor)
         case .patientCard(let patient):
@@ -64,6 +66,12 @@ extension Coordinator {
             CreateSpendingView(report: report)
         case .doctorSelection(let date):
             DoctorSelectionView(date: date)
+        case .doctorPayout(let doctor):
+            DoctorPayoutView(doctor: doctor)
+        case .doctorFutureSchedules(let doctorSchedule):
+            DoctorFutureSchedulesView(doctorSchedule: doctorSchedule)
+        case .addPatient(let appointment):
+            AddPatientView(appointment: appointment)
         case .createDoctor:
             CreateDoctorView()
         case .createPatient:

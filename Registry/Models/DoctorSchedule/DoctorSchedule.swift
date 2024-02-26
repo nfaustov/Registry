@@ -11,10 +11,11 @@ import SwiftData
 @Model
 public final class DoctorSchedule {
     public var id: UUID = UUID()
-    public var doctor: Doctor
+    public var doctor: Doctor?
     public var cabinet: Int = 1
     public var starting: Date = Date.now
     public var ending: Date = Date.now.addingTimeInterval(1800)
+    @Relationship(deleteRule: .cascade)
     public var patientAppointments: [PatientAppointment] = []
 
     public init(
@@ -52,6 +53,7 @@ public final class DoctorSchedule {
 
     public var scheduledPatients: Int {
         patientAppointments
+            .filter { $0.status != .cancelled }
             .compactMap { $0.patient }
             .count
     }
@@ -79,20 +81,18 @@ public final class DoctorSchedule {
     /// Split appointment to several appointments with doctor service duration.
     /// - Parameter appointment: Appointment for splitting.
     /// - Returns: Array of empty appointments which have been created on time interval of duration of given appointment.
-    public func splitToBasicDurationAppointments(_ appointment: PatientAppointment) -> [PatientAppointment] {
-        if appointment.duration > doctor.serviceDuration {
-            return createAppointments(
+    public func splitToBasicDurationAppointments(_ appointment: PatientAppointment) {
+        if appointment.duration > doctor?.serviceDuration ?? 0 {
+            createAppointments(
                 on: DateInterval(start: appointment.scheduledTime, duration: appointment.duration)
             )
         } else {
-            return [
-                PatientAppointment(
-                        scheduledTime: appointment.scheduledTime,
-                        duration: appointment.duration,
-                        patient: appointment.patient, 
-                        status: .none
-                )
-            ]
+            let newAppointment = PatientAppointment(
+                scheduledTime: appointment.scheduledTime,
+                duration: appointment.duration,
+                patient: nil
+            )
+            patientAppointments.append(newAppointment)
         }
     }
 }
@@ -100,20 +100,17 @@ public final class DoctorSchedule {
 // MARK: - Private methods
 
 private extension DoctorSchedule {
-    func createAppointments(on interval: DateInterval) -> [PatientAppointment] {
+    func createAppointments(on interval: DateInterval) {
         var appointmentTime = interval.start
-        var appointments = [PatientAppointment]()
 
         repeat {
             let appointment = PatientAppointment(
                 scheduledTime: appointmentTime,
-                duration: doctor.serviceDuration,
+                duration: doctor?.serviceDuration ?? 0,
                 patient: nil)
-            appointments.append(appointment)
-            appointmentTime.addTimeInterval(doctor.serviceDuration)
+            patientAppointments.append(appointment)
+            appointmentTime.addTimeInterval(doctor?.serviceDuration ?? 0)
         } while appointmentTime < interval.end
-
-        return appointments
     }
 }
 
