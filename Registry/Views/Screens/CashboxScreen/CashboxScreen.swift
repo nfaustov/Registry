@@ -6,16 +6,12 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct CashboxScreen: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
     @EnvironmentObject private var coordinator: Coordinator
-
-    @Query(descriptor) private var reports: [Report]
+    @StateObject private var ledger = Ledger()
 
     // MARK: -
 
@@ -24,13 +20,13 @@ struct CashboxScreen: View {
             VStack {
                 Form {
                     HStack {
-                        Text("\(Int(report.cashBalance)) ₽")
+                        Text("\(Int(ledger.todayReport.cashBalance)) ₽")
                             .fontWeight(.medium)
 
                         Spacer()
 
                         Button {
-                            coordinator.present(.createSpending(in: report))
+                            coordinator.present(.createSpending(in: ledger.todayReport))
                         } label: {
                             Text("Списание")
                         }
@@ -39,31 +35,31 @@ struct CashboxScreen: View {
                     Section {
                         DisclosureGroup("Доходы") {
                             ForEach(PaymentType.allCases, id: \.self) { type in
-                                if report.reporting(.income, of: type) != 0 {
+                                if ledger.todayReport.reporting(.income, of: type) != 0 {
                                     AccountView(
-                                        value: report.reporting(.income, of: type),
+                                        value: ledger.todayReport.reporting(.income, of: type),
                                         type: type,
-                                        fraction: report.fraction(.income, ofAccount: type)
+                                        fraction: ledger.todayReport.fraction(.income, ofAccount: type)
                                     )
                                 }
                             }
                         }
                         DisclosureGroup("Расходы") {
                             ForEach(PaymentType.allCases, id: \.self) { type in
-                                if report.reporting(.expense, of: type) != 0 {
+                                if ledger.todayReport.reporting(.expense, of: type) != 0 {
                                     AccountView(
-                                        value: report.reporting(.expense, of: type),
+                                        value: ledger.todayReport.reporting(.expense, of: type),
                                         type: type,
-                                        fraction: report.fraction(.expense, ofAccount: type))
+                                        fraction: ledger.todayReport.fraction(.expense, ofAccount: type))
                                 }
                             }
                         }
                     }
                     .tint(.secondary)
-                    .disabled(report.payments.isEmpty)
+                    .disabled(ledger.todayReport.payments.isEmpty)
 
                     Button {
-                        coordinator.present(.report(report))
+                        coordinator.present(.report(ledger.todayReport))
                     } label: {
                         Text("Отчет")
                     }
@@ -75,8 +71,8 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            PaymentsView(payments: report.payments) { payment in
-                report.payments.removeAll(where: { $0 == payment })
+            PaymentsView(payments: ledger.todayReport.payments) { payment in
+                ledger.todayReport.payments.removeAll(where: { $0 == payment })
             }
             .padding()
             .edgesIgnoringSafeArea([.all])
@@ -90,30 +86,4 @@ struct CashboxScreen: View {
     CashboxScreen()
         .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
-}
-
-// MARK: - Calculations
-
-private extension CashboxScreen {
-    static var descriptor: FetchDescriptor<Report> {
-        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-        descriptor.fetchLimit = 1
-        return descriptor
-    }
-
-    var report: Report {
-        if let report = reports.first {
-            if Calendar.current.isDateInToday(report.date) {
-                return report
-            } else {
-                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
-                modelContext.insert(newReport)
-                return newReport
-            }
-        } else {
-            let firstReport = ExampleData.report
-            modelContext.insert(firstReport)
-            return firstReport
-        }
-    }
 }

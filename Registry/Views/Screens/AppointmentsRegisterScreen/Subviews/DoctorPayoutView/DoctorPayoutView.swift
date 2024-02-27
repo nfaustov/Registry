@@ -13,6 +13,8 @@ struct DoctorPayoutView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @StateObject private var ledger = Ledger()
+
     private let doctor: Doctor
 
     // MARK: - State
@@ -225,33 +227,15 @@ private extension DoctorPayoutView {
         }
     }
 
-    var todayReport: Report? {
-        let startOfToday = Calendar.current.startOfDay(for: .now)
-        let startOfTommorow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
-        let predicate = #Predicate<Report> {
-            $0.date > startOfToday && $0.date < startOfTommorow
-        }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        return try? modelContext.fetch(descriptor).first
-    }
-
     var servicesByDoctor: [RenderedService] {
-        guard let todayReport else { return [] }
-
-        return doctor.renderedServices(from: todayReport.payments, role: \.performer)
+        doctor.renderedServices(from: ledger.todayReport.payments, role: \.performer)
     }
 
     var servicesByAgent: [RenderedService] {
-        let components = Calendar.current.dateComponents([.year, .month], from: .now)
-        let date = Calendar.current.date(from: components)!
-        let today = Date.now
-        let predicate = #Predicate<Report> { $0.date > date && $0.date < today }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        guard let reports = try? modelContext.fetch(descriptor) else { return [] }
-
-        return doctor.renderedServices(from: reports.flatMap { $0.payments }, role: \.agent)
+        doctor.renderedServices(
+            from: ledger.currentMonthReports.flatMap { $0.payments },
+            role: \.agent
+        )
     }
 
     func doctorPayout() {
@@ -267,6 +251,6 @@ private extension DoctorPayoutView {
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
         let payment = Payment(purpose: .salary(doctor.initials), methods: methods)
-        todayReport?.payments.append(payment)
+        ledger.todayReport.payments.append(payment)
     }
 }

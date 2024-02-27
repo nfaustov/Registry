@@ -13,6 +13,8 @@ struct BillPaymentView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @StateObject private var ledger = Ledger()
+
     @Query private var doctors: [Doctor]
 
     private let appointment: PatientAppointment
@@ -203,17 +205,6 @@ private extension BillPaymentView {
         return patient
     }
 
-    var todayReport: Report? {
-        let startOfToday = Calendar.current.startOfDay(for: .now)
-        let startOfTommorow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
-        let predicate = #Predicate<Report> {
-            $0.date > startOfToday && $0.date < startOfTommorow
-        }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        return try? modelContext.fetch(descriptor).first
-    }
-
     func doctorSalary(bill: Bill, refund: Bool = false) {
         for service in bill.services {
             if let performer = service.performer {
@@ -256,7 +247,7 @@ private extension BillPaymentView {
             purpose: balancePaymentMethod.value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod]
         )
-        todayReport?.payments.append(balancePayment)
+        ledger.todayReport.payments.append(balancePayment)
     }
 
     func payment() {
@@ -271,6 +262,6 @@ private extension BillPaymentView {
         methods.append(paymentMethod)
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, bill: bill)
-        todayReport?.payments.append(payment)
+        ledger.todayReport.payments.append(payment)
     }
 }
