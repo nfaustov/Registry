@@ -20,7 +20,7 @@ public final class Patient: Person {
     public var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     public var treatmentPlan: TreatmentPlan?
     public var createdAt: Date = Date.now
-    public var visits: [Visit]
+    public var visits: [Visit] = []
 
     public init(
         id: UUID = UUID(),
@@ -51,5 +51,14 @@ public final class Patient: Person {
         guard var visit = visits.first(where: { $0.visitDate == date }) else { return }
         visit.cancellationDate = .now
         visit.bill = nil
+    }
+
+    public func updateBill(_ newBill: Bill, for appointment: PatientAppointment) {
+        guard var visit = visits.first(where: { $0.visitDate == appointment.scheduledTime }) else { return }
+        visit.bill = newBill
+    }
+
+    public func addToBalance(_ increment: Double) {
+        balance += increment
     }
 }

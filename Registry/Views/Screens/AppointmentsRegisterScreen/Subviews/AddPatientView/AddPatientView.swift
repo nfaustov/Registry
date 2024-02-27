@@ -97,8 +97,7 @@ struct AddPatientView: View {
             ) {
                 replaceAppointmentsIfNeeded()
 
-                guard let doctor = appointment.schedule?.doctor else { return }
-                let visit = Visit(visitDate: appointment.scheduledTime, destination: doctor.department)
+                let visit = Visit(visitDate: appointment.scheduledTime)
 
                 if let selectedPatient {
                     appointment.patient = selectedPatient

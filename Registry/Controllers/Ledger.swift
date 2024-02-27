@@ -5,37 +5,57 @@
 //  Created by Николай Фаустов on 21.02.2024.
 //
 
-import Foundation
+import SwiftUI
+import SwiftData
 
-public final class Ledger {
-    public var reports: [Report]
+public final class Ledger: ObservableObject {
+    @Environment(\.modelContext) private var modelContext
 
-    init(reports: [Report]) {
-        self.reports = reports
+    @Query private var reports: [Report]
+
+    public init(interval: DateInterval) {
+        let start = Calendar.current.startOfDay(for: interval.start)
+        let end = Calendar.current.startOfDay(for: interval.end.addingTimeInterval(86_400))
+        _reports = Query(filter: #Predicate { $0.date > start && $0.date < end }, sort: \.date, order: .forward)
     }
 
-    public func reporting(_ reporting: Reporting, of type: PaymentType? = nil) -> Double {
+    public var todayReport: Report? {
+        let startOfToday = Calendar.current.startOfDay(for: .now)
+        let startOfTommorow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
+        let predicate = #Predicate<Report> {
+            $0.date > startOfToday && $0.date < startOfTommorow
+        }
+        let descriptor = FetchDescriptor(predicate: predicate)
+
+        return try? modelContext.fetch(descriptor).first
+    }
+}
+
+// MARK: - Statistic methods
+
+public extension Ledger {
+    func reporting(_ reporting: Reporting, of type: PaymentType? = nil) -> Double {
         reports
             .map { $0.reporting(reporting, of: type) }
             .reduce(0.0, +)
     }
 
-    public func incomeFraction(ofAccount type: PaymentType) -> Double {
+    func incomeFraction(ofAccount type: PaymentType) -> Double {
         guard reporting(.income) > 0 else { return 0 }
         return reporting(.income, of: type) / reporting(.income)
     }
 
-    public func pricelistItemUsage(id: String, period: DateInterval) -> Int {
+    func pricelistItemUsage(id: String, period: DateInterval) -> Int {
         servicesWithPricelistItem(id: id, period: period).count
     }
 
-    public func pricelistItemIncome(id: String, period: DateInterval) -> Double {
+    func pricelistItemIncome(id: String, period: DateInterval) -> Double {
         servicesWithPricelistItem(id: id, period: period)
             .map { $0.pricelistItem.price }
             .reduce(0.0, +)
     }
 
-    public func pricelistItemProfit(id: String, period: DateInterval) -> Double {
+    func pricelistItemProfit(id: String, period: DateInterval) -> Double {
         var servicesCostPrice = 0.0
         var salaryForServices = 0.0
 

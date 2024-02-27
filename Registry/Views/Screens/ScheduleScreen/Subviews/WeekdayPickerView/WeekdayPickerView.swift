@@ -59,6 +59,7 @@ private extension WeekdayPickerView {
         HStack {
             ForEach(week) { day in
                 Text(day.label)
+                    .fontWeight(.medium)
                     .padding()
                     .foregroundColor(
                         day.isToday ? .orange : day.isSameDayAs(currentDate) ? .white : .primary

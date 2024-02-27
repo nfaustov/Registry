@@ -80,7 +80,7 @@ private extension AppointmentsListView {
         if let patient = appointment.patient, appointment.status != .completed {
             Section {
                 Button {
-//                        coordinator.push(.bill(appointment: appointment, doctor: doctor))
+                    coordinator.push(.bill(for: appointment))
                 } label: {
                     Label("Счет", systemImage: "list.bullet.rectangle.portrait")
                 }

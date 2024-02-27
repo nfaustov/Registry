@@ -50,11 +50,12 @@ extension Coordinator {
         switch route {
         case .appointments:
             AppointmentsRegisterScreen()
+        case .bill(let appointment):
+            BillScreen(appointment: appointment)
         case .doctorDetail(let doctor):
             DoctorDetailScreen(doctor: doctor)
         case .patientCard(let patient):
             PatientCardScreen(patient: patient)
-        default: EmptyView()
         }
     }
 
@@ -72,13 +73,18 @@ extension Coordinator {
             DoctorFutureSchedulesView(doctorSchedule: doctorSchedule)
         case .addPatient(let appointment):
             AddPatientView(appointment: appointment)
+        case .completedAppointment(let appointment):
+            CompletedAppointmentView(appointment: appointment)
+        case .createBillTemplate(let services):
+            CreateBillTemplateView(services: services)
         case .createDoctor:
             CreateDoctorView()
         case .createPatient:
             CreatePatientView()
         case .createPricelistItem:
             CreatePricelistItemView()
-        default: EmptyView()
+        case .billPayment(let appointment, let includedBalance, let bill, let isPaid):
+            BillPaymentView(appointment: appointment, includedPatientBalance: includedBalance, bill: bill, isPaid: isPaid)
         }
     }
 }

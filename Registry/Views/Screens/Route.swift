@@ -9,7 +9,7 @@ import SwiftUI
 
 enum Route: Hashable {
     case appointments
-    case bill//(appointment: PatientAppointment, doctor: Doctor)
+    case bill(for: PatientAppointment)
     case doctorDetail(Doctor)
     case patientCard(Patient)
 }

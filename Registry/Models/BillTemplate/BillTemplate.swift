@@ -11,16 +11,20 @@ import SwiftData
 @Model
 public final class BillTemplate {
     public var id: UUID = UUID()
+    @Attribute(.unique)
     public var title: String = ""
     public var services: [RenderedService] = []
+    public var discount: Double = Double.zero
 
     public init(
         id: UUID = UUID(),
         title: String,
-        services: [RenderedService] = []
+        services: [RenderedService] = [],
+        discount: Double = Double.zero
     ) {
         self.id = id
         self.title = title
         self.services = services
+        self.discount = discount
     }
 }

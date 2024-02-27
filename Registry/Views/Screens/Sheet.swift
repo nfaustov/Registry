@@ -14,12 +14,12 @@ enum Sheet: Identifiable {
     case doctorPayout(for: Doctor)
     case doctorFutureSchedules(doctorSchedule: DoctorSchedule)
     case addPatient(for: PatientAppointment)
-    case completedAppointment//(appointment: PatientAppointment)
-    case createBillTemplate//(services: [RenderedService])
+    case completedAppointment(appointment: PatientAppointment)
+    case createBillTemplate(services: [RenderedService])
     case createDoctor
     case createPatient
     case createPricelistItem
-    case billPayment//(appointment: PatientAppointment, includedPatientBalance: Double, bill: Bill, isPaid: Binding<Bool>)
+    case billPayment(appointment: PatientAppointment, includedPatientBalance: Double, bill: Bill, isPaid: Binding<Bool>)
 
     var id: UUID {
         UUID()

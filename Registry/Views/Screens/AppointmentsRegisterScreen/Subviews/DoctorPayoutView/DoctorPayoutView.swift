@@ -210,12 +210,6 @@ private extension DoctorPayoutView {
 
 private extension DoctorPayoutView {
     var salary: Double {
-        let today = Date.now
-        let predicate = #Predicate<Report> { $0.date == today }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        guard let report = try? modelContext.fetch(descriptor).first else { return 0 }
-
         switch doctor.salary {
         case .pieceRate(let rate):
             return servicesByDoctor

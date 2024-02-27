@@ -37,7 +37,7 @@ struct AppointmentView: View {
 
                 if appointment.status == .completed {
                     Button {
-//                        coordinator.present(.completedAppointment(appointment: appointment))
+                        coordinator.present(.completedAppointment(appointment: appointment))
                     } label: {
                         HStack {
                             Text(appointment.status.rawValue)
