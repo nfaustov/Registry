@@ -6,18 +6,13 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct AppointmentsListView: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
     @EnvironmentObject private var coordinator: Coordinator
 
     @Bindable var schedule: DoctorSchedule
-
-    @Query private var appointments: [PatientAppointment]
 
     // MARK: -
 
@@ -49,15 +44,13 @@ struct AppointmentsListView: View {
 
 private extension AppointmentsListView {
     var scheduleAppointments: [PatientAppointment] {
-        appointments
-            .filter { $0.schedule?.id == schedule.id }
+        schedule.patientAppointments
             .filter { $0.status != .cancelled }
             .sorted(by: { $0.scheduledTime < $1.scheduledTime })
     }
 
     var cancelledAppointments: [PatientAppointment] {
-        appointments
-            .filter { $0.schedule?.id == schedule.id }
+        schedule.patientAppointments
             .filter { $0.status == .cancelled }
             .sorted(by: { $0.scheduledTime < $1.scheduledTime })
     }
@@ -130,7 +123,7 @@ private extension AppointmentsListView {
                 duration: schedule.doctor?.serviceDuration ?? 0,
                 patient: nil
             )
-            appointment.schedule = schedule
+            schedule.patientAppointments.append(appointment)
 
             switch edge {
             case .starting:
@@ -150,12 +143,12 @@ private extension AppointmentsListView {
             switch edge {
             case .starting:
                 if let appointment = scheduleAppointments.first {
-                    modelContext.delete(appointment)
+                    schedule.patientAppointments.removeAll(where: { $0 == appointment })
                     schedule.starting.addTimeInterval(appointment.duration)
                 }
             case .ending:
                 if let appointment = scheduleAppointments.last {
-                    modelContext.delete(appointment)
+                    schedule.patientAppointments.removeAll(where: { $0 == appointment })
                     schedule.ending.addTimeInterval(-appointment.duration)
                 }
             }
