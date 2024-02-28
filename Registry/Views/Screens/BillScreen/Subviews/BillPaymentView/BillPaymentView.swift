@@ -13,9 +13,8 @@ struct BillPaymentView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @StateObject private var ledger = Ledger()
-
     @Query private var doctors: [Doctor]
+    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
 
     private let appointment: PatientAppointment
     private let includedPatientBalance: Double
@@ -205,6 +204,24 @@ private extension BillPaymentView {
         return patient
     }
 
+    var todayReport: Report {
+        if let report = reports.first {
+            if Calendar.current.isDateInToday(report.date) {
+                return report
+            } else {
+                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+                modelContext.insert(newReport)
+
+                return newReport
+            }
+        } else {
+            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            modelContext.insert(firstReport)
+
+            return firstReport
+        }
+    }
+
     func doctorSalary(bill: Bill, refund: Bool = false) {
         for service in bill.services {
             if let performer = service.performer {
@@ -247,7 +264,7 @@ private extension BillPaymentView {
             purpose: balancePaymentMethod.value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod]
         )
-        ledger.todayReport.payments.append(balancePayment)
+        todayReport.payments.append(balancePayment)
     }
 
     func payment() {
@@ -262,6 +279,6 @@ private extension BillPaymentView {
         methods.append(paymentMethod)
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, bill: bill)
-        ledger.todayReport.payments.append(payment)
+        todayReport.payments.append(payment)
     }
 }

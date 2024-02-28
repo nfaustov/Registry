@@ -13,7 +13,7 @@ struct DoctorPayoutView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @StateObject private var ledger = Ledger()
+    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
 
     private let doctor: Doctor
 
@@ -227,13 +227,39 @@ private extension DoctorPayoutView {
         }
     }
 
+    var todayReport: Report {
+        if let report = reports.first {
+            if Calendar.current.isDateInToday(report.date) {
+                return report
+            } else {
+                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+                modelContext.insert(newReport)
+
+                return newReport
+            }
+        } else {
+            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            modelContext.insert(firstReport)
+
+            return firstReport
+        }
+    }
+
+    var currentMonthReports: [Report] {
+        let components = Calendar.current.dateComponents([.year, .month], from: .now)
+        let date = Calendar.current.date(from: components)!
+        let today = Date.now
+
+        return reports.filter { $0.date > date && $0.date < today }
+    }
+
     var servicesByDoctor: [RenderedService] {
-        doctor.renderedServices(from: ledger.todayReport.payments, role: \.performer)
+        doctor.renderedServices(from: todayReport.payments, role: \.performer)
     }
 
     var servicesByAgent: [RenderedService] {
         doctor.renderedServices(
-            from: ledger.currentMonthReports.flatMap { $0.payments },
+            from: currentMonthReports.flatMap { $0.payments },
             role: \.agent
         )
     }
@@ -251,6 +277,6 @@ private extension DoctorPayoutView {
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
         let payment = Payment(purpose: .salary(doctor.initials), methods: methods)
-        ledger.todayReport.payments.append(payment)
+        todayReport.payments.append(payment)
     }
 }

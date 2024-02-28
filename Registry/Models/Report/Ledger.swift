@@ -6,58 +6,12 @@
 //
 
 import SwiftUI
-import SwiftData
 
-public final class Ledger: ObservableObject {
-    @Environment(\.modelContext) private var modelContext
+public final class Ledger{
+    private var reports: [Report]
 
-    @Query private var reports: [Report]
-
-    public init(interval: DateInterval? = nil) {
-        if let interval {
-            let start = Calendar.current.startOfDay(for: interval.start)
-            let end = Calendar.current.startOfDay(for: interval.end.addingTimeInterval(86_400))
-            _reports = Query(filter: #Predicate { $0.date > start && $0.date < end }, sort: \.date, order: .forward)
-        } else {
-            _reports = Query(sort: \.date, order: .forward)
-        }
-    }
-
-    public var todayReport: Report {
-        let startOfToday = Calendar.current.startOfDay(for: .now)
-        let startOfTommorow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
-        let predicate = #Predicate<Report> {
-            $0.date > startOfToday && $0.date < startOfTommorow
-        }
-        let descriptor = FetchDescriptor(predicate: predicate, sortBy: [SortDescriptor(\.date, order: .forward)])
-
-        if let report = try? modelContext.fetch(descriptor).first {
-            if Calendar.current.isDateInToday(report.date) {
-                return report
-            } else {
-                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
-                modelContext.insert(newReport)
-
-                return newReport
-            }
-        } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [])
-            modelContext.insert(firstReport)
-
-            return firstReport
-        }
-    }
-
-    public var currentMonthReports: [Report] {
-        let components = Calendar.current.dateComponents([.year, .month], from: .now)
-        let date = Calendar.current.date(from: components)!
-        let today = Date.now
-        let predicate = #Predicate<Report> { $0.date > date && $0.date < today }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        guard let reports = try? modelContext.fetch(descriptor) else { return [] }
-
-        return reports
+    public init(reports: [Report]) {
+        self.reports = reports
     }
 }
 

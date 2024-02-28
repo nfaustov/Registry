@@ -9,5 +9,9 @@ import Foundation
 
 final class ScheduleController: ObservableObject {
     @Published var selectedSchedule: DoctorSchedule? = nil
-    @Published var date: Date = .now
+    @Published var date: Date = .now {
+        didSet {
+            selectedSchedule = nil
+        }
+    }
 }

@@ -95,6 +95,7 @@
 		8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE72B84A4080086BF4D /* RenderedService.swift */; };
 		8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
 		8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */; };
+		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,6 +189,7 @@
 		8BDCCFE72B84A4080086BF4D /* RenderedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderedService.swift; sourceTree = "<group>"; };
 		8BDCCFE92B84A6770086BF4D /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
 		8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientView.swift; sourceTree = "<group>"; };
+		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +302,7 @@
 		8B183BA72B86600A00FA1D46 /* Report */ = {
 			isa = PBXGroup;
 			children = (
+				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
 				8B183BAC2B86606400FA1D46 /* Report.swift */,
 				8B183BAA2B86605900FA1D46 /* Payment.swift */,
 				8B183BAE2B8661C000FA1D46 /* Payment.Purpose.swift */,
@@ -345,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				8B29E04B2B6A43360003A647 /* priceList.json */,
+				8BF10FDD2B8F220D003AD57E /* Loader.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -695,7 +699,6 @@
 		8B9FA36F2B8CFAD200FF3C0B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
 				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
 			);
 			path = Controllers;
@@ -994,6 +997,7 @@
 				8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */,
 				8BDCCFDD2B84A0C40086BF4D /* PassportData.swift in Sources */,
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
+				8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,
 				8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */,
 				8B7801492B87B9A60064DBFB /* PatientAppointment.swift in Sources */,

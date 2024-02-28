@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CashboxScreen: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
-    @StateObject private var ledger = Ledger()
+
+    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
 
     // MARK: -
 
@@ -20,13 +24,13 @@ struct CashboxScreen: View {
             VStack {
                 Form {
                     HStack {
-                        Text("\(Int(ledger.todayReport.cashBalance)) ₽")
+                        Text("\(Int(todayReport.cashBalance)) ₽")
                             .fontWeight(.medium)
 
                         Spacer()
 
                         Button {
-                            coordinator.present(.createSpending(in: ledger.todayReport))
+                            coordinator.present(.createSpending(in: todayReport))
                         } label: {
                             Text("Списание")
                         }
@@ -35,31 +39,31 @@ struct CashboxScreen: View {
                     Section {
                         DisclosureGroup("Доходы") {
                             ForEach(PaymentType.allCases, id: \.self) { type in
-                                if ledger.todayReport.reporting(.income, of: type) != 0 {
+                                if todayReport.reporting(.income, of: type) != 0 {
                                     AccountView(
-                                        value: ledger.todayReport.reporting(.income, of: type),
+                                        value: todayReport.reporting(.income, of: type),
                                         type: type,
-                                        fraction: ledger.todayReport.fraction(.income, ofAccount: type)
+                                        fraction: todayReport.fraction(.income, ofAccount: type)
                                     )
                                 }
                             }
                         }
                         DisclosureGroup("Расходы") {
                             ForEach(PaymentType.allCases, id: \.self) { type in
-                                if ledger.todayReport.reporting(.expense, of: type) != 0 {
+                                if todayReport.reporting(.expense, of: type) != 0 {
                                     AccountView(
-                                        value: ledger.todayReport.reporting(.expense, of: type),
+                                        value: todayReport.reporting(.expense, of: type),
                                         type: type,
-                                        fraction: ledger.todayReport.fraction(.expense, ofAccount: type))
+                                        fraction: todayReport.fraction(.expense, ofAccount: type))
                                 }
                             }
                         }
                     }
                     .tint(.secondary)
-                    .disabled(ledger.todayReport.payments.isEmpty)
+                    .disabled(todayReport.payments.isEmpty)
 
                     Button {
-                        coordinator.present(.report(ledger.todayReport))
+                        coordinator.present(.report(todayReport))
                     } label: {
                         Text("Отчет")
                     }
@@ -71,8 +75,8 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            PaymentsView(payments: ledger.todayReport.payments) { payment in
-                ledger.todayReport.payments.removeAll(where: { $0 == payment })
+            PaymentsView(payments: todayReport.payments) { payment in
+                todayReport.payments.removeAll(where: { $0 == payment })
             }
             .padding()
             .edgesIgnoringSafeArea([.all])
@@ -86,4 +90,26 @@ struct CashboxScreen: View {
     CashboxScreen()
         .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Calculations
+
+private extension CashboxScreen {
+    var todayReport: Report {
+        if let report = reports.first {
+            if Calendar.current.isDateInToday(report.date) {
+                return report
+            } else {
+                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+                modelContext.insert(newReport)
+
+                return newReport
+            }
+        } else {
+            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            modelContext.insert(firstReport)
+
+            return firstReport
+        }
+    }
 }
