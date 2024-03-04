@@ -23,7 +23,6 @@ struct BillScreen: View {
 
     @State private var bill: Bill
     @State private var addServices: Bool = false
-    @State private var includeBalance: Bool = false
     @State private var isCompleted = false
     @State private var searchText: String = ""
 
@@ -51,12 +50,11 @@ struct BillScreen: View {
                     Spacer()
 
                     if patient.balance != 0 {
-                        Toggle("Баланс: \(Int(patient.balance)) ₽", isOn: $includeBalance.animation(.linear(duration: 0.12)))
-                            .foregroundColor(patient.balance < 0 ? .red : .primary)
-                            .frame(width: 220)
+                        Text("Баланс: \(Int(patient.balance)) ₽")
+                            .foregroundStyle(patient.balance < 0 ? .red : .primary)
                     }
                 }
-                .padding(.horizontal)
+                .padding()
             }
 
             VStack(spacing: 0) {
@@ -125,7 +123,6 @@ struct BillScreen: View {
             PriceCalculationView(
                 appointment: appointment,
                 bill: $bill,
-                includeBalance: $includeBalance,
                 isCompleted: $isCompleted
             )
             .padding([.horizontal, .bottom])
@@ -159,12 +156,17 @@ struct BillScreen: View {
 
 private extension BillScreen {
     func loadBasicService() {
-        if bill.services.isEmpty, let doctor = appointment.schedule?.doctor, let doctorBasicService = doctor.basicService {
+        if bill.services.isEmpty,
+           let doctor = appointment.schedule?.doctor,
+           let doctorBasicService = doctor.basicService {
             let predicate = #Predicate<PricelistItem> { $0.id == doctorBasicService.id }
             let descriptor = FetchDescriptor<PricelistItem>(predicate: predicate)
+
             guard let pricelistItem = try? modelContext.fetch(descriptor).first else { return }
+
             let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
             bill.services.append(service)
+            appointment.patient?.updateBill(bill, for: appointment)
         }
     }
 }

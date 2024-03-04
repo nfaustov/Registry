@@ -21,7 +21,6 @@ struct DoctorPayoutView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
-    @State private var paymentBalance: Int = 0
 
     // MARK: -
 
@@ -93,7 +92,8 @@ struct DoctorPayoutView: View {
                             Spacer()
                             textField(type: paymentMethod.type)
                                 .onChange(of: paymentMethod.value) { _, newValue in
-                                    self.additionalPaymentMethod?.value = doctor.balance - newValue
+                                    self.additionalPaymentMethod?.value = 0
+                                    self.additionalPaymentMethod?.value = Double(paymentBalance) - newValue
                                 }
                         }
 
@@ -102,7 +102,8 @@ struct DoctorPayoutView: View {
                             Spacer()
                             textField(type: additionalPaymentMethod.type)
                                 .onChange(of: self.additionalPaymentMethod?.value ?? 0) { _, newValue in
-                                    paymentMethod.value = doctor.balance - newValue
+                                    paymentMethod.value = 0
+                                    paymentMethod.value = Double(paymentBalance) - newValue
                                 }
                         }
                     } else {
@@ -139,7 +140,8 @@ struct DoctorPayoutView: View {
                         case .card: additionalPaymentMethod = Payment.Method(.cash, value: 0)
                         default: ()
                         }
-                        paymentBalance = 0
+                        paymentMethod.value = 0
+                        paymentMethod.value = Double(paymentBalance)
                     }
                 }
                 .disabled(additionalPaymentMethod != nil)
@@ -148,10 +150,9 @@ struct DoctorPayoutView: View {
                     Section {
                         HStack {
                             TextField("Сумма выплаты", value: $paymentMethod.value, format: .number)
-                                .onChange(of: paymentMethod.value) {
-                                    paymentBalance = Int(doctor.balance - paymentMethod.value)
-                                }
+
                             Spacer()
+
                             Image(systemName: "pencil")
                                 .foregroundColor(.secondary)
                         }
@@ -225,6 +226,10 @@ private extension DoctorPayoutView {
         case .pieceRate(let rate): return rate
         default: return 0
         }
+    }
+
+    var paymentBalance: Int {
+        Int(doctor.balance - paymentMethod.value - (additionalPaymentMethod?.value ?? 0))
     }
 
     var todayReport: Report {

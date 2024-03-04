@@ -54,11 +54,10 @@ public final class Patient: Person {
     }
 
     public func updateBill(_ newBill: Bill, for appointment: PatientAppointment) {
-        guard var visit = visits.first(where: { $0.visitDate == appointment.scheduledTime }) else { return }
-        visit.bill = newBill
-    }
+        guard let visitIndex = visits.firstIndex(where: { $0.visitDate == appointment.scheduledTime }) else { return }
 
-    public func addToBalance(_ increment: Double) {
-        balance += increment
+        var visit = visits.remove(at: visitIndex)
+        visit.bill = newBill
+        visits.append(visit)
     }
 }

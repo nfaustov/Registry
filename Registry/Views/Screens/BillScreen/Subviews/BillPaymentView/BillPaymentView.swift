@@ -17,25 +17,30 @@ struct BillPaymentView: View {
     @Query(sort: \Report.date, order: .forward) private var reports: [Report]
 
     private let appointment: PatientAppointment
-    private let includedPatientBalance: Double
     private let bill: Bill
+    private let patient: Patient
     @Binding private var isPaid: Bool
 
     // MARK: - State
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
-    @State private var paymentBalance: Int = 0
     @State private var addToBalance: Bool = false
 
     // MARK: -
 
-    init(appointment: PatientAppointment, includedPatientBalance: Double, bill: Bill, isPaid: Binding<Bool>) {
+    init(appointment: PatientAppointment, isPaid: Binding<Bool>) {
         self.appointment = appointment
-        self.includedPatientBalance = includedPatientBalance
-        self.bill = bill
         _isPaid = isPaid
-        _paymentMethod = State(initialValue: Payment.Method(.cash, value: bill.totalPrice - includedPatientBalance))
+
+        guard let patient = appointment.patient,
+              let visit = patient.visits.first(where: { $0.visitDate == appointment.scheduledTime }),
+              let bill = visit.bill else { fatalError() }
+
+        self.patient = patient
+        self.bill = bill
+        let paymentAmount = bill.totalPrice - patient.balance
+        _paymentMethod = State(initialValue: Payment.Method(.cash, value: paymentAmount))
     }
 
     var body: some View {
@@ -48,7 +53,7 @@ struct BillPaymentView: View {
                 }
 
                 Section {
-                    Text("\(Int(bill.totalPrice - includedPatientBalance)) ₽")
+                    Text("\(Int(bill.totalPrice - patient.balance)) ₽")
                         .fontWeight(.medium)
                 } header: {
                     Text("К оплате")
@@ -61,7 +66,7 @@ struct BillPaymentView: View {
                             Spacer()
                             textField(type: paymentMethod.type)
                                 .onChange(of: paymentMethod.value) { _, newValue in
-                                    self.additionalPaymentMethod?.value = bill.totalPrice - newValue - includedPatientBalance
+                                    self.additionalPaymentMethod?.value = bill.totalPrice - patient.balance - newValue
                                 }
                         }
 
@@ -69,8 +74,8 @@ struct BillPaymentView: View {
                             Text(additionalPaymentMethod.type.rawValue)
                             Spacer()
                             textField(type: additionalPaymentMethod.type)
-                                .onChange(of: self.additionalPaymentMethod?.value ?? 0) { _, newValue in
-                                    paymentMethod.value = bill.totalPrice - newValue - includedPatientBalance
+                                .onChange(of: self.additionalPaymentMethod!.value) { _, newValue in
+                                    paymentMethod.value = bill.totalPrice - patient.balance - newValue
                                 }
                         }
                     } else {
@@ -89,7 +94,7 @@ struct BillPaymentView: View {
                             Button {
                                 withAnimation {
                                     self.additionalPaymentMethod = nil
-                                    paymentMethod.value = bill.totalPrice - includedPatientBalance
+                                    paymentMethod.value = bill.totalPrice - patient.balance
                                 }
                             } label: {
                                 Image(systemName: "arrow.uturn.left")
@@ -104,7 +109,7 @@ struct BillPaymentView: View {
                             Button(type.rawValue) {
                                 withAnimation {
                                     additionalPaymentMethod = Payment.Method(type, value: 0)
-                                    paymentBalance = 0
+                                    paymentMethod.value = bill.totalPrice - patient.balance
                                 }
                             }
                         }
@@ -116,10 +121,9 @@ struct BillPaymentView: View {
                     Section {
                         HStack {
                             TextField("Сумма оплаты", value: $paymentMethod.value, format: .number)
-                                .onChange(of: paymentMethod.value) {
-                                    paymentBalance = Int(paymentMethod.value - bill.totalPrice)
-                                }
+
                             Spacer()
+
                             Image(systemName: "pencil")
                                 .foregroundColor(.secondary)
                         }
@@ -131,11 +135,10 @@ struct BillPaymentView: View {
                                 if paymentBalance < 0 {
                                     Text("Долг \(-paymentBalance) ₽.")
                                         .foregroundColor(.red)
-                                    Text("Баланс пациента составит \(paymentBalance + Int(patient.balance)) ₽")
                                 } else {
                                     Text(addToBalance ?
-                                         "Баланс пациента увеличится на \(paymentBalance) ₽ и составит \(paymentBalance + Int(patient.balance)) ₽" :
-                                         "Сдача: \(paymentBalance) ₽"
+                                         "Баланс пациента составит \(paymentBalance) ₽." :
+                                         "Сдача: \(paymentBalance) ₽."
                                     )
 
                                     Spacer()
@@ -150,14 +153,13 @@ struct BillPaymentView: View {
                     }
                 }
             }
-            .sheetToolbar(title: "Оплата счёта", confirmationDisabled: paymentMethod.value == 0) {
+            .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 isPaid = true
-                patient.updateBill(bill, for: appointment)
 
-                let balance = Double(paymentBalance) - includedPatientBalance
-                completeAppointment(paymentBalance: balance)
+                patient.balance = Double(paymentBalance)
+                appointment.status = .completed
 
-                if (balance) < 0 || addToBalance {
+                if paymentBalance < 0 || addToBalance {
                     balancePayment()
                 }
 
@@ -171,8 +173,6 @@ struct BillPaymentView: View {
 #Preview {
     BillPaymentView(
         appointment: ExampleData.appointment,
-        includedPatientBalance: 0,
-        bill: Bill(services: []),
         isPaid: .constant(false)
     )
 }
@@ -187,7 +187,10 @@ private extension BillPaymentView {
                 .cornerRadius(8)
             TextField(
                 type.rawValue,
-                value: type == paymentMethod.type ? $paymentMethod.value : Binding(get: { additionalPaymentMethod!.value }, set: { additionalPaymentMethod?.value = $0 }) ,
+                value: type == paymentMethod.type ? $paymentMethod.value : Binding(
+                    get: { additionalPaymentMethod?.value ?? 0 },
+                    set: { additionalPaymentMethod?.value = $0 }
+                ),
                 format: .number
             )
             .padding(.horizontal)
@@ -199,9 +202,13 @@ private extension BillPaymentView {
 // MARK: - Calculations
 
 private extension BillPaymentView {
-    var patient: Patient {
-        guard let patient = appointment.patient else { fatalError() }
-        return patient
+    var undefinedPaymentValues: Bool {
+        guard let additionalPaymentMethod else { return paymentMethod.value == 0 }
+        return additionalPaymentMethod.value == 0 || paymentMethod.value == 0
+    }
+
+    var paymentBalance: Int {
+        Int(patient.balance + paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice)
     }
 
     var todayReport: Report {
@@ -250,16 +257,9 @@ private extension BillPaymentView {
         }
     }
 
-    func completeAppointment(paymentBalance: Double) {
-        if paymentBalance != 0 {
-            patient.balance += paymentBalance
-        }
-        appointment.status = .completed
-    }
-
     func balancePayment() {
         var balancePaymentMethod = paymentMethod
-        balancePaymentMethod.value = Double(paymentBalance) - includedPatientBalance
+        balancePaymentMethod.value = Double(paymentBalance)
         let balancePayment = Payment(
             purpose: balancePaymentMethod.value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod]

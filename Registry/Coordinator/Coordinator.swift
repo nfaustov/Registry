@@ -83,8 +83,8 @@ extension Coordinator {
             CreatePatientView()
         case .createPricelistItem:
             CreatePricelistItemView()
-        case .billPayment(let appointment, let includedBalance, let bill, let isPaid):
-            BillPaymentView(appointment: appointment, includedPatientBalance: includedBalance, bill: bill, isPaid: isPaid)
+        case .billPayment(let appointment, let isPaid):
+            BillPaymentView(appointment: appointment, isPaid: isPaid)
         }
     }
 }

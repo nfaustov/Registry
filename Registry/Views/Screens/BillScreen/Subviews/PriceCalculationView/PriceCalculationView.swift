@@ -14,7 +14,6 @@ struct PriceCalculationView: View {
 
     let appointment: PatientAppointment
     @Binding var bill: Bill
-    @Binding var includeBalance: Bool
     @Binding var isCompleted: Bool
 
     // MARK: - State
@@ -29,16 +28,16 @@ struct PriceCalculationView: View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text(bill.discount > 0 || includeBalance ? "Промежуточный итог:" : "Итог:")
+                    Text(bill.discount > 0 ? "Промежуточный итог:" : "Итог:")
                         .font(.headline)
                     Spacer()
                     Text("\(Int(bill.price)) ₽")
                         .font(.title3)
                 }
 
-                if includeBalance {
+                if patient.balance != 0 {
                     HStack {
-                        Text(patient.balance > 0 ? "С баланса:" : "На баланс:")
+                        Text(patient.balance > 0 ? "Долг:" : "На баланс:")
                             .font(.headline)
                         Spacer()
                         Text("\(-Int(patient.balance)) ₽")
@@ -58,17 +57,15 @@ struct PriceCalculationView: View {
 
                 HStack {
                     Button {
+                        patient.updateBill(bill, for: appointment)
                         coordinator.present(
                             .billPayment(
                                 appointment: appointment,
-                                includedPatientBalance: includeBalance ? patient.balance : 0,
-                                bill: bill,
                                 isPaid: $isCompleted
                             )
                         )
                     } label: {
-                        let balancePayment = includeBalance ? patient.balance : 0
-                        Text("₽ \(Int(bill.totalPrice - balancePayment))")
+                        Text("₽ \(Int(bill.totalPrice - patient.balance))")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 28)
@@ -120,7 +117,6 @@ struct PriceCalculationView: View {
     PriceCalculationView(
         appointment: ExampleData.appointment,
         bill: .constant(Bill(services: [])),
-        includeBalance: .constant(false),
         isCompleted: .constant(false)
     )
     .environmentObject(Coordinator())
