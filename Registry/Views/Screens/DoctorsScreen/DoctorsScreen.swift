@@ -11,9 +11,9 @@ import SwiftData
 struct DoctorsScreen: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
     @EnvironmentObject private var coordinator: Coordinator
+
+    @Query private var doctors: [Doctor]
 
     // MARK: - State
 
@@ -25,35 +25,34 @@ struct DoctorsScreen: View {
     var body: some View {
         ScrollView {
             ForEach(Department.allCases) { department in
-                if let specializationDoctors = try? modelContext.fetch(searchDescriptor(with: department)) {
-                    let doctorsCount = specializationDoctors.count
-                    let rows = doctorsCount % Constant.maxRowItems > 0 ? (doctorsCount / Constant.maxRowItems) + 1 : doctorsCount / Constant.maxRowItems
+                let specializationDoctors = searchDescriptor(with: department)
+                let doctorsCount = specializationDoctors.count
+                let rows = doctorsCount % Constant.maxRowItems > 0 ? (doctorsCount / Constant.maxRowItems) + 1 : doctorsCount / Constant.maxRowItems
 
-                    if !specializationDoctors.isEmpty {
-                        VStack(alignment: .leading) {
-                            Section {
-                                Grid {
-                                    ForEach(0..<rows, id: \.self) { row in
-                                        GridRow {
-                                            ForEach(specializationDoctors[rangeInRow(row, rowItems: doctorsCount)]) { doctor in
-                                                Button {
-                                                    coordinator.push(.doctorDetail(doctor))
-                                                } label: {
-                                                    DoctorView(doctor: doctor, presentation: .gridItem)
-                                                }
+                if !specializationDoctors.isEmpty {
+                    VStack(alignment: .leading) {
+                        Section {
+                            Grid {
+                                ForEach(0..<rows, id: \.self) { row in
+                                    GridRow {
+                                        ForEach(specializationDoctors[rangeInRow(row, rowItems: doctorsCount)]) { doctor in
+                                            Button {
+                                                coordinator.push(.doctorDetail(doctor))
+                                            } label: {
+                                                DoctorView(doctor: doctor, presentation: .gridItem)
                                             }
                                         }
                                     }
                                 }
-                                .padding(.horizontal)
-                            } header: {
-                                Text(department.specialization)
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                    .padding([.top, .leading], 32)
-                                Divider()
-                                    .padding(.horizontal, 32)
                             }
+                            .padding(.horizontal)
+                        } header: {
+                            Text(department.specialization)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding([.top, .leading], 32)
+                            Divider()
+                                .padding(.horizontal, 32)
                         }
                     }
                 }
@@ -77,18 +76,10 @@ struct DoctorsScreen: View {
 // MARK: - Calculations
 
 private extension DoctorsScreen {
-    func searchDescriptor(with department: Department) -> FetchDescriptor<Doctor> {
-        let doctorsPredicate = #Predicate<Doctor> { doctor in
-            doctor.department == department && (
-                searchText.isEmpty ? true :
-                doctor.secondName.localizedStandardContains(searchText) ||
-                doctor.firstName.localizedStandardContains(searchText) ||
-                doctor.patronymicName.localizedStandardContains(searchText)
-            )
+    func searchDescriptor(with department: Department) -> [Doctor] {
+        return doctors.filter { doctor in
+            doctor.department == department && (searchText.isEmpty ? true : doctor.fullName.localizedCaseInsensitiveContains(searchText))
         }
-        let descriptor = FetchDescriptor<Doctor>(predicate: doctorsPredicate)
-
-        return descriptor
     }
 
     func rangeInRow(_ row: Int, rowItems: Int) -> Range<Int> {
