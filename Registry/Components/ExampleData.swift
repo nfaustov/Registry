@@ -50,5 +50,5 @@ struct ExampleData {
     static let report = Report(date: .now, startingCash: 100, payments: [payment1, payment2, payment3])
 
     static let pricelistItem = PricelistItem(id: "А04.10.002", category: .ultrasound, title: "Эхокардиография (УЗИ сердца с допплерографией)", price: 1100)
-    static let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
+    static let service = RenderedService(pricelistItem: pricelistItem.short, performer: doctor.employee)
 }

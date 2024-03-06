@@ -229,7 +229,7 @@ private extension BillPaymentView {
         }
     }
 
-    func doctorSalary(bill: Bill, refund: Bool = false) {
+    func doctorSalary(bill: Bill) {
         for service in bill.services {
             if let performer = service.performer {
                 var salary = Double.zero
@@ -244,15 +244,15 @@ private extension BillPaymentView {
 
                 guard let doctor = doctors.first(where: { $0.id == performer.id }) else { return }
 
-                doctor.charge(as: \.performer, amount: refund ? -salary : salary)
+                doctor.charge(as: \.performer, amount: salary)
             }
 
             if let agent = service.agent {
-                let agentFee = service.pricelistItem.price  * 0.1
+                let agentFee = service.pricelistItem.price * 0.1
 
                 guard let doctor = doctors.first(where: { $0.id == agent.id }) else { return }
 
-                doctor.charge(as: \.agent, amount: refund ? -agentFee : agentFee)
+                doctor.charge(as: \.agent, amount: agentFee)
             }
         }
     }
@@ -278,7 +278,7 @@ private extension BillPaymentView {
 
         methods.append(paymentMethod)
 
-        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, bill: bill)
+        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill))
         todayReport.payments.append(payment)
     }
 }

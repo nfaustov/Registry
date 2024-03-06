@@ -37,7 +37,7 @@ struct AccountView: View {
             .padding(8)
             .frame(height: 60)
             .background(tint.opacity(0.4))
-            .background(Color("black"))
+            .background(Color("appBlack"))
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             VStack(alignment: .leading) {

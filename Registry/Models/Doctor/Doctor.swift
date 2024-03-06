@@ -78,7 +78,8 @@ public final class Doctor: Employee {
 
     public func renderedServices(from payments: [Payment], role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
         payments
-            .compactMap { $0.bill }
+            .compactMap { $0.subject }
+            .filter { !$0.isRefund }
             .flatMap { $0.services }
             .filter { $0[keyPath: role]?.id == id }
     }

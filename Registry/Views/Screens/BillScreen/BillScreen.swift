@@ -164,9 +164,9 @@ private extension BillScreen {
 
             guard let pricelistItem = try? modelContext.fetch(descriptor).first else { return }
 
-            let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
+            let service = RenderedService(pricelistItem: pricelistItem.short, performer: doctor.employee)
             bill.services.append(service)
-            appointment.patient?.updateBill(bill, for: appointment)
+            appointment.patient?.updatePaymentSubject(.bill(bill), for: appointment)
         }
     }
 }

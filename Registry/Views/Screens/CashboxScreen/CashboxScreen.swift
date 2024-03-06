@@ -15,7 +15,7 @@ struct CashboxScreen: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
+    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     // MARK: -
 

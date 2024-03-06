@@ -51,7 +51,7 @@ private extension VisitsDetailView {
 private extension VisitsDetailView {
     func visitView(_ visit: Visit) -> some View {
         VStack(alignment: .leading) {
-            if !visit.isRefund {
+            if visit.refund == nil {
                 HStack {
                     Text("Время записи:")
                     DateText(visit.visitDate, format: .time)
@@ -80,8 +80,8 @@ private extension VisitsDetailView {
                     }
 
                     Group {
-                        if visit.isRefund {
-                            Text("Возврат: \(Int(bill.totalPrice)) ₽")
+                        if let refund = visit.refund {
+                            Text("Возврат: \(Int(refund.price - refund.price * bill.discountRate)) ₽")
                                 .foregroundStyle(.red)
                         } else {
                             if bill.discount > 0 {
@@ -94,7 +94,7 @@ private extension VisitsDetailView {
                     .fontWeight(.medium)
                     .padding(.top, 8)
 
-                    if !visit.isRefund {
+                    if visit.refund == nil {
                         HStack {
                             let doctors = bill.services.compactMap { $0.performer }
 
@@ -119,7 +119,7 @@ private extension VisitsDetailView {
             }
 
             HStack {
-                Text(visit.isRefund ? "Дата возврата:" : "Дата регистрации:")
+                Text(visit.refund == nil ? "Дата регистрации:" : "Дата возврата:")
                 DateText(visit.registrationDate, format: .dateTime)
             }
             .font(.subheadline)

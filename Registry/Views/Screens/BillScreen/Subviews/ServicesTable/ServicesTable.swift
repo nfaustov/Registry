@@ -71,7 +71,7 @@ private extension ServicesTable {
         .dropDestination(for: PricelistItem.self) { droppedItems, location in
             for item in droppedItems {
                 let renderedService = RenderedService(
-                    pricelistItem: item,
+                    pricelistItem: item.short,
                     performer: doctor.employee
                 )
                 withAnimation {

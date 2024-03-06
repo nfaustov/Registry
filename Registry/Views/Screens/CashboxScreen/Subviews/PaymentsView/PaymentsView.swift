@@ -116,7 +116,7 @@ private extension PaymentsView {
     var filteredPayments: [Payment] {
         switch operationType {
         case .all: return payments
-        case .bills: return payments.filter { $0.bill != nil }
+        case .bills: return payments.filter { $0.subject != nil }
         case .spendings: return payments.filter { $0.totalAmount < 0 && $0.purpose != .collection }
         case .collections: return payments.filter { $0.purpose == .collection }
         }

@@ -51,4 +51,14 @@ public final class PricelistItem: Codable {
         try container.encode(price, forKey: .price)
         try container.encode(costPrice, forKey: .costPrice)
     }
+
+    public struct Short: Codable, Hashable, Identifiable {
+        public let id: String
+        public var title: String
+        public var price: Double
+    }
+
+    public var short: PricelistItem.Short {
+        Short(id: id, title: title, price: price)
+    }
 }

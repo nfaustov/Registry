@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 public final class Report {
-    @Attribute(.unique)
     public var id: UUID
     public var date: Date = Date.now
     public var startingCash: Double = Double.zero

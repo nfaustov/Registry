@@ -13,20 +13,20 @@ public struct Visit: Codable, Hashable, Identifiable {
     public let visitDate: Date
     public var cancellationDate: Date?
     public var bill: Bill?
-    public var isRefund: Bool
+    public var refund: Refund?
 
     public init(
         id: UUID = UUID(),
         visitDate: Date,
         cancellationDate: Date? = nil,
         bill: Bill? = nil,
-        isRefund: Bool = false
+        refund: Refund? = nil
     ) {
         self.id = id
         self.registrationDate = .now
         self.visitDate = visitDate
         self.cancellationDate = cancellationDate
         self.bill = bill
-        self.isRefund = isRefund
+        self.refund = refund
     }
 }

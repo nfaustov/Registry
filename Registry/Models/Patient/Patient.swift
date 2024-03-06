@@ -53,11 +53,16 @@ public final class Patient: Person {
         visit.bill = nil
     }
 
-    public func updateBill(_ newBill: Bill, for appointment: PatientAppointment) {
+    public func updatePaymentSubject(_ subject: Payment.Subject, for appointment: PatientAppointment) {
         guard let visitIndex = visits.firstIndex(where: { $0.visitDate == appointment.scheduledTime }) else { return }
 
         var visit = visits.remove(at: visitIndex)
-        visit.bill = newBill
+
+        switch subject {
+        case .bill(let bill): visit.bill = bill
+        case .refund(let refund): visit.refund = refund
+        }
+
         visits.append(visit)
     }
 }
