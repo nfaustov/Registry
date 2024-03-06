@@ -23,7 +23,7 @@
 		8B183BB12B8661E800FA1D46 /* Payment.Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BB02B8661E800FA1D46 /* Payment.Method.swift */; };
 		8B183BB42B866D0F00FA1D46 /* BillTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BB32B866D0F00FA1D46 /* BillTemplate.swift */; };
 		8B183BB62B867A3100FA1D46 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BB52B867A3100FA1D46 /* PaymentsView.swift */; };
-		8B285F412B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */; };
+		8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */; };
 		8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* DoctorImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
@@ -117,7 +117,7 @@
 		8B183BB02B8661E800FA1D46 /* Payment.Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.Method.swift; sourceTree = "<group>"; };
 		8B183BB32B866D0F00FA1D46 /* BillTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillTemplate.swift; sourceTree = "<group>"; };
 		8B183BB52B867A3100FA1D46 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
-		8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSCheckBoxToggleStyle.swift; sourceTree = "<group>"; };
+		8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusBoxToggleStyle.swift; sourceTree = "<group>"; };
 		8B285F432B4DC81800C29E20 /* DoctorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
@@ -324,12 +324,12 @@
 			path = BillTemplate;
 			sourceTree = "<group>";
 		};
-		8B285F3F2B4DB8A300C29E20 /* iOSCheckBoxToggleStyle */ = {
+		8B285F3F2B4DB8A300C29E20 /* MinusBoxToggleStyle */ = {
 			isa = PBXGroup;
 			children = (
-				8B285F402B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift */,
+				8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */,
 			);
-			path = iOSCheckBoxToggleStyle;
+			path = MinusBoxToggleStyle;
 			sourceTree = "<group>";
 		};
 		8B285F422B4DC80200C29E20 /* DoctorImageView */ = {
@@ -763,7 +763,7 @@
 		8BA53D952B494D43006BE983 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				8B285F3F2B4DB8A300C29E20 /* iOSCheckBoxToggleStyle */,
+				8B285F3F2B4DB8A300C29E20 /* MinusBoxToggleStyle */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -993,7 +993,7 @@
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
 				8BDCCFDB2B849F960086BF4D /* Patient.swift in Sources */,
-				8B285F412B4DB8D600C29E20 /* iOSCheckBoxToggleStyle.swift in Sources */,
+				8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */,
 				8B183BB12B8661E800FA1D46 /* Payment.Method.swift in Sources */,
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
 				8B9673A92B361F6700FD2E7C /* Screen.swift in Sources */,

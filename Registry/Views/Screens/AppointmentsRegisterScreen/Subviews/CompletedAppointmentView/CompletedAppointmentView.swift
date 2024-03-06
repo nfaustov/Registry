@@ -183,7 +183,7 @@ private extension CompletedAppointmentView {
                 }
             )
         )
-        .toggleStyle(iOSCheckBoxToggleStyle())
+        .toggleStyle(.minusBox)
     }
 }
 
