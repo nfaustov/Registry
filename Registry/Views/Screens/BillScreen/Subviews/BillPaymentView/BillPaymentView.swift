@@ -14,7 +14,7 @@ struct BillPaymentView: View {
     @Environment(\.modelContext) private var modelContext
 
     @Query private var doctors: [Doctor]
-    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
+    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     private let appointment: PatientAppointment
     private let bill: Bill

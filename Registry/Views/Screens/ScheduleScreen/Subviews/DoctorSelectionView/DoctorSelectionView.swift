@@ -14,30 +14,23 @@ struct DoctorSelectionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    @Query private var doctors: [Doctor]
-
     let date: Date
 
     // MARK: - State
 
     @State private var searchText: String = ""
-    @State private var createSchedule: Bool = false
+    @State private var selectedDoctor: Doctor?
 
     // MARK: -
 
     var body: some View {
         NavigationStack {
             if let searchedDoctors = try? modelContext.fetch(searchDescriptor) {
-                List(searchText.isEmpty ? doctors : searchedDoctors) { doctor in
+                List(searchedDoctors) { doctor in
                     Button {
-                        createSchedule = true
+                        selectedDoctor = doctor
                     } label: {
                         DoctorView(doctor: doctor, presentation: .listRow)
-                    }
-                    .sheet(isPresented: $createSchedule) {
-                        CreateDoctorScheduleView(doctor: doctor, date: date) {
-                            dismiss()
-                        }
                     }
                 }
                 .listStyle(.inset)
@@ -45,6 +38,11 @@ struct DoctorSelectionView: View {
                     text: $searchText,
                     placement: .navigationBarDrawer(displayMode: .always)
                 )
+                .sheet(item: $selectedDoctor) {
+                    CreateDoctorScheduleView(doctor: $0, date: date) {
+                        dismiss()
+                    }
+                }
                 .sheetToolbar(title: "Выберите специалиста")
             }
         }

@@ -13,7 +13,7 @@ struct DoctorPayoutView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @Query(sort: \Report.date, order: .forward) private var reports: [Report]
+    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     private let doctor: Doctor
 
