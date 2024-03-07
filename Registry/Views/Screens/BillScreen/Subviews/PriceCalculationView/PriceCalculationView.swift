@@ -37,10 +37,10 @@ struct PriceCalculationView: View {
 
                 if patient.balance != 0 {
                     HStack {
-                        Text(patient.balance > 0 ? "Долг:" : "На баланс:")
+                        Text(isCompleted ? "Баланс:" : patient.balance > 0 ? "С баланса:" : "Долг:")
                             .font(.headline)
                         Spacer()
-                        Text("\(-Int(patient.balance)) ₽")
+                        Text(isCompleted ? "\(Int(patient.balance)) ₽" : "\(-Int(patient.balance)) ₽")
                             .font(.title3)
                     }
                 }
@@ -65,7 +65,7 @@ struct PriceCalculationView: View {
                             )
                         )
                     } label: {
-                        Text("₽ \(Int(bill.totalPrice - patient.balance))")
+                        Text("₽ \(Int(isCompleted ? bill.totalPrice + patient.balance : bill.totalPrice - patient.balance))")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 28)

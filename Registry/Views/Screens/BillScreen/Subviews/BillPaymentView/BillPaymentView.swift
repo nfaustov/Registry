@@ -156,12 +156,12 @@ struct BillPaymentView: View {
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 isPaid = true
 
-                patient.balance = Double(paymentBalance)
-                appointment.status = .completed
-
-                if paymentBalance < 0 || addToBalance {
+                if paymentBalance < 0 || addToBalance || patient.balance != 0 {
                     balancePayment()
                 }
+
+                patient.balance = Double(paymentBalance)
+                appointment.status = .completed
 
                 payment()
                 doctorSalary(bill: bill)
@@ -259,7 +259,7 @@ private extension BillPaymentView {
 
     func balancePayment() {
         var balancePaymentMethod = paymentMethod
-        balancePaymentMethod.value = Double(paymentBalance)
+        balancePaymentMethod.value = Double(paymentBalance != 0 ? paymentBalance : Int(-patient.balance))
         let balancePayment = Payment(
             purpose: balancePaymentMethod.value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod]
