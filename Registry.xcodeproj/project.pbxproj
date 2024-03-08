@@ -57,7 +57,6 @@
 		8B8B188F2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B188E2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift */; };
 		8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B18912B88D8F0006ABD82 /* AppointmentView.swift */; };
 		8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B5692B8797C8004E0675 /* CashboxScreen.swift */; };
-		8B92B56C2B87A8A5004E0675 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56B2B87A8A5004E0675 /* AccountView.swift */; };
 		8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56D2B87AB1F004E0675 /* ReportView.swift */; };
 		8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56F2B87AC80004E0675 /* CreateSpendingView.swift */; };
 		8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673852B36187D00FD2E7C /* RegistryApp.swift */; };
@@ -150,7 +149,6 @@
 		8B8B188E2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorScheduleHeaderView.swift; sourceTree = "<group>"; };
 		8B8B18912B88D8F0006ABD82 /* AppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentView.swift; sourceTree = "<group>"; };
 		8B92B5692B8797C8004E0675 /* CashboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxScreen.swift; sourceTree = "<group>"; };
-		8B92B56B2B87A8A5004E0675 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		8B92B56D2B87AB1F004E0675 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		8B92B56F2B87AC80004E0675 /* CreateSpendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSpendingView.swift; sourceTree = "<group>"; };
 		8B9673822B36187D00FD2E7C /* Registry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Registry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,7 +285,6 @@
 			isa = PBXGroup;
 			children = (
 				8B183BA42B865F8800FA1D46 /* PaymentsView */,
-				8B92B56B2B87A8A5004E0675 /* AccountView.swift */,
 				8B92B56D2B87AB1F004E0675 /* ReportView.swift */,
 				8B92B56F2B87AC80004E0675 /* CreateSpendingView.swift */,
 			);
@@ -951,7 +948,6 @@
 				8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Bill.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
-				8B92B56C2B87A8A5004E0675 /* AccountView.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,

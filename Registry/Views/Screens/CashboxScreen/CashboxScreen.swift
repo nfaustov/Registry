@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct CashboxScreen: View {
     // MARK: - Dependencies
@@ -16,6 +17,8 @@ struct CashboxScreen: View {
     @EnvironmentObject private var coordinator: Coordinator
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
+
+    @State private var selectedReporting: Reporting = .income
 
     // MARK: -
 
@@ -35,32 +38,10 @@ struct CashboxScreen: View {
                             Text("Списание")
                         }
                     }
-                    
-                    Section {
-                        DisclosureGroup("Доходы") {
-                            ForEach(PaymentType.allCases, id: \.self) { type in
-                                if todayReport.reporting(.income, of: type) != 0 {
-                                    AccountView(
-                                        value: todayReport.reporting(.income, of: type),
-                                        type: type,
-                                        fraction: todayReport.fraction(.income, ofAccount: type)
-                                    )
-                                }
-                            }
-                        }
-                        DisclosureGroup("Расходы") {
-                            ForEach(PaymentType.allCases, id: \.self) { type in
-                                if todayReport.reporting(.expense, of: type) != 0 {
-                                    AccountView(
-                                        value: todayReport.reporting(.expense, of: type),
-                                        type: type,
-                                        fraction: todayReport.fraction(.expense, ofAccount: type))
-                                }
-                            }
-                        }
+
+                    if todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
+                        reportingSection()
                     }
-                    .tint(.secondary)
-                    .disabled(todayReport.payments.isEmpty)
 
                     Button {
                         coordinator.present(.report(todayReport))
@@ -69,7 +50,7 @@ struct CashboxScreen: View {
                     }
                     .tint(.primary)
                 }
-                .frame(width: 400)
+                .frame(width: 320)
             }
 
             Divider()
@@ -90,6 +71,45 @@ struct CashboxScreen: View {
     CashboxScreen()
         .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Subviews
+
+private extension CashboxScreen {
+    @ViewBuilder func reportingSection() -> some View {
+        Section {
+            VStack {
+                Picker("Тип операции", selection: $selectedReporting) {
+                    ForEach(Reporting.allCases) { reporting in
+                        if reporting != .profit {
+                            Text(reporting.rawValue)
+                        }
+                    }
+                }
+                .pickerStyle(.segmented)
+                .disabled(todayReport.reporting(.income) == 0 || todayReport.reporting(.expense) == 0)
+                .onAppear {
+                    if todayReport.reporting(.income) != 0 {
+                        selectedReporting = .income
+                    } else if todayReport.reporting(.expense) != 0 {
+                        selectedReporting = .expense
+                    }
+                }
+
+
+                Chart(PaymentType.allCases, id: \.rawValue) { type in
+                    SectorMark(
+                        angle: .value("Доходы", todayReport.reporting(selectedReporting, of: type)),
+                        innerRadius: .ratio(0.618),
+                        angularInset: 1.5
+                    )
+                    .cornerRadius(4)
+                    .foregroundStyle(by: .value("Тип оплаты", type.rawValue))
+                }
+                .frame(height: 240)
+            }
+        }
+    }
 }
 
 // MARK: - Calculations
