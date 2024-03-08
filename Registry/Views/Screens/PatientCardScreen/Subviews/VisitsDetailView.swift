@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Algorithms
 
 struct VisitsDetailView: View {
     // MARK: - Dependencies
@@ -41,7 +42,7 @@ struct VisitsDetailView: View {
 
 private extension VisitsDetailView {
     var uniqueDates: [Date] {
-        Array(Set(visits.map { $0.visitDate }))
+        Array(visits.map { $0.visitDate }.uniqued())
             .sorted(by: >)
     }
 }
@@ -97,13 +98,14 @@ private extension VisitsDetailView {
                     if visit.refund == nil {
                         HStack {
                             let doctors = bill.services.compactMap { $0.performer }
+                            let uniqueDoctors = Array(doctors.uniqued())
 
-                            if doctors.count > 0 {
-                                Text(doctors.count > 1 ? "Врачи:" : "Врач:")
+                            if uniqueDoctors.count > 0 {
+                                Text(uniqueDoctors.count > 1 ? "Врачи:" : "Врач:")
                                     .font(.headline)
                             }
 
-                            ForEach(doctors) { doctor in
+                            ForEach(uniqueDoctors) { doctor in
                                 Text(doctor.initials)
                                     .foregroundStyle(.white)
                                     .padding(8)

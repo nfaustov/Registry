@@ -29,17 +29,12 @@ struct DoctorScheduleHeaderView: View {
                     Text(doctor.fullName)
                         .font(.title3).bold()
                     Text(doctor.department.specialization)
+
                     Spacer()
+
                     Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
                         .padding(.vertical, 4)
                     Label(duration, systemImage: "timer")
-
-                    HStack {
-                        Label("\(doctorSchedule.scheduledPatients)", systemImage: "person.fill")
-                        Divider()
-                            .frame(height: 20)
-                        Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
-                    }
                 }
                 .font(.subheadline)
 
