@@ -20,7 +20,7 @@ struct AppointmentsRegisterScreen: View {
 
     var body: some View {
         HStack {
-            SchedulesListView(schedules: daySchedules, selectedSchedule: $scheduleController.selectedSchedule)
+            SchedulesListView(schedules: daySchedules)
                 .frame(width: 360)
 
             Divider()

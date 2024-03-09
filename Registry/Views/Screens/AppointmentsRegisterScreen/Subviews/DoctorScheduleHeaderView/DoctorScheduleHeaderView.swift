@@ -44,9 +44,7 @@ struct DoctorScheduleHeaderView: View {
                     if doctor.department != .procedure {
                         Section {
                             Button("Рассчитать врача") {
-                                if let doctor = doctorSchedule.doctor {
-                                    coordinator.present(.doctorPayout(for: doctor))
-                                }
+                                coordinator.present(.doctorPayout(for: doctor))
                             }
                             .disabled(!allAppointmentsCompleted || doctor.balance == 0)
 

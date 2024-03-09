@@ -23,49 +23,47 @@ struct ScheduleScreen: View {
             WeekdayPickerView(currentDate: $scheduleController.date)
                 .padding(.bottom)
 
-            if let daySchedules = try? modelContext.fetch(descriptor) {
-                if daySchedules.count == 0,
-                   scheduleController.date >= Calendar.current.startOfDay(for: .now) {
-                    emptyStateView
-                } else {
-                    VStack {
-                        HStack {
-                            DatePickerDateView(date: scheduleController.date)
+            if daySchedules.count == 0,
+               scheduleController.date >= Calendar.current.startOfDay(for: .now) {
+                emptyStateView
+            } else {
+                VStack {
+                    HStack {
+                        DatePickerDateView(date: scheduleController.date)
 
-                            Spacer()
+                        Spacer()
 
-                            Button {
-                                coordinator.present(.doctorSelection(date: scheduleController.date))
-                            } label: {
-                                Label("Добавить", systemImage: "plus.circle")
-                            }
-                            .disabled(scheduleController.date < Calendar.current.startOfDay(for: .now))
+                        Button {
+                            coordinator.present(.doctorSelection(date: scheduleController.date))
+                        } label: {
+                            Label("Добавить", systemImage: "plus.circle")
                         }
-                        .padding(.bottom)
-
-                        ScheduleChart(schedules: daySchedules, date: scheduleController.date)
-
-                        HStack {
-                            Spacer()
-
-                            Button {
-                                coordinator.push(.appointments)
-                            } label: {
-                                Label("Запись на прием", systemImage: "person.crop.rectangle.stack")
-                            }
-                            .padding(.top)
-                            .buttonStyle(.bordered)
-                            .disabled(daySchedules.isEmpty)
-                        }
+                        .disabled(scheduleController.date < Calendar.current.startOfDay(for: .now))
                     }
-                    .padding()
-                    .background(
-                        Color(.tertiarySystemBackground),
-                        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    )
-                    .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-                    .padding(.horizontal)
+                    .padding(.bottom)
+
+                    ScheduleChart(schedules: daySchedules, date: scheduleController.date)
+
+                    HStack {
+                        Spacer()
+
+                        Button {
+                            coordinator.push(.appointments)
+                        } label: {
+                            Label("Запись на прием", systemImage: "person.crop.rectangle.stack")
+                        }
+                        .padding(.top)
+                        .buttonStyle(.bordered)
+                        .disabled(daySchedules.isEmpty)
+                    }
                 }
+                .padding()
+                .background(
+                    Color(.tertiarySystemBackground),
+                    in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                )
+                .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+                .padding(.horizontal)
             }
         }
     }
@@ -102,14 +100,14 @@ private extension ScheduleScreen {
 // MARK: - Calculations
 
 private extension ScheduleScreen {
-    var descriptor: FetchDescriptor<DoctorSchedule> {
+    var daySchedules: [DoctorSchedule] {
         let startOfDay = Calendar.current.startOfDay(for: scheduleController.date)
         let endOfDay = Calendar.current.startOfDay(for: scheduleController.date.addingTimeInterval(86_400))
-        let schedulesPredicate = #Predicate<DoctorSchedule> { schedule in
-            schedule.starting > startOfDay && schedule.ending < endOfDay
-        }
-        let descriptor = FetchDescriptor(predicate: schedulesPredicate)
+        let schedulesPredicate = #Predicate<DoctorSchedule> { $0.starting > startOfDay && $0.ending < endOfDay }
+        let descriptor = FetchDescriptor(predicate: schedulesPredicate, sortBy: [SortDescriptor(\.starting, order: .forward)])
 
-        return descriptor
+        guard let schedules = try? modelContext.fetch(descriptor) else { return [] }
+
+        return schedules
     }
 }

@@ -59,7 +59,7 @@ public final class DoctorSchedule {
     }
 
     public var availableAppointments: Int {
-        patientAppointments.count - scheduledPatients
+        patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients
     }
 
     public var duration: TimeInterval {

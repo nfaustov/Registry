@@ -18,7 +18,7 @@ struct ScheduleChart: View {
 
     var body: some View {
         ScrollView(.vertical) {
-            Chart(schedules.sorted(by: { $0.starting < $1.starting })) { schedule in
+            Chart(schedules) { schedule in
                 if let doctor = schedule.doctor {
                     BarMark(
                         xStart: .value(

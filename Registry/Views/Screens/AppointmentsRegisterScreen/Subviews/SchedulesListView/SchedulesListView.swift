@@ -10,11 +10,9 @@ import SwiftUI
 struct SchedulesListView: View {
     // MARK: - Dependencies
 
+    @EnvironmentObject private var scheduleController: ScheduleController
+
     let schedules: [DoctorSchedule]
-
-    // MARK: - State
-
-    @Binding var selectedSchedule: DoctorSchedule?
 
     // MARK: -
 
@@ -53,15 +51,15 @@ struct SchedulesListView: View {
                             .stroke(gradient, lineWidth: 1)
                     )
                     .background(
-                        selectedSchedule?.id == schedule.id ? .blue.opacity(0.2) :
+                        scheduleController.selectedSchedule?.id == schedule.id ? .blue.opacity(0.2) :
                             Color(.tertiarySystemGroupedBackground)
                     )
                     .cornerRadius(16)
                     .padding(.horizontal)
                     .padding(.vertical, 8)
                     .onTapGesture {
-                        if selectedSchedule?.id != schedule.id {
-                            selectedSchedule = schedule
+                        if scheduleController.selectedSchedule?.id != schedule.id {
+                            scheduleController.selectedSchedule = schedule
                         }
                     }
                 }
@@ -72,7 +70,8 @@ struct SchedulesListView: View {
 }
 
 #Preview {
-    SchedulesListView(schedules: [ExampleData.doctorSchedule], selectedSchedule: .constant(nil))
+    SchedulesListView(schedules: [ExampleData.doctorSchedule])
+        .environmentObject(ScheduleController())
 }
 
 // MARK: - Calculations
