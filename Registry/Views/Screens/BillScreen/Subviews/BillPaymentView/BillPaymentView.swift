@@ -156,11 +156,14 @@ struct BillPaymentView: View {
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 isPaid = true
 
-                if paymentBalance < 0 || addToBalance || patient.balance != 0 {
-                    balancePayment()
+                if paymentBalance < 0 || addToBalance {
+                    balancePayment(value: Double(paymentBalance))
+                    patient.balance = Double(paymentBalance)
+                } else if patient.balance != 0 {
+                    balancePayment(value: -patient.balance)
+                    patient.balance = 0
                 }
 
-                patient.balance = Double(paymentBalance)
                 appointment.status = .completed
 
                 payment()
@@ -257,11 +260,11 @@ private extension BillPaymentView {
         }
     }
 
-    func balancePayment() {
+    func balancePayment(value: Double) {
         var balancePaymentMethod = paymentMethod
-        balancePaymentMethod.value = Double(paymentBalance != 0 ? paymentBalance : Int(-patient.balance))
+        balancePaymentMethod.value = value
         let balancePayment = Payment(
-            purpose: balancePaymentMethod.value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
+            purpose: value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod]
         )
         todayReport.payments.append(balancePayment)
