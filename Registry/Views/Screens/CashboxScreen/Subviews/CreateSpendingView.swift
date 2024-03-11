@@ -33,7 +33,7 @@ struct CreateSpendingView: View {
                         TextField("Описание", text: $paymentPurpose.descripiton)
                     }
                 } header: {
-                    Text("Назначение платежа")
+                    Text("Назначение")
                 }
 
                 Section {
