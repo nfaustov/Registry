@@ -26,7 +26,7 @@ struct DoctorPayoutView: View {
 
     init(doctor: Doctor) {
         self.doctor = doctor
-        _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance))
+        _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance < 0 ? 0 : doctor.balance))
     }
 
     var body: some View {
@@ -40,6 +40,7 @@ struct DoctorPayoutView: View {
                         Spacer()
                         Text("\(Int(doctor.balance)) ₽")
                             .font(.headline)
+                            .foregroundStyle(doctor.balance < 0 ? .red : .primary)
                     }
                 }
 
@@ -57,7 +58,7 @@ struct DoctorPayoutView: View {
                             }
                         } label: {
                             HStack {
-                                Text("Заработная плата")
+                                Text("Заработано сегодня")
                                 Spacer()
                                 Text("\(Int(salary)) ₽")
                                     .font(.headline)
@@ -69,12 +70,19 @@ struct DoctorPayoutView: View {
                 Section {
                     if doctor.agentFee > 0 {
                         DisclosureGroup {
-                            List(servicesByAgent) { service in
-                                HStack {
-                                    Text(service.pricelistItem.title)
-                                    Spacer()
-                                    Text("\(Int(service.pricelistItem.price * 0.1)) ₽")
-                                        .frame(width: 60)
+                            List(Array(servicesByAgent.keys), id: \.self) { date in
+                                VStack(alignment: .leading) {
+                                    DateText(date, format: .date)
+                                        .fontWeight(.medium)
+                                    ForEach(servicesByAgent[date] ?? []) { service in
+                                        Divider()
+                                        HStack {
+                                            Text(service.pricelistItem.title)
+                                            Spacer()
+                                            Text("\(Int(service.pricelistItem.price * 0.1)) ₽")
+                                                .frame(width: 60)
+                                        }
+                                    }
                                 }
                                 .font(.subheadline)
                             }
@@ -150,6 +158,11 @@ struct DoctorPayoutView: View {
                     Section {
                         HStack {
                             TextField("Сумма выплаты", value: $paymentMethod.value, format: .number)
+                                .onChange(of: paymentMethod.value) { _, newValue in
+                                    if newValue < 0 {
+                                        paymentMethod.value = -newValue
+                                    }
+                                }
 
                             Spacer()
 
@@ -201,7 +214,7 @@ private extension DoctorPayoutView {
 
     var agentFeeTitle: some View {
         HStack {
-            Text("Агентские")
+            Text("Агентские за этот месяц")
             Spacer()
             Text("\(Int(doctor.agentFee)) ₽")
                 .font(.headline)
@@ -250,23 +263,30 @@ private extension DoctorPayoutView {
         }
     }
 
-    var currentMonthReports: [Report] {
-        let components = Calendar.current.dateComponents([.year, .month], from: .now)
-        let date = Calendar.current.date(from: components)!
-        let today = Date.now
-
-        return reports.filter { $0.date > date && $0.date < today }
-    }
-
     var servicesByDoctor: [RenderedService] {
         doctor.renderedServices(from: todayReport.payments, role: \.performer)
     }
 
-    var servicesByAgent: [RenderedService] {
-        doctor.renderedServices(
-            from: currentMonthReports.flatMap { $0.payments },
-            role: \.agent
-        )
+    var servicesByAgent: [Date: [RenderedService]] {
+        let components = Calendar.current.dateComponents([.year, .month], from: .now)
+        let firstDayOfCurrentMonth = Calendar.current.date(from: components)!
+        let today = Date.now
+
+        let reports = reports
+            .filter { $0.date > firstDayOfCurrentMonth && $0.date < today }
+            .sorted(by: { $0.date < $1.date })
+
+        var dict = [Date: [RenderedService]]()
+
+        for report in reports {
+            let services = doctor.renderedServices(from: report.payments, role: \.agent)
+
+            if !services.isEmpty {
+                dict[report.date] = services
+            }
+        }
+
+        return dict
     }
 
     func doctorPayout() {
