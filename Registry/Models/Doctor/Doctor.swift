@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public final class Doctor: Employee {
+public final class Doctor: Employee, User {
     public let id: UUID = UUID()
     public var secondName: String = ""
     public var firstName: String = ""
@@ -27,6 +27,7 @@ public final class Doctor: Employee {
     public var createdAt: Date = Date.now
     @Attribute(.externalStorage)
     public var image: Data?
+    public var access: UserAccessLevel = UserAccessLevel.doctor
     
     public init(
         id: UUID = UUID(),
@@ -43,7 +44,8 @@ public final class Doctor: Employee {
         agentFee: Double = 0,
         balance: Double = 0,
         info: String = "",
-        image: Data? = nil
+        image: Data? = nil,
+        access: UserAccessLevel = .doctor
     ) {
         self.id = id
         self.secondName = secondName
@@ -61,6 +63,7 @@ public final class Doctor: Employee {
         self.info = info
         self.createdAt = .now
         self.image = image
+        self.access = access
     }
     
     public var employee: AnyEmployee {
