@@ -50,12 +50,12 @@ struct CreateBillTemplateView: View {
                 }
 
                 VStack {
-                    Text("Скидка: \(discount)%")
+                    Text("Скидка: \(Int(discount))%")
                     Slider(value: $discount, in: 0...50, step: 1)
                 }
             }
             .sheetToolbar(title: "Новый шаблон", confirmationDisabled: templateTitleText.isEmpty) {
-                let template = BillTemplate(title: templateTitleText, services: services)
+                let template = BillTemplate(title: templateTitleText, services: services, discount: discount)
                 modelContext.insert(template)
             }
         }

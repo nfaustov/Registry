@@ -33,16 +33,18 @@ struct CashboxScreen: View {
         HStack(alignment: .top, spacing: 0) {
             VStack {
                 Form {
-                    HStack {
-                        Text("\(Int(todayReport.cashBalance)) ₽")
-                            .fontWeight(.medium)
+                    Section {
+                        HStack {
+                            Text("\(Int(todayReport.cashBalance)) ₽")
+                                .fontWeight(.medium)
 
-                        Spacer()
+                            Spacer()
 
-                        Button {
-                            coordinator.present(.createSpending(in: todayReport))
-                        } label: {
-                            Text("Списание")
+                            Button {
+                                coordinator.present(.createSpending(in: todayReport))
+                            } label: {
+                                Text("Списание")
+                            }
                         }
                     }
 
