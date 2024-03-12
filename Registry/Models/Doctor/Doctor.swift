@@ -22,12 +22,14 @@ public final class Doctor: Employee, User {
     public var defaultCabinet: Int = 1
     public var salary: Salary = Salary.pieceRate(rate: 0.4)
     public var agentFee: Double = 0
+    public var agentFeePaymentDate: Date = Date.now
     public var balance: Double = 0
     public var info: String = ""
     public var createdAt: Date = Date.now
     @Attribute(.externalStorage)
     public var image: Data?
     public var access: UserAccessLevel = UserAccessLevel.doctor
+
     
     public init(
         id: UUID = UUID(),
@@ -42,6 +44,7 @@ public final class Doctor: Employee, User {
         defaultCabinet: Int,
         salary: Salary,
         agentFee: Double = 0,
+        agentFeePaymentDate: Date = .now,
         balance: Double = 0,
         info: String = "",
         image: Data? = nil,
@@ -59,6 +62,7 @@ public final class Doctor: Employee, User {
         self.defaultCabinet = defaultCabinet
         self.salary = salary
         self.agentFee = agentFee
+        self.agentFeePaymentDate = agentFeePaymentDate
         self.balance = balance
         self.info = info
         self.createdAt = .now
@@ -95,5 +99,11 @@ public final class Doctor: Employee, User {
             agentFee += amount
         default: ()
         }
+    }
+
+    public func agentFeePayment() {
+        balance += agentFee
+        agentFee = 0
+        agentFeePaymentDate = .now
     }
 }

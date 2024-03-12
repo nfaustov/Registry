@@ -87,6 +87,10 @@ struct DoctorPayoutView: View {
                                 .font(.subheadline)
                             }
                         } label: { agentFeeTitle }
+
+                        Button("Выплатить") {
+                            doctor.agentFeePayment()
+                        }
                     } else {
                         agentFeeTitle
                             .foregroundStyle(.secondary)
@@ -214,7 +218,7 @@ private extension DoctorPayoutView {
 
     var agentFeeTitle: some View {
         HStack {
-            Text("Агентские за этот месяц")
+            Text("Агентские")
             Spacer()
             Text("\(Int(doctor.agentFee)) ₽")
                 .font(.headline)
@@ -268,12 +272,8 @@ private extension DoctorPayoutView {
     }
 
     var servicesByAgent: [Date: [RenderedService]] {
-        let components = Calendar.current.dateComponents([.year, .month], from: .now)
-        let firstDayOfCurrentMonth = Calendar.current.date(from: components)!
-        let today = Date.now
-
         let reports = reports
-            .filter { $0.date > firstDayOfCurrentMonth && $0.date < today }
+            .filter { $0.date > doctor.agentFeePaymentDate && $0.date < .now }
             .sorted(by: { $0.date < $1.date })
 
         var dict = [Date: [RenderedService]]()
