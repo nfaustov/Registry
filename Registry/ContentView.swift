@@ -19,11 +19,12 @@ struct ContentView: View {
 
     @State private var rootScreen: Screen? = .schedule
     @State private var isLoggedIn: Bool = false
+    @State private var user: Doctor? = nil
 
     // MARK: -
 
     var body: some View {
-        if isLoggedIn {
+        if let user {
             NavigationSplitView {
                 List(Screen.allCases, selection: $rootScreen) { screen in
                     HStack {
@@ -50,6 +51,7 @@ struct ContentView: View {
                         .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
                         .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
                         .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
+                        .environmentObject(UserController(user: user))
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
@@ -60,7 +62,7 @@ struct ContentView: View {
     //            }
             }
         } else {
-            LoginScreen(isLoggedIn: $isLoggedIn)
+            LoginScreen(user: $user)
         }
     }
 }

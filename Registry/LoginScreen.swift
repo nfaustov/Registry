@@ -15,20 +15,20 @@ struct LoginScreen: View {
 
     @Query private var doctors: [Doctor]
 
-    @Binding var isLoggedIn: Bool
+    @Binding var user: Doctor?
 
     // MARK: - State
 
     @State private var phoneNumberText: String = ""
     @State private var codeText: String = ""
     @State private var errorMessage: String = ""
-    @State private var isValidPhoneNumber: Bool = false
+    @State private var userCandidate: Doctor? = nil
     @State private var code: String = " "
 
     var body: some View {
         VStack {
-            if isValidPhoneNumber {
-                codeView
+            if let userCandidate {
+                codeView(userCandidate: userCandidate)
             } else {
                 phoneNumberView
             }
@@ -37,7 +37,7 @@ struct LoginScreen: View {
 }
 
 #Preview {
-    LoginScreen(isLoggedIn: .constant(false))
+    LoginScreen(user: .constant(nil))
         .previewInterfaceOrientation(.landscapeRight)
 }
 
@@ -57,12 +57,13 @@ private extension LoginScreen {
 
             Button("Прислать пароль") {
                 if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
+                    userCandidate = doctor
                     Task {
                         code = "\(Int.random(in: 100000...999999))"
                         await messageController.send(.authorizationCode(code), to: doctor.phoneNumber)
                     }
                 } else if phoneNumberText == "+7 (920) 500-11-00" {
-                    isLoggedIn = true
+                    user = ExampleData.doctor
                 } else {
                     errorMessage = "Пользователь не найден"
                 }
@@ -84,7 +85,7 @@ private extension LoginScreen {
         .clipShape(.rect(cornerRadius: 16, style: .continuous))
     }
 
-    var codeView: some View {
+    func codeView(userCandidate: Doctor) -> some View {
         Form {
             Section {
                 TextField("", text: $codeText)
@@ -97,7 +98,7 @@ private extension LoginScreen {
 
             Button("Отправить") {
                 if code == codeText {
-                    isLoggedIn = true
+                    user = userCandidate
                 } else {
                     errorMessage = "Неверный пароль"
                 }
