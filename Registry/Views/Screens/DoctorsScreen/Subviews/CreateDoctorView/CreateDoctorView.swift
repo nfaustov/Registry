@@ -22,7 +22,7 @@ struct CreateDoctorView: View {
     @State private var secondNameText: String = ""
     @State private var firstNameText: String = ""
     @State private var patronymicNameText: String = ""
-    @State private var phoneNumberText: String = "+7 "
+    @State private var phoneNumberText: String = ""
     @State private var birthDate: Date = .now
     @State private var department: Department = .gynecology
     @State private var basicService: PricelistItem?

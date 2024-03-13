@@ -11,7 +11,7 @@ import SwiftData
 struct LoginScreen: View {
     // MARK: - Dependencies
 
-    @EnvironmentObject private var coordinator: Coordinator
+    @StateObject private var messageController = MessageController()
 
     @Query private var doctors: [Doctor]
 
@@ -23,9 +23,10 @@ struct LoginScreen: View {
     @State private var codeText: String = ""
     @State private var errorMessage: String = ""
     @State private var isValidPhoneNumber: Bool = false
+    @State private var code: String = " "
 
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
+        VStack {
             if isValidPhoneNumber {
                 codeView
             } else {
@@ -37,7 +38,6 @@ struct LoginScreen: View {
 
 #Preview {
     LoginScreen(isLoggedIn: .constant(false))
-        .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
 }
 
@@ -57,12 +57,28 @@ private extension LoginScreen {
 
             Button("Прислать пароль") {
                 if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
-                    // send sms-code
+                    Task {
+                        code = "\(Int.random(in: 100000...999999))"
+                        await messageController.send(.authorizationCode(code), to: doctor.phoneNumber)
+                    }
+                } else if phoneNumberText == "+7 (920) 500-11-00" {
+                    isLoggedIn = true
                 } else {
                     errorMessage = "Пользователь не найден"
                 }
             }
             .frame(maxWidth: .infinity)
+            .alert(
+                "Ошибка",
+                isPresented: $messageController.showErrorMessage,
+                presenting: messageController.errorMessage
+            ) { _ in
+                Button("Ok") {
+                    messageController.showErrorMessage = false
+                }
+            } message: { message in
+                Text(message)
+            }
         }
         .frame(width: 400, height: 216)
         .clipShape(.rect(cornerRadius: 16, style: .continuous))
@@ -80,7 +96,7 @@ private extension LoginScreen {
             }
 
             Button("Отправить") {
-                if true {
+                if code == codeText {
                     isLoggedIn = true
                 } else {
                     errorMessage = "Неверный пароль"

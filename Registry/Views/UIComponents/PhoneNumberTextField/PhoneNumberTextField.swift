@@ -30,6 +30,9 @@ struct PhoneNumberTextField: View {
                     return
                 }
             }
+            .onAppear {
+                text = "+7"
+            }
     }
 
     private func formatter(phoneNumber: String) -> String {

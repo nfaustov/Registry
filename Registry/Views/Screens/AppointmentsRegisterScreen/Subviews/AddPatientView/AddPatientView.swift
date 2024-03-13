@@ -21,7 +21,7 @@ struct AddPatientView: View {
     @State private var secondNameText = ""
     @State private var firstNameText = ""
     @State private var patronymicNameText = ""
-    @State private var phoneNumberText = "+7 "
+    @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
 
     // MARK: -
