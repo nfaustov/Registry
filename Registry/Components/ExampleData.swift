@@ -19,7 +19,8 @@ struct ExampleData {
         serviceDuration: 1800,
         defaultCabinet: 2,
         salary: .monthly(amount: 39000),
-        image: Data()
+        image: Data(),
+        access: .registrar
     )
 
     static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99")

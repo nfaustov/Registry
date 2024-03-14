@@ -6,13 +6,21 @@
 //
 
 import SwiftUI
+import Charts
+import SwiftData
 
 struct StatisticsScreen: View {
+    // MARK: -
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            CashboxReportingChart()
+        }
     }
 }
 
 #Preview {
     StatisticsScreen()
 }
+
+
