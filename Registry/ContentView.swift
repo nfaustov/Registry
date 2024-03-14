@@ -18,13 +18,13 @@ struct ContentView: View {
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
-    @State private var user: Doctor? = nil
+    @State private var user: User? = nil
 
     // MARK: -
 
     var body: some View {
         if let user {
-            if user.access == .registrar {
+            if user.accessLevel == .registrar {
                 NavigationSplitView {
                     List(Screen.registrarCases, selection: $rootScreen) { screen in
                         HStack {
@@ -61,7 +61,7 @@ struct ContentView: View {
         //                modelContext.insert(pricelistItem)
         //            }
                 }
-            } else if user.access == .boss {
+            } else if user.accessLevel == .boss {
                 NavigationStack(path: $coordinator.path) {
                     coordinator.setRootView(.statistics)
                         .navigationTitle(Screen.statistics.title)

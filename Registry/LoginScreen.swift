@@ -15,14 +15,14 @@ struct LoginScreen: View {
 
     @Query private var doctors: [Doctor]
 
-    @Binding var user: Doctor?
+    @Binding var user: User?
 
     // MARK: - State
 
     @State private var phoneNumberText: String = ""
     @State private var codeText: String = ""
     @State private var errorMessage: String = ""
-    @State private var userCandidate: Doctor? = nil
+    @State private var userCandidate: User? = nil
     @State private var code: String = " "
 
     var body: some View {
@@ -60,7 +60,11 @@ struct LoginScreen: View {
                                 await messageController.send(.authorizationCode(code), to: doctor.phoneNumber)
                             }
                         } else if phoneNumberText == "+7 (920) 500-11-00" {
-                            userCandidate = ExampleData.doctor
+                            if UIDevice.current.userInterfaceIdiom == .pad {
+                                userCandidate = ExampleData.doctor
+                            } else if UIDevice.current.userInterfaceIdiom == .phone {
+                                userCandidate = ExampleData.boss
+                            }
                         } else {
                             errorMessage = "Пользователь не найден"
                         }

@@ -49,6 +49,7 @@
 		8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7D5C7C2B592B3400E46AD8 /* Algorithms */; };
 		8B7EA85B2BA32E8B00DE722C /* StatisticsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA85A2BA32E8B00DE722C /* StatisticsScreen.swift */; };
 		8B7EA85E2BA335C400DE722C /* CashboxReportingChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */; };
+		8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA8602BA36F2E00DE722C /* SuperUser.swift */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
 		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
@@ -152,6 +153,7 @@
 		8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorFutureSchedulesView.swift; sourceTree = "<group>"; };
 		8B7EA85A2BA32E8B00DE722C /* StatisticsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsScreen.swift; sourceTree = "<group>"; };
 		8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxReportingChart.swift; sourceTree = "<group>"; };
+		8B7EA8602BA36F2E00DE722C /* SuperUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperUser.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
@@ -531,6 +533,15 @@
 			path = Charts;
 			sourceTree = "<group>";
 		};
+		8B7EA85F2BA36F0600DE722C /* User */ = {
+			isa = PBXGroup;
+			children = (
+				8B3742642BA068BA00ED8DB7 /* User.swift */,
+				8B7EA8602BA36F2E00DE722C /* SuperUser.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -695,8 +706,8 @@
 				8B8AE98A2B57FCAE001A9143 /* PricelistItem */,
 				8B183BB22B866CFE00FA1D46 /* BillTemplate */,
 				8B183BA72B86600A00FA1D46 /* Report */,
+				8B7EA85F2BA36F0600DE722C /* User */,
 				8B96739E2B361C0900FD2E7C /* Department.swift */,
-				8B3742642BA068BA00ED8DB7 /* User.swift */,
 				8B9673A02B361C2300FD2E7C /* Salary.swift */,
 				8B9673AE2B3623F200FD2E7C /* Person.swift */,
 				8BDCCFE92B84A6770086BF4D /* Employee.swift */,
@@ -1058,6 +1069,7 @@
 				8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */,
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
 				8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */,
+				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,
 				8B7EA85E2BA335C400DE722C /* CashboxReportingChart.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,

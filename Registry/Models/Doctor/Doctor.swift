@@ -28,7 +28,7 @@ public final class Doctor: Employee, User {
     public var createdAt: Date = Date.now
     @Attribute(.externalStorage)
     public var image: Data?
-    public var access: UserAccessLevel = UserAccessLevel.doctor
+    public var accessLevel: UserAccessLevel = UserAccessLevel.doctor
 
     
     public init(
@@ -48,7 +48,7 @@ public final class Doctor: Employee, User {
         balance: Double = 0,
         info: String = "",
         image: Data? = nil,
-        access: UserAccessLevel = .doctor
+        accessLevel: UserAccessLevel = .doctor
     ) {
         self.id = id
         self.secondName = secondName
@@ -67,7 +67,7 @@ public final class Doctor: Employee, User {
         self.info = info
         self.createdAt = .now
         self.image = image
-        self.access = access
+        self.accessLevel = accessLevel
     }
     
     public var employee: AnyEmployee {

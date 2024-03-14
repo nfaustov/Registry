@@ -8,6 +8,13 @@
 import Foundation
 
 struct ExampleData {
+    static var boss = SuperUser(
+        secondName: "Фаустов",
+        firstName: "Николай",
+        patronymicName: "Игоревич",
+        phoneNumber: "+7 (920) 500-11-00"
+    )
+
     static var doctor = Doctor(
         secondName: "Сегеда",
         firstName: "Светлана",
@@ -20,7 +27,7 @@ struct ExampleData {
         defaultCabinet: 2,
         salary: .monthly(amount: 39000),
         image: Data(),
-        access: .registrar
+        accessLevel: .registrar
     )
 
     static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99")

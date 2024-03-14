@@ -7,8 +7,8 @@
 
 import Foundation
 
-public protocol User {
-    var access: UserAccessLevel { get set }
+public protocol User: Person {
+    var accessLevel: UserAccessLevel { get set }
 }
 
 public enum UserAccessLevel: Int, Codable, Hashable, CaseIterable, Identifiable {

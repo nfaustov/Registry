@@ -8,9 +8,9 @@
 import Foundation
 
 final class UserController: ObservableObject {
-    @Published private(set) var user: Doctor
+    @Published private(set) var user: User
 
-    init(user: Doctor) {
+    init(user: User) {
         self.user = user
     }
 }
