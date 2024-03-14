@@ -17,7 +17,7 @@ public final class Doctor: Employee, User {
     public var phoneNumber: String = ""
     public var birthDate: Date = Date(timeIntervalSinceReferenceDate: 0)
     public var department: Department = Department.gynecology
-    public var basicService: PricelistItem?
+    public var basicService: PricelistItem.Short?
     public var serviceDuration: TimeInterval = 600
     public var defaultCabinet: Int = 1
     public var salary: Salary = Salary.pieceRate(rate: 0.4)
@@ -29,6 +29,7 @@ public final class Doctor: Employee, User {
     @Attribute(.externalStorage)
     public var image: Data?
     public var accessLevel: UserAccessLevel = UserAccessLevel.doctor
+    public var schedules: [DoctorSchedule]?
 
     
     public init(
@@ -39,7 +40,7 @@ public final class Doctor: Employee, User {
         phoneNumber: String,
         birthDate: Date,
         department: Department,
-        basicService: PricelistItem?,
+        basicService: PricelistItem.Short?,
         serviceDuration: TimeInterval,
         defaultCabinet: Int,
         salary: Salary,

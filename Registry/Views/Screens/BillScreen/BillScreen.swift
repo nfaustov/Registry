@@ -159,12 +159,7 @@ private extension BillScreen {
         if bill.services.isEmpty,
            let doctor = appointment.schedule?.doctor,
            let doctorBasicService = doctor.basicService {
-            let predicate = #Predicate<PricelistItem> { $0.id == doctorBasicService.id }
-            let descriptor = FetchDescriptor<PricelistItem>(predicate: predicate)
-
-            guard let pricelistItem = try? modelContext.fetch(descriptor).first else { return }
-
-            let service = RenderedService(pricelistItem: pricelistItem.short, performer: doctor.employee)
+            let service = RenderedService(pricelistItem: doctorBasicService, performer: doctor.employee)
             bill.services.append(service)
             appointment.patient?.updatePaymentSubject(.bill(bill), for: appointment)
         }

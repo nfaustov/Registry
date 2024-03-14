@@ -22,7 +22,7 @@ struct ExampleData {
         phoneNumber: "+7 (999) 999-99-99",
         birthDate: Date(),
         department: .gynecology,
-        basicService: pricelistItem,
+        basicService: pricelistItem.short,
         serviceDuration: 1800,
         defaultCabinet: 2,
         salary: .monthly(amount: 39000),

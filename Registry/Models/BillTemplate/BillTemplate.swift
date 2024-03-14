@@ -11,7 +11,6 @@ import SwiftData
 @Model
 public final class BillTemplate {
     public var id: UUID = UUID()
-    @Attribute(.unique)
     public var title: String = ""
     public var services: [RenderedService] = []
     public var discount: Double = Double.zero

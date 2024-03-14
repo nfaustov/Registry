@@ -56,10 +56,10 @@ struct ContentView: View {
                 }
                 .navigationSplitViewStyle(.prominentDetail)
                 .onAppear {
-        //            let pricelistItems: [PricelistItem] = load("priceList.json")
-        //            for pricelistItem in pricelistItems {
-        //                modelContext.insert(pricelistItem)
-        //            }
+//                    let pricelistItems: [PricelistItem] = load("priceList.json")
+//                    for pricelistItem in pricelistItems {
+//                        modelContext.insert(pricelistItem)
+//                    }
                 }
             } else if user.accessLevel == .boss {
                 NavigationStack(path: $coordinator.path) {

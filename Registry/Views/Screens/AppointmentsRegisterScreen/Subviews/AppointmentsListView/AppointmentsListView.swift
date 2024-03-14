@@ -44,20 +44,20 @@ struct AppointmentsListView: View {
 
 private extension AppointmentsListView {
     var scheduleAppointments: [PatientAppointment] {
-        schedule.patientAppointments
+        schedule.patientAppointments?
             .filter { $0.status != .cancelled }
-            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime }) ?? []
     }
 
     var cancelledAppointments: [PatientAppointment] {
-        schedule.patientAppointments
+        schedule.patientAppointments?
             .filter { $0.status == .cancelled }
-            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime }) ?? []
     }
 
     var isAvailableToExtendStarting: Bool {
         schedule.starting.addingTimeInterval(-(schedule.doctor?.serviceDuration ?? 0)) >=
-        WorkingHours(for: schedule.starting).start && schedule.patientAppointments.count > 1
+        WorkingHours(for: schedule.starting).start && (schedule.patientAppointments?.count ?? 0) > 1
     }
 
     var isAvailableToExtendEnding: Bool {
@@ -123,7 +123,7 @@ private extension AppointmentsListView {
                 duration: schedule.doctor?.serviceDuration ?? 0,
                 patient: nil
             )
-            schedule.patientAppointments.append(appointment)
+            schedule.patientAppointments?.append(appointment)
 
             switch edge {
             case .starting:
@@ -143,12 +143,12 @@ private extension AppointmentsListView {
             switch edge {
             case .starting:
                 if let appointment = scheduleAppointments.first {
-                    schedule.patientAppointments.removeAll(where: { $0 == appointment })
+                    schedule.patientAppointments?.removeAll(where: { $0 == appointment })
                     schedule.starting.addTimeInterval(appointment.duration)
                 }
             case .ending:
                 if let appointment = scheduleAppointments.last {
-                    schedule.patientAppointments.removeAll(where: { $0 == appointment })
+                    schedule.patientAppointments?.removeAll(where: { $0 == appointment })
                     schedule.ending.addTimeInterval(-appointment.duration)
                 }
             }

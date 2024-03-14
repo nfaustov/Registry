@@ -14,7 +14,7 @@ struct RegistryApp: App {
     @StateObject private var scheduleController = ScheduleController()
 
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([DoctorSchedule.self, Report.self, BillTemplate.self])
+        let schema = Schema([DoctorSchedule.self, Report.self, BillTemplate.self, PricelistItem.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {

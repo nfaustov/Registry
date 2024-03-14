@@ -21,6 +21,7 @@ public final class Patient: Person {
     public var treatmentPlan: TreatmentPlan?
     public var createdAt: Date = Date.now
     public var visits: [Visit] = []
+    public var appointments: [PatientAppointment]?
 
     public init(
         id: UUID = UUID(),

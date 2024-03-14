@@ -11,12 +11,13 @@ import SwiftData
 @Model
 public final class DoctorSchedule {
     public var id: UUID = UUID()
+    @Relationship(inverse: \Doctor.schedules)
     public var doctor: Doctor?
     public var cabinet: Int = 1
     public var starting: Date = Date.now
     public var ending: Date = Date.now.addingTimeInterval(1800)
-    @Relationship(deleteRule: .cascade)
-    public var patientAppointments: [PatientAppointment] = []
+    @Relationship(deleteRule: .cascade, inverse: \PatientAppointment.schedule)
+    public var patientAppointments: [PatientAppointment]?
 
     public init(
         id: UUID = UUID(),
@@ -52,14 +53,17 @@ public final class DoctorSchedule {
     }
 
     public var scheduledPatients: Int {
-        patientAppointments
+        guard let patientAppointments else { return 0 }
+
+        return patientAppointments
             .filter { $0.status != .cancelled }
             .compactMap { $0.patient }
             .count
     }
 
     public var availableAppointments: Int {
-        patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients
+        guard let patientAppointments else { return 0 }
+        return patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients
     }
 
     public var duration: TimeInterval {
@@ -69,7 +73,7 @@ public final class DoctorSchedule {
     /// Calculate available duration for patient's appointment.
     /// - Parameter appointment: Appointment for calculation.
     public func maxServiceDuration(for appointment: PatientAppointment) -> TimeInterval {
-        if let nextReservedAppointment = patientAppointments
+        if let nextReservedAppointment = patientAppointments?
             .filter({ $0.scheduledTime > appointment.scheduledTime })
             .first(where: { $0.patient != nil }) {
             return nextReservedAppointment.scheduledTime.timeIntervalSince(appointment.scheduledTime)
@@ -92,7 +96,7 @@ public final class DoctorSchedule {
                 duration: appointment.duration,
                 patient: nil
             )
-            patientAppointments.append(newAppointment)
+            patientAppointments?.append(newAppointment)
         }
     }
 }
@@ -108,7 +112,7 @@ private extension DoctorSchedule {
                 scheduledTime: appointmentTime,
                 duration: doctor?.serviceDuration ?? 0,
                 patient: nil)
-            patientAppointments.append(appointment)
+            patientAppointments?.append(appointment)
             appointmentTime.addTimeInterval(doctor?.serviceDuration ?? 0)
         } while appointmentTime < interval.end
     }

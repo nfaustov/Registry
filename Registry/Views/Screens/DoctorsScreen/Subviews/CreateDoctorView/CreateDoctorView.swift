@@ -178,7 +178,7 @@ struct CreateDoctorView: View {
                     phoneNumber: phoneNumberText,
                     birthDate: birthDate,
                     department: department,
-                    basicService: basicService,
+                    basicService: basicService?.short,
                     serviceDuration: serviceDuration,
                     defaultCabinet: defaultCabinet,
                     salary: salary,

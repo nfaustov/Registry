@@ -57,7 +57,7 @@ struct DoctorScheduleHeaderView: View {
                     Button("Удалить расписание", role: .destructive) {
                         deleteSchedule()
                     }
-                    .disabled(hasScheduledPatients)
+                    .disabled(doctorSchedule.scheduledPatients > 0)
                 } label: {
                     Image(systemName: "ellipsis.circle")
                         .resizable()
@@ -78,16 +78,9 @@ struct DoctorScheduleHeaderView: View {
 
 private extension DoctorScheduleHeaderView {
     var allAppointmentsCompleted: Bool {
-        doctorSchedule.scheduledPatients == doctorSchedule.patientAppointments
+        doctorSchedule.scheduledPatients == doctorSchedule.patientAppointments?
             .filter { $0.status == .completed }
             .count
-    }
-
-    var hasScheduledPatients: Bool {
-        !doctorSchedule.patientAppointments
-            .filter { $0.status != .cancelled }
-            .compactMap { $0.patient }
-            .isEmpty
     }
 
     var duration: String {
