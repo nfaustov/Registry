@@ -14,10 +14,7 @@ enum Screen: CaseIterable, Hashable, Identifiable {
     case specialists
     case patients
     case medicalServices
-
-    var id: Self {
-        self
-    }
+    case statistics
 
     var title: String {
         switch self {
@@ -31,6 +28,8 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return "Пациенты"
         case .medicalServices:
             return "Услуги"
+        case .statistics:
+            return "Статистика"
         }
     }
 
@@ -46,6 +45,8 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return "person.crop.square.filled.and.at.rectangle"
         case .medicalServices:
             return "list.bullet.clipboard"
+        case .statistics:
+            return "chart.line.uptrend.xyaxis"
         }
     }
 
@@ -61,6 +62,20 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return .indigo
         case .medicalServices:
             return .teal
+        case .statistics:
+            return .pink
         }
+    }
+
+    var id: Self {
+        self
+    }
+
+    static var registrarCases: [Screen] {
+        [.schedule, .cashbox, .specialists, .patients, .medicalServices]
+    }
+
+    static var bossCases: [Screen] {
+        [.statistics]
     }
 }
