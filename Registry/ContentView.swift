@@ -18,7 +18,6 @@ struct ContentView: View {
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
-    @State private var isLoggedIn: Bool = false
     @State private var user: Doctor? = nil
 
     // MARK: -
