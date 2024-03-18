@@ -30,12 +30,8 @@ struct CreateDoctorView: View {
     @State private var defaultCabinet: Int = 1
     @State private var infoText: String = ""
     @State private var salary: Salary = .pieceRate()
-    @State private var perVisitAmount: Int = 0 {
-        didSet { salary = .perService(amount: perVisitAmount)}
-    }
-    @State private var salaryRate: Double = 0.4 {
-        didSet { salary = .pieceRate(rate: salaryRate) }
-    }
+    @State private var perVisitAmount: Int = 0
+    @State private var salaryRate: Double = 0.4
 
     // MARK: -
 
@@ -138,9 +134,15 @@ struct CreateDoctorView: View {
                             in: 0.2...0.6,
                             step: 0.1
                         )
+                        .onChange(of: salaryRate) { _, newValue in
+                            salary = .pieceRate(rate: newValue)
+                        }
                     }
                     if salary.title == Salary.perService().title {
                         TextField("Оплата", value: $perVisitAmount, format: .number)
+                            .onChange(of: perVisitAmount) { _, newValue in
+                                salary = .perService(amount: newValue)
+                            }
                     }
                 } header: {
                     Text("Заработная плата")
