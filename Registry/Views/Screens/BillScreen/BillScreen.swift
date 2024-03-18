@@ -127,6 +127,9 @@ struct BillScreen: View {
             )
             .padding([.horizontal, .bottom])
             .frame(height: 132)
+            .onChange(of: isCompleted) {
+                addServices = false
+            }
         }
         .navigationTitle("Счет")
         .navigationBarTitleDisplayMode(.inline)

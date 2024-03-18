@@ -18,6 +18,7 @@ struct StatisticsScreen: View {
             PatientsStatistics()
         }
         .listRowSpacing(8)
+        .scrollBounceBehavior(.basedOnSize)
     }
 }
 

@@ -27,8 +27,16 @@ struct CashboxReportingChart: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Касса")
-                .font(.title)
+            HStack {
+                Text("Касса")
+                    .font(.title)
+
+                Spacer()
+
+                Text("\(Int(todayReport?.cashBalance ?? 0)) ₽")
+                    .font(.title)
+            }
+
 
             if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
                 Picker("Тип операции", selection: $selectedReporting) {
