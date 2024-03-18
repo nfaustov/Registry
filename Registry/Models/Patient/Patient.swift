@@ -48,9 +48,9 @@ public final class Patient: Person {
         self.visits = visits
     }
 
-    public var isNewPatient: Bool {
+    public func isNewPatient(for period: StatisticsPeriod) -> Bool {
         visits
-            .filter { $0.visitDate < .now }
+            .filter { $0.visitDate < period.start }
             .isEmpty
     }
 

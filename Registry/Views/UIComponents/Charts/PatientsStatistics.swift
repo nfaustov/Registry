@@ -44,7 +44,7 @@ struct PatientsStatistics: View {
                     Text("\(scheduledPatients.count)")
                         .font(.largeTitle)
                     Spacer()
-                    Text("Новых \(newPatients.count)")
+                    Text("Новые \(newPatients.count)")
                         .foregroundStyle(.secondary)
                 }
 
@@ -77,39 +77,25 @@ struct PatientsStatistics: View {
 
 private extension PatientsStatistics {
     var scheduledPatients: [Patient] {
-        schedules.flatMap { $0.scheduledPatients }
+        Array(
+            schedules
+                .flatMap { $0.scheduledPatients }
+                .uniqued()
+        )
     }
 
     var newPatients: [Patient] {
-        scheduledPatients.filter { $0.isNewPatient }
+        scheduledPatients.filter { $0.isNewPatient(for: selectedPeriod) }
     }
 
     var schedules: [DoctorSchedule] {
-        var start = Date()
-        let end = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
-
-        switch selectedPeriod {
-        case .day:
-            let dateComponents = Calendar.current.dateComponents([.year, .month], from: .now)
-            start = Calendar.current.date(from: dateComponents)!
-        case .month:
-            start = Calendar.current.startOfDay(for: .now)
-        }
-
+        let start = selectedPeriod.start
+        let end = selectedPeriod.end
         let schedulesPredicate = #Predicate<DoctorSchedule> { $0.starting > start && $0.ending < end }
         let descriptor = FetchDescriptor(predicate: schedulesPredicate)
 
         guard let schedules = try? modelContext.fetch(descriptor) else { return [] }
 
         return schedules
-    }
-}
-
-enum StatisticsPeriod: String, CaseIterable, Identifiable {
-    case day = "День"
-    case month = "Месяц"
-
-    var id: Self {
-        self
     }
 }
