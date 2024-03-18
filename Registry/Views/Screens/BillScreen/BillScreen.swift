@@ -135,6 +135,11 @@ struct BillScreen: View {
                 SearchBar(text: $searchText)
                 PricelistView(filterText: searchText, size: .compact, selectedPricelistItem: .constant(nil))
                     .listStyle(.plain)
+                    .overlay {
+                        if searchText.isEmpty {
+                            ContentUnavailableView("Услуги не найдены", systemImage: "magnifyingglass", description: Text("Введите название или код услуги"))
+                        }
+                    }
             }
         }
         .onAppear {
