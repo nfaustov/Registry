@@ -22,9 +22,27 @@ struct MedicalServicesScreen: View {
     var body: some View {
         PricelistView(filterText: searchText, selectedPricelistItem: $selectedPricelistItem)
             .searchable(text: $searchText)
+            .overlay {
+                if searchText.isEmpty {
+                    ContentUnavailableView("Услуги не найдены", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
+                }
+            }
             .catalogToolbar { coordinator.present(.createPricelistItem) }
             .sheet(item: $selectedPricelistItem) { item in
-                Text(item.title)
+                NavigationStack {
+                    Form {
+                        Text(item.title)
+                        LabeledContent("Цена", value: "\(Int(item.price)) ₽")
+                        if item.costPrice > 0 {
+                            LabeledContent("Себестоимость", value: "\(Int(item.costPrice)) ₽")
+                        }
+
+                        Section {
+                            archivingToggle(item: item)
+                        }
+                    }
+                    .sheetToolbar(title: "Услуга")
+                }
             }
     }
 }
@@ -36,4 +54,17 @@ struct MedicalServicesScreen: View {
             .navigationTitle("Услуги")
     }
     .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Subviews
+
+private extension MedicalServicesScreen {
+    func archivingToggle(item: PricelistItem) -> some View {
+        Toggle(isOn: Binding(get: { !item.archived }, set: { value in item.archived = !value })) {
+            Label(
+                item.archived ? "Снято с продажи" : "В продаже",
+                systemImage: item.archived ? "pause.rectangle" : "checkmark.rectangle"
+            )
+        }
+    }
 }

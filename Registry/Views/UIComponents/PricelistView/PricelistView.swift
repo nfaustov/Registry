@@ -15,8 +15,8 @@ struct PricelistView: View {
 
     @Query private var pricelistItems: [PricelistItem]
 
-    var filterText: String
-    var size: Size = .regular
+    private let filterText: String
+    private let size: Size
 
     @Binding var selectedPricelistItem: PricelistItem?
 
@@ -29,9 +29,9 @@ struct PricelistView: View {
         _pricelistItems = Query(
             filter: #Predicate {
                 if filterText.isEmpty {
-                    return true
+                    return false
                 } else {
-                    return $0.title.localizedStandardContains(filterText) || $0.id.localizedStandardContains(filterText)
+                    return !$0.archived && ($0.title.localizedStandardContains(filterText) || $0.id.localizedStandardContains(filterText))
                 }
             }
         )
@@ -89,10 +89,11 @@ struct PricelistView: View {
 private extension PricelistView {
     private var categories: [Department] {
         if filterText.isEmpty {
-            return Department.allCases
+            return []
         } else {
             return Array(
                 pricelistItems
+                    .filter { !$0.archived }
                     .map { $0.category }
                     .uniqued()
             )
