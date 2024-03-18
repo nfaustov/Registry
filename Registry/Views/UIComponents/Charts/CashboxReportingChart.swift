@@ -26,8 +26,11 @@ struct CashboxReportingChart: View {
     // MARK: -
 
     var body: some View {
-        if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
-            VStack {
+        VStack(alignment: .leading) {
+            Text("Касса")
+                .font(.title)
+
+            if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in
                         if reporting != .profit {
@@ -86,13 +89,13 @@ struct CashboxReportingChart: View {
                         }
                     }
                 }
+            } else {
+                ContentUnavailableView(
+                    "Нет данных",
+                    systemImage: "chart.pie",
+                    description: Text("За выбранный период не совершено ни одного платежа")
+                )
             }
-        } else {
-            ContentUnavailableView(
-                "Нет данных",
-                systemImage: "chart.pie",
-                description: Text("За выбранный период не совершено ни одного платежа")
-            )
         }
     }
 }

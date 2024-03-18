@@ -30,6 +30,7 @@
 		8B29E04C2B6A43360003A647 /* priceList.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B29E04B2B6A43360003A647 /* priceList.json */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B4C22BB2B98E7EC00328BCD /* Payment.Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */; };
+		8B5B49C32BA4C60B006867EF /* PatientsStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
 		8B6BAA042B8DD28F000FF417 /* ServiceMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA032B8DD28F000FF417 /* ServiceMenuView.swift */; };
@@ -135,6 +136,7 @@
 		8B29E04B2B6A43360003A647 /* priceList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = priceList.json; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.Subject.swift; sourceTree = "<group>"; };
+		8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsStatistics.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
 		8B6BAA032B8DD28F000FF417 /* ServiceMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceMenuView.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */,
+				8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -1038,6 +1041,7 @@
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
+				8B5B49C32BA4C60B006867EF /* PatientsStatistics.swift in Sources */,
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */,
 				8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */,

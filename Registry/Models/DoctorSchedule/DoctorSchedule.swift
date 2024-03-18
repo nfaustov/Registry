@@ -52,18 +52,25 @@ public final class DoctorSchedule {
         }
     }
 
-    public var scheduledPatients: Int {
-        guard let patientAppointments else { return 0 }
+    public var scheduledPatients: [Patient] {
+        guard let patientAppointments else { return [] }
 
         return patientAppointments
             .filter { $0.status != .cancelled }
             .compactMap { $0.patient }
-            .count
+    }
+
+    public var cancelledPatients: [Patient] {
+        guard let patientAppointments else { return [] }
+
+        return patientAppointments
+            .filter { $0.status == .cancelled }
+            .compactMap { $0.patient }
     }
 
     public var availableAppointments: Int {
         guard let patientAppointments else { return 0 }
-        return patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients
+        return patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients.count
     }
 
     public var duration: TimeInterval {

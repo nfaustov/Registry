@@ -48,6 +48,12 @@ public final class Patient: Person {
         self.visits = visits
     }
 
+    public var isNewPatient: Bool {
+        visits
+            .filter { $0.visitDate < .now }
+            .isEmpty
+    }
+
     public func cancelVisit(for date: Date) {
         guard var visit = visits.first(where: { $0.visitDate == date }) else { return }
         visit.cancellationDate = .now

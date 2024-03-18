@@ -67,6 +67,7 @@ struct ContentView: View {
                         .navigationTitle(Screen.statistics.title)
                         .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
                         .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
+                        .preferredColorScheme(.dark)
                 }
             }
         } else {

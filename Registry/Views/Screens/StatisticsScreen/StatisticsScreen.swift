@@ -15,12 +15,13 @@ struct StatisticsScreen: View {
     var body: some View {
         List {
             CashboxReportingChart()
+            PatientsStatistics()
         }
+        .listRowSpacing(8)
     }
 }
 
 #Preview {
     StatisticsScreen()
+        .preferredColorScheme(.dark)
 }
-
-

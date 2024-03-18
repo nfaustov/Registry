@@ -35,7 +35,7 @@ struct SchedulesListView: View {
                             .foregroundColor(.secondary)
 
                         HStack(alignment: .top, spacing: 8) {
-                            Label("\(schedule.scheduledPatients)", systemImage: "person.fill")
+                            Label("\(schedule.scheduledPatients.count)", systemImage: "person.fill")
                             Divider()
                                 .frame(height: 20)
                             Label("\(schedule.availableAppointments)", systemImage: "person")
