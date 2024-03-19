@@ -27,8 +27,10 @@ struct ContentView: View {
             NavigationSplitView {
                 if user.accessLevel == .registrar {
                     RegistrarSidebar(rootScreen: $rootScreen)
+                        .navigationSplitViewStyle(.prominentDetail)
                 } else if user.accessLevel == .boss {
-                    IndicatorsList(rootScreen: $rootScreen)
+                    IndicatorsList()
+                        .navigationSplitViewStyle(.automatic)
                 }
             } detail: {
                 NavigationStack(path: $coordinator.path) {
@@ -36,10 +38,10 @@ struct ContentView: View {
                         .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
                         .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
                         .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
-                        .environmentObject(UserController(user: user))
+                        .preferredColorScheme(user.accessLevel == .boss ? .dark : .none)
+                        .environment(\.user, user)
                 }
             }
-            .navigationSplitViewStyle(.prominentDetail)
             .onAppear {
 //                    let pricelistItems: [PricelistItem] = load("priceList.json")
 //                    for pricelistItem in pricelistItems {
@@ -57,4 +59,17 @@ struct ContentView: View {
         .environmentObject(Coordinator())
         .modelContainer(for: Doctor.self, inMemory: true)
         .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Environment
+
+private struct UserKey: EnvironmentKey {
+    static let defaultValue: User = ExampleData.doctor
+}
+
+extension EnvironmentValues {
+    var user: User {
+        get { self[UserKey.self] }
+        set { self[UserKey.self] = newValue }
+    }
 }

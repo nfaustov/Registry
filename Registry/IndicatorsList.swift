@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct IndicatorsList: View {
-    // MARK: - Dependencies
-
-    @EnvironmentObject private var coordinator: Coordinator
-
-    @Binding var rootScreen: Screen?
-
-    // MARK: -
 
     var body: some View {
-        List(Screen.allCases, selection: $rootScreen) { screen in
-            screen.indicatorView
+        List(Screen.allCases) { screen in
+            switch screen {
+            case .schedule:
+                EmptyView()
+            case .cashbox:
+                CashboxReportingChart()
+            case .specialists:
+                EmptyView()
+            case .patients:
+                PatientsStatistics()
+            case .medicalServices:
+                EmptyView()
+            }
         }
         .listRowSpacing(8)
         .scrollBounceBehavior(.basedOnSize)
+        .navigationTitle("Индикаторы")
     }
 }
 
 #Preview {
-    IndicatorsList(rootScreen: .constant(nil))
+    IndicatorsList()
 }

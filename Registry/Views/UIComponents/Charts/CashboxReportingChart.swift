@@ -36,6 +36,7 @@ struct CashboxReportingChart: View {
                 Text("\(Int(todayReport?.cashBalance ?? 0)) ₽")
                     .font(.title)
             }
+            .padding(.vertical, 8)
 
             if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
                 Picker("Тип операции", selection: $selectedReporting) {

@@ -43,8 +43,6 @@ extension Coordinator {
             PatientsScreen()
         case .medicalServices:
             MedicalServicesScreen()
-        case .statistics:
-            StatisticsScreen()
         }
     }
 
