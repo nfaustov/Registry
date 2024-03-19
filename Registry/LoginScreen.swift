@@ -81,6 +81,7 @@ struct LoginScreen: View {
             }
             .frame(width: 400, height: 216)
             .clipShape(.rect(cornerRadius: 16, style: .continuous))
+            .padding()
         }
     }
 }

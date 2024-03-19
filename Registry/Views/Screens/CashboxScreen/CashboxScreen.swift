@@ -39,10 +39,6 @@ struct CashboxScreen: View {
                         }
                     }
 
-                    Section {
-                        CashboxReportingChart()
-                    }
-
                     Button {
                         coordinator.present(.report(todayReport))
                     } label: {

@@ -37,7 +37,6 @@ struct CashboxReportingChart: View {
                     .font(.title)
             }
 
-
             if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in

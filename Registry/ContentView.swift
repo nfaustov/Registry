@@ -24,51 +24,27 @@ struct ContentView: View {
 
     var body: some View {
         if let user {
-            if user.accessLevel == .registrar {
-                NavigationSplitView {
-                    List(Screen.registrarCases, selection: $rootScreen) { screen in
-                        HStack {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 32, height: 32)
-                                    .foregroundStyle(screen.color.gradient)
-                                    .clipShape(.rect(cornerRadius: 8, style: .continuous))
-                                Image(systemName: screen.imageName)
-                                    .foregroundStyle(.white)
-                            }
-                            Text(screen.title)
-                        }
-                    }
-                    .onChange(of: rootScreen) {
-                        coordinator.clearPath()
-                    }
-                    .navigationTitle("Меню")
-                    .navigationSplitViewColumnWidth(220)
-                    .scrollBounceBehavior(.basedOnSize)
-                } detail: {
-                    NavigationStack(path: $coordinator.path) {
-                        coordinator.setRootView(rootScreen ?? .schedule)
-                            .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
-                            .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
-                            .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
-                            .environmentObject(UserController(user: user))
-                    }
+            NavigationSplitView {
+                if user.accessLevel == .registrar {
+                    RegistrarSidebar(rootScreen: $rootScreen)
+                } else if user.accessLevel == .boss {
+                    IndicatorsList(rootScreen: $rootScreen)
                 }
-                .navigationSplitViewStyle(.prominentDetail)
-                .onAppear {
+            } detail: {
+                NavigationStack(path: $coordinator.path) {
+                    coordinator.setRootView(rootScreen ?? .schedule)
+                        .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
+                        .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
+                        .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
+                        .environmentObject(UserController(user: user))
+                }
+            }
+            .navigationSplitViewStyle(.prominentDetail)
+            .onAppear {
 //                    let pricelistItems: [PricelistItem] = load("priceList.json")
 //                    for pricelistItem in pricelistItems {
 //                        modelContext.insert(pricelistItem)
 //                    }
-                }
-            } else if user.accessLevel == .boss {
-                NavigationStack(path: $coordinator.path) {
-                    coordinator.setRootView(.statistics)
-                        .navigationTitle(Screen.statistics.title)
-                        .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
-                        .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
-                        .preferredColorScheme(.dark)
-                }
             }
         } else {
             LoginScreen(user: $user)

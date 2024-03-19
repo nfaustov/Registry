@@ -67,15 +67,24 @@ enum Screen: CaseIterable, Hashable, Identifiable {
         }
     }
 
+    @ViewBuilder var indicatorView: some View {
+        switch self {
+        case .schedule:
+            EmptyView()
+        case .cashbox:
+            CashboxReportingChart()
+        case .specialists:
+            EmptyView()
+        case .patients:
+            PatientsStatistics()
+        case .medicalServices:
+            EmptyView()
+        case .statistics:
+            EmptyView()
+        }
+    }
+
     var id: Self {
         self
-    }
-
-    static var registrarCases: [Screen] {
-        [.schedule, .cashbox, .specialists, .patients, .medicalServices]
-    }
-
-    static var bossCases: [Screen] {
-        [.statistics]
     }
 }
