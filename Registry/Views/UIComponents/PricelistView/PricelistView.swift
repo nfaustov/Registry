@@ -77,6 +77,11 @@ struct PricelistView: View {
                     .fontWeight(.medium)
             }
         }
+        .overlay {
+            if filterText.isEmpty || categories.isEmpty {
+                ContentUnavailableView("Услуги не найдены", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
+            }
+        }
     }
 }
 

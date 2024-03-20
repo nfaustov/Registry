@@ -12,6 +12,10 @@ struct ContentView: View {
     // MARK: - Dependencies
 
 //    @Environment(\.modelContext) private var modelContext
+//    @Query private var pricelistItems: [PricelistItem]
+//    @Query private var schedules: [DoctorSchedule]
+//    @Query private var doctors: [Doctor]
+//    @Query private var patients: [Patient]
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -25,12 +29,10 @@ struct ContentView: View {
     var body: some View {
         if let user {
             NavigationSplitView {
-                if user.accessLevel == .registrar {
-                    RegistrarSidebar(rootScreen: $rootScreen)
-                        .navigationSplitViewStyle(.prominentDetail)
-                } else if user.accessLevel == .boss {
+                if user.accessLevel == .boss {
                     IndicatorsList()
-                        .navigationSplitViewStyle(.automatic)
+                } else {
+                    RegistrarSidebar(rootScreen: $rootScreen)
                 }
             } detail: {
                 NavigationStack(path: $coordinator.path) {
@@ -42,11 +44,17 @@ struct ContentView: View {
                         .environment(\.user, user)
                 }
             }
+            .navigationSplitViewStyle(.prominentDetail)
             .onAppear {
-//                    let pricelistItems: [PricelistItem] = load("priceList.json")
-//                    for pricelistItem in pricelistItems {
-//                        modelContext.insert(pricelistItem)
-//                    }
+//                schedules.forEach { modelContext.delete($0) }
+//                doctors.forEach { modelContext.delete($0) }
+//                patients.forEach { modelContext.delete($0) }
+//                pricelistItems.forEach { modelContext.delete($0) }
+                
+//                let pricelistItems: [PricelistItem] = load("priceList.json")
+//                for pricelistItem in pricelistItems {
+//                    modelContext.insert(pricelistItem)
+//                }
             }
         } else {
             LoginScreen(user: $user)

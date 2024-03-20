@@ -17,6 +17,7 @@ public final class PricelistItem: Codable {
     public var costPrice: Double = Double.zero
     public var archived: Bool = false
     public var salaryAmount: Double?
+    public var treatmentPlans: [TreatmentPlan.Kind] = []
 
     public init(
         id: String,
@@ -33,10 +34,16 @@ public final class PricelistItem: Codable {
         self.costPrice = costPrice
         archived = false
         self.salaryAmount = salaryAmount
+
+        if category == .laboratory {
+            treatmentPlans = [.pregnancy, .basic]
+        } else {
+            treatmentPlans = []
+        }
     }
 
-    private enum CodingKeys: CodingKey {
-        case id, category, title, price, costPrice, archived, salaryAmount
+    private enum CodingKeys: String, CodingKey {
+        case id, category, title, price, costPrice, archived, salaryAmount, treatmentPlans
     }
 
     public required init(from decoder: Decoder) throws {
@@ -48,6 +55,16 @@ public final class PricelistItem: Codable {
         self.costPrice = try container.decode(Double.self, forKey: .costPrice)
         self.archived = try container.decodeIfPresent(Bool.self, forKey: .archived) ?? false
         self.salaryAmount = try container.decodeIfPresent(Double.self, forKey: .salaryAmount)
+
+        if let treatmentPlans =  try container.decodeIfPresent([TreatmentPlan.Kind].self, forKey: .treatmentPlans) {
+            self.treatmentPlans = treatmentPlans
+        } else {
+            if self.category == .laboratory {
+                self.treatmentPlans = [.pregnancy, .basic]
+            } else {
+                self.treatmentPlans = []
+            }
+        }
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -59,6 +76,15 @@ public final class PricelistItem: Codable {
         try container.encode(costPrice, forKey: .costPrice)
         try container.encode(archived, forKey: .archived)
         try container.encodeIfPresent(salaryAmount, forKey: .salaryAmount)
+        try container.encode(treatmentPlans, forKey: .treatmentPlans)
+    }
+
+    public var treatmentPlanPrice: Double {
+        if treatmentPlans.isEmpty {
+            return price
+        } else {
+            return costPrice + 20
+        }
     }
 }
 

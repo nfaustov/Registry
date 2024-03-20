@@ -21,7 +21,7 @@ public struct TreatmentPlan: Codable, Hashable {
 
 public extension TreatmentPlan {
     enum Kind: String, Codable {
-        case standard
-        case pregnancy
+        case basic = "Базовый"
+        case pregnancy = "Беременность" 
     }
 }

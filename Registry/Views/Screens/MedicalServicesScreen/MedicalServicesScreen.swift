@@ -10,6 +10,8 @@ import SwiftUI
 struct MedicalServicesScreen: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
+
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
@@ -22,23 +24,37 @@ struct MedicalServicesScreen: View {
     var body: some View {
         PricelistView(filterText: searchText, selectedPricelistItem: $selectedPricelistItem)
             .searchable(text: $searchText)
-            .overlay {
-                if searchText.isEmpty {
-                    ContentUnavailableView("Услуги не найдены", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
-                }
-            }
             .catalogToolbar { coordinator.present(.createPricelistItem) }
             .sheet(item: $selectedPricelistItem) { item in
                 NavigationStack {
                     Form {
-                        Text(item.title)
-                        LabeledContent("Цена", value: "\(Int(item.price)) ₽")
-                        if item.costPrice > 0 {
-                            LabeledContent("Себестоимость", value: "\(Int(item.costPrice)) ₽")
+                        Section {
+                            Text(item.title)
+                            LabeledContent("Цена", value: "\(Int(item.price)) ₽")
+                            if user.accessLevel == .boss {
+                                LabeledContent("Себестоимость", value: "\(Int(item.costPrice)) ₽")
+                            }
+                        }
+
+                        if user.accessLevel == .boss {
+                            Section {
+                                Toggle(isOn: Binding(get: { !item.archived }, set: { value in item.archived = !value })) {
+                                    Label(
+                                        item.archived ? "Снято с продажи" : "В продаже",
+                                        systemImage: item.archived ? "pause.rectangle" : "checkmark.rectangle"
+                                    )
+                                }
+                            }
                         }
 
                         Section {
-                            archivingToggle(item: item)
+                            toggleTreatmentPlan(.pregnancy, forItem: item)
+                            toggleTreatmentPlan(.basic, forItem: item)
+                        } header: {
+                            Text("Лечебные планы")
+                        }
+                        if !item.treatmentPlans.isEmpty {
+                            LabeledContent("Цена по лечебному плану", value: "\(Int(item.treatmentPlanPrice)) ₽")
                         }
                     }
                     .sheetToolbar(title: "Услуга")
@@ -59,12 +75,20 @@ struct MedicalServicesScreen: View {
 // MARK: - Subviews
 
 private extension MedicalServicesScreen {
-    func archivingToggle(item: PricelistItem) -> some View {
-        Toggle(isOn: Binding(get: { !item.archived }, set: { value in item.archived = !value })) {
-            Label(
-                item.archived ? "Снято с продажи" : "В продаже",
-                systemImage: item.archived ? "pause.rectangle" : "checkmark.rectangle"
+    func toggleTreatmentPlan(_ plan: TreatmentPlan.Kind, forItem item: PricelistItem) -> some View {
+        Toggle(
+            plan.rawValue,
+            isOn: Binding(
+                get: { item.treatmentPlans.contains(plan) },
+                set: { value in
+                    if value {
+                        item.treatmentPlans.append(plan)
+                    } else {
+                        item.treatmentPlans.removeAll(where: { $0 == plan })
+                    }
+                }
             )
-        }
+        )
+        .disabled(user.accessLevel != .boss)
     }
 }
