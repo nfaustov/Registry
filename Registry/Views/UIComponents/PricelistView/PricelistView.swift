@@ -50,7 +50,7 @@ struct PricelistView: View {
                         }
                     } label: {
                         HStack {
-                            if size == .regular {
+                            if size == .regular && UIDevice.current.userInterfaceIdiom == .pad {
                                 Text(item.id)
                                     .frame(width: 132, alignment: .leading)
 

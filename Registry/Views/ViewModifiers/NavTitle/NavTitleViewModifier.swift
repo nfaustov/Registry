@@ -19,10 +19,12 @@ struct NavTitleViewModifier: ViewModifier {
                     VStack {
                         Text(title)
                             .font(.headline)
+                            .multilineTextAlignment(.center)
                         if let subtitle {
                             Text(subtitle)
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
                         }
                     }
                 }
