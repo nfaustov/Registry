@@ -16,6 +16,7 @@ struct ContentView: View {
 //    @Query private var schedules: [DoctorSchedule]
 //    @Query private var doctors: [Doctor]
 //    @Query private var patients: [Patient]
+//    @Query private var reports: [Report]
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -49,6 +50,7 @@ struct ContentView: View {
 //                schedules.forEach { modelContext.delete($0) }
 //                doctors.forEach { modelContext.delete($0) }
 //                patients.forEach { modelContext.delete($0) }
+//                reports.forEach { modelContext.delete($0) }
 //                pricelistItems.forEach { modelContext.delete($0) }
                 
 //                let pricelistItems: [PricelistItem] = load("priceList.json")

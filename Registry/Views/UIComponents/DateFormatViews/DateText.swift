@@ -39,6 +39,7 @@ enum DateFormat: String {
     case dateTime = "dd.MM.YYYY H:mm"
     case birthDate = "d MMMM yyyy"
     case datePickerDate = "LLLL d EEEE"
+    case month = "LLLL"
 
     func string(from date: Date) -> String {
         DateFormatter.shared.dateFormat = rawValue

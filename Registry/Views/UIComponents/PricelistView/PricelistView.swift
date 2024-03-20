@@ -31,7 +31,11 @@ struct PricelistView: View {
                 if filterText.isEmpty {
                     return false
                 } else {
-                    return !$0.archived && ($0.title.localizedStandardContains(filterText) || $0.id.localizedStandardContains(filterText))
+                    return !$0.archived && (
+                        $0.title.localizedStandardContains(filterText) ||
+                        $0.id.localizedStandardContains(filterText) ||
+                        $0.category.rawValue.localizedStandardContains(filterText)
+                    )
                 }
             }
         )
@@ -79,7 +83,7 @@ struct PricelistView: View {
         }
         .overlay {
             if filterText.isEmpty || categories.isEmpty {
-                ContentUnavailableView("Услуги не найдены", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
+                ContentUnavailableView("Поиск услуг", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
             }
         }
     }

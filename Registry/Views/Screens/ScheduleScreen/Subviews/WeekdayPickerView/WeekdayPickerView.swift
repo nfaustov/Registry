@@ -21,27 +21,33 @@ struct WeekdayPickerView: View {
     // MARK: -
 
     var body: some View {
-        TabView(selection: $currentWeekIndex) {
-            ForEach(weekSlider.indices, id: \.self) { index in
-                weekView(weekSlider[index])
-                    .tag(index)
+        VStack(spacing: 0) {
+            DateText(currentDate, format: .month)
+                .font(.title)
+                .fontWeight(.medium)
+
+            TabView(selection: $currentWeekIndex) {
+                ForEach(weekSlider.indices, id: \.self) { index in
+                    weekView(weekSlider[index])
+                        .tag(index)
+                }
             }
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .frame(height: 52)
-        .onAppear {
-            if weekSlider.isEmpty {
-                let previousWeek = week(for: currentDate.addingTimeInterval(-604_800))
-                weekSlider.append(previousWeek)
-                let currentWeek = week(for: currentDate)
-                weekSlider.append(currentWeek)
-                let nextWeek = week(for: currentDate.addingTimeInterval(604_800))
-                weekSlider.append(nextWeek)
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(height: 52)
+            .onAppear {
+                if weekSlider.isEmpty {
+                    let previousWeek = week(for: currentDate.addingTimeInterval(-604_800))
+                    weekSlider.append(previousWeek)
+                    let currentWeek = week(for: currentDate)
+                    weekSlider.append(currentWeek)
+                    let nextWeek = week(for: currentDate.addingTimeInterval(604_800))
+                    weekSlider.append(nextWeek)
+                }
             }
-        }
-        .onChange(of: currentWeekIndex) { _, newValue in
-            if newValue == 0 || newValue == weekSlider.count - 1 {
-                createWeek = true
+            .onChange(of: currentWeekIndex) { _, newValue in
+                if newValue == 0 || newValue == weekSlider.count - 1 {
+                    createWeek = true
+                }
             }
         }
     }
