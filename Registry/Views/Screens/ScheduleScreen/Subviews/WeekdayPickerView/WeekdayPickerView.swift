@@ -22,10 +22,6 @@ struct WeekdayPickerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DateText(currentDate, format: .month)
-                .font(.title)
-                .fontWeight(.medium)
-
             TabView(selection: $currentWeekIndex) {
                 ForEach(weekSlider.indices, id: \.self) { index in
                     weekView(weekSlider[index])
