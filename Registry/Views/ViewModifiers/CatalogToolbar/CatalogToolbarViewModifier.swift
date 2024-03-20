@@ -8,22 +8,30 @@
 import SwiftUI
 
 struct CatalogToolbarViewModifier: ViewModifier {
+    // MARK: - Dependencies
+
+    @Environment(\.user) private var user
+
     var addAction: () -> Void
+
+    // MARK: -
 
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        addAction()
-                    } label: {
-                        Image(systemName: "plus")
-                            .foregroundColor(.white)
-                            .padding(8)
-                            .background(.blue.gradient)
-                            .cornerRadius(8)
+                if user.accessLevel == .boss {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            addAction()
+                        } label: {
+                            Image(systemName: "plus")
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(.blue.gradient)
+                                .cornerRadius(8)
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
             }
     }

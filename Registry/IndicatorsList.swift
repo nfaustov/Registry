@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct IndicatorsList: View {
+    // MARK: - Dependencies
+
+    @Binding var rootScreen: Screen?
 
     var body: some View {
         List(Screen.allCases) { screen in
@@ -19,7 +22,7 @@ struct IndicatorsList: View {
             case .specialists:
                 EmptyView()
             case .patients:
-                PatientsStatistics()
+                PatientsStatistics(rootScreen: $rootScreen)
             case .medicalServices:
                 EmptyView()
             }
@@ -31,5 +34,5 @@ struct IndicatorsList: View {
 }
 
 #Preview {
-    IndicatorsList()
+    IndicatorsList(rootScreen: .constant(nil))
 }

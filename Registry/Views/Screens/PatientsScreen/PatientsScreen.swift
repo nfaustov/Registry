@@ -40,9 +40,9 @@ struct PatientsScreen: View {
                 }
             }
             .catalogToolbar {
-                modelContext.insert(ExampleData.patient)
-                modelContext.insert(ExampleData.patient2)
-                modelContext.insert(ExampleData.patient3)
+//                modelContext.insert(ExampleData.patient)
+//                modelContext.insert(ExampleData.patient2)
+//                modelContext.insert(ExampleData.patient3)
                 coordinator.present(.createPatient)
             }
             .onAppear {
