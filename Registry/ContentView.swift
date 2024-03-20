@@ -30,11 +30,25 @@ struct ContentView: View {
     var body: some View {
         if let user {
             NavigationSplitView {
-                if user.accessLevel == .boss {
-                    IndicatorsList()
-                } else {
-                    RegistrarSidebar(rootScreen: $rootScreen)
+                List(user.accessLevel == .boss ? Screen.allCases : Screen.registrarCases, selection: $rootScreen) { screen in
+                    HStack {
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 32, height: 32)
+                                .foregroundStyle(screen.color.gradient)
+                                .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                            Image(systemName: screen.imageName)
+                                .foregroundStyle(.white)
+                        }
+                        Text(screen.title)
+                    }
                 }
+                .onChange(of: rootScreen) {
+                    coordinator.clearPath()
+                }
+                .navigationTitle("Меню")
+                .navigationSplitViewColumnWidth(220)
+                .scrollBounceBehavior(.basedOnSize)
             } detail: {
                 NavigationStack(path: $coordinator.path) {
                     coordinator.setRootView(rootScreen ?? .schedule)

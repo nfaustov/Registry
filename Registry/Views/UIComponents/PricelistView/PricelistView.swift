@@ -33,8 +33,7 @@ struct PricelistView: View {
                 } else {
                     return !$0.archived && (
                         $0.title.localizedStandardContains(filterText) ||
-                        $0.id.localizedStandardContains(filterText) ||
-                        $0.category.rawValue.localizedStandardContains(filterText)
+                        $0.id.localizedStandardContains(filterText)
                     )
                 }
             }

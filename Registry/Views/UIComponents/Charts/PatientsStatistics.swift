@@ -13,8 +13,6 @@ struct PatientsStatistics: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @Binding var rootScreen: Screen?
-
     // MARK: - State
 
     @State private var selectedPeriod: StatisticsPeriod = .day
@@ -66,21 +64,12 @@ struct PatientsStatistics: View {
                 }
             }
             .frame(height: 80)
-
-            HStack {
-                Spacer()
-
-                Button("Пациенты", systemImage: "chevron.right") {
-                    rootScreen = .patients
-                }
-                .padding()
-            }
         }
     }
 }
 
 #Preview {
-    PatientsStatistics(rootScreen: .constant(nil))
+    PatientsStatistics()
         .environmentObject(Coordinator())
         .preferredColorScheme(.dark)
 }
