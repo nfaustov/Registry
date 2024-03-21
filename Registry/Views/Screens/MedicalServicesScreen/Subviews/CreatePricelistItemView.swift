@@ -40,13 +40,13 @@ struct CreatePricelistItemView: View {
                 Section {
                     TextField("Код", text: $idText)
                     TextField("Наименование", text: $serviceTitleText)
-                    TextField("Цена", value: $priceValue, format: .number)
-                    TextField("Себестоимость", value: $costPriceValue, format: .number)
+                    TextField("Цена", value: $priceValue, format: .number, prompt: Text("Цена"))
+                    TextField("Себестоимость", value: $costPriceValue, format: .number, prompt: Text("Себестоимость"))
                 } header: {
                     Text("Услуга")
                 }
             }
-            .sheetToolbar(title: "Добавить", confirmationDisabled: category == nil || emptyTextDetection) {
+            .sheetToolbar(title: "Новая услуга", confirmationDisabled: category == nil || emptyTextDetection) {
                 guard let category else { return }
 
                 let priceListItem = PricelistItem(

@@ -25,6 +25,7 @@ struct BillScreen: View {
     @State private var addServices: Bool = false
     @State private var isCompleted = false
     @State private var searchText: String = ""
+    @State private var isSearching: Bool = false
 
     // MARK: -
 
@@ -135,8 +136,8 @@ struct BillScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .sideSheet(isPresented: $addServices) {
             VStack(alignment: .trailing, spacing: 0) {
-                SearchBar(text: $searchText)
-                PricelistView(filterText: searchText, size: .compact, selectedPricelistItem: .constant(nil))
+                SearchBar(text: $searchText, isPresented: $isSearching)
+                PricelistView(filterText: searchText, size: .compact, isSearching: $isSearching)
                     .listStyle(.plain)
             }
         }

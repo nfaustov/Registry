@@ -32,6 +32,7 @@ struct CreateDoctorView: View {
     @State private var salary: Salary = .pieceRate()
     @State private var perVisitAmount: Int = 0
     @State private var salaryRate: Double = 0.4
+    @State private var isSearching: Bool = false
 
     // MARK: -
 
@@ -157,10 +158,11 @@ struct CreateDoctorView: View {
             }
             .sheet(isPresented: $addBasicService) {
                 NavigationStack {
-                    PricelistView(filterText: searchText, selectedPricelistItem: $basicService)
+                    PricelistView(filterText: searchText, selectedPricelistItem: $basicService, isSearching: $isSearching)
                         .listStyle(.plain)
                         .searchable(
                             text: $searchText,
+                            isPresented: $isSearching,
                             placement: .navigationBarDrawer(displayMode: .always)
                         )
                         .sheetToolbar(title: "Выберите услугу")

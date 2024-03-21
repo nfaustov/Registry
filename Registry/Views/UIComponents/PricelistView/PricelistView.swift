@@ -19,17 +19,23 @@ struct PricelistView: View {
     private let size: Size
 
     @Binding var selectedPricelistItem: PricelistItem?
+    @Binding var isSearching: Bool
+
+    // MARK: - State
+
+    @State private var selectedCategory: Department = .ultrasound
 
     // MARK: -
 
-    init(filterText: String, size: Size = .regular, selectedPricelistItem: Binding<PricelistItem?>) {
+    init(filterText: String, size: Size = .regular, selectedPricelistItem: Binding<PricelistItem?> = .constant(nil), isSearching: Binding<Bool>) {
         self.filterText = filterText
         self.size = size
         self._selectedPricelistItem = selectedPricelistItem
+        self._isSearching = isSearching
         _pricelistItems = Query(
             filter: #Predicate {
                 if filterText.isEmpty {
-                    return false
+                    return !$0.archived
                 } else {
                     return !$0.archived && (
                         $0.title.localizedStandardContains(filterText) ||
@@ -75,13 +81,33 @@ struct PricelistView: View {
                     .listRowBackground(selectedPricelistItem == item ? Color(.systemFill) : .clear)
                 }
             } header: {
-                Text(category.rawValue)
-                    .font(size == .regular ? .title3 : .headline)
-                    .fontWeight(.medium)
+                if isSearching {
+                    Text(category.rawValue)
+                        .font(size == .regular ? .title3 : .headline)
+                        .fontWeight(.medium)
+                } else {
+                    Menu {
+                        ForEach(Department.allCases.sorted(by: >)) { department in
+                            Button(department.rawValue) {
+                                withAnimation {
+                                    self.selectedCategory = department
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            Text(selectedCategory.rawValue)
+                            Image(systemName: "chevron.down")
+                        }
+                        .font(size == .regular ? .title3 : .headline)
+                        .fontWeight(.medium)
+                    }
+                }
             }
         }
+        .scrollBounceBehavior(.basedOnSize)
         .overlay {
-            if filterText.isEmpty || categories.isEmpty {
+            if categories.isEmpty {
                 ContentUnavailableView("Поиск услуг", systemImage: "magnifyingglass", description: Text("Введите название или код услуги в поле для поиска"))
             }
         }
@@ -89,7 +115,7 @@ struct PricelistView: View {
 }
 
 #Preview {
-    PricelistView(filterText: "", selectedPricelistItem: .constant(nil))
+    PricelistView(filterText: "", selectedPricelistItem: .constant(nil), isSearching: .constant(false))
 }
 
 // MARK: - Calculations
@@ -97,7 +123,7 @@ struct PricelistView: View {
 private extension PricelistView {
     private var categories: [Department] {
         if filterText.isEmpty {
-            return []
+            return [selectedCategory]
         } else {
             return Array(
                 pricelistItems

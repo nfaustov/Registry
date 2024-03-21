@@ -108,6 +108,7 @@
 		8BDCCFE62B84A3EC0086BF4D /* Bill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE52B84A3EC0086BF4D /* Bill.swift */; };
 		8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE72B84A4080086BF4D /* RenderedService.swift */; };
 		8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
+		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
 		8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 /* End PBXBuildFile section */
@@ -216,6 +217,7 @@
 		8BDCCFE52B84A3EC0086BF4D /* Bill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bill.swift; sourceTree = "<group>"; };
 		8BDCCFE72B84A4080086BF4D /* RenderedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderedService.swift; sourceTree = "<group>"; };
 		8BDCCFE92B84A6770086BF4D /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
 		8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientView.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -804,6 +806,7 @@
 			isa = PBXGroup;
 			children = (
 				8BA0AAEB2B5FA49500E9FD7E /* CreatePricelistItemView.swift */,
+				8BE377112BAC741200DBAE43 /* PricelistItemView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1115,6 +1118,7 @@
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8BD9FCD42BA970830055823D /* IndicatorsScreen.swift in Sources */,
 				8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */,
+				8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */,
 				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
 				8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */,
 				8B8DA9652BA1E5E900F6F847 /* MessageServiceClient.swift in Sources */,
