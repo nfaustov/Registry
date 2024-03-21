@@ -11,6 +11,7 @@ import SwiftData
 struct BillPaymentView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @Query private var doctors: [Doctor]
@@ -265,7 +266,8 @@ private extension BillPaymentView {
         balancePaymentMethod.value = value
         let balancePayment = Payment(
             purpose: value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
-            methods: [balancePaymentMethod]
+            methods: [balancePaymentMethod],
+            createdBy: user.asAnyUser
         )
         todayReport.payments.append(balancePayment)
     }
@@ -281,7 +283,7 @@ private extension BillPaymentView {
 
         methods.append(paymentMethod)
 
-        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill))
+        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill), createdBy: user.asAnyUser)
         todayReport.payments.append(payment)
     }
 }

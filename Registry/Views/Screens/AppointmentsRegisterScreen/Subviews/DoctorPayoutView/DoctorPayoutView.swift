@@ -11,6 +11,7 @@ import SwiftData
 struct DoctorPayoutView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
@@ -301,7 +302,7 @@ private extension DoctorPayoutView {
         additionalPaymentMethod?.value = -abs(additionalPaymentMethod?.value ?? 0)
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
-        let payment = Payment(purpose: .salary(doctor.initials), methods: methods)
+        let payment = Payment(purpose: .salary(doctor.initials), methods: methods, createdBy: user.asAnyUser)
         todayReport.payments.append(payment)
     }
 }

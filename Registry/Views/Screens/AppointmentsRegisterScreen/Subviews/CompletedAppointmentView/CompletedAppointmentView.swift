@@ -11,6 +11,7 @@ import SwiftData
 struct CompletedAppointmentView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @Query private var doctors: [Doctor]
@@ -239,14 +240,14 @@ private extension CompletedAppointmentView {
 
     func createPayment() {
         paymentMethod.value = createdRefund.totalAmount(discountRate: visit.bill?.discountRate ?? 0)
-        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: .refund(createdRefund))
+        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: .refund(createdRefund), createdBy: user.asAnyUser)
         todayReport?.payments.append(payment)
     }
 
     func createBalancePayment() {
         balancePaymentMethod.value = -patient.balance
         let purpose: Payment.Purpose = patient.balance > 0 ? .fromBalance(patient.initials) : .toBalance(patient.initials)
-        let payment = Payment(purpose: purpose, methods: [balancePaymentMethod])
+        let payment = Payment(purpose: purpose, methods: [balancePaymentMethod], createdBy: user.asAnyUser)
         todayReport?.payments.append(payment)
         patient.balance = 0
     }

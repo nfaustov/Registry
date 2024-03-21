@@ -10,6 +10,7 @@ import SwiftUI
 struct CreateSpendingView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Bindable var report: Report
 
     // MARK: - State
@@ -73,7 +74,7 @@ struct CreateSpendingView: View {
                 confirmationDisabled: paymentMethod.value == 0 || abs(paymentMethod.value) > report.cashBalance
             ) {
                 paymentMethod.value = -abs(paymentMethod.value)
-                let payment = Payment(purpose: paymentPurpose, methods: [paymentMethod])
+                let payment = Payment(purpose: paymentPurpose, methods: [paymentMethod], createdBy: user.asAnyUser)
                 report.payments.append(payment)
             }
         }

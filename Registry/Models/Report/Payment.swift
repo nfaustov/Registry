@@ -13,18 +13,21 @@ public struct Payment: Codable, Hashable, Identifiable {
     public var purpose: Payment.Purpose
     public var methods: [Payment.Method]
     public var subject: Payment.Subject?
+    public var createdBy: AnyUser
 
     public init(
         id: UUID = UUID(),
         purpose: Payment.Purpose,
         methods: [Payment.Method],
-        subject: Payment.Subject? = nil
+        subject: Payment.Subject? = nil,
+        createdBy: AnyUser
     ) {
         self.id = id
         self.date = .now
         self.purpose = purpose
         self.methods = methods
         self.subject = subject
+        self.createdBy = createdBy
     }
 
     public var totalAmount: Double {

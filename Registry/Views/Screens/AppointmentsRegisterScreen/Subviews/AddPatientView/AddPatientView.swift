@@ -10,6 +10,7 @@ import SwiftUI
 struct AddPatientView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @Bindable var appointment: PatientAppointment
@@ -97,7 +98,7 @@ struct AddPatientView: View {
             ) {
                 replaceAppointmentsIfNeeded()
 
-                let visit = Visit(visitDate: appointment.scheduledTime)
+                let visit = Visit(registrar: user.asAnyUser, visitDate: appointment.scheduledTime)
 
                 if let selectedPatient {
                     appointment.patient = selectedPatient
