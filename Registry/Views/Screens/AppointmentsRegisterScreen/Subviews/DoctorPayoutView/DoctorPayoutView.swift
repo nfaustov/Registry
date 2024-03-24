@@ -17,6 +17,7 @@ struct DoctorPayoutView: View {
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     private let doctor: Doctor
+    private let disabled: Bool
 
     // MARK: - State
 
@@ -25,8 +26,9 @@ struct DoctorPayoutView: View {
 
     // MARK: -
 
-    init(doctor: Doctor) {
+    init(doctor: Doctor, disabled: Bool) {
         self.doctor = doctor
+        self.disabled = disabled
         _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance < 0 ? 0 : doctor.balance))
     }
 
@@ -191,7 +193,7 @@ struct DoctorPayoutView: View {
             }
             .sheetToolbar(
                 title: "Выплата",
-                confirmationDisabled: paymentMethod.value == 0 || doctor.balance == 0
+                confirmationDisabled: paymentMethod.value == 0 || doctor.balance == 0 || disabled
             ) {
                 doctorPayout()
                 payment()
@@ -201,7 +203,7 @@ struct DoctorPayoutView: View {
 }
 
 #Preview {
-    DoctorPayoutView(doctor: ExampleData.doctor)
+    DoctorPayoutView(doctor: ExampleData.doctor, disabled: false)
 }
 
 // MARK: - Subviews
