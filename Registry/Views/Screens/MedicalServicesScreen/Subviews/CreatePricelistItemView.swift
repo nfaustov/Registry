@@ -37,13 +37,17 @@ struct CreatePricelistItemView: View {
                     Text("Категория")
                 }
 
-                Section {
+                Section("Код") {
                     TextField("Код", text: $idText)
+                }
+                Section("Наименование") {
                     TextField("Наименование", text: $serviceTitleText)
-                    TextField("Цена", value: $priceValue, format: .number, prompt: Text("Цена"))
-                    TextField("Себестоимость", value: $costPriceValue, format: .number, prompt: Text("Себестоимость"))
-                } header: {
-                    Text("Услуга")
+                }
+                Section("Цена") {
+                    TextField("Цена", value: $priceValue, format: .number)
+                }
+                Section("Себестоимость") {
+                    TextField("Себестоимость", value: $costPriceValue, format: .number)
                 }
             }
             .sheetToolbar(title: "Новая услуга", confirmationDisabled: category == nil || emptyTextDetection) {

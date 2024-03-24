@@ -10,7 +10,7 @@ import Foundation
 public enum Message {
     case authorizationCode(String)
     case appointmentReminder(PatientAppointment)
-    case appointmentCOnfirmation(PatientAppointment)
+    case appointmentConfirmation(PatientAppointment)
 
     var text: String {
         switch self {
@@ -23,7 +23,7 @@ public enum Message {
             let time = DateFormat.time.string(from: patientAppointment.scheduledTime)
 
             return "Ожидаем Вас завтра в \(time). Запись к врачу \(doctor.initials). Клиника АртМедикс +7 (4742) 25-04-04"
-        case .appointmentCOnfirmation(let patientAppointment):
+        case .appointmentConfirmation(let patientAppointment):
             guard let schedule = patientAppointment.schedule,
                   let doctor = schedule.doctor else { return "" }
 
