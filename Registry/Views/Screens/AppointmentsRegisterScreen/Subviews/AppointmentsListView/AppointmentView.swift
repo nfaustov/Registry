@@ -40,7 +40,7 @@ struct AppointmentView: View {
                         coordinator.present(.completedAppointment(appointment: appointment))
                     } label: {
                         HStack {
-                            Text(appointment.status.rawValue)
+                            Text(appointment.status?.rawValue ?? "")
                                 .foregroundColor(.secondary)
                             Image(systemName: "info.circle")
                                 .resizable()

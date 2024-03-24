@@ -56,21 +56,13 @@ public final class DoctorSchedule {
         guard let patientAppointments else { return [] }
 
         return patientAppointments
-            .filter { $0.status != .cancelled }
-            .compactMap { $0.patient }
-    }
-
-    public var cancelledPatients: [Patient] {
-        guard let patientAppointments else { return [] }
-
-        return patientAppointments
-            .filter { $0.status == .cancelled }
             .compactMap { $0.patient }
     }
 
     public var availableAppointments: Int {
         guard let patientAppointments else { return 0 }
-        return patientAppointments.filter({ $0.status != .cancelled }).count - scheduledPatients.count
+
+        return patientAppointments.count - scheduledPatients.count
     }
 
     public var duration: TimeInterval {
@@ -89,21 +81,20 @@ public final class DoctorSchedule {
         }
     }
 
-    /// Split appointment to several appointments with doctor service duration.
-    /// - Parameter appointment: Appointment for splitting.
-    /// - Returns: Array of empty appointments which have been created on time interval of duration of given appointment.
-    public func splitToBasicDurationAppointments(_ appointment: PatientAppointment) {
-        if appointment.duration > doctor?.serviceDuration ?? 0 {
+    public func cancelPatientAppointment(_ appointment: PatientAppointment) {
+        guard let doctor else { return }
+
+        if appointment.duration > doctor.serviceDuration {
+            patientAppointments?.removeAll(where: { $0.id == appointment.id })
             createAppointments(
-                on: DateInterval(start: appointment.scheduledTime, duration: appointment.duration)
+                on: DateInterval(
+                    start: appointment.scheduledTime,
+                    duration: appointment.duration
+                )
             )
         } else {
-            let newAppointment = PatientAppointment(
-                scheduledTime: appointment.scheduledTime,
-                duration: appointment.duration,
-                patient: nil
-            )
-            patientAppointments?.append(newAppointment)
+            appointment.patient = nil
+            appointment.status = nil
         }
     }
 }

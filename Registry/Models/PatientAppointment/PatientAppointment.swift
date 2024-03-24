@@ -15,7 +15,7 @@ public final class PatientAppointment {
     public var duration: TimeInterval = TimeInterval.zero
     @Relationship(inverse: \Patient.appointments)
     public var patient: Patient?
-    public var status: PatientAppointment.Status = PatientAppointment.Status.none
+    public var status: PatientAppointment.Status?
     public var schedule: DoctorSchedule?
 
     public var endTime: Date {
@@ -27,7 +27,7 @@ public final class PatientAppointment {
         scheduledTime: Date,
         duration: TimeInterval,
         patient: Patient?,
-        status: Status = .none
+        status: PatientAppointment.Status? = nil
     ) {
         self.id = id
         self.scheduledTime = scheduledTime
@@ -39,13 +39,11 @@ public final class PatientAppointment {
 
 extension PatientAppointment {
     public enum Status: String, Codable, CaseIterable, Identifiable {
-        case none
         case registered = "Зарегистрирован"
         case confirmed = "Подтвержден"
         case came = "Пришел"
         case inProgress = "На приеме"
         case completed = "Завершен"
-        case cancelled = "Отменен"
 
         public var id: Self {
             self

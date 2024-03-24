@@ -60,6 +60,7 @@ public final class Patient: Person {
 
     public func cancelVisit(for date: Date) {
         guard var visit = visits.first(where: { $0.visitDate == date }) else { return }
+
         visit.cancellationDate = .now
         visit.bill = nil
     }

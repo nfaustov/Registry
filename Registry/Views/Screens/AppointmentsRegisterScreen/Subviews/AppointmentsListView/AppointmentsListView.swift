@@ -45,13 +45,6 @@ struct AppointmentsListView: View {
 private extension AppointmentsListView {
     var scheduleAppointments: [PatientAppointment] {
         schedule.patientAppointments?
-            .filter { $0.status != .cancelled }
-            .sorted(by: { $0.scheduledTime < $1.scheduledTime }) ?? []
-    }
-
-    var cancelledAppointments: [PatientAppointment] {
-        schedule.patientAppointments?
-            .filter { $0.status == .cancelled }
             .sorted(by: { $0.scheduledTime < $1.scheduledTime }) ?? []
     }
 
@@ -87,9 +80,8 @@ private extension AppointmentsListView {
 
             Section {
                 Button(role: .destructive) {
-                    appointment.status = .cancelled
                     patient.cancelVisit(for: appointment.scheduledTime)
-                    appointment.schedule?.splitToBasicDurationAppointments(appointment)
+                    appointment.schedule?.cancelPatientAppointment(appointment)
                 } label: {
                     Label("Отменить прием", systemImage: "person.badge.minus")
                 }

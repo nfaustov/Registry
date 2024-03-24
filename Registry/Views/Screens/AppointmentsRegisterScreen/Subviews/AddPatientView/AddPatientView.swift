@@ -159,7 +159,6 @@ private extension AddPatientView {
     func replaceAppointmentsIfNeeded() {
         let deletingAppointmentsInterval = appointment.scheduledTime..<appointment.scheduledTime.addingTimeInterval(duration)
         let deletingAppointments = appointment.schedule?.patientAppointments?
-            .filter { $0.status != .cancelled }
             .sorted(by: { $0.scheduledTime < $1.scheduledTime })
             .filter { deletingAppointmentsInterval.contains($0.scheduledTime) }
             .dropFirst() ?? []
