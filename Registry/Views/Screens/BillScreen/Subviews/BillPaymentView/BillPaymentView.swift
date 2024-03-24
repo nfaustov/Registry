@@ -168,7 +168,8 @@ struct BillPaymentView: View {
                 appointment.status = .completed
 
                 payment()
-                doctorSalary(bill: bill)
+                let salaryCharger = SalaryCharger()
+                salaryCharger.charge(for: .bill(bill), doctors: doctors)
             }
         }
     }
@@ -230,34 +231,6 @@ private extension BillPaymentView {
             modelContext.insert(firstReport)
 
             return firstReport
-        }
-    }
-
-    func doctorSalary(bill: Bill) {
-        for service in bill.services {
-            if let performer = service.performer {
-                var salary = Double.zero
-
-                switch performer.salary {
-                case .pieceRate(let rate):
-                    salary = service.pricelistItem.price * rate
-                case .perService(let amount):
-                    salary = Double(amount)
-                default: ()
-                }
-
-                guard let doctor = doctors.first(where: { $0.id == performer.id }) else { return }
-
-                doctor.charge(as: \.performer, amount: salary)
-            }
-
-            if let agent = service.agent {
-                let agentFee = service.pricelistItem.price * 0.1
-
-                guard let doctor = doctors.first(where: { $0.id == agent.id }) else { return }
-
-                doctor.charge(as: \.agent, amount: agentFee)
-            }
         }
     }
 

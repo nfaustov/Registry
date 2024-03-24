@@ -84,3 +84,30 @@ public enum Reporting: String, Hashable, Identifiable, CaseIterable {
         self
     }
 }
+
+// MARK: - Salary calculation
+
+public extension Report {
+    func renderedServices(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
+        payments
+            .compactMap { $0.subject }
+            .filter { !$0.isRefund }
+            .flatMap { $0.services }
+            .filter { $0[keyPath: role]?.id == employee.id }
+    }
+
+    func daySalary(of employee: Employee) -> Double {
+        switch employee.salary {
+        case .pieceRate(let rate):
+            return renderedServices(by: employee, role: \.performer)
+                .reduce(0.0) { partialResult, service in
+                    if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
+                        partialResult + fixedSalaryAmount
+                    } else {
+                        partialResult + service.pricelistItem.price * rate
+                    }
+                }
+        default: return 0
+        }
+    }
+}

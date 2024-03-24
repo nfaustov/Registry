@@ -45,15 +45,20 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if salary > 0 {
+                if todayReport.daySalary(of: doctor) > 0 {
                     Section {
                         DisclosureGroup {
-                            List(servicesByDoctor) { service in
+                            List(todayReport.renderedServices(by: doctor, role: \.performer)) { service in
                                 HStack {
                                     Text(service.pricelistItem.title)
                                     Spacer()
-                                    Text("\(Int(service.pricelistItem.price * rate)) ₽")
-                                        .frame(width: 60)
+                                    if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
+                                        Text("\(Int(fixedSalaryAmount)) ₽")
+                                            .frame(width: 60)
+                                    } else if let rate = doctor.salary.rate {
+                                        Text("\(Int(service.pricelistItem.price * rate)) ₽")
+                                            .frame(width: 60)
+                                    }
                                 }
                                 .font(.subheadline)
                             }
@@ -61,7 +66,7 @@ struct DoctorPayoutView: View {
                             HStack {
                                 Text("Заработано сегодня")
                                 Spacer()
-                                Text("\(Int(salary)) ₽")
+                                Text("\(Int(todayReport.daySalary(of: doctor))) ₽")
                                     .font(.headline)
                             }
                         }
@@ -230,22 +235,6 @@ private extension DoctorPayoutView {
 // MARK: - Calculations
 
 private extension DoctorPayoutView {
-    var salary: Double {
-        switch doctor.salary {
-        case .pieceRate(let rate):
-            return servicesByDoctor
-                .reduce(0.0) { $0 + $1.pricelistItem.price * rate }
-        default: return 0
-        }
-    }
-
-    var rate: Double {
-        switch doctor.salary {
-        case .pieceRate(let rate): return rate
-        default: return 0
-        }
-    }
-
     var paymentBalance: Int {
         Int(doctor.balance - paymentMethod.value - (additionalPaymentMethod?.value ?? 0))
     }
@@ -268,10 +257,6 @@ private extension DoctorPayoutView {
         }
     }
 
-    var servicesByDoctor: [RenderedService] {
-        doctor.renderedServices(from: todayReport.payments, role: \.performer)
-    }
-
     var servicesByAgent: [Date: [RenderedService]] {
         let reports = reports
             .filter { $0.date > doctor.agentFeePaymentDate && $0.date < .now }
@@ -280,7 +265,7 @@ private extension DoctorPayoutView {
         var dict = [Date: [RenderedService]]()
 
         for report in reports {
-            let services = doctor.renderedServices(from: report.payments, role: \.agent)
+            let services = report.renderedServices(by: doctor, role: \.agent)
 
             if !services.isEmpty {
                 dict[report.date] = services

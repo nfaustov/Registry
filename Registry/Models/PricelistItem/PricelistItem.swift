@@ -56,7 +56,7 @@ public final class PricelistItem: Codable {
         self.archived = try container.decodeIfPresent(Bool.self, forKey: .archived) ?? false
         self.salaryAmount = try container.decodeIfPresent(Double.self, forKey: .salaryAmount)
 
-        if let treatmentPlans =  try container.decodeIfPresent([TreatmentPlan.Kind].self, forKey: .treatmentPlans) {
+        if let treatmentPlans = try container.decodeIfPresent([TreatmentPlan.Kind].self, forKey: .treatmentPlans) {
             self.treatmentPlans = treatmentPlans
         } else {
             if self.category == .laboratory {
@@ -95,9 +95,10 @@ public extension PricelistItem {
         public let id: String
         public var title: String
         public var price: Double
+        public var salaryAmount: Double?
     }
 
     var short: PricelistItem.Short {
-        Short(id: id, title: title, price: price)
+        Short(id: id, title: title, price: price, salaryAmount: salaryAmount)
     }
 }

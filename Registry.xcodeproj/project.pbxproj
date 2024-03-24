@@ -111,6 +111,7 @@
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
 		8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
+		8BF534092BAF50530005C003 /* SalaryCharger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF534082BAF50530005C003 /* SalaryCharger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -220,6 +221,7 @@
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
 		8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientView.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		8BF534082BAF50530005C003 /* SalaryCharger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryCharger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -857,6 +859,7 @@
 		8BA53D962B494DBD006BE983 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8BF534082BAF50530005C003 /* SalaryCharger.swift */,
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
 				8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */,
@@ -1042,6 +1045,7 @@
 				8B8DA96D2BA210D700F6F847 /* ArtmedicsServices.swift in Sources */,
 				8B8DA96F2BA213BD00F6F847 /* MessageController.swift in Sources */,
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
+				8BF534092BAF50530005C003 /* SalaryCharger.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
 				8B5B49C32BA4C60B006867EF /* PatientsStatistics.swift in Sources */,

@@ -139,12 +139,6 @@ struct CreateDoctorView: View {
                             salary = .pieceRate(rate: newValue)
                         }
                     }
-                    if salary.title == Salary.perService().title {
-                        TextField("Оплата", value: $perVisitAmount, format: .number)
-                            .onChange(of: perVisitAmount) { _, newValue in
-                                salary = .perService(amount: newValue)
-                            }
-                    }
                 } header: {
                     Text("Заработная плата")
                 }
