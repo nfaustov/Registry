@@ -98,8 +98,7 @@ struct CompletedAppointmentView: View {
                 confirmationDisabled: visit.refund != nil || (visit.refund == nil && createdRefund.services.isEmpty) || editMode,
                 onConfirm: visit.refund != nil ? nil : {
                     createPayment()
-                    let salaryCharger = SalaryCharger()
-                    salaryCharger.charge(for: .refund(createdRefund), doctors: doctors)
+                    SalaryCharger.charge(for: .refund(createdRefund), doctors: doctors)
                     patient.updatePaymentSubject(.refund(createdRefund), for: appointment)
                     if includeBalance {
                         createBalancePayment()
@@ -222,6 +221,6 @@ private extension CompletedAppointmentView {
         let purpose: Payment.Purpose = patient.balance > 0 ? .fromBalance(patient.initials) : .toBalance(patient.initials)
         let payment = Payment(purpose: purpose, methods: [balancePaymentMethod], createdBy: user.asAnyUser)
         todayReport?.payments.append(payment)
-        patient.balance = 0
+        patient.updateBalance(increment: -patient.balance)
     }
 }

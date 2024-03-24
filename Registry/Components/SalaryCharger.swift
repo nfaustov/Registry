@@ -8,7 +8,7 @@
 import Foundation
 
 public struct SalaryCharger {
-    func charge(for subject: Payment.Subject, doctors: [Doctor]) {
+    static func charge(for subject: Payment.Subject, doctors: [Doctor]) {
         for service in subject.services {
             if let performer = service.performer, let rate = performer.salary.rate {
                 var salary = Double.zero

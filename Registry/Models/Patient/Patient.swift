@@ -15,7 +15,7 @@ public final class Patient: Person {
     public var firstName: String =  ""
     public var patronymicName: String = ""
     public var phoneNumber: String = ""
-    public var balance: Double = Double.zero
+    public private(set) var balance: Double = Double.zero
     public var passport: PassportData = PassportData()
     public var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     public var treatmentPlan: TreatmentPlan?
@@ -52,6 +52,10 @@ public final class Patient: Person {
         visits
             .filter { $0.visitDate < period.start }
             .isEmpty
+    }
+
+    public func updateBalance(increment: Double) {
+        balance += increment
     }
 
     public func cancelVisit(for date: Date) {

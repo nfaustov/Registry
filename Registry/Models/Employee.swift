@@ -9,7 +9,7 @@ import Foundation
 
 public protocol Employee: Person {
     var salary: Salary { get set }
-    var agentFee: Double { get set }
+    var agentFee: Double { get }
 }
 
 public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
@@ -21,4 +21,19 @@ public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
     public var balance: Double
     public var salary: Salary
     public var agentFee: Double
+}
+
+public extension Employee {
+    var employee: AnyEmployee {
+        AnyEmployee(
+            id: id,
+            secondName: secondName,
+            firstName: firstName,
+            patronymicName: patronymicName,
+            phoneNumber: phoneNumber,
+            balance: balance,
+            salary: salary,
+            agentFee: agentFee
+        )
+    }
 }

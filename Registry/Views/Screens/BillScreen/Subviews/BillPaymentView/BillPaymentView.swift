@@ -159,17 +159,16 @@ struct BillPaymentView: View {
 
                 if paymentBalance < 0 || addToBalance {
                     balancePayment(value: Double(paymentBalance))
-                    patient.balance = Double(paymentBalance)
+                    patient.updateBalance(increment: Double(paymentBalance))
                 } else if patient.balance != 0 {
                     balancePayment(value: -patient.balance)
-                    patient.balance = 0
+                    patient.updateBalance(increment: -patient.balance)
                 }
 
                 appointment.status = .completed
 
                 payment()
-                let salaryCharger = SalaryCharger()
-                salaryCharger.charge(for: .bill(bill), doctors: doctors)
+                SalaryCharger.charge(for: .bill(bill), doctors: doctors)
             }
         }
     }

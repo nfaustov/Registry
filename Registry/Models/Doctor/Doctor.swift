@@ -21,9 +21,9 @@ public final class Doctor: Employee, User {
     public var serviceDuration: TimeInterval = 600
     public var defaultCabinet: Int = 1
     public var salary: Salary = Salary.pieceRate(rate: 0.4)
-    public var agentFee: Double = 0
-    public var agentFeePaymentDate: Date = Date.now
-    public var balance: Double = 0
+    public private(set) var agentFee: Double = 0
+    public private(set) var agentFeePaymentDate: Date = Date.now
+    public private(set) var balance: Double = 0
     public var info: String = ""
     public var createdAt: Date = Date.now
     @Attribute(.externalStorage)
@@ -69,19 +69,6 @@ public final class Doctor: Employee, User {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
-    }
-    
-    public var employee: AnyEmployee {
-        AnyEmployee(
-            id: id,
-            secondName: secondName,
-            firstName: firstName,
-            patronymicName: patronymicName,
-            phoneNumber: phoneNumber,
-            balance: balance,
-            salary: salary,
-            agentFee: agentFee
-        )
     }
 
     public func charge(as role: KeyPath<RenderedService, AnyEmployee?>, amount: Double) {

@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Accountable {
-    var balance: Double { get set }
+    var balance: Double { get }
 }
 
 public protocol Person: Accountable {
