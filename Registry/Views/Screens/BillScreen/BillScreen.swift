@@ -31,8 +31,8 @@ struct BillScreen: View {
 
     init(appointment: PatientAppointment) {
         self.appointment = appointment
-        if let patient = appointment.patient,
-           let visit = patient.visits.first(where: { $0.visitDate == appointment.scheduledTime }),
+
+        if let visit = appointment.patient?.visit(for: appointment.scheduledTime),
            let bill = visit.bill {
             _bill = State(initialValue: bill)
         } else {
@@ -141,9 +141,7 @@ struct BillScreen: View {
                     .listStyle(.plain)
             }
         }
-        .onAppear {
-            loadBasicService()
-        }
+        .onAppear { loadBasicService() }
         .disabled(isCompleted)
     }
 }
@@ -160,12 +158,14 @@ struct BillScreen: View {
 
 private extension BillScreen {
     func loadBasicService() {
-        if bill.services.isEmpty,
-           let doctor = appointment.schedule?.doctor,
-           let doctorBasicService = doctor.basicService {
-            let service = RenderedService(pricelistItem: doctorBasicService, performer: doctor.employee)
-            bill.services.append(service)
-            appointment.patient?.updatePaymentSubject(.bill(bill), for: appointment)
+        if bill.services.isEmpty, let patient = appointment.patient {
+            patient.appointments(for: appointment.scheduledTime).forEach { appointment in
+                if let doctor = appointment.schedule?.doctor, let pricelistItem = doctor.basicService {
+                    let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
+                    bill.services.append(service)
+                    patient.updatePaymentSubject(.bill(bill), for: appointment)
+                }
+            }
         }
     }
 }

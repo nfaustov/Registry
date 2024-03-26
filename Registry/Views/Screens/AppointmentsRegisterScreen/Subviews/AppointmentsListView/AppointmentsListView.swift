@@ -80,7 +80,10 @@ private extension AppointmentsListView {
 
             Section {
                 Button(role: .destructive) {
-                    patient.cancelVisit(for: appointment.scheduledTime)
+                    if patient.appointments(for: appointment.scheduledTime).count == 1 {
+                        patient.cancelVisit(for: appointment.scheduledTime)
+                    }
+
                     appointment.schedule?.cancelPatientAppointment(appointment)
                 } label: {
                     Label("Отменить прием", systemImage: "person.badge.minus")

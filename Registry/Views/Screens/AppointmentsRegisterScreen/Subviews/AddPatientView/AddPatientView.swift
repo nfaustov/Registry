@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddPatientView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
+
+    @Query private var patients: [Patient]
 
     @Bindable var appointment: PatientAppointment
 
@@ -72,6 +75,11 @@ struct AddPatientView: View {
                         Text(selectedPatient.phoneNumber)
                     } else {
                         PhoneNumberTextField(text: $phoneNumberText)
+                            .onSubmit {
+                                if let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
+                                    selectedPatient = patient
+                                }
+                            }
                     }
                 } header: {
                     Text("Номер телефона")
@@ -101,6 +109,10 @@ struct AddPatientView: View {
                 let visit = Visit(registrar: user.asAnyUser, visitDate: appointment.scheduledTime)
 
                 if let selectedPatient {
+                    if selectedPatient.visit(for: appointment.scheduledTime) == nil {
+                        selectedPatient.visits.append(visit)
+                    }
+
                     appointment.patient = selectedPatient
                 } else {
                     let patient = Patient(
@@ -109,12 +121,13 @@ struct AddPatientView: View {
                         patronymicName: patronymicNameText.trimmingCharacters(in: .whitespaces),
                         phoneNumber: phoneNumberText
                     )
+
+                    patient.visits.append(visit)
                     appointment.patient = patient
                 }
 
                 appointment.duration = duration
                 appointment.status = .registered
-                appointment.patient?.visits.append(visit)
             }
             .sheet(isPresented: $findPatient) {
                 PatientsList(selectedPatient: $selectedPatient)
