@@ -12,28 +12,51 @@ import SwiftData
 public final class PatientAppointment {
     public let id: UUID = UUID()
     public let scheduledTime: Date = Date.now
-    public var duration: TimeInterval = TimeInterval.zero
+    public private(set) var duration: TimeInterval = TimeInterval.zero
     @Relationship(inverse: \Patient.appointments)
-    public var patient: Patient?
+    public private(set) var patient: Patient?
     public var status: PatientAppointment.Status?
+    public private(set) var visitID: Visit.ID?
     public var schedule: DoctorSchedule?
-
+    
     public var endTime: Date {
         scheduledTime.addingTimeInterval(duration)
     }
-
+    
     public init(
         id: UUID = UUID(),
         scheduledTime: Date,
         duration: TimeInterval,
         patient: Patient?,
-        status: PatientAppointment.Status? = nil
+        status: PatientAppointment.Status? = nil,
+        visitID: Visit.ID? = nil
     ) {
         self.id = id
         self.scheduledTime = scheduledTime
         self.duration = duration
         self.patient = patient
         self.status = status
+        self.visitID = visitID
+    }
+    
+    public func registerPatient(_ patient: Patient, duration: TimeInterval, registrar: AnyUser) {
+        if let currentVisit = patient.currentVisit(for: scheduledTime) {
+            visitID = currentVisit.id
+        } else {
+            let visit = Visit(registrar: registrar, visitDate: scheduledTime)
+            patient.visits.append(visit)
+            visitID = visit.id
+        }
+
+        self.patient = patient
+        self.duration = duration
+        status = .registered
+    }
+
+    public func cancel() {
+        patient = nil
+        status = nil
+        visitID = nil
     }
 }
 

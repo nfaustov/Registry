@@ -93,8 +93,7 @@ public final class DoctorSchedule {
                 )
             )
         } else {
-            appointment.patient = nil
-            appointment.status = nil
+            appointment.cancel()
         }
     }
 }

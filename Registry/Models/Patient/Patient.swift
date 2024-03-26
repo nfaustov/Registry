@@ -54,16 +54,16 @@ public final class Patient: Person {
             .filter { $0.status != .completed } ?? []
     }
 
-    public func unpaidVisit(for date: Date) -> Visit? {
-        var unpaidVisit: Visit? = nil
+    public func currentVisit(for date: Date) -> Visit? {
+        guard let visitID = incompleteAppointments(for: date).first?.visitID else { return nil }
 
-        for appointment in incompleteAppointments(for: date) {
-            if let visit = visits.first(where: { $0.visitDate == appointment.scheduledTime }) {
-                unpaidVisit = visit
-            }
-        }
+        return visits.first(where: { $0.id == visitID })
+    }
 
-        return unpaidVisit
+    public func visit(for appointmentID: UUID) -> Visit? {
+        guard let appointment = appointments?.first(where: { $0.id == appointmentID }) else { return nil }
+
+        return visits.first(where: { $0.id == appointment.visitID })
     }
 
     public func isNewPatient(for period: StatisticsPeriod) -> Bool {
@@ -77,14 +77,14 @@ public final class Patient: Person {
     }
 
     public func cancelVisit(for date: Date) {
-        guard var visit = unpaidVisit(for: date) else { return }
+        guard var visit = currentVisit(for: date) else { return }
 
         visit.cancellationDate = .now
         visit.bill = nil
     }
 
     public func updatePaymentSubject(_ subject: Payment.Subject, for appointment: PatientAppointment) {
-        guard var visit = unpaidVisit(for: appointment.scheduledTime) else { return }
+        guard var visit = currentVisit(for: appointment.scheduledTime) else { return }
 
         switch subject {
         case .bill(let bill): visit.bill = bill

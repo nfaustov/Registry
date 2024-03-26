@@ -106,14 +106,8 @@ struct AddPatientView: View {
             ) {
                 replaceAppointmentsIfNeeded()
 
-                let visit = Visit(registrar: user.asAnyUser, visitDate: appointment.scheduledTime)
-
                 if let selectedPatient {
-                    if selectedPatient.incompleteAppointments(for: appointment.scheduledTime).isEmpty {
-                        selectedPatient.visits.append(visit)
-                    }
-
-                    appointment.patient = selectedPatient
+                    appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)
                 } else {
                     let patient = Patient(
                         secondName: secondNameText.trimmingCharacters(in: .whitespaces),
@@ -122,12 +116,8 @@ struct AddPatientView: View {
                         phoneNumber: phoneNumberText
                     )
 
-                    patient.visits.append(visit)
-                    appointment.patient = patient
+                    appointment.registerPatient(patient, duration: duration, registrar: user.asAnyUser)
                 }
-
-                appointment.duration = duration
-                appointment.status = .registered
             }
             .sheet(isPresented: $findPatient) {
                 PatientsList(selectedPatient: $selectedPatient)

@@ -33,7 +33,7 @@ struct CompletedAppointmentView: View {
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        guard let visit = appointment.patient?.visits.first(where: { $0.visitDate == appointment.scheduledTime }),
+        guard let visit = appointment.patient?.visit(for: appointment.id),
               let patient = appointment.patient else { fatalError() }
 
         self.patient = patient

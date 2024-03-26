@@ -32,7 +32,7 @@ struct BillScreen: View {
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        if let visit = appointment.patient?.unpaidVisit(for: appointment.scheduledTime),
+        if let visit = appointment.patient?.currentVisit(for: appointment.scheduledTime),
            let bill = visit.bill {
             _bill = State(initialValue: bill)
         } else {

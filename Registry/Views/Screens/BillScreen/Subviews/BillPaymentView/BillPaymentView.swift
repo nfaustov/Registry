@@ -35,7 +35,7 @@ struct BillPaymentView: View {
         _isPaid = isPaid
 
         guard let patient = appointment.patient,
-              let visit = patient.visits.first(where: { $0.visitDate == appointment.scheduledTime }),
+              let visit = patient.currentVisit(for: appointment.scheduledTime),
               let bill = visit.bill else { fatalError() }
 
         self.patient = patient
@@ -165,7 +165,8 @@ struct BillPaymentView: View {
                     patient.updateBalance(increment: -patient.balance)
                 }
 
-                appointment.status = .completed
+                patient.incompleteAppointments(for: appointment.scheduledTime)
+                    .forEach { $0.status = .completed }
 
                 payment()
                 SalaryCharger.charge(for: .bill(bill), doctors: doctors)
