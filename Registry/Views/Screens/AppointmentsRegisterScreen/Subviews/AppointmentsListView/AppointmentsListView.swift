@@ -80,7 +80,7 @@ private extension AppointmentsListView {
 
             Section {
                 Button(role: .destructive) {
-                    if patient.appointments(for: appointment.scheduledTime).count == 1 {
+                    if patient.incompleteAppointments(for: appointment.scheduledTime).count == 1 {
                         patient.cancelVisit(for: appointment.scheduledTime)
                     }
 

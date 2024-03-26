@@ -109,7 +109,7 @@ struct AddPatientView: View {
                 let visit = Visit(registrar: user.asAnyUser, visitDate: appointment.scheduledTime)
 
                 if let selectedPatient {
-                    if selectedPatient.visit(for: appointment.scheduledTime) == nil {
+                    if selectedPatient.incompleteAppointments(for: appointment.scheduledTime).isEmpty {
                         selectedPatient.visits.append(visit)
                     }
 

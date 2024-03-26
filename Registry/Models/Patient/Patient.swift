@@ -48,12 +48,22 @@ public final class Patient: Person {
         self.visits = visits
     }
 
-    public func appointments(for date: Date) -> [PatientAppointment] {
-        appointments?.filter { Calendar.current.isDate($0.scheduledTime, inSameDayAs: date) } ?? []
+    public func incompleteAppointments(for date: Date) -> [PatientAppointment] {
+        appointments?
+            .filter { Calendar.current.isDate($0.scheduledTime, inSameDayAs: date) }
+            .filter { $0.status != .completed } ?? []
     }
 
-    public func visit(for date: Date) -> Visit? {
-        visits.first(where: { Calendar.current.isDate($0.visitDate, inSameDayAs: date) })
+    public func unpaidVisit(for date: Date) -> Visit? {
+        var unpaidVisit: Visit? = nil
+
+        for appointment in incompleteAppointments(for: date) {
+            if let visit = visits.first(where: { $0.visitDate == appointment.scheduledTime }) {
+                unpaidVisit = visit
+            }
+        }
+
+        return unpaidVisit
     }
 
     public func isNewPatient(for period: StatisticsPeriod) -> Bool {
@@ -67,14 +77,14 @@ public final class Patient: Person {
     }
 
     public func cancelVisit(for date: Date) {
-        guard var visit = visit(for: date) else { return }
+        guard var visit = unpaidVisit(for: date) else { return }
 
         visit.cancellationDate = .now
         visit.bill = nil
     }
 
     public func updatePaymentSubject(_ subject: Payment.Subject, for appointment: PatientAppointment) {
-        guard var visit = visit(for: appointment.scheduledTime) else { return }
+        guard var visit = unpaidVisit(for: appointment.scheduledTime) else { return }
 
         switch subject {
         case .bill(let bill): visit.bill = bill
