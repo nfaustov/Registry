@@ -18,9 +18,9 @@ public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
     public var firstName: String
     public var patronymicName: String
     public var phoneNumber: String
-    public var balance: Double
+    public private(set) var balance: Double
     public var salary: Salary
-    public var agentFee: Double
+    public private(set) var agentFee: Double
 }
 
 public extension Employee {

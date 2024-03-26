@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 public final class Patient: Person {
-    public var id: UUID = UUID()
+    public let id: UUID = UUID()
     public var secondName: String = ""
     public var firstName: String =  ""
     public var patronymicName: String = ""
@@ -19,7 +19,7 @@ public final class Patient: Person {
     public var passport: PassportData = PassportData()
     public var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     public var treatmentPlan: TreatmentPlan?
-    public var createdAt: Date = Date.now
+    public let createdAt: Date = Date.now
     public var visits: [Visit] = []
     public var appointments: [PatientAppointment]?
 

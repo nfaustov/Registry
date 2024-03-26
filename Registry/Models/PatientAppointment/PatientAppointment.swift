@@ -10,8 +10,8 @@ import SwiftData
 
 @Model
 public final class PatientAppointment {
-    public var id: UUID = UUID()
-    public var scheduledTime: Date = Date.now
+    public let id: UUID = UUID()
+    public let scheduledTime: Date = Date.now
     public var duration: TimeInterval = TimeInterval.zero
     @Relationship(inverse: \Patient.appointments)
     public var patient: Patient?

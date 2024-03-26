@@ -12,7 +12,7 @@ public struct RenderedService: Codable, Hashable, Identifiable {
     public let pricelistItem: PricelistItem.Short
     public var performer: AnyEmployee?
     public var agent: AnyEmployee?
-    public var conclusion: Data?
+    public private(set) var conclusion: Data?
 
     public init(
         id: UUID = UUID(),

@@ -23,12 +23,12 @@ public enum UserAccessLevel: Int, Codable, Hashable, CaseIterable, Identifiable 
 }
 
 public struct AnyUser: User, Codable, Hashable {
-    public var id: UUID
+    public let id: UUID
     public var secondName: String
     public var firstName: String
     public var patronymicName: String
     public var phoneNumber: String
-    public var balance: Double
+    public private(set) var balance: Double
     public var accessLevel: UserAccessLevel
 }
 

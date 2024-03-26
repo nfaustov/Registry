@@ -11,7 +11,7 @@ public struct Bill: Codable, Hashable, Identifiable {
     public let id: UUID
     public var services: [RenderedService]
     public var discount: Double
-    public var contract: Data?
+    public private(set) var contract: Data?
 
     public var price: Double {
         services

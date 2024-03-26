@@ -9,11 +9,11 @@ import Foundation
 
 public extension Patient {
     struct PlaceOfResidence: Codable, Hashable {
-        public let region: String
-        public let locality: String
-        public let streetAdress: String
-        public let house: String
-        public let appartment: String
+        public var region: String
+        public var locality: String
+        public var streetAdress: String
+        public var house: String
+        public var appartment: String
 
         public init(
             region: String = "",

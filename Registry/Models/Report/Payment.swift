@@ -8,12 +8,12 @@
 import Foundation
 
 public struct Payment: Codable, Hashable, Identifiable {
-    public var id: UUID
-    public var date: Date
-    public var purpose: Payment.Purpose
-    public var methods: [Payment.Method]
+    public let id: UUID
+    public let date: Date
+    public let purpose: Payment.Purpose
+    public let methods: [Payment.Method]
     public var subject: Payment.Subject?
-    public var createdBy: AnyUser
+    public let createdBy: AnyUser
 
     public init(
         id: UUID = UUID(),

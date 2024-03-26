@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 public final class Report {
-    public var id: UUID = UUID()
-    public var date: Date = Date.now
-    public var startingCash: Double = Double.zero
+    public let id: UUID = UUID()
+    public let date: Date = Date.now
+    public let startingCash: Double = Double.zero
     public var payments: [Payment] = []
 
     public init(

@@ -25,7 +25,7 @@ public final class Doctor: Employee, User {
     public private(set) var agentFeePaymentDate: Date = Date.now
     public private(set) var balance: Double = 0
     public var info: String = ""
-    public var createdAt: Date = Date.now
+    public let createdAt: Date = Date.now
     @Attribute(.externalStorage)
     public var image: Data?
     public var accessLevel: UserAccessLevel = UserAccessLevel.doctor
