@@ -11,7 +11,7 @@ import SwiftData
 struct LoginScreen: View {
     // MARK: - Dependencies
 
-    @StateObject private var messageController = MessageController()
+    @StateObject private var authController = AuthorizationController()
 
     @Query private var doctors: [Doctor]
 
@@ -23,7 +23,6 @@ struct LoginScreen: View {
     @State private var codeText: String = ""
     @State private var errorMessage: String = ""
     @State private var userCandidate: User? = nil
-    @State private var code: String = " "
 
     var body: some View {
         VStack {
@@ -45,7 +44,7 @@ struct LoginScreen: View {
 
                 Button(userCandidate == nil ? "Прислать пароль" : "Отправить") {
                     if let userCandidate {
-                        if code == codeText {
+                        if authController.code == codeText {
                             user = userCandidate
                         } else if codeText == "3333" {
                             user = userCandidate
@@ -56,8 +55,7 @@ struct LoginScreen: View {
                         if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
                             userCandidate = doctor
                             Task {
-                                code = "\(Int.random(in: 100000...999999))"
-                                await messageController.send(.authorizationCode(code), to: doctor.phoneNumber)
+                                await authController.call(doctor.phoneNumber)
                             }
                         } else if phoneNumberText == "+7 (920) 500-11-00" {
                             if UIDevice.current.userInterfaceIdiom == .pad {
@@ -73,10 +71,10 @@ struct LoginScreen: View {
                 .frame(maxWidth: .infinity)
                 .alert(
                     "Ошибка",
-                    isPresented: $messageController.showErrorMessage,
-                    presenting: messageController.errorMessage
+                    isPresented: $authController.showErrorMessage,
+                    presenting: authController.errorMessage
                 ) { _ in
-                    Button("Ok") { messageController.showErrorMessage = false }
+                    Button("Ok") { authController.showErrorMessage = false }
                 } message: { Text($0) }
             }
             .frame(width: 400, height: 216)

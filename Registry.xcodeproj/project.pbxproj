@@ -109,6 +109,10 @@
 		8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE72B84A4080086BF4D /* RenderedService.swift */; };
 		8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
+		8BE4C68A2BB33EE400264557 /* CallAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C6892BB33EE400264557 /* CallAuthorizationService.swift */; };
+		8BE4C68C2BB33F3100264557 /* CallAuthorizationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */; };
+		8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */; };
+		8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68F2BB3461000264557 /* AuthorizationController.swift */; };
 		8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 		8BF534092BAF50530005C003 /* SalaryCharger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF534082BAF50530005C003 /* SalaryCharger.swift */; };
@@ -219,6 +223,10 @@
 		8BDCCFE72B84A4080086BF4D /* RenderedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderedService.swift; sourceTree = "<group>"; };
 		8BDCCFE92B84A6770086BF4D /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
+		8BE4C6892BB33EE400264557 /* CallAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationService.swift; sourceTree = "<group>"; };
+		8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationEntity.swift; sourceTree = "<group>"; };
+		8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationServiceClient.swift; sourceTree = "<group>"; };
+		8BE4C68F2BB3461000264557 /* AuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
 		8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientView.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		8BF534082BAF50530005C003 /* SalaryCharger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryCharger.swift; sourceTree = "<group>"; };
@@ -633,6 +641,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8DA96B2BA210C400F6F847 /* ArtmedicsServices */,
+				8BE4C6882BB33E0D00264557 /* CallAuthorizationService */,
 				8B8DA96A2BA210B000F6F847 /* MessageService */,
 			);
 			path = Services;
@@ -791,6 +800,7 @@
 			children = (
 				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
+				8BE4C68F2BB3461000264557 /* AuthorizationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -949,6 +959,16 @@
 			path = Visit;
 			sourceTree = "<group>";
 		};
+		8BE4C6882BB33E0D00264557 /* CallAuthorizationService */ = {
+			isa = PBXGroup;
+			children = (
+				8BE4C6892BB33EE400264557 /* CallAuthorizationService.swift */,
+				8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */,
+				8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */,
+			);
+			path = CallAuthorizationService;
+			sourceTree = "<group>";
+		};
 		8BEEDF012B85EAE800542F2D /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1059,7 @@
 				8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */,
 				8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */,
 				8B285F442B4DC81800C29E20 /* DoctorImageView.swift in Sources */,
+				8BE4C68A2BB33EE400264557 /* CallAuthorizationService.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Bill.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
@@ -1053,6 +1074,8 @@
 				8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */,
 				8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */,
 				8B8DA9672BA209E700F6F847 /* MessageEntity.swift in Sources */,
+				8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */,
+				8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */,
 				8B9673A12B361C2300FD2E7C /* Salary.swift in Sources */,
 				8B7A3C002B8C7C5300A48646 /* DoctorPayoutView.swift in Sources */,
 				8B8DA9692BA20F1C00F6F847 /* Message.swift in Sources */,
@@ -1075,6 +1098,7 @@
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
 				8B6BAA042B8DD28F000FF417 /* ServiceMenuView.swift in Sources */,
+				8BE4C68C2BB33F3100264557 /* CallAuthorizationEntity.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,
 				8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */,
