@@ -50,10 +50,9 @@ struct AppointmentView: View {
                         }
                     }
                 } else {
-                    Picker("", selection: $appointment.status) {
-                        ForEach(PatientAppointment.Status.allCases) { status in
+                    Picker("", selection: Binding(get: { appointment.status ?? .registered }, set: { appointment.status = $0 })) {
+                        ForEach(PatientAppointment.Status.selectableCases) { status in
                             Text(status.rawValue)
-                                .tag(status.rawValue)
                         }
                     }
                     .tint(.secondary)
@@ -68,6 +67,7 @@ struct AppointmentView: View {
                         .padding(6)
                 }
                 .buttonStyle(.bordered)
+                .opacity(appointment.scheduledTime > Calendar.current.startOfDay(for: .now) ? 1 : 0)
             }
         }
     }

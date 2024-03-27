@@ -71,7 +71,7 @@ public final class PatientAppointment {
 }
 
 extension PatientAppointment {
-    public enum Status: String, Codable, CaseIterable, Identifiable {
+    public enum Status: String, Codable, Identifiable {
         case registered = "Зарегистрирован"
         case confirmed = "Подтвержден"
         case came = "Пришел"
@@ -82,7 +82,7 @@ extension PatientAppointment {
             self
         }
 
-        public static var allCases: [Status] {
+        public static var selectableCases: [Status] {
             [.registered, .confirmed, .came, .inProgress]
         }
     }

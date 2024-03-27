@@ -28,8 +28,11 @@ struct AppointmentsListView: View {
                     leadingSwipeActions(for: appointment)
                 }
                 .contextMenu {
-                    menuView(for: appointment)
+                    if !isExpiredForUpdating {
+                        menuView(for: appointment)
+                    }
                 }
+                .disabled(isExpiredForUpdating)
         }
         .listStyle(.plain)
         .scrollBounceBehavior(.basedOnSize)
@@ -56,6 +59,10 @@ private extension AppointmentsListView {
     var isAvailableToExtendEnding: Bool {
         schedule.ending.addingTimeInterval(schedule.doctor?.serviceDuration ?? 0) <=
         WorkingHours(for: schedule.starting).end
+    }
+
+    var isExpiredForUpdating: Bool {
+        schedule.starting < Calendar.current.startOfDay(for: .now)
     }
 }
 
