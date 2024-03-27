@@ -12,7 +12,7 @@ import SwiftData
 public final class DoctorSchedule {
     public let id: UUID = UUID()
     @Relationship(inverse: \Doctor.schedules)
-    public let doctor: Doctor?
+    public var doctor: Doctor?
     public var cabinet: Int = 1
     public var starting: Date = Date.now
     public var ending: Date = Date.now.addingTimeInterval(1800)

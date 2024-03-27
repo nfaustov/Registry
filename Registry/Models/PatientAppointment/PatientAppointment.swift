@@ -39,15 +39,25 @@ public final class PatientAppointment {
         self.visitID = visitID
     }
     
-    public func registerPatient(_ patient: Patient, duration: TimeInterval, registrar: AnyUser) {
-        if let currentVisit = patient.currentVisit(for: scheduledTime) {
-            visitID = currentVisit.id
-        } else {
-            let visit = Visit(registrar: registrar, visitDate: scheduledTime)
-            patient.visits.append(visit)
-            visitID = visit.id
-        }
+    public func registerPatient(
+        _ patient: Patient,
+        duration: TimeInterval,
+        registrar: AnyUser
+    ) {
+        let visit = Visit(registrar: registrar, visitDate: scheduledTime)
+        patient.visits.append(visit)
+        visitID = visit.id
+        self.patient = patient
+        self.duration = duration
+        status = .registered
+    }
 
+    public func registerPatient(
+        _ patient: Patient, 
+        duration: TimeInterval,
+        mergedVisitID: Visit.ID
+    ) {
+        visitID = mergedVisitID
         self.patient = patient
         self.duration = duration
         status = .registered

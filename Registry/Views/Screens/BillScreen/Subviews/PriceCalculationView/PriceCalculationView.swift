@@ -57,7 +57,7 @@ struct PriceCalculationView: View {
 
                 HStack {
                     Button {
-                        patient.updatePaymentSubject(.bill(bill), for: appointment)
+                        patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
                         coordinator.present(
                             .billPayment(
                                 appointment: appointment,
@@ -102,7 +102,7 @@ struct PriceCalculationView: View {
         }
         .onDisappear {
             if !isCompleted {
-                patient.updatePaymentSubject(.bill(bill), for: appointment)
+                patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
             }
         }
         .onChange(of: bill.price) { _, newValue in

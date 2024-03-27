@@ -33,7 +33,7 @@ struct CompletedAppointmentView: View {
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        guard let visit = appointment.patient?.visit(for: appointment.id),
+        guard let visit = appointment.patient?.visit(forAppointmentID: appointment.id),
               let patient = appointment.patient else { fatalError() }
 
         self.patient = patient
@@ -99,7 +99,7 @@ struct CompletedAppointmentView: View {
                 onConfirm: visit.refund != nil ? nil : {
                     createPayment()
                     SalaryCharger.charge(for: .refund(createdRefund), doctors: doctors)
-                    patient.updatePaymentSubject(.refund(createdRefund), for: appointment)
+                    patient.updatePaymentSubject(.refund(createdRefund), forAppointmentID: appointment.id)
                     if includeBalance {
                         createBalancePayment()
                     }

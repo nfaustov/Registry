@@ -27,6 +27,7 @@ struct AddPatientView: View {
     @State private var patronymicNameText = ""
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
+    @State private var selection: Visit.ID?
 
     // MARK: -
 
@@ -39,8 +40,11 @@ struct AddPatientView: View {
         NavigationStack {
             List {
                 Section {
-                    DateText(appointment.scheduledTime, format: .weekDay)
-                    DateText(appointment.scheduledTime, format: .time)
+                    LabeledContent {
+                        DateText(appointment.scheduledTime, format: .time)
+                    } label: {
+                        DateText(appointment.scheduledTime, format: .weekDay)
+                    }
                 } header: {
                     Text("Дата / Время")
                 }
@@ -86,18 +90,61 @@ struct AddPatientView: View {
                 }
 
                 Section {
-                    DurationLabel(duration, systemImage: "clock")
                     if durationBounds.lowerBound < durationBounds.upperBound {
-                        Slider(
-                            value: $duration,
+                        Stepper(
+                            value: $duration.animation(),
                             in: durationBounds,
                             step: durationBounds.lowerBound
-                        )
+                        ) {
+                            DurationLabel(duration, systemImage: "clock")
+                                .contentTransition(.numericText())
+                        }
+                    } else {
+                        DurationLabel(duration, systemImage: "clock")
                     }
                 } header: {
                     Text("Длительность")
                 }
 
+                if let selectedPatient, !selectedPatient.currentVisits(for: appointment.scheduledTime).isEmpty {
+                    Section {
+                        ForEach(selectedPatient.currentVisits(for: appointment.scheduledTime)) { visit in
+                            LabeledContent {
+                                Image(systemName: selection == visit.id ? "personalhotspot.circle.fill": "personalhotspot.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .foregroundStyle(selection == visit.id ? .blue : .secondary)
+                                    .frame(width: 24, height: 24)
+                                    .padding(.horizontal)
+                            } label: {
+                                VStack {
+                                    ForEach(selectedPatient.mergedAppointments(forVisitID: visit.id).sorted(by: { $0.scheduledTime < $1.scheduledTime })) { visitAppointment in
+                                        if let doctor = visitAppointment.schedule?.doctor {
+                                            LabeledContent {
+                                                DateText(visitAppointment.scheduledTime, format: .time)
+                                                    .padding(.horizontal)
+                                            } label: {
+                                                Text(doctor.initials)
+                                                    .foregroundStyle(.primary)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    if selection == visit.id {
+                                        selection = nil
+                                    } else {
+                                        selection = visit.id
+                                    }
+                                }
+                            }
+                        }
+                    } header: {
+                        Text("Текущие визиты на \(DateFormat.weekDay.string(from: appointment.scheduledTime))")
+                    }
+                }
             }
             .listStyle(.insetGrouped)
             .sheetToolbar(
@@ -107,7 +154,12 @@ struct AddPatientView: View {
                 replaceAppointmentsIfNeeded()
 
                 if let selectedPatient {
-                    appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)
+                    if let selection {
+                        appointment.registerPatient(selectedPatient, duration: duration, mergedVisitID: selection)
+                        selectedPatient.specifyVisitDate(selection)
+                    } else {
+                        appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)
+                    }
                 } else {
                     let patient = Patient(
                         secondName: secondNameText.trimmingCharacters(in: .whitespaces),

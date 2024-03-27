@@ -80,11 +80,13 @@ private extension AppointmentsListView {
 
             Section {
                 Button(role: .destructive) {
-                    if patient.incompleteAppointments(for: appointment.scheduledTime).count == 1 {
-                        patient.cancelVisit(for: appointment.scheduledTime)
+                    if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
+                        patient.cancelVisit(for: appointment.id)
+                        schedule.cancelPatientAppointment(appointment)
+                    } else if let visit = patient.visit(forAppointmentID: appointment.id) {
+                        schedule.cancelPatientAppointment(appointment)
+                        patient.specifyVisitDate(visit.id)
                     }
-
-                    appointment.schedule?.cancelPatientAppointment(appointment)
                 } label: {
                     Label("Отменить прием", systemImage: "person.badge.minus")
                 }

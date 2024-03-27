@@ -48,19 +48,28 @@ public final class Patient: Person {
         self.visits = visits
     }
 
-    public func incompleteAppointments(for date: Date) -> [PatientAppointment] {
-        appointments?
+    public func mergedAppointments(forAppointmentID appointmentID: UUID) -> [PatientAppointment] {
+        if let visit = visit(forAppointmentID: appointmentID) {
+            appointments?.filter { $0.visitID == visit.id } ?? []
+        } else {
+            []
+        }
+    }
+
+    public func mergedAppointments(forVisitID visitID: Visit.ID) -> [PatientAppointment] {
+        appointments?.filter { $0.visitID == visitID } ?? []
+    }
+
+    public func currentVisits(for date: Date) -> [Visit] {
+        let visits = appointments?
             .filter { Calendar.current.isDate($0.scheduledTime, inSameDayAs: date) }
-            .filter { $0.status != .completed } ?? []
+            .filter { $0.status != .completed }
+            .compactMap { visit(forAppointmentID: $0.id) } ?? []
+
+        return Array(visits.uniqued())
     }
 
-    public func currentVisit(for date: Date) -> Visit? {
-        guard let visitID = incompleteAppointments(for: date).first?.visitID else { return nil }
-
-        return visits.first(where: { $0.id == visitID })
-    }
-
-    public func visit(for appointmentID: UUID) -> Visit? {
+    public func visit(forAppointmentID appointmentID: UUID) -> Visit? {
         guard let appointment = appointments?.first(where: { $0.id == appointmentID }) else { return nil }
 
         return visits.first(where: { $0.id == appointment.visitID })
@@ -76,19 +85,37 @@ public final class Patient: Person {
         balance += increment
     }
 
-    public func cancelVisit(for date: Date) {
-        guard var visit = currentVisit(for: date) else { return }
+    public func cancelVisit(for appointmentID: UUID) {
+        guard var visit = visit(forAppointmentID: appointmentID) else { return }
 
         visit.cancellationDate = .now
         visit.bill = nil
     }
 
-    public func updatePaymentSubject(_ subject: Payment.Subject, for appointment: PatientAppointment) {
-        guard var visit = currentVisit(for: appointment.scheduledTime) else { return }
+    public func updatePaymentSubject(_ subject: Payment.Subject, forAppointmentID appointmentID: UUID) {
+        guard let visit = visit(forAppointmentID: appointmentID),
+              let visitIndex = visits.firstIndex(of: visit) else { return }
+
+        var updatedVisit = visits.remove(at: visitIndex)
 
         switch subject {
-        case .bill(let bill): visit.bill = bill
-        case .refund(let refund): visit.refund = refund
+        case .bill(let bill): updatedVisit.bill = bill
+        case .refund(let refund): updatedVisit.refund = refund
+        }
+
+        visits.append(updatedVisit)
+    }
+
+    public func specifyVisitDate(_ visitID: Visit.ID) {
+        guard let visitIndex = visits.firstIndex(where: { $0.id == visitID }) else { return }
+
+        var updatedVisit = visits.remove(at: visitIndex)
+
+        if let firstVisitAppointment = mergedAppointments(forVisitID: updatedVisit.id)
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+            .first {
+            updatedVisit.visitDate = firstVisitAppointment.scheduledTime
+            visits.append(updatedVisit)
         }
     }
 }

@@ -35,7 +35,7 @@ struct BillPaymentView: View {
         _isPaid = isPaid
 
         guard let patient = appointment.patient,
-              let visit = patient.currentVisit(for: appointment.scheduledTime),
+              let visit = patient.visit(forAppointmentID: appointment.id),
               let bill = visit.bill else { fatalError() }
 
         self.patient = patient
@@ -165,7 +165,7 @@ struct BillPaymentView: View {
                     patient.updateBalance(increment: -patient.balance)
                 }
 
-                patient.incompleteAppointments(for: appointment.scheduledTime)
+                patient.mergedAppointments(forAppointmentID: appointment.id)
                     .forEach { $0.status = .completed }
 
                 payment()

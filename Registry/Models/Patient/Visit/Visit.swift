@@ -11,7 +11,7 @@ public struct Visit: Codable, Hashable, Identifiable {
     public let id: UUID
     public let registrationDate: Date
     public let registrar: AnyUser
-    public let visitDate: Date
+    public var visitDate: Date
     public var cancellationDate: Date?
     public var bill: Bill?
     public var refund: Refund?

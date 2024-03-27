@@ -32,7 +32,7 @@ struct BillScreen: View {
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        if let visit = appointment.patient?.currentVisit(for: appointment.scheduledTime),
+        if let visit = appointment.patient?.visit(forAppointmentID: appointment.id),
            let bill = visit.bill {
             _bill = State(initialValue: bill)
         } else {
@@ -159,11 +159,12 @@ struct BillScreen: View {
 private extension BillScreen {
     func loadBasicService() {
         if bill.services.isEmpty, let patient = appointment.patient {
-            patient.incompleteAppointments(for: appointment.scheduledTime).forEach { appointment in
-                if let doctor = appointment.schedule?.doctor, let pricelistItem = doctor.basicService {
+            patient.mergedAppointments(forAppointmentID: appointment.id).forEach { visitAppointment in
+                if let doctor = visitAppointment.schedule?.doctor, 
+                    let pricelistItem = doctor.basicService {
                     let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
                     bill.services.append(service)
-                    patient.updatePaymentSubject(.bill(bill), for: appointment)
+                    patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
                 }
             }
         }
