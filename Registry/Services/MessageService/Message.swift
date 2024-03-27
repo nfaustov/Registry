@@ -8,28 +8,25 @@
 import Foundation
 
 public enum Message {
-    case authorizationCode(String)
     case appointmentReminder(PatientAppointment)
     case appointmentConfirmation(PatientAppointment)
 
     var text: String {
         switch self {
-        case .authorizationCode(let string):
-            return string
         case .appointmentReminder(let patientAppointment):
             guard let schedule = patientAppointment.schedule,
                   let doctor = schedule.doctor else { return "" }
 
-            let time = DateFormat.time.string(from: patientAppointment.scheduledTime)
+            let dateTime = DateFormat.dateTime.string(from: patientAppointment.scheduledTime)
 
-            return "Ожидаем Вас завтра в \(time). Запись к врачу \(doctor.initials). Клиника АртМедикс +7 (4742) 25-04-04"
+            return "Ожидаем Вас \(dateTime) на прием к врачу \(doctor.initials). Клиника АртМедикс +7(4742)25-04-04, WA/TG: +7(991)217-04-40"
         case .appointmentConfirmation(let patientAppointment):
             guard let schedule = patientAppointment.schedule,
                   let doctor = schedule.doctor else { return "" }
 
             let dateTime = DateFormat.dateTime.string(from: patientAppointment.scheduledTime)
 
-            return "Вы записаны на \(dateTime), врач \(doctor.initials). Клиника АртМедикс"
+            return "Вы записаны \(dateTime) на прием к врачу \(doctor.initials). Клиника АртМедикс +7(4742)25-04-04, WA/TG: +7(991)217-04-40"
         }
     }
 }
