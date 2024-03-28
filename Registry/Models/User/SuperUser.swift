@@ -31,4 +31,11 @@ public final class SuperUser: User {
         balance = 0
         accessLevel = .boss
     }
+
+    static var boss: SuperUser = SuperUser(
+        secondName: "Фаустов",
+        firstName: "Николай",
+        patronymicName: "Игоревич",
+        phoneNumber: "+7 (920) 500-11-00"
+    )
 }

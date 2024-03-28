@@ -84,16 +84,3 @@ struct ContentView: View {
         .modelContainer(for: Doctor.self, inMemory: true)
         .previewInterfaceOrientation(.landscapeRight)
 }
-
-// MARK: - Environment
-
-private struct UserKey: EnvironmentKey {
-    static let defaultValue: User = ExampleData.doctor
-}
-
-extension EnvironmentValues {
-    var user: User {
-        get { self[UserKey.self] }
-        set { self[UserKey.self] = newValue }
-    }
-}

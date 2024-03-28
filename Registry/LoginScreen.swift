@@ -72,12 +72,8 @@ private extension LoginScreen {
                     Task {
                         await authController.call(doctor.phoneNumber)
                     }
-                } else if phoneNumberText == "+7 (920) 500-11-00" {
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        userCandidate = ExampleData.doctor
-                    } else if UIDevice.current.userInterfaceIdiom == .phone {
-                        userCandidate = ExampleData.boss
-                    }
+                } else if phoneNumberText == SuperUser.boss.phoneNumber {
+                    userCandidate = SuperUser.boss
                 } else {
                     errorMessage = "Пользователь не найден"
                 }

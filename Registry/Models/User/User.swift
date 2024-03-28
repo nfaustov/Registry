@@ -45,3 +45,9 @@ public extension User {
         )
     }
 }
+
+extension UserAccessLevel: Comparable {
+    public static func < (lhs: UserAccessLevel, rhs: UserAccessLevel) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
+}

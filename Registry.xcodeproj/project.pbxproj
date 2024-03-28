@@ -29,6 +29,8 @@
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
 		8B29E04C2B6A43360003A647 /* priceList.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B29E04B2B6A43360003A647 /* priceList.json */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
+		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
+		8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6142BB55E0900834AE6 /* UserKey.swift */; };
 		8B4C22BB2B98E7EC00328BCD /* Payment.Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
@@ -141,6 +143,8 @@
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
 		8B29E04B2B6A43360003A647 /* priceList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = priceList.json; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
+		8B45E6142BB55E0900834AE6 /* UserKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKey.swift; sourceTree = "<group>"; };
 		8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.Subject.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsStatistics.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
@@ -393,6 +397,22 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		8B45E6122BB55DE400834AE6 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				8B45E6132BB55DFA00834AE6 /* UserKey */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
+		8B45E6132BB55DFA00834AE6 /* UserKey */ = {
+			isa = PBXGroup;
+			children = (
+				8B45E6142BB55E0900834AE6 /* UserKey.swift */,
+			);
+			path = UserKey;
+			sourceTree = "<group>";
+		};
 		8B69A13F2B8D125E00458F33 /* BillScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,6 +564,7 @@
 			isa = PBXGroup;
 			children = (
 				8B3742642BA068BA00ED8DB7 /* User.swift */,
+				8B45E6102BB5588800834AE6 /* AnonymousUser.swift */,
 				8B7EA8602BA36F2E00DE722C /* SuperUser.swift */,
 			);
 			path = User;
@@ -869,6 +890,7 @@
 		8BA53D962B494DBD006BE983 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8B45E6122BB55DE400834AE6 /* Environment */,
 				8BF534082BAF50530005C003 /* SalaryCharger.swift */,
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
@@ -1084,6 +1106,7 @@
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
+				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8BDCCFE42B84A3860086BF4D /* Visit.swift in Sources */,
 				8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */,
@@ -1116,6 +1139,7 @@
 				8B183BB42B866D0F00FA1D46 /* BillTemplate.swift in Sources */,
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
+				8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */,
 				8BDCCFDB2B849F960086BF4D /* Patient.swift in Sources */,
 				8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */,
 				8B183BB12B8661E800FA1D46 /* Payment.Method.swift in Sources */,
