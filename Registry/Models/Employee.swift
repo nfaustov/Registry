@@ -21,6 +21,7 @@ public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
     public private(set) var balance: Double
     public var salary: Salary
     public private(set) var agentFee: Double
+    public var image: Data?
 }
 
 public extension Employee {
@@ -33,7 +34,8 @@ public extension Employee {
             phoneNumber: phoneNumber,
             balance: balance,
             salary: salary,
-            agentFee: agentFee
+            agentFee: agentFee,
+            image: image
         )
     }
 }

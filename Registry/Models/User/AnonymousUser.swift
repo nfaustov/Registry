@@ -15,6 +15,7 @@ public final class AnonymousUser: User {
     public var phoneNumber: String
     public private(set) var balance: Double
     public var accessLevel: UserAccessLevel
+    public var image: Data?
 
     init() {
         id = UUID()
@@ -24,5 +25,6 @@ public final class AnonymousUser: User {
         phoneNumber = ""
         balance = 0
         accessLevel = .anonymous
+        image = nil
     }
 }

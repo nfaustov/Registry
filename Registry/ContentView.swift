@@ -30,21 +30,28 @@ struct ContentView: View {
     var body: some View {
         if let user {
             NavigationSplitView {
-                List(user.accessLevel == .boss ? Screen.allCases : Screen.registrarCases, selection: $rootScreen) { screen in
-                    HStack {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: 32, height: 32)
-                                .foregroundStyle(screen.color.gradient)
-                                .clipShape(.rect(cornerRadius: 8, style: .continuous))
-                            Image(systemName: screen.imageName)
-                                .foregroundStyle(.white)
+                VStack {
+                    List(user.accessLevel == .boss ? Screen.allCases : Screen.registrarCases, selection: $rootScreen) { screen in
+                        HStack {
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: 32, height: 32)
+                                    .foregroundStyle(screen.color.gradient)
+                                    .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                                Image(systemName: screen.imageName)
+                                    .foregroundStyle(.white)
+                            }
+                            Text(screen.title)
                         }
-                        Text(screen.title)
                     }
-                }
-                .onChange(of: rootScreen) {
-                    coordinator.clearPath()
+                    .onChange(of: rootScreen) {
+                        coordinator.clearPath()
+                    }
+
+                    Spacer()
+
+                    UserView(user: user)
+                        .padding()
                 }
                 .navigationTitle("Меню")
                 .navigationSplitViewColumnWidth(220)

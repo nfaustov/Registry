@@ -1,5 +1,5 @@
 //
-//  DoctorImageView.swift
+//  PersonImageView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 09.01.2024.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct DoctorImageView: View {
+struct PersonImageView: View {
     // MARK: - Dependencies
 
-    let doctor: Doctor
+    let person: Person
 
     // MARK: -
 
     var body: some View {
-        if let imageData = doctor.image,
+        if let imageData = person.image,
            let uiImage = UIImage(data: imageData) {
             Image(uiImage: uiImage)
                 .resizable()
@@ -29,5 +29,5 @@ struct DoctorImageView: View {
 }
 
 #Preview {
-    DoctorImageView(doctor: ExampleData.doctor)
+    PersonImageView(person: ExampleData.doctor)
 }

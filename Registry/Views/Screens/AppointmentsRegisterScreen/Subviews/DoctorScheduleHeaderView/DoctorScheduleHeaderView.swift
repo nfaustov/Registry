@@ -20,7 +20,7 @@ struct DoctorScheduleHeaderView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 24) {
             if let doctor = doctorSchedule.doctor {
-                DoctorImageView(doctor: doctor)
+                PersonImageView(person: doctor)
                     .frame(width: 120, height: 150, alignment: .top)
                     .clipped()
                     .cornerRadius(12)

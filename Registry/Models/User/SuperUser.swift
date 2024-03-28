@@ -15,6 +15,7 @@ public final class SuperUser: User {
     public var phoneNumber: String
     public private(set) var balance: Double
     public var accessLevel: UserAccessLevel
+    public var image: Data?
 
     init(
         id: UUID = UUID(),
@@ -30,6 +31,7 @@ public final class SuperUser: User {
         self.phoneNumber = phoneNumber
         balance = 0
         accessLevel = .boss
+        image = nil
     }
 
     static var boss: SuperUser = SuperUser(

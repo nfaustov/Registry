@@ -18,7 +18,7 @@ struct DoctorView: View {
     var body: some View {
         if presentation == .gridItem {
             ZStack(alignment: .bottomLeading) {
-                DoctorImageView(doctor: doctor)
+                PersonImageView(person: doctor)
                     .frame(
                         width: isPhoneUserInterfaceIdiom ? 140 : 200,
                         height: isPhoneUserInterfaceIdiom ? 175 : 250,
@@ -46,7 +46,7 @@ struct DoctorView: View {
             .padding()
         } else if presentation == .listRow {
             HStack {
-                DoctorImageView(doctor: doctor)
+                PersonImageView(person: doctor)
                     .frame(
                         width: isPhoneUserInterfaceIdiom ? 52 : 64,
                         height: isPhoneUserInterfaceIdiom ? 52 : 64,

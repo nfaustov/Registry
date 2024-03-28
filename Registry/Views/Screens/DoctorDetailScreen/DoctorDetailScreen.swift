@@ -16,7 +16,7 @@ struct DoctorDetailScreen: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            DoctorImageView(doctor: doctor)
+            PersonImageView(person: doctor)
                 .frame(width: 220, height: 275, alignment: .top)
                 .clipShape(.rect(cornerRadius: 16, style: .continuous))
 

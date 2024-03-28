@@ -17,6 +17,19 @@ public enum UserAccessLevel: Int, Codable, Hashable, CaseIterable, Identifiable 
     case registrar = 2
     case boss = 3
 
+    public var title: String {
+        switch self {
+        case .anonymous:
+            "Анонимный пользователь"
+        case .doctor:
+            "Врач"
+        case .registrar:
+            "Регистратор"
+        case .boss:
+            "Руководитель"
+        }
+    }
+
     public var id: Self {
         self
     }
@@ -30,6 +43,7 @@ public struct AnyUser: User, Codable, Hashable {
     public var phoneNumber: String
     public private(set) var balance: Double
     public var accessLevel: UserAccessLevel
+    public var image: Data?
 }
 
 public extension User {
@@ -41,7 +55,8 @@ public extension User {
             patronymicName: patronymicName,
             phoneNumber: phoneNumber,
             balance: balance,
-            accessLevel: accessLevel
+            accessLevel: accessLevel,
+            image: image
         )
     }
 }

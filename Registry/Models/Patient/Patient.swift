@@ -21,6 +21,7 @@ public final class Patient: Person {
     public var treatmentPlan: TreatmentPlan?
     public let createdAt: Date = Date.now
     public var visits: [Visit] = []
+    public var image: Data?
     public var appointments: [PatientAppointment]?
 
     public init(
@@ -33,7 +34,8 @@ public final class Patient: Person {
         passport: PassportData = PassportData(),
         placeOfResidence: PlaceOfResidence = PlaceOfResidence(),
         treatmentPlan: TreatmentPlan? = nil,
-        visits: [Visit] = []
+        visits: [Visit] = [],
+        image: Data? = nil
     ) {
         self.id = id
         self.secondName = secondName
@@ -46,6 +48,7 @@ public final class Patient: Person {
         self.treatmentPlan = treatmentPlan
         self.createdAt = .now
         self.visits = visits
+        self.image = image
     }
 
     public func mergedAppointments(forAppointmentID appointmentID: UUID) -> [PatientAppointment] {

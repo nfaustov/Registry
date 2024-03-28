@@ -17,6 +17,7 @@ public protocol Person: Accountable {
     var firstName: String { get set }
     var patronymicName: String { get set }
     var phoneNumber: String { get set }
+    var image: Data? { get set }
 }
 
 public extension Person {
@@ -28,6 +29,6 @@ public extension Person {
         guard let firstNameLetter = firstName.first,
               let patronymicNameLetter = patronymicName.first else { return secondName }
 
-        return "\(secondName) \(firstNameLetter).\(patronymicNameLetter)"
+        return "\(secondName) \(firstNameLetter).\(patronymicNameLetter)."
     }
 }
