@@ -21,9 +21,10 @@ struct PersonImageView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
         } else {
-            Image("female-doctor")
+            Image(systemName: "person.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+                .foregroundStyle(.gray)
         }
     }
 }
