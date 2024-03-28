@@ -31,7 +31,7 @@ struct ContentView: View {
         if let user {
             NavigationSplitView {
                 VStack {
-                    List(user.accessLevel == .boss ? Screen.allCases : Screen.registrarCases, selection: $rootScreen) { screen in
+                    List(user.accessLevel == .boss ? Screen.bossCases : Screen.registrarCases, selection: $rootScreen) { screen in
                         HStack {
                             ZStack {
                                 Rectangle()
@@ -52,6 +52,9 @@ struct ContentView: View {
 
                     UserView(user: user)
                         .padding()
+                        .onTapGesture {
+                            rootScreen = .userDetail
+                        }
                 }
                 .navigationTitle("Меню")
                 .navigationSplitViewColumnWidth(220)

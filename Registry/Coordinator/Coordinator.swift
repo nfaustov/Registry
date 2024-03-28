@@ -45,6 +45,8 @@ extension Coordinator {
             MedicalServicesScreen()
         case .indicators:
             IndicatorsScreen()
+        case .userDetail:
+            UserDetailScreen()
         }
     }
 

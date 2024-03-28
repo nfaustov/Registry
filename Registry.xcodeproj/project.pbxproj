@@ -32,6 +32,7 @@
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
 		8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6142BB55E0900834AE6 /* UserKey.swift */; };
 		8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61B2BB5650500834AE6 /* UserView.swift */; };
+		8B45E61F2BB56BC300834AE6 /* UserDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */; };
 		8B4C22BB2B98E7EC00328BCD /* Payment.Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
@@ -147,6 +148,7 @@
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
 		8B45E6142BB55E0900834AE6 /* UserKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKey.swift; sourceTree = "<group>"; };
 		8B45E61B2BB5650500834AE6 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailScreen.swift; sourceTree = "<group>"; };
 		8B4C22BA2B98E7EC00328BCD /* Payment.Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.Subject.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsStatistics.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
@@ -421,6 +423,14 @@
 				8B45E61B2BB5650500834AE6 /* UserView.swift */,
 			);
 			path = UserView;
+			sourceTree = "<group>";
+		};
+		8B45E61D2BB56BAF00834AE6 /* UserDetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */,
+			);
+			path = UserDetailScreen;
 			sourceTree = "<group>";
 		};
 		8B69A13F2B8D125E00458F33 /* BillScreen */ = {
@@ -803,6 +813,7 @@
 				8B9673A82B361F6700FD2E7C /* Screen.swift */,
 				8B9673AA2B361F8D00FD2E7C /* Route.swift */,
 				8B9673AC2B361FD200FD2E7C /* Sheet.swift */,
+				8B45E61D2BB56BAF00834AE6 /* UserDetailScreen */,
 				8B8B1A912BAB507E0061344C /* IndicatorsScreen */,
 				8B78013B2B87B75F0064DBFB /* ScheduleScreen */,
 				8B8B18862B88D422006ABD82 /* AppointmentsRegisterScreen */,
@@ -1157,6 +1168,7 @@
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
 				8B9673A92B361F6700FD2E7C /* Screen.swift in Sources */,
 				8B8DA9602BA1CF6500F6F847 /* LoginScreen.swift in Sources */,
+				8B45E61F2BB56BC300834AE6 /* UserDetailScreen.swift in Sources */,
 				8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */,
 				8B6BAA0A2B8DD880000FF417 /* BillPaymentView.swift in Sources */,
 				8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */,
