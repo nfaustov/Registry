@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol MessageService {
-    func sendMessage(phoneNumber: String, message: Message) async throws -> MessageEntity
+    func sendMessage(_ message: Message) async throws -> MessageEntity
 }

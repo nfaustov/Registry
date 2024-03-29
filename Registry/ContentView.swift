@@ -65,7 +65,6 @@ struct ContentView: View {
                         .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
                         .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
                         .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
-                        .preferredColorScheme(user.accessLevel == .boss ? .dark : .none)
                         .environment(\.user, user)
                 }
             }
@@ -77,7 +76,7 @@ struct ContentView: View {
 //                reports.forEach { modelContext.delete($0) }
 //                pricelistItems.forEach { modelContext.delete($0) }
                 
-//                let pricelistItems: [PricelistItem] = load("priceList.json")
+//                let pricelistItems: [PricelistItem] = load("priceList(new).json")
 //                for pricelistItem in pricelistItems {
 //                    modelContext.insert(pricelistItem)
 //                }

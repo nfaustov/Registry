@@ -14,6 +14,8 @@ struct AddPatientView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
+    @StateObject var messageController = MessageController()
+
     @Query private var patients: [Patient]
 
     @Bindable var appointment: PatientAppointment
@@ -28,6 +30,7 @@ struct AddPatientView: View {
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
     @State private var selection: Visit.ID?
+    @State private var smsNotification: Bool = true
 
     // MARK: -
 
@@ -85,6 +88,8 @@ struct AddPatientView: View {
                                 }
                             }
                     }
+
+                    Toggle("СМС оповещение", isOn: $smsNotification)
                 } header: {
                     Text("Номер телефона")
                 }
@@ -169,6 +174,16 @@ struct AddPatientView: View {
                     )
 
                     appointment.registerPatient(patient, duration: duration, registrar: user.asAnyUser)
+                }
+
+                if smsNotification {
+                    Task {
+                        await messageController.send(.appointmentConfirmation(appointment))
+
+                        if !messageController.showErrorMessage {
+                            appointment.status = .notified
+                        }
+                    }
                 }
             }
             .sheet(isPresented: $findPatient) {

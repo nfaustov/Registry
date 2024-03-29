@@ -22,7 +22,7 @@ public final class PatientAppointment {
     public var endTime: Date {
         scheduledTime.addingTimeInterval(duration)
     }
-    
+
     public init(
         id: UUID = UUID(),
         scheduledTime: Date,
@@ -38,7 +38,7 @@ public final class PatientAppointment {
         self.status = status
         self.visitID = visitID
     }
-    
+
     public func registerPatient(
         _ patient: Patient,
         duration: TimeInterval,
@@ -73,6 +73,7 @@ public final class PatientAppointment {
 extension PatientAppointment {
     public enum Status: String, Codable, Identifiable {
         case registered = "Зарегистрирован"
+        case notified = "СМС уведомление"
         case confirmed = "Подтвержден"
         case came = "Пришел"
         case inProgress = "На приеме"

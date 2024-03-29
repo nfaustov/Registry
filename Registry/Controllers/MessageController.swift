@@ -18,15 +18,9 @@ import Foundation
     @Published private(set) var response: MessageEntity?
     @Published var showErrorMessage: Bool = false
 
-    func send(_ message: Message, to phoneNumber: String) async {
-        var number = phoneNumber
-
-        for symbol in ["+", " ", "(", ")", "-"] {
-            number = number.replacingOccurrences(of: symbol, with: "")
-        }
-        
+    func send(_ message: Message) async {
         do {
-            response = try await messageService.sendMessage(phoneNumber: number, message: message)
+            response = try await messageService.sendMessage(message)
             errorMessage = response?.sms.first?.value.statusText
         } catch {
             errorMessage = error.localizedDescription
