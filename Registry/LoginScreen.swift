@@ -32,7 +32,8 @@ struct LoginScreen: View {
                 passwordView
             }
         }
-        .frame(width: 400, height: 216)
+        .frame(width: 400)
+        .frame(maxHeight: .infinity)
         .clipShape(.rect(cornerRadius: 16, style: .continuous))
         .padding()
         .alert(
@@ -65,20 +66,31 @@ private extension LoginScreen {
                     .foregroundStyle(.red)
             }
 
-            Button("Прислать пароль") {
-                if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
-                    userCandidate = doctor
-
-                    Task {
-                        await authController.call(doctor.phoneNumber)
+            Section {
+                Button("Прислать пароль") {
+                    if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
+                        userCandidate = doctor
+                        
+                        Task {
+                            await authController.call(doctor.phoneNumber)
+                        }
+                    } else if phoneNumberText == SuperUser.boss.phoneNumber {
+                        userCandidate = SuperUser.boss
+                    } else {
+                        errorMessage = "Пользователь не найден"
                     }
-                } else if phoneNumberText == SuperUser.boss.phoneNumber {
-                    userCandidate = SuperUser.boss
-                } else {
-                    errorMessage = "Пользователь не найден"
                 }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+
+            Section {
+                Button {
+                    user = AnonymousUser()
+                } label: {
+                    Label("Войти анонимно", systemImage: "arrow.forward.circle")
+                }
+                .frame(maxWidth: .infinity)
+            }
         }
     }
 

@@ -19,11 +19,13 @@ struct UserView: View {
             PersonImageView(person: user)
                 .frame(width: 52, height: 52, alignment: .top)
                 .clipShape(Circle())
-            
+
             VStack(alignment: .leading) {
-                Text(user.initials)
-                    .font(.headline)
-                    .lineLimit(2)
+                if user.accessLevel > .anonymous {
+                    Text(user.initials)
+                        .font(.headline)
+                        .lineLimit(2)
+                }
                 Text(user.accessLevel.title)
                     .foregroundColor(.secondary)
             }

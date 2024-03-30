@@ -11,6 +11,7 @@ import SwiftData
 struct ScheduleScreen: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject private var coordinator: Coordinator
@@ -38,7 +39,7 @@ struct ScheduleScreen: View {
                         } label: {
                             Label("Добавить", systemImage: "plus.circle")
                         }
-                        .disabled(scheduleController.date < Calendar.current.startOfDay(for: .now))
+                        .disabled(scheduleController.date < Calendar.current.startOfDay(for: .now) || user.accessLevel < .registrar)
                     }
                     .padding(.bottom)
 
@@ -86,12 +87,14 @@ private extension ScheduleScreen {
             Text("На выбранную дату нет созданных расписаний врачей")
                 .foregroundColor(.secondary)
 
-            Button {
-                coordinator.present(.doctorSelection(date: scheduleController.date))
-            } label: {
-                Text("Создать расписание")
+            if user.accessLevel >= .registrar {
+                Button {
+                    coordinator.present(.doctorSelection(date: scheduleController.date))
+                } label: {
+                    Text("Создать расписание")
+                }
+                .buttonStyle(.borderedProminent)
             }
-            .buttonStyle(.borderedProminent)
         }
         .frame(maxHeight: .infinity)
     }

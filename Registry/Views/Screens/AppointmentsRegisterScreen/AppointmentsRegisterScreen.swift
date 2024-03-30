@@ -11,6 +11,7 @@ import SwiftData
 struct AppointmentsRegisterScreen: View {
     // MARK: - Dependensies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject private var coordinator: Coordinator
@@ -43,6 +44,7 @@ struct AppointmentsRegisterScreen: View {
                     AppointmentsListView(schedule: doctorSchedule)
                 }
             }
+            .disabled(user.accessLevel < .registrar)
         }
         .navTitle(
             title: "Запись на прием",

@@ -12,6 +12,7 @@ import Charts
 struct CashboxScreen: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject private var coordinator: Coordinator
@@ -36,6 +37,7 @@ struct CashboxScreen: View {
                             } label: {
                                 Text("Списание")
                             }
+                            .disabled(user.accessLevel < .registrar)
                         }
                     }
 
@@ -57,6 +59,7 @@ struct CashboxScreen: View {
             }
             .padding()
             .edgesIgnoringSafeArea([.all])
+            .disabled(user.accessLevel < .registrar)
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)

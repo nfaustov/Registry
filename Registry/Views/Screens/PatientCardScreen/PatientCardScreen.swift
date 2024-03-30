@@ -10,6 +10,8 @@ import SwiftUI
 struct PatientCardScreen: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
+
     @Bindable var patient: Patient
 
     // MARK: - State
@@ -77,6 +79,7 @@ struct PatientCardScreen: View {
             }
         } detail: {
             currentDetail.detail(patient)
+                .disabled(user.accessLevel < .registrar)
         }
     }
 }
