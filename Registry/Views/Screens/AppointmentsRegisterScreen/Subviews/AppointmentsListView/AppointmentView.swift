@@ -50,6 +50,15 @@ struct AppointmentView: View {
                         }
                     }
                 } else {
+                    if appointment.status == .notified {
+                        HStack(spacing: 4) {
+                            Image(systemName: "checkmark.circle")
+                            Text("SMS")
+                        }
+                        .foregroundStyle(.teal)
+                        .padding(4)
+                    }
+
                     Picker("", selection: Binding(get: { appointment.status ?? .registered }, set: { appointment.status = $0 })) {
                         ForEach(PatientAppointment.Status.selectableCases) { status in
                             Text(status.rawValue)
