@@ -12,13 +12,28 @@ struct UserDetailScreen: View {
 
     @Environment(\.user) private var user
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     // MARK: -
 
     var body: some View {
         UserView(user: user)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        withAnimation {
+                            coordinator.logOut()
+                        }
+                    } label: {
+                        Image(systemName: "figure.walk.departure")
+                    }
+                    .padding()
+                }
+            }
     }
 }
 
 #Preview {
     UserDetailScreen()
+        .environmentObject(Coordinator())
 }

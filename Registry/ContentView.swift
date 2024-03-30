@@ -23,12 +23,11 @@ struct ContentView: View {
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
-    @State private var user: User? = nil
 
     // MARK: -
 
     var body: some View {
-        if let user {
+        if let user = coordinator.user {
             NavigationSplitView {
                 VStack {
                     List(user.accessLevel == .boss ? Screen.bossCases : Screen.registrarCases, selection: $rootScreen) { screen in
@@ -82,7 +81,7 @@ struct ContentView: View {
 //                }
             }
         } else {
-            LoginScreen(user: $user)
+            LoginScreen { coordinator.logIn($0) }
         }
     }
 }

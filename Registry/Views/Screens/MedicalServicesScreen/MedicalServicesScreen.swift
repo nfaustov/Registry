@@ -10,8 +10,6 @@ import SwiftUI
 struct MedicalServicesScreen: View {
     // MARK: - Dependencies
 
-    @Environment(\.user) private var user
-
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State

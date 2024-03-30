@@ -15,7 +15,7 @@ struct LoginScreen: View {
 
     @Query private var doctors: [Doctor]
 
-    @Binding var user: User?
+    var logIn: (User) -> Void
 
     // MARK: - State
 
@@ -23,31 +23,43 @@ struct LoginScreen: View {
     @State private var codeText: String = ""
     @State private var errorMessage: String = ""
     @State private var userCandidate: User? = nil
+    @State private var animate: Bool = false
 
     var body: some View {
-        VStack {
-            if userCandidate == nil {
-                phoneLoginView
-            } else {
-                passwordView
+        ZStack {
+            LinearGradient(colors: [.teal, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+                .hueRotation(.degrees(animate ? 30 : 0))
+                .opacity(0.6)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                        animate.toggle()
+                    }
+                }
+
+            VStack {
+                if let userCandidate {
+                    passwordView(user: userCandidate)
+                } else {
+                    phoneLoginView
+                }
             }
+            .clipShape(.rect(cornerRadius: 16, style: .continuous))
+            .frame(width: 400, height: 300)
+            .frame(maxHeight: .infinity)
+            .alert(
+                "Ошибка",
+                isPresented: $authController.showErrorMessage,
+                presenting: authController.errorMessage
+            ) { _ in
+                Button("Ok") { authController.showErrorMessage = false }
+            } message: { Text($0) }
         }
-        .frame(width: 400)
-        .frame(maxHeight: .infinity)
-        .clipShape(.rect(cornerRadius: 16, style: .continuous))
-        .padding()
-        .alert(
-            "Ошибка",
-            isPresented: $authController.showErrorMessage,
-            presenting: authController.errorMessage
-        ) { _ in
-            Button("Ok") { authController.showErrorMessage = false }
-        } message: { Text($0) }
     }
 }
 
 #Preview {
-    LoginScreen(user: .constant(nil))
+    LoginScreen { _ in }
         .previewInterfaceOrientation(.landscapeRight)
 }
 
@@ -68,16 +80,18 @@ private extension LoginScreen {
 
             Section {
                 Button("Прислать пароль") {
-                    if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
-                        userCandidate = doctor
-                        
-                        Task {
-                            await authController.call(doctor.phoneNumber)
+                    withAnimation {
+                        if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
+                            userCandidate = doctor
+                            
+                            Task {
+                                await authController.call(doctor.phoneNumber)
+                            }
+                        } else if phoneNumberText == SuperUser.boss.phoneNumber {
+                            userCandidate = SuperUser.boss
+                        } else {
+                            errorMessage = "Пользователь не найден"
                         }
-                    } else if phoneNumberText == SuperUser.boss.phoneNumber {
-                        userCandidate = SuperUser.boss
-                    } else {
-                        errorMessage = "Пользователь не найден"
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -85,16 +99,20 @@ private extension LoginScreen {
 
             Section {
                 Button {
-                    user = AnonymousUser()
+                    withAnimation {
+                        logIn(AnonymousUser())
+                    }
                 } label: {
                     Label("Войти анонимно", systemImage: "arrow.forward.circle")
                 }
                 .frame(maxWidth: .infinity)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(.ultraThinMaterial)
     }
 
-    var passwordView: some View {
+    func passwordView(user: User) -> some View {
         Form {
             Section {
                 TextField("", text: $codeText)
@@ -107,15 +125,19 @@ private extension LoginScreen {
             }
 
             Button("Отправить") {
-                if authController.code == codeText {
-                    user = userCandidate
-                } else if codeText == "3333" {
-                    user = userCandidate
-                } else {
-                    errorMessage = "Неверный пароль"
+                withAnimation {
+                    if authController.code == codeText {
+                        logIn(user)
+                    } else if codeText == "3333" {
+                        logIn(user)
+                    } else {
+                        errorMessage = "Неверный пароль"
+                    }
                 }
             }
             .frame(maxWidth: .infinity)
         }
+        .scrollContentBackground(.hidden)
+        .background(.ultraThinMaterial)
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 final class Coordinator: ObservableObject {
     @Published var path = NavigationPath()
     @Published var sheet: Sheet? = nil
+    @Published private(set) var user: User?
 
     func push(_ route: Route) {
         path.append(route)
@@ -25,6 +26,14 @@ final class Coordinator: ObservableObject {
 
     func clearPath() {
         path.removeLast(path.count)
+    }
+
+    func logIn(_ user: User) {
+        self.user = user
+    }
+
+    func logOut() {
+        user = nil
     }
 }
 
