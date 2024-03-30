@@ -62,9 +62,7 @@ struct AddPatientView: View {
 
                 Section {
                     if let selectedPatient {
-                        Text(selectedPatient.secondName)
-                        Text(selectedPatient.firstName)
-                        Text(selectedPatient.patronymicName)
+                        Text(selectedPatient.fullName)
                     } else {
                         TextField("Фамилия", text: $secondNameText)
                             .autocorrectionDisabled()

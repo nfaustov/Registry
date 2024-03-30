@@ -25,8 +25,10 @@ struct DoctorView: View {
                         alignment: .top
                     )
                     .overlay {
-                        let gradient = Gradient(colors: [.black.opacity(0.8), .clear])
-                        LinearGradient(gradient: gradient, startPoint: .bottom, endPoint: .center)
+                        if doctor.image != nil {
+                            let gradient = Gradient(colors: [.black.opacity(0.8), .clear])
+                            LinearGradient(gradient: gradient, startPoint: .bottom, endPoint: .center)
+                        }
                     }
 
                 VStack(alignment: .leading) {
