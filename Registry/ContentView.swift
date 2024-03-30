@@ -62,8 +62,14 @@ struct ContentView: View {
                 NavigationStack(path: $coordinator.path) {
                     coordinator.setRootView(rootScreen ?? .schedule)
                         .navigationTitle(rootScreen?.title ?? Screen.schedule.title)
-                        .navigationDestination(for: Route.self) { coordinator.destinationView($0) }
-                        .sheet(item: $coordinator.sheet) { coordinator.sheetContent($0) }
+                        .navigationDestination(for: Route.self) {
+                            coordinator.destinationView($0)
+                                .environment(\.user, user)
+                        }
+                        .sheet(item: $coordinator.sheet) {
+                            coordinator.sheetContent($0)
+                                .environment(\.user, user)
+                        }
                         .environment(\.user, user)
                 }
             }
