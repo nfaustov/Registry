@@ -16,19 +16,15 @@ struct VisitsDetailView: View {
     // MARK: -
 
     var body: some View {
-        VStack {
-            List {
-                ForEach(uniqueDates, id: \.self) { date in
-                    Section {
-                        ForEach(visits.filter { $0.visitDate == date }) { visit in
-                            visitView(visit)
-                        }
-                    } header: {
-                        DateText(date, format: .weekDay)
+        List {
+            ForEach(uniqueDates, id: \.self) { date in
+                Section {
+                    ForEach(visits.filter { Calendar.current.isDate($0.visitDate, inSameDayAs: date) }) { visit in
+                        visitView(visit)
                     }
-                    .headerProminence(.increased)
+                } header: {
+                    DateText(date, format: .weekDay)
                 }
-                .listRowSeparator(.hidden)
             }
         }
     }
@@ -42,8 +38,13 @@ struct VisitsDetailView: View {
 
 private extension VisitsDetailView {
     var uniqueDates: [Date] {
-        Array(visits.map { $0.visitDate }.uniqued())
-            .sorted(by: >)
+        Array(
+            visits
+                .map { Calendar.current.dateComponents([.year, .month, .day], from: $0.visitDate) }
+                .map { Calendar.current.date(from: $0)! }
+                .uniqued()
+        )
+        .sorted(by: >)
     }
 }
 
@@ -51,80 +52,75 @@ private extension VisitsDetailView {
 
 private extension VisitsDetailView {
     func visitView(_ visit: Visit) -> some View {
-        VStack(alignment: .leading) {
-            if visit.refund == nil {
-                HStack {
-                    Text("Время записи:")
-                    DateText(visit.visitDate, format: .time)
-                }
-                .font(.subheadline)
-                .padding(4)
-                .background(Color(.secondarySystemFill))
-                .clipShape(.rect(cornerRadius: 4, style: .continuous))
-            }
-
-            if let cancellationDate = visit.cancellationDate {
-                HStack {
-                    Text("Отменен")
-                    DateText(cancellationDate, format: .dateTime)
-                }
-                .font(.subheadline)
-                .foregroundStyle(.red)
-            } else if let bill = visit.bill {
-                VStack(alignment: .leading) {
-                    Text("Услуги")
-                        .font(.headline)
-
+        Section {
+            if let bill = visit.bill {
+                DisclosureGroup {
                     ForEach(bill.services) { service in
-                        Divider()
-                        Text(service.pricelistItem.title)
+                        LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
                     }
 
-                    Group {
-                        if let refund = visit.refund {
-                            Text("Возврат: \(Int(refund.price - refund.price * bill.discountRate)) ₽")
-                                .foregroundStyle(.red)
-                        } else {
-                            if bill.discount > 0 {
-                                Text("Скидка: \(Int(bill.discount)) ₽")
-                            }
-                            Text("Оплата: \(Int(bill.totalPrice)) ₽")
+                    if bill.discount > 0 {
+                        LabeledContent("Скидка", value: "\(Int(-bill.discount)) ₽")
+                            .foregroundStyle(.blue)
+                            .fontWeight(.light)
+                    }
+                } label: {
+                    LabeledContent("Счет", value: "\(Int(bill.totalPrice)) ₽")
+                        .font(.headline)
+                        .foregroundStyle(.blue)
+                }
+
+                if let refund = visit.refund {
+                    DisclosureGroup {
+                        ForEach(refund.services) { service in
+                            LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
+                        }
+                    } label: {
+                        LabeledContent("Возврат", value: "\(Int(refund.price - refund.price * bill.discountRate)) ₽")
+                            .font(.headline)
+                            .foregroundStyle(.red)
+                    }
+                    .tint(.red)
+                }
+
+                if visit.refund == nil {
+                    HStack {
+                        let doctors = bill.services.compactMap { $0.performer }
+                        let uniqueDoctors = Array(doctors.uniqued())
+
+                        if uniqueDoctors.count > 0 {
+                            Text(uniqueDoctors.count > 1 ? "Врачи:" : "Врач:")
+                                .font(.headline)
                         }
 
-                    }
-                    .fontWeight(.medium)
-                    .padding(.top, 8)
-
-                    if visit.refund == nil {
-                        HStack {
-                            let doctors = bill.services.compactMap { $0.performer }
-                            let uniqueDoctors = Array(doctors.uniqued())
-
-                            if uniqueDoctors.count > 0 {
-                                Text(uniqueDoctors.count > 1 ? "Врачи:" : "Врач:")
-                                    .font(.headline)
-                            }
-
-                            ForEach(uniqueDoctors) { doctor in
-                                Text(doctor.initials)
-                                    .foregroundStyle(.white)
-                                    .padding(8)
-                                    .background(.green)
-                                    .clipShape(.capsule(style: .continuous))
-                            }
+                        ForEach(uniqueDoctors) { doctor in
+                            Text(doctor.initials)
+                                .foregroundStyle(.white)
+                                .padding(4)
+                                .background(.teal)
+                                .clipShape(.rect(cornerRadius: 4, style: .continuous))
                         }
                     }
                 }
-                .padding()
-                .background(Color(.tertiarySystemFill))
-                .clipShape(.rect(cornerRadius: 8, style: .continuous))
             }
 
-            HStack {
-                Text(visit.refund == nil ? "Дата регистрации:" : "Дата возврата:")
+            LabeledContent("Дата регистрации") {
                 DateText(visit.registrationDate, format: .dateTime)
             }
-            .font(.subheadline)
+
+            LabeledContent("Регистратор", value: visit.registrar.initials)
+
+            if let cancellationDate = visit.cancellationDate {
+                LabeledContent("Отменен") {
+                    DateText(cancellationDate, format: .dateTime)
+                }
+                .foregroundStyle(.brown)
+                .listRowBackground(Color(.secondarySystemFill))
+            }
+        } header: {
+            DateText(visit.visitDate, format: .time)
+                .font(.headline)
+                .foregroundStyle(.secondary)
         }
     }
 }

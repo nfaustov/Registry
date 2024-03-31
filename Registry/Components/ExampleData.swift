@@ -23,7 +23,13 @@ struct ExampleData {
         accessLevel: .registrar
     )
 
-    static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99")
+    static var visit = Visit(registrar: doctor.asAnyUser, visitDate: .now, bill: Bill(services: [service], discount: 200))
+    static var visit2 = Visit(registrar: doctor.asAnyUser, visitDate: .now.addingTimeInterval(3600), bill: Bill(services: [service]))
+    static var cancelledVisit = Visit(registrar: doctor.asAnyUser, visitDate: .now.addingTimeInterval(-86_400), cancellationDate: .now)
+    static var refundedVisit = Visit(registrar: doctor.asAnyUser, visitDate: .now.addingTimeInterval(-172_800), bill: Bill(services: [service]), refund: Refund(services: [service]))
+    
+
+    static var patient = Patient(secondName: "Ivanov", firstName: "Ivan", patronymicName: "Ivanovich", phoneNumber: "+7 (999) 999-99-99", visits: [visit, visit2, cancelledVisit, refundedVisit])
     static var patient2 = Patient(secondName: "Petrov", firstName: "Petr", patronymicName: "Petrovich", phoneNumber: "+7 (900) 900-90-90")
     static var patient3 = Patient(secondName: "Fedorov", firstName: "Fedor", patronymicName: "Fedorovich", phoneNumber: "+7 (920) 920-92-92")
 

@@ -31,7 +31,7 @@ struct PhoneNumberTextField: View {
                 }
             }
             .onAppear {
-                text = "+7"
+                if text.isEmpty { text = "+7" }
             }
     }
 

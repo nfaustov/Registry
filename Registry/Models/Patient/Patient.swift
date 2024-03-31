@@ -89,10 +89,13 @@ public final class Patient: Person {
     }
 
     public func cancelVisit(for appointmentID: UUID) {
-        guard var visit = visit(forAppointmentID: appointmentID) else { return }
+        guard let visit = visit(forAppointmentID: appointmentID), let visitIndex = visits.firstIndex(of: visit) else { return }
 
-        visit.cancellationDate = .now
-        visit.bill = nil
+        var updatedVisit = visits.remove(at: visitIndex)
+        updatedVisit.cancellationDate = .now
+        updatedVisit.bill = nil
+
+        visits.append(updatedVisit)
     }
 
     public func updatePaymentSubject(_ subject: Payment.Subject, forAppointmentID appointmentID: UUID) {

@@ -23,18 +23,17 @@ struct PatientCardScreen: View {
     var body: some View {
         SideBySideScreen(sidebarTitle: "Карта пациента", detailTitle: currentDetail.title) {
             Section {
-                Text(patient.secondName)
-                Text(patient.firstName)
-                Text(patient.patronymicName)
+                nameButton(\.secondName)
+                nameButton(\.firstName)
+                nameButton(\.patronymicName)
             } header: {
                 Text("Имя")
             }
 
-            Section {
-                Text(patient.phoneNumber)
-            } header: {
-                Text("Номер телефона")
+            Button(patient.phoneNumber) {
+                currentDetail = .phoneNumber
             }
+            .tint(.primary)
 
             Section {
                 Button {
@@ -95,11 +94,17 @@ struct PatientCardScreen: View {
 
 private extension PatientCardScreen {
     enum DetailScreen {
+        case name
+        case phoneNumber
         case visits
         case passport
 
         var title: String {
             switch self {
+            case .name:
+                return "ФИО"
+            case .phoneNumber:
+                return "Номер телефона"
             case .visits:
                 return "Последние визиты"
             case .passport:
@@ -109,11 +114,52 @@ private extension PatientCardScreen {
 
         @ViewBuilder func detail(_ patient: Patient) -> some View {
             switch self {
+            case .name:
+                Form {
+                    Section("Фамилия") {
+                        TextField(
+                            "Фамилия",
+                            text: Binding(get: { patient.secondName }, set: { patient.secondName = $0 })
+                        )
+                    }
+
+                    Section("Имя") {
+                        TextField(
+                            "Имя",
+                            text: Binding(get: { patient.firstName }, set: { patient.firstName = $0 })
+                        )
+                    }
+
+                    Section("Отчество") {
+                        TextField(
+                            "Отчество",
+                            text: Binding(get: { patient.patronymicName }, set: { patient.patronymicName = $0 })
+                        )
+                    }
+                }
+            case .phoneNumber:
+                Form {
+                    Section("Номер телефона") {
+                        PhoneNumberTextField(
+                            text: Binding(
+                                get: { patient.phoneNumber },
+                                set: { patient.phoneNumber = $0 }
+                            )
+                        )
+                    }
+                }
             case .visits:
                 VisitsDetailView(visits: patient.visits)
             case .passport:
                 PassportDetailView(patient: patient)
             }
         }
+    }
+
+    func nameButton(_ keyPath: KeyPath<Person, String>) -> some View {
+        Button(patient[keyPath: keyPath]) {
+            currentDetail = .name
+        }
+        .tint(.primary)
     }
 }
