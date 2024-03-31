@@ -24,6 +24,7 @@ struct LoginScreen: View {
     @State private var errorMessage: String = ""
     @State private var userCandidate: User? = nil
     @State private var animate: Bool = false
+    @State private var phoneIsValid: Bool = true
 
     var body: some View {
         ZStack {

@@ -27,6 +27,8 @@
 		8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* PersonImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
+		8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */; };
+		8B2E70A82BB9B00200012C09 /* NameEditVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
@@ -144,6 +146,8 @@
 		8B285F432B4DC81800C29E20 /* PersonImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
+		8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberEditView.swift; sourceTree = "<group>"; };
+		8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditVIew.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
@@ -961,7 +965,9 @@
 			isa = PBXGroup;
 			children = (
 				8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */,
+				8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */,
 				8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */,
+				8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1132,6 +1138,7 @@
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
+				8B2E70A82BB9B00200012C09 /* NameEditVIew.swift in Sources */,
 				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8BDCCFE42B84A3860086BF4D /* Visit.swift in Sources */,
@@ -1164,6 +1171,7 @@
 				8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */,
 				8B183BB42B866D0F00FA1D46 /* BillTemplate.swift in Sources */,
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
+				8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */,
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
 				8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */,
 				8BDCCFDB2B849F960086BF4D /* Patient.swift in Sources */,

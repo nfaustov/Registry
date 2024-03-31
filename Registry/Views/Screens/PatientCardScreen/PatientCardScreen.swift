@@ -115,39 +115,9 @@ private extension PatientCardScreen {
         @ViewBuilder func detail(_ patient: Patient) -> some View {
             switch self {
             case .name:
-                Form {
-                    Section("Фамилия") {
-                        TextField(
-                            "Фамилия",
-                            text: Binding(get: { patient.secondName }, set: { patient.secondName = $0 })
-                        )
-                    }
-
-                    Section("Имя") {
-                        TextField(
-                            "Имя",
-                            text: Binding(get: { patient.firstName }, set: { patient.firstName = $0 })
-                        )
-                    }
-
-                    Section("Отчество") {
-                        TextField(
-                            "Отчество",
-                            text: Binding(get: { patient.patronymicName }, set: { patient.patronymicName = $0 })
-                        )
-                    }
-                }
+                NameEditVIew(patient: patient)
             case .phoneNumber:
-                Form {
-                    Section("Номер телефона") {
-                        PhoneNumberTextField(
-                            text: Binding(
-                                get: { patient.phoneNumber },
-                                set: { patient.phoneNumber = $0 }
-                            )
-                        )
-                    }
-                }
+                PhoneNumberEditView(patient: patient)
             case .visits:
                 VisitsDetailView(visits: patient.visits)
             case .passport:

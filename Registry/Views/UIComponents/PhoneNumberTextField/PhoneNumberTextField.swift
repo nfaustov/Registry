@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PhoneNumberTextField: View {
-    // MARK: Dependencies
+    // MARK: - Dependencies
 
     @Binding var text: String
 
