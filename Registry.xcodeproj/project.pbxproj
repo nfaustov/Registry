@@ -119,7 +119,6 @@
 		8BE4C68C2BB33F3100264557 /* CallAuthorizationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */; };
 		8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */; };
 		8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68F2BB3461000264557 /* AuthorizationController.swift */; };
-		8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */; };
 		8BEEEE7D2BB72E3E00739EA9 /* priceList(new).json in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEEE7C2BB72E3E00739EA9 /* priceList(new).json */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 		8BF534092BAF50530005C003 /* SalaryCharger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF534082BAF50530005C003 /* SalaryCharger.swift */; };
@@ -240,7 +239,6 @@
 		8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationEntity.swift; sourceTree = "<group>"; };
 		8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationServiceClient.swift; sourceTree = "<group>"; };
 		8BE4C68F2BB3461000264557 /* AuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
-		8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientView.swift; sourceTree = "<group>"; };
 		8BEEEE7C2BB72E3E00739EA9 /* priceList(new).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "priceList(new).json"; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		8BF534082BAF50530005C003 /* SalaryCharger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryCharger.swift; sourceTree = "<group>"; };
@@ -976,7 +974,6 @@
 			isa = PBXGroup;
 			children = (
 				8BDCCFD42B83BBEA0086BF4D /* PatientsScreen.swift */,
-				8BEEDF012B85EAE800542F2D /* Subviews */,
 			);
 			path = PatientsScreen;
 			sourceTree = "<group>";
@@ -1020,14 +1017,6 @@
 				8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */,
 			);
 			path = CallAuthorizationService;
-			sourceTree = "<group>";
-		};
-		8BEEDF012B85EAE800542F2D /* Subviews */ = {
-			isa = PBXGroup;
-			children = (
-				8BEEDF022B85EB1000542F2D /* CreatePatientView.swift */,
-			);
-			path = Subviews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1157,7 +1146,6 @@
 				8BE4C68C2BB33F3100264557 /* CallAuthorizationEntity.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,
-				8BEEDF032B85EB1000542F2D /* CreatePatientView.swift in Sources */,
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
 				8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */,
 				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,

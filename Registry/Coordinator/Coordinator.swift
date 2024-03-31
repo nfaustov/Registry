@@ -92,8 +92,6 @@ extension Coordinator {
             CreateBillTemplateView(services: services)
         case .createDoctor:
             CreateDoctorView()
-        case .createPatient:
-            CreatePatientView()
         case .createPricelistItem:
             CreatePricelistItemView()
         case .billPayment(let appointment, let isPaid):
