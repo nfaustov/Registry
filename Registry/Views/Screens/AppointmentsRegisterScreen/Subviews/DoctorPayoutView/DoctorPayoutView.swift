@@ -252,8 +252,8 @@ private extension DoctorPayoutView {
     func createReportWithPayment(_ payment: Payment) {
         if let report = reports.first {
             let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
-            modelContext.insert(report)
-            report.payments.append(payment)
+            modelContext.insert(newReport)
+            newReport.payments.append(payment)
         } else {
             let firstReport = Report(date: .now, startingCash: 0, payments: [])
             modelContext.insert(firstReport)

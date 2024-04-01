@@ -1,5 +1,5 @@
 //
-//  PatientsStatistics.swift
+//  PatientsChart.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 15.03.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct PatientsStatistics: View {
+struct PatientsChart: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -73,14 +73,14 @@ struct PatientsStatistics: View {
 }
 
 #Preview {
-    PatientsStatistics()
+    PatientsChart()
         .environmentObject(Coordinator())
         .preferredColorScheme(.dark)
 }
 
 // MARK: - Claculations
 
-private extension PatientsStatistics {
+private extension PatientsChart {
     var scheduledPatients: [Patient] {
         Array(
             schedules

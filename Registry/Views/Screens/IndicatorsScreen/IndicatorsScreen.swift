@@ -13,7 +13,9 @@ struct IndicatorsScreen: View {
     var body: some View {
         List {
             CashboxReportingChart()
-            PatientsStatistics()
+            PatientsChart()
+            SchedulesChart()
+            DoctorsChart()
         }
         .listRowSpacing(8)
         .scrollBounceBehavior(.basedOnSize)
