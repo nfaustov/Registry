@@ -28,7 +28,7 @@ struct CashboxReportingChart: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("Касса")
+                Text("Касса " + DateFormat.date.string(from: .now))
                     .font(.title)
 
                 Spacer()
@@ -104,12 +104,39 @@ struct CashboxReportingChart: View {
                     description: Text("За выбранный период не совершено ни одного платежа")
                 )
             }
+
+            Group {
+                ForEach(lastReports) { report in
+                    reportView(report)
+                }
+            }
+            .padding(.bottom)
         }
     }
 }
 
 #Preview {
     CashboxReportingChart()
+}
+
+// MARK: - Subviews
+
+private extension CashboxReportingChart {
+    func reportView(_ report: Report) -> some View {
+        HStack {
+            Text(DateFormat.date.string(from: report.date))
+            Text("Доход: \(Int(report.reporting(.income))) ₽")
+        }
+        .foregroundStyle(.white)
+        .padding()
+        .background(Color(.systemFill))
+        .cornerRadius(8)
+        .frame(maxWidth: .infinity)
+    }
+
+    var lastReports: [Report] {
+        reports.filter { $0.date > .now.addingTimeInterval(-618_400) }
+    }
 }
 
 // MARK: - Calculations

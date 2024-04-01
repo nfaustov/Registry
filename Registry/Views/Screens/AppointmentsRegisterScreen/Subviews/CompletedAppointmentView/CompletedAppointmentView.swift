@@ -15,6 +15,7 @@ struct CompletedAppointmentView: View {
     @Environment(\.modelContext) private var modelContext
 
     @Query private var doctors: [Doctor]
+    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     private let appointment: PatientAppointment
     private let patient: Patient
@@ -192,14 +193,23 @@ private extension CompletedAppointmentView {
 
 private extension CompletedAppointmentView {
     var todayReport: Report? {
-        let startOfToday = Calendar.current.startOfDay(for: .now)
-        let startOfTommorow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
-        let predicate = #Predicate<Report> {
-            $0.date > startOfToday && $0.date < startOfTommorow
+        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
+            return report
+        } else {
+            return nil
         }
-        let descriptor = FetchDescriptor(predicate: predicate)
+    }
 
-        return try? modelContext.fetch(descriptor).first
+    func createReportWIthPayment(_ payment: Payment) {
+        if let report = reports.first {
+            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+            modelContext.insert(report)
+            report.payments.append(payment)
+        } else {
+            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            modelContext.insert(firstReport)
+            firstReport.payments.append(payment)
+        }
     }
 
     func serviceItemForegroudColor(_ service: RenderedService) -> Color {
@@ -213,14 +223,25 @@ private extension CompletedAppointmentView {
     func createPayment() {
         paymentMethod.value = createdRefund.totalAmount(discountRate: visit.bill?.discountRate ?? 0)
         let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: .refund(createdRefund), createdBy: user.asAnyUser)
-        todayReport?.payments.append(payment)
+
+        if let todayReport {
+            todayReport.payments.append(payment)
+        } else {
+            createReportWIthPayment(payment)
+        }
     }
 
     func createBalancePayment() {
         balancePaymentMethod.value = -patient.balance
         let purpose: Payment.Purpose = patient.balance > 0 ? .fromBalance(patient.initials) : .toBalance(patient.initials)
         let payment = Payment(purpose: purpose, methods: [balancePaymentMethod], createdBy: user.asAnyUser)
-        todayReport?.payments.append(payment)
+
+        if let todayReport {
+            todayReport.payments.append(payment)
+        } else {
+            createReportWIthPayment(payment)
+        }
+
         patient.updateBalance(increment: -patient.balance)
     }
 }

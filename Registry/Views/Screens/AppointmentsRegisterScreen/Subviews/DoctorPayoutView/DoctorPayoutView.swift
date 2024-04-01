@@ -47,7 +47,7 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if todayReport.daySalary(of: doctor) > 0 {
+                if let todayReport, todayReport.daySalary(of: doctor) > 0 {
                     Section {
                         DisclosureGroup {
                             List(todayReport.renderedServices(by: doctor, role: \.performer)) { service in
@@ -241,21 +241,23 @@ private extension DoctorPayoutView {
         Int(doctor.balance - paymentMethod.value - (additionalPaymentMethod?.value ?? 0))
     }
 
-    var todayReport: Report {
-        if let report = reports.first {
-            if Calendar.current.isDateInToday(report.date) {
-                return report
-            } else {
-                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
-                modelContext.insert(newReport)
+    var todayReport: Report? {
+        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
+            return report
+        } else {
+            return nil
+        }
+    }
 
-                return newReport
-            }
+    func createReportWithPayment(_ payment: Payment) {
+        if let report = reports.first {
+            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+            modelContext.insert(report)
+            report.payments.append(payment)
         } else {
             let firstReport = Report(date: .now, startingCash: 0, payments: [])
             modelContext.insert(firstReport)
-
-            return firstReport
+            firstReport.payments.append(payment)
         }
     }
 
@@ -290,6 +292,11 @@ private extension DoctorPayoutView {
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
         let payment = Payment(purpose: .salary(doctor.initials), methods: methods, createdBy: user.asAnyUser)
-        todayReport.payments.append(payment)
+
+        if let todayReport {
+            todayReport.payments.append(payment)
+        } else {
+            createReportWithPayment(payment)
+        }
     }
 }

@@ -216,21 +216,23 @@ private extension BillPaymentView {
         Int(patient.balance + paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice)
     }
 
-    var todayReport: Report {
-        if let report = reports.first {
-            if Calendar.current.isDateInToday(report.date) {
-                return report
-            } else {
-                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
-                modelContext.insert(newReport)
+    var todayReport: Report? {
+        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
+            return report
+        } else {
+            return nil
+        }
+    }
 
-                return newReport
-            }
+    func createReportWIthPayment(_ payment: Payment) {
+        if let report = reports.first {
+            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+            modelContext.insert(report)
+            report.payments.append(payment)
         } else {
             let firstReport = Report(date: .now, startingCash: 0, payments: [])
             modelContext.insert(firstReport)
-
-            return firstReport
+            firstReport.payments.append(payment)
         }
     }
 
@@ -242,7 +244,12 @@ private extension BillPaymentView {
             methods: [balancePaymentMethod],
             createdBy: user.asAnyUser
         )
-        todayReport.payments.append(balancePayment)
+
+        if let todayReport {
+            todayReport.payments.append(balancePayment)
+        } else {
+            createReportWIthPayment(balancePayment)
+        }
     }
 
     func payment() {
@@ -257,6 +264,11 @@ private extension BillPaymentView {
         methods.append(paymentMethod)
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill), createdBy: user.asAnyUser)
-        todayReport.payments.append(payment)
+        if let todayReport {
+            todayReport.payments.append(payment)
+        } else {
+            createReportWIthPayment(payment)
+        }
+        
     }
 }
