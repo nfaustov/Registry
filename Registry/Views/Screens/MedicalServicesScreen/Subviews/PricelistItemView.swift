@@ -39,8 +39,16 @@ struct PricelistItemView: View {
                 Section {
                     if user.accessLevel == .boss {
                         TextField("Наименование", text: $title)
-                        TextField("Цена", value: $price, format: .number)
-                        TextField("Себестоимость", value: $costPrice, format: .number)
+                        LabeledContent {
+                            TextField("Цена:", value: $price, format: .number)
+                        } label: {
+                            Text("Цена:")
+                        }
+                        LabeledContent {
+                            TextField("Себестоимость:", value: $costPrice, format: .number)
+                        } label: {
+                            Text("Себестоимость:")
+                        }
                     } else {
                         Text(pricelistItem.title)
                         LabeledContent("Цена", value: "\(Int(pricelistItem.price)) ₽")
@@ -52,9 +60,10 @@ struct PricelistItemView: View {
                         if user.accessLevel == .boss {
                             if fixedDoctorsSalary {
                                 HStack {
-                                    TextField("", value: $salaryAmount, format: .number)
-                                    Button { fixedDoctorsSalary = false } label: {
-                                        Label("Отменить", systemImage: "xmark.app.fill")
+                                    TextField("Премия врача", value: $salaryAmount, format: .number)
+                                    Button("Отменить", role: .destructive) {
+                                        salaryAmount = nil
+                                        fixedDoctorsSalary = false
                                     }
                                 }
                             } else {
