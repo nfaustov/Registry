@@ -80,7 +80,7 @@ public final class Patient: Person {
 
     public func isNewPatient(for period: StatisticsPeriod) -> Bool {
         visits
-            .filter { $0.visitDate < period.start }
+            .filter { $0.visitDate < period.start() }
             .isEmpty
     }
 

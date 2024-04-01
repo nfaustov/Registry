@@ -17,7 +17,6 @@ struct IndicatorsScreen: View {
         }
         .listRowSpacing(8)
         .scrollBounceBehavior(.basedOnSize)
-        .navigationTitle("Статистика")
     }
 }
 

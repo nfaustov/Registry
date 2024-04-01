@@ -11,18 +11,18 @@ public enum StatisticsPeriod: String, CaseIterable, Identifiable {
     case day = "День"
     case month = "Месяц"
 
-    public var start: Date {
+    public func start(for date: Date? = nil) -> Date {
         switch self {
         case .day:
-            return Calendar.current.startOfDay(for: .now)
+            return Calendar.current.startOfDay(for: date ?? .now)
         case .month:
-            let dateComponents = Calendar.current.dateComponents([.year, .month], from: .now)
+            let dateComponents = Calendar.current.dateComponents([.year, .month], from: date ?? .now)
             return Calendar.current.date(from: dateComponents)!
         }
     }
 
-    public var end: Date {
-        Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
+    public func end(for date: Date? = nil) -> Date {
+        Calendar.current.startOfDay(for: (date ?? .now).addingTimeInterval(86_400))
     }
 
     public var id: Self {

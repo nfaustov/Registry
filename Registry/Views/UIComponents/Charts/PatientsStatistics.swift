@@ -13,6 +13,8 @@ struct PatientsStatistics: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @Query private var patients: [Patient]
+
     // MARK: - State
 
     @State private var selectedPeriod: StatisticsPeriod = .day
@@ -64,6 +66,8 @@ struct PatientsStatistics: View {
                 }
             }
             .frame(height: 80)
+
+            Text("Всего в базе: \(patients.count)")
         }
     }
 }
@@ -90,8 +94,8 @@ private extension PatientsStatistics {
     }
 
     var schedules: [DoctorSchedule] {
-        let start = selectedPeriod.start
-        let end = selectedPeriod.end
+        let start = selectedPeriod.start()
+        let end = selectedPeriod.end()
         let schedulesPredicate = #Predicate<DoctorSchedule> { $0.starting > start && $0.ending < end }
         let descriptor = FetchDescriptor(predicate: schedulesPredicate)
 
