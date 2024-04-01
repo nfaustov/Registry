@@ -6,24 +6,35 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct DoctorDetailScreen: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
 
+    @StateObject private var viewModel = PhotosPickerViewModel()
+
     @Bindable var doctor: Doctor
 
-    // MARK: -
+    // MARK: - State
 
-    @State private var currentDetail: DoctorDetailContext = .phoneNumber
+    @State private var currentDetail: DoctorDetailContext = .doctorSettings
+    @State private var showPricelist: Bool = false
+    @State private var isSearchingPricelistItem: Bool = false
+    @State private var searchText: String = ""
+    @State private var basicService: PricelistItem?
 
     // MARK: -
 
     var body: some View {
         SideBySideScreen(sidebarTitle: "Врач", detailTitle: currentDetail.title) {
             Section {
-                
+                PersonImageView(person: doctor)
+                    .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                    .onTapGesture {
+                        currentDetail = .photo
+                    }
             }
 
             Section {
@@ -34,10 +45,36 @@ struct DoctorDetailScreen: View {
                 Text("Имя")
             }
 
-            Button(doctor.phoneNumber) {
-                currentDetail = .phoneNumber
+            Section {
+                Button(doctor.phoneNumber) {
+                    currentDetail = .phoneNumber
+                }
+                .tint(.primary)
+            } header: {
+                Text("Номер телефона")
             }
-            .tint(.primary)
+
+            Section {
+                Button(DateFormat.birthDate.string(from: doctor.birthDate)) {
+                    currentDetail = .birthDate
+                }
+                .tint(.primary)
+            } header: {
+                Text("Дата рождения")
+            }
+
+            Section {
+                Button("Настройки расписания") {
+                    currentDetail = .doctorSettings
+                }
+            }
+
+            Section {
+                Button("Информация") {
+                    currentDetail = .doctorInfo
+                }
+                .tint(.primary)
+            }
         } detail: {
             detail
                 .disabled(user.accessLevel < .registrar)
@@ -54,21 +91,51 @@ struct DoctorDetailScreen: View {
 
 private extension DoctorDetailScreen {
     enum DoctorDetailContext {
+        case photo
         case name
         case phoneNumber
+        case birthDate
+        case doctorSettings
+        case doctorInfo
 
         var title: String {
             switch self {
+            case .photo:
+                return "Фотография"
             case .name:
                 return "ФИО"
             case .phoneNumber:
                 return "Номер телефона"
+            case .birthDate:
+                return "День рождения"
+            case .doctorSettings:
+                return "Настройки расписания"
+            case .doctorInfo:
+                return "Информация о враче"
             }
         }
     }
 
     @ViewBuilder var detail: some View {
         switch currentDetail {
+        case .photo:
+            Form {
+                Section {
+                    if let image = viewModel.selectedImage {
+                        doctorImage(image)
+                    } else if let imageData = doctor.image, let image = UIImage(data: imageData) {
+                        doctorImage(image)
+                    }
+                    PhotosPicker(selection: $viewModel.imageSelection, matching: .images) {
+                        Text("Выберите фото")
+                    }
+                }
+
+                Button("Сохранить") {
+                    doctor.image = viewModel.imageData
+                }
+                .disabled(viewModel.imageData == doctor.image || viewModel.imageData == nil)
+            }
         case .name:
             NameEditView(
                 person:
@@ -85,6 +152,26 @@ private extension DoctorDetailScreen {
             PhoneNumberEditView(
                 person: Binding(get: { doctor }, set: { doctor.phoneNumber = $0.phoneNumber })
             )
+        case .birthDate:
+            Form {
+                DatePicker(
+                    "Дата рождения",
+                    selection: $doctor.birthDate,
+                    in: Date.distantPast...,
+                    displayedComponents: .date
+                )
+            }
+        case .doctorSettings:
+            DoctorSettingsView(doctor: doctor)
+        case .doctorInfo:
+            Form {
+                Section {
+                    TextEditor(text: $doctor.info)
+                        .lineSpacing(6)
+                } header: {
+                    Text("Информация о специалисте")
+                }
+            }
         }
     }
 
@@ -93,5 +180,13 @@ private extension DoctorDetailScreen {
             currentDetail = .name
         }
         .tint(.primary)
+    }
+
+    func doctorImage(_ image: UIImage) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 200, height: 300)
+            .clipShape(.rect(cornerRadius: 16, style: .continuous))
     }
 }
