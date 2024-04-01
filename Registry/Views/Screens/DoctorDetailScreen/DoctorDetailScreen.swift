@@ -29,12 +29,19 @@ struct DoctorDetailScreen: View {
 
     var body: some View {
         SideBySideScreen(sidebarTitle: "Врач", detailTitle: currentDetail.title) {
-            Section {
+            if doctor.image != nil {
                 PersonImageView(person: doctor)
                     .clipShape(.rect(cornerRadius: 8, style: .continuous))
                     .onTapGesture {
                         currentDetail = .photo
                     }
+            } else {
+                Button {
+                    currentDetail = .photo
+                } label: {
+                    Label("Выбрать фото", systemImage: "photo.badge.plus")
+                        .tint(.primary)
+                }
             }
 
             Section {
