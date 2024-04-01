@@ -28,7 +28,6 @@
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
 		8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */; };
-		8B2E70A82BB9B00200012C09 /* NameEditVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
@@ -44,6 +43,7 @@
 		8B6BAA0A2B8DD880000FF417 /* BillPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA092B8DD880000FF417 /* BillPaymentView.swift */; };
 		8B6BAA0D2B8DE508000FF417 /* CreateBillTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA0C2B8DE508000FF417 /* CreateBillTemplateView.swift */; };
 		8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */; };
+		8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */; };
 		8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */; };
 		8B7801412B87B7EA0064DBFB /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801402B87B7EA0064DBFB /* OffsetKey.swift */; };
 		8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801422B87B80D0064DBFB /* WeekdayPickerView.swift */; };
@@ -146,7 +146,6 @@
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
 		8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberEditView.swift; sourceTree = "<group>"; };
-		8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditVIew.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
@@ -162,6 +161,7 @@
 		8B6BAA092B8DD880000FF417 /* BillPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillPaymentView.swift; sourceTree = "<group>"; };
 		8B6BAA0C2B8DE508000FF417 /* CreateBillTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBillTemplateView.swift; sourceTree = "<group>"; };
 		8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedAppointmentView.swift; sourceTree = "<group>"; };
+		8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditView.swift; sourceTree = "<group>"; };
 		8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleScreen.swift; sourceTree = "<group>"; };
 		8B7801402B87B7EA0064DBFB /* OffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetKey.swift; sourceTree = "<group>"; };
 		8B7801422B87B80D0064DBFB /* WeekdayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayPickerView.swift; sourceTree = "<group>"; };
@@ -496,6 +496,15 @@
 				8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */,
 			);
 			path = CompletedAppointmentView;
+			sourceTree = "<group>";
+		};
+		8B7491DD2BBA942E0016FDE9 /* EditViews */ = {
+			isa = PBXGroup;
+			children = (
+				8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */,
+				8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */,
+			);
+			path = EditViews;
 			sourceTree = "<group>";
 		};
 		8B78013B2B87B75F0064DBFB /* ScheduleScreen */ = {
@@ -881,6 +890,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B7491DD2BBA942E0016FDE9 /* EditViews */,
 				8B45E61A2BB564F800834AE6 /* UserView */,
 				8B7EA85C2BA3357E00DE722C /* Charts */,
 				8B0FE9ED2B56F774003F474B /* DatePicker */,
@@ -963,9 +973,7 @@
 			isa = PBXGroup;
 			children = (
 				8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */,
-				8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */,
 				8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */,
-				8B2E70A72BB9B00200012C09 /* NameEditVIew.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1127,7 +1135,7 @@
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
-				8B2E70A82BB9B00200012C09 /* NameEditVIew.swift in Sources */,
+				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,
 				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8BDCCFE42B84A3860086BF4D /* Visit.swift in Sources */,

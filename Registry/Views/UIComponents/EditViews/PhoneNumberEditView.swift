@@ -10,7 +10,7 @@ import SwiftUI
 struct PhoneNumberEditView: View {
     // MARK: - Dependencies
 
-    @Bindable var patient: Patient
+    @Binding var person: Person
 
     // MARK: - State
 
@@ -18,9 +18,9 @@ struct PhoneNumberEditView: View {
 
     // MARK: -
 
-    init(patient: Patient) {
-        self.patient = patient
-        _phoneNumberText = State(initialValue: patient.phoneNumber)
+    init(person: Binding<Person>) {
+        _person = person
+        _phoneNumberText = State(initialValue: person.wrappedValue.phoneNumber)
     }
 
     var body: some View {
@@ -29,10 +29,10 @@ struct PhoneNumberEditView: View {
                 LabeledContent {
                     Button("Сохранить") {
                         withAnimation {
-                            patient.phoneNumber = phoneNumberText
+                            person.phoneNumber = phoneNumberText
                         }
                     }
-                    .disabled(patient.phoneNumber == phoneNumberText || phoneNumberText.count != 18)
+                    .disabled(person.phoneNumber == phoneNumberText || phoneNumberText.count != 18)
                 } label: {
                     PhoneNumberTextField(text: $phoneNumberText)
                 }
@@ -42,5 +42,5 @@ struct PhoneNumberEditView: View {
 }
 
 #Preview {
-    PhoneNumberEditView(patient: ExampleData.patient)
+    PhoneNumberEditView(person: .constant(ExampleData.patient))
 }

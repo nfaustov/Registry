@@ -77,7 +77,7 @@ struct PatientCardScreen: View {
                 }
             }
         } detail: {
-            currentDetail.detail(patient)
+            detail
                 .disabled(user.accessLevel < .registrar)
         }
     }
@@ -111,18 +111,30 @@ private extension PatientCardScreen {
                 return "Паспортные данные"
             }
         }
+    }
 
-        @ViewBuilder func detail(_ patient: Patient) -> some View {
-            switch self {
-            case .name:
-                NameEditVIew(patient: patient)
-            case .phoneNumber:
-                PhoneNumberEditView(patient: patient)
-            case .visits:
-                VisitsDetailView(visits: patient.visits)
-            case .passport:
-                PassportDetailView(patient: patient)
-            }
+    @ViewBuilder var detail: some View {
+        switch currentDetail {
+        case .name:
+            NameEditView(
+                person:
+                    Binding(
+                        get: { patient },
+                        set: {
+                            patient.secondName = $0.secondName
+                            patient.firstName = $0.firstName
+                            patient.patronymicName = $0.patronymicName
+                        }
+                    )
+            )
+        case .phoneNumber:
+            PhoneNumberEditView(
+                person: Binding(get: { patient }, set: { patient.phoneNumber = $0.phoneNumber })
+            )
+        case .visits:
+            VisitsDetailView(visits: patient.visits)
+        case .passport:
+            PassportDetailView(patient: patient)
         }
     }
 
