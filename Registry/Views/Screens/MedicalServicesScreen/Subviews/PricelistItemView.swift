@@ -11,6 +11,8 @@ struct PricelistItemView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     private let pricelistItem: PricelistItem
 
@@ -85,6 +87,13 @@ struct PricelistItemView: View {
                                 pricelistItem.archived ? "Снято с продажи" : "В продаже",
                                 systemImage: pricelistItem.archived ? "pause.rectangle" : "checkmark.rectangle"
                             )
+                        }
+                    }
+
+                    Section {
+                        Button("Удалить", role: .destructive) {
+                            dismiss()
+                            modelContext.delete(pricelistItem)
                         }
                     }
                 }

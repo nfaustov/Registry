@@ -30,7 +30,7 @@ struct AddPatientView: View {
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
     @State private var selection: Visit.ID?
-    @State private var smsNotification: Bool = true
+    @State private var smsNotification: Bool = false
 
     // MARK: -
 
