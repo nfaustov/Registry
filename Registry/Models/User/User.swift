@@ -11,7 +11,7 @@ public protocol User: Person {
     var accessLevel: UserAccessLevel { get set }
 }
 
-public enum UserAccessLevel: Int, Codable, Hashable, CaseIterable, Identifiable {
+public enum UserAccessLevel: Int, Codable, Hashable, Identifiable {
     case anonymous = 0
     case doctor = 1
     case registrar = 2
@@ -32,6 +32,10 @@ public enum UserAccessLevel: Int, Codable, Hashable, CaseIterable, Identifiable 
 
     public var id: Self {
         self
+    }
+
+    public static var selectableCases: [UserAccessLevel] {
+        [.doctor, .registrar]
     }
 }
 

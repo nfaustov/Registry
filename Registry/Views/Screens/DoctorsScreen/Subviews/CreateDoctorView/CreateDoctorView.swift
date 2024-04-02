@@ -12,6 +12,7 @@ struct CreateDoctorView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.user) private var user
 
     @StateObject private var viewModel = PhotosPickerViewModel()
 
@@ -33,6 +34,7 @@ struct CreateDoctorView: View {
     @State private var perVisitAmount: Int = 0
     @State private var salaryRate: Double = 0.4
     @State private var isSearching: Bool = false
+    @State private var userLevel: UserAccessLevel = .doctor
 
     // MARK: -
 
@@ -143,6 +145,18 @@ struct CreateDoctorView: View {
                     Text("Заработная плата")
                 }
 
+                if user.accessLevel == .boss {
+                    Section {
+                        Picker("Уровень доступа", selection: $userLevel) {
+                            ForEach(UserAccessLevel.selectableCases) { level in
+                                Text(level.title)
+                            }
+                        }
+                    } header: {
+                        Text("Пользователь")
+                    }
+                }
+
                 Section {
                     TextEditor(text: $infoText)
                         .lineSpacing(6)
@@ -181,7 +195,8 @@ struct CreateDoctorView: View {
                     defaultCabinet: defaultCabinet,
                     salary: salary,
                     info: infoText,
-                    image: viewModel.imageData
+                    image: viewModel.imageData,
+                    accessLevel: userLevel
                 )
                 modelContext.insert(doctor)
             }

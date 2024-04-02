@@ -11,9 +11,9 @@ import SwiftData
 struct ContentView: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
+//    @Environment(\.modelContext) private var modelContext
 //    @Query private var pricelistItems: [PricelistItem]
-    @Query private var schedules: [DoctorSchedule]
+//    @Query private var schedules: [DoctorSchedule]
 //    @Query private var doctors: [Doctor]
 //    @Query private var patients: [Patient]
 //    @Query private var reports: [Report]
@@ -75,7 +75,7 @@ struct ContentView: View {
             }
             .navigationSplitViewStyle(.prominentDetail)
             .onAppear {
-                schedules.forEach { modelContext.delete($0) }
+//                schedules.forEach { modelContext.delete($0) }
 //                doctors.forEach { modelContext.delete($0) }
 //                patients.forEach { modelContext.delete($0) }
 //                reports.forEach { modelContext.delete($0) }
