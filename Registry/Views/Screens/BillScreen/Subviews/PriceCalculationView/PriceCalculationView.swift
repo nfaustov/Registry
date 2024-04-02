@@ -105,9 +105,11 @@ struct PriceCalculationView: View {
                 patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
             }
         }
-        .onChange(of: bill.price) { _, newValue in
-            withAnimation {
-                bill.discount = newValue * Double(discountPercent) / 100
+        .onChange(of: bill.discount) { _, newValue in
+            if newValue > 0 {
+                withAnimation {
+                    discountPercent = Int(bill.discount / bill.price * 100)
+                }
             }
         }
     }

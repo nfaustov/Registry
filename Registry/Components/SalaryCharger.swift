@@ -10,7 +10,9 @@ import Foundation
 public struct SalaryCharger {
     static func charge(for subject: Payment.Subject, doctors: [Doctor]) {
         for service in subject.services {
-            if let performer = service.performer, let rate = performer.salary.rate {
+            if let performer = service.performer, 
+                let rate = performer.salary.rate,
+                service.pricelistItem.category != .laboratory {
                 var salary = Double.zero
 
                 if let fixedSalaryAmount = service.pricelistItem.salaryAmount {

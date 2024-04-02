@@ -93,12 +93,13 @@ public final class PricelistItem: Codable {
 public extension PricelistItem {
     struct Short: Codable, Hashable, Identifiable {
         public let id: String
+        public let category: Department
         public var title: String
         public var price: Double
         public var salaryAmount: Double?
     }
 
     var short: PricelistItem.Short {
-        Short(id: id, title: title, price: price, salaryAmount: salaryAmount)
+        Short(id: id, category: category, title: title, price: price, salaryAmount: salaryAmount)
     }
 }

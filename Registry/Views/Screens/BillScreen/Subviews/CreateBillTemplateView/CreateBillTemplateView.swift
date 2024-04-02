@@ -18,12 +18,14 @@ struct CreateBillTemplateView: View {
 
     @State private var templateTitleText: String = ""
     @State private var discount: Double = .zero
+    @State private var discountRate: Double = .zero
+    @State private var discountType: DiscountType = .rate
 
     // MARK: -
 
     var body: some View {
         NavigationStack {
-            List {
+            Form {
                 TextField("Название", text: $templateTitleText)
 
                 Section {
@@ -49,9 +51,33 @@ struct CreateBillTemplateView: View {
                     }
                 }
 
-                VStack {
-                    Text("Скидка: \(Int(discount))%")
-                    Slider(value: $discount, in: 0...50, step: 1)
+                Section {
+                    let price = services
+                        .map{ $0.pricelistItem.price }
+                        .reduce(0, +)
+
+                    LabeledContent("Цена", value: "\(Int(price)) ₽")
+                    Picker(discountType.rawValue, selection: $discountType) {
+                        ForEach(DiscountType.allCases, id: \.self) { type in
+                            Text(type.rawValue)
+                                .tag(type.rawValue)
+                        }
+                    }
+
+                    if discountType == .rate {
+                        LabeledContent("Скидка \(Int(discountRate * 100))%") {
+                            Slider(value: $discountRate, in: 0...0.5, step: 0.01)
+                                .onChange(of: discountRate) { _, newValue in
+                                    discount = price * newValue
+                                }
+                        }
+                        LabeledContent("Итог", value: "\(Int(price - price * discountRate))")
+                    } else if discountType == .amount {
+                        LabeledContent("Скидка") {
+                            TextField("Сумма скидки", value: $discount, format: .number)
+                        }
+                        LabeledContent("Итог", value: "\(Int(price - discount))")
+                    }
                 }
             }
             .sheetToolbar(title: "Новый шаблон", confirmationDisabled: templateTitleText.isEmpty) {
@@ -64,4 +90,13 @@ struct CreateBillTemplateView: View {
 
 #Preview {
     CreateBillTemplateView(services: [])
+}
+
+// Calculations
+
+private extension CreateBillTemplateView {
+    enum DiscountType: String, Hashable, CaseIterable {
+        case rate = "Процент"
+        case amount = "Сумма"
+    }
 }

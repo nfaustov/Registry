@@ -89,6 +89,7 @@ struct BillScreen: View {
                                 Button(template.title) {
                                     withAnimation {
                                         bill.services.append(contentsOf: template.services)
+                                        bill.discount = template.discount
                                     }
                                 }
                             }
