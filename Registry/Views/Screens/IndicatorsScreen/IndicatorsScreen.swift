@@ -11,7 +11,7 @@ struct IndicatorsScreen: View {
     // MARK: -
 
     var body: some View {
-        List {
+        Form {
             CashboxReportingChart()
             PatientsChart()
             SchedulesChart()
