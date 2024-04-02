@@ -24,8 +24,8 @@ struct PersonImageView: View {
             Image(systemName: "person.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .background(.gray)
-                .foregroundStyle(.white)
+                .background(Color(.systemFill))
+                .foregroundStyle(.gray)
         }
     }
 }
