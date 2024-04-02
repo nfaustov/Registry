@@ -87,7 +87,9 @@ struct AddPatientView: View {
                             }
                     }
 
-                    Toggle("СМС оповещение", isOn: $smsNotification)
+                    if let doctor = appointment.schedule?.doctor, doctor.department != .procedure {
+                        Toggle("СМС оповещение", isOn: $smsNotification)
+                    }
                 } header: {
                     Text("Номер телефона")
                 }
@@ -220,7 +222,7 @@ private extension AddPatientView {
         if selectedPatient != nil {
             return true
         } else {
-            return phoneNumberText.count == 18
+            return phoneNumberText.count == 18 || phoneNumberText == "+7"
         }
     }
 

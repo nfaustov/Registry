@@ -94,6 +94,7 @@ public extension Report {
             .filter { !$0.isRefund }
             .flatMap { $0.services }
             .filter { $0[keyPath: role]?.id == employee.id }
+            .filter { $0.pricelistItem.category != .laboratory }
     }
 
     func daySalary(of employee: Employee) -> Double {

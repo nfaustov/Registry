@@ -112,8 +112,7 @@ struct DoctorPayoutView: View {
                             Spacer()
                             textField(type: paymentMethod.type)
                                 .onChange(of: paymentMethod.value) { _, newValue in
-                                    self.additionalPaymentMethod?.value = 0
-                                    self.additionalPaymentMethod?.value = Double(paymentBalance) - newValue
+                                    self.additionalPaymentMethod?.value = doctor.balance - newValue
                                 }
                         }
 
@@ -122,8 +121,7 @@ struct DoctorPayoutView: View {
                             Spacer()
                             textField(type: additionalPaymentMethod.type)
                                 .onChange(of: self.additionalPaymentMethod?.value ?? 0) { _, newValue in
-                                    paymentMethod.value = 0
-                                    paymentMethod.value = Double(paymentBalance) - newValue
+                                    paymentMethod.value = doctor.balance - newValue
                                 }
                         }
                     } else {
@@ -155,13 +153,8 @@ struct DoctorPayoutView: View {
                 
                 Button("Добавить способ оплаты") {
                     withAnimation {
-                        switch paymentMethod.type {
-                        case .cash: additionalPaymentMethod = Payment.Method(.card, value: 0)
-                        case .card: additionalPaymentMethod = Payment.Method(.cash, value: 0)
-                        default: ()
-                        }
-                        paymentMethod.value = 0
-                        paymentMethod.value = Double(paymentBalance)
+                        paymentMethod = Payment.Method(.cash, value: doctor.balance)
+                        additionalPaymentMethod = Payment.Method(.card, value: 0)
                     }
                 }
                 .disabled(additionalPaymentMethod != nil)
@@ -193,7 +186,7 @@ struct DoctorPayoutView: View {
             }
             .sheetToolbar(
                 title: "Выплата",
-                confirmationDisabled: paymentMethod.value == 0 || doctor.balance == 0 || disabled
+                confirmationDisabled: paymentMethod.value == 0 || doctor.balance <= 0 || disabled
             ) {
                 doctorPayout()
                 payment()

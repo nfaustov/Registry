@@ -16,9 +16,10 @@ public enum Message {
             guard let schedule = patientAppointment.schedule,
                   let doctor = schedule.doctor else { return "" }
 
-            let dateTime = DateFormat.dateTime.string(from: patientAppointment.scheduledTime)
+            let date = DateFormat.date.string(from: patientAppointment.scheduledTime)
+            let time = DateFormat.time.string(from: patientAppointment.scheduledTime)
 
-            return "Вы записаны \(dateTime) на прием к врачу \(doctor.initials) Клиника АртМедикс 8(4742)25-04-04 wa.me/79912170440"
+            return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 8(4742)25-04-04"
         }
     }
 
