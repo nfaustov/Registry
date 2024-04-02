@@ -19,6 +19,7 @@ public enum Department: String, Codable, Hashable, CaseIterable, Identifiable, C
     case vascularSurgery = "Сердечно-сосудистая хирургия"
     case functionalDiagnostics = "Функциональная диагностика"
     case neurology = "Неврология"
+    case cosmetology = "Косметология"
     case laboratory = "Лабораторные исследования"
     case procedure = "Процедурный кабинет"
 
@@ -35,7 +36,8 @@ public enum Department: String, Codable, Hashable, CaseIterable, Identifiable, C
         case .vascularSurgery: return "Сосудистый хирург"
         case .functionalDiagnostics: return "Врач функциональной диагностики"
         case .neurology: return "Невролог"
-        case .laboratory: return "Врач лаборант"
+        case .cosmetology: return "Косметолог"
+        case .laboratory: return "Лаборант"
         case .procedure: return "Медицинская сестра"
         }
     }
@@ -64,10 +66,12 @@ public enum Department: String, Codable, Hashable, CaseIterable, Identifiable, C
             7
         case .neurology:
             8
-        case .laboratory:
-            12
-        case .procedure:
+        case .cosmetology:
             11
+        case .laboratory:
+            13
+        case .procedure:
+            12
         }
     }
 
