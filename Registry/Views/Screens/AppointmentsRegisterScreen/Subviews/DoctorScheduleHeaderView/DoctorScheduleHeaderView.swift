@@ -35,6 +35,12 @@ struct DoctorScheduleHeaderView: View {
                     Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
                         .padding(.vertical, 4)
                     Label(duration, systemImage: "timer")
+                    HStack {
+                        Label("\(doctorSchedule.scheduledPatients.count)", systemImage: "person.fill")
+                        Divider()
+                            .frame(height: 20)
+                        Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
+                    }
                 }
                 .font(.subheadline)
 

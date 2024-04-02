@@ -34,16 +34,10 @@ struct SchedulesListView: View {
                             .font(.callout)
                             .foregroundColor(.secondary)
 
-                        HStack(alignment: .top, spacing: 8) {
-                            Label("\(schedule.scheduledPatients.count)", systemImage: "person.fill")
-                            Divider()
-                                .frame(height: 20)
-                            Label("\(schedule.availableAppointments)", systemImage: "person")
-                            Spacer()
-                            Text(scheduleBounds(schedule))
-                        }
-                        .foregroundColor(.secondary)
-                        .font(.subheadline)
+                        Text(scheduleBounds(schedule))
+                            .foregroundStyle(.secondary)
+                            .font(.subheadline)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
                     }
                     .padding()
                     .overlay(

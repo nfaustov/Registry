@@ -62,7 +62,7 @@ struct ScheduleChart: View {
                 domain: workingHours.range,
                 range: .plotDimension(padding: 16))
             .chartPlotStyle { plotArea in
-                plotArea.frame(height: 60 * CGFloat(schedules.count))
+                plotArea.frame(height: 64 * CGFloat(todayDoctors.count))
             }
         }
         .scrollBounceBehavior(.basedOnSize)
@@ -79,5 +79,14 @@ struct ScheduleChart: View {
 extension ScheduleChart {
     var workingHours: WorkingHours {
         WorkingHours(for: date)
+    }
+
+    var todayDoctors: [Doctor] {
+        Array(
+            schedules
+                .compactMap { $0.doctor }
+                .uniqued()
+        )
+        
     }
 }

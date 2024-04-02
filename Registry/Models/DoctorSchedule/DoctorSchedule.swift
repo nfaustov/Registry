@@ -46,6 +46,7 @@ public final class DoctorSchedule {
                 appointments.append(appointment)
                 appointmentTime.addTimeInterval(doctor.serviceDuration)
             } while appointmentTime < ending
+
             self.patientAppointments = appointments
         } else {
             self.patientAppointments = patientAppointments
