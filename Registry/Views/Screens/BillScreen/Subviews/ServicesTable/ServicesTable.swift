@@ -73,7 +73,7 @@ private extension ServicesTable {
                 let renderedService = RenderedService(
                     pricelistItem: item.short,
                     performer: item.category == .laboratory ? nil : doctor.employee,
-                    agent: item.category == .laboratory ? doctor.employee : nil
+                    agent: item.category == .laboratory ? (doctor.department == .procedure ? nil : doctor.employee) : nil
                 )
                 withAnimation {
                     bill.services.insert(renderedService, at: 0)
