@@ -86,6 +86,8 @@ extension Coordinator {
             DoctorFutureSchedulesView(doctorSchedule: doctorSchedule)
         case .addPatient(let appointment):
             AddPatientView(appointment: appointment)
+        case .addProcedurePatient(let schedule):
+            AddProcedurePatientView(schedule: schedule)
         case .completedAppointment(let appointment):
             CompletedAppointmentView(appointment: appointment)
         case .createBillTemplate(let services):

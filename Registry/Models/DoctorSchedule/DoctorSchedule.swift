@@ -33,7 +33,7 @@ public final class DoctorSchedule {
         self.starting = starting
         self.ending = ending
 
-        if patientAppointments.isEmpty {
+        if doctor.department != .procedure, patientAppointments.isEmpty {
             var appointmentTime = starting
             var appointments = [PatientAppointment]()
 
@@ -96,6 +96,16 @@ public final class DoctorSchedule {
         } else {
             appointment.cancel()
         }
+    }
+
+    public func createPatientAppointment(date: Date, completion: @escaping (PatientAppointment) -> Void) {
+        let appointment = PatientAppointment(
+            scheduledTime: date,
+            duration: doctor?.serviceDuration ?? Double.zero,
+            patient: nil
+        )
+        patientAppointments?.append(appointment)
+        completion(appointment)
     }
 }
 

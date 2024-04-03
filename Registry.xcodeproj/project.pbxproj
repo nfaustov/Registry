@@ -102,6 +102,7 @@
 		8BA53DA22B494EBF006BE983 /* SideSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53DA12B494EBF006BE983 /* SideSheetView.swift */; };
 		8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */; };
 		8BA8C80D2BBC2F6C00F2BCDD /* BillTemplatesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */; };
+		8BA8C8112BBD42B200F2BCDD /* AddProcedurePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */; };
 		8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2DD622B97396A00AD4749 /* Refund.swift */; };
 		8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */; };
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
@@ -226,6 +227,7 @@
 		8BA53DA12B494EBF006BE983 /* SideSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideSheetView.swift; sourceTree = "<group>"; };
 		8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetToolbarViewModifier.swift; sourceTree = "<group>"; };
 		8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillTemplatesController.swift; sourceTree = "<group>"; };
+		8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProcedurePatientView.swift; sourceTree = "<group>"; };
 		8BB2DD622B97396A00AD4749 /* Refund.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refund.swift; sourceTree = "<group>"; };
 		8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientCardScreen.swift; sourceTree = "<group>"; };
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			children = (
 				8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */,
 				8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */,
+				8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */,
 			);
 			path = AddPatientView;
 			sourceTree = "<group>";
@@ -1223,6 +1226,7 @@
 				8B183BA92B86601B00FA1D46 /* Ledger.swift in Sources */,
 				8BDCCFD82B849F6C0086BF4D /* DoctorSchedule.swift in Sources */,
 				8B8B188F2B88D7B4006ABD82 /* DoctorScheduleHeaderView.swift in Sources */,
+				8BA8C8112BBD42B200F2BCDD /* AddProcedurePatientView.swift in Sources */,
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8BD9FCD42BA970830055823D /* IndicatorsScreen.swift in Sources */,
 				8BDCCFE82B84A4080086BF4D /* RenderedService.swift in Sources */,

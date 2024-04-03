@@ -14,6 +14,7 @@ enum Sheet: Identifiable {
     case doctorPayout(for: Doctor, disabled: Bool)
     case doctorFutureSchedules(doctorSchedule: DoctorSchedule)
     case addPatient(for: PatientAppointment)
+    case addProcedurePatient(for: DoctorSchedule)
     case completedAppointment(appointment: PatientAppointment)
     case createBillTemplate(services: [RenderedService])
     case createDoctor

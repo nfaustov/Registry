@@ -79,4 +79,3 @@ private extension AppointmentsRegisterScreen {
         return schedules
     }
 }
-

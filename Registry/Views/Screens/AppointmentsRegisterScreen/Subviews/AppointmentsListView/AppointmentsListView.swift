@@ -17,22 +17,39 @@ struct AppointmentsListView: View {
     // MARK: -
 
     var body: some View {
-        List(scheduleAppointments) { appointment in
-            AppointmentView(appointment: appointment)
-                .swipeActions(edge: .trailing) {
-                    if scheduleAppointments.count > 1 {
-                        trailingSwipeActions(for: appointment)
+        List {
+            if schedule.doctor?.department == .procedure {
+                HStack {
+                    Spacer()
+
+                    Button {
+                        coordinator.present(.addProcedurePatient(for: schedule))
+                    } label: {
+                        Image(systemName: "person.crop.rectangle.badge.plus")
+                            .padding(12)
                     }
+                    .buttonStyle(.bordered)
                 }
-                .swipeActions(edge: .leading) {
-                    leadingSwipeActions(for: appointment)
-                }
-                .contextMenu {
-                    if !isExpiredForUpdating {
-                        menuView(for: appointment)
+            }
+            ForEach(scheduleAppointments) { appointment in
+                AppointmentView(appointment: appointment)
+                    .swipeActions(edge: .trailing) {
+                        if scheduleAppointments.count > 1 {
+                            trailingSwipeActions(for: appointment)
+                                .disabled(schedule.doctor?.department == .procedure)
+                        }
                     }
-                }
-                .disabled(isExpiredForUpdating)
+                    .swipeActions(edge: .leading) {
+                        leadingSwipeActions(for: appointment)
+                            .disabled(schedule.doctor?.department == .procedure)
+                    }
+                    .contextMenu {
+                        if !isExpiredForUpdating {
+                            menuView(for: appointment)
+                        }
+                    }
+                    .disabled(isExpiredForUpdating)
+            }
         }
         .listStyle(.plain)
         .scrollBounceBehavior(.basedOnSize)
