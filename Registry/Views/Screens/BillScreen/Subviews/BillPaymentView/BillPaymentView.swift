@@ -155,8 +155,6 @@ struct BillPaymentView: View {
                 }
             }
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
-                isPaid = true
-
                 if paymentBalance < 0 || addToBalance {
                     balancePayment(value: Double(paymentBalance))
                     patient.updateBalance(increment: Double(paymentBalance))
@@ -170,6 +168,8 @@ struct BillPaymentView: View {
 
                 payment()
                 SalaryCharger.charge(for: .bill(bill), doctors: doctors)
+
+                isPaid = true
             }
         }
     }

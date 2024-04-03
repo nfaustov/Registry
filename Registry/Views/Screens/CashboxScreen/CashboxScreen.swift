@@ -66,7 +66,7 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            PaymentsView(payments: todayReport?.payments ?? []) { payment in
+            PaymentsView(payments: todayReport?.payments.sorted(by: { $0.date > $1.date }) ?? []) { payment in
                 todayReport?.payments.removeAll(where: { $0 == payment })
             }
             .padding()

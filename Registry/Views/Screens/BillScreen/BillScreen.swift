@@ -12,6 +12,7 @@ struct BillScreen: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -129,8 +130,10 @@ struct BillScreen: View {
             )
             .padding([.horizontal, .bottom])
             .frame(height: 132)
-            .onChange(of: isCompleted) {
-                addServices = false
+            .onChange(of: isCompleted) { _, newValue in
+                if newValue {
+                    dismiss()
+                }
             }
         }
         .navigationTitle("Счет")
