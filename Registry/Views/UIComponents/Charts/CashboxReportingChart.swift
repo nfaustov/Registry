@@ -67,10 +67,12 @@ struct CashboxReportingChart: View {
                 if todayReport.reporting(selectedReporting, of: .card) != 0 {
                     LabeledContent("Перевод", value: "\(Int(todayReport.reporting(selectedReporting, of: .card)))")
                 }
+                LabeledContent("Всего", value: "\(Int(todayReport.reporting(selectedReporting)))")
+                    .font(.headline)
             }
 
             Section {
-                DisclosureGroup("Платежи") {
+                DisclosureGroup{
                     List(todayReport.payments.sorted(by: { $0.date > $1.date })) { payment in
                         HStack {
                             Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
@@ -90,6 +92,11 @@ struct CashboxReportingChart: View {
                             Text("\(Int(payment.totalAmount)) ₽")
                                 .foregroundStyle(payment.totalAmount > 0 ? .teal : payment.purpose == .collection ? .purple : .red)
                         }
+                    }
+                } label: {
+                    LabeledContent("Платежи") {
+                        Text(todayReport.reporting(.profit) > 0 ? "+\(Int(todayReport.reporting(.profit))) ₽" : "-\(Int(todayReport.reporting(.profit))) ₽")
+                            .foregroundStyle(todayReport.reporting(.profit) > 0 ? .green : .red)
                     }
                 }
             }
