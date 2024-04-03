@@ -15,6 +15,9 @@ struct LoginScreen: View {
 
     @Query private var doctors: [Doctor]
 
+    @AppStorage("lastUserPhoneNumber") private var lastPhoneNumber: String = ""
+    @AppStorage("code") private var code: String = ""
+
     var logIn: (User) -> Void
 
     // MARK: - State
@@ -69,6 +72,14 @@ struct LoginScreen: View {
 private extension LoginScreen {
     var phoneLoginView: some View {
         Form {
+            if !lastPhoneNumber.isEmpty, let doctor = doctors.first(where: { $0.phoneNumber == lastPhoneNumber }) {
+                Section {
+                    Button("Войти как \(doctor.initials)") {
+                        userCandidate = doctor
+                    }
+                }
+            }
+            
             Section {
                 PhoneNumberTextField(text: $phoneNumberText)
                     .onChange(of: phoneNumberText) { errorMessage = "" }
@@ -87,6 +98,11 @@ private extension LoginScreen {
                             
                             Task {
                                 await authController.call(doctor.phoneNumber)
+
+                                if let authCode = authController.code {
+                                    lastPhoneNumber = phoneNumberText
+                                    code = authCode
+                                }
                             }
                         } else if phoneNumberText == SuperUser.boss.phoneNumber {
                             userCandidate = SuperUser.boss
@@ -128,6 +144,8 @@ private extension LoginScreen {
             Button("Отправить") {
                 withAnimation {
                     if authController.code == codeText {
+                        logIn(user)
+                    } else if !code.isEmpty, user.phoneNumber == lastPhoneNumber, code == codeText {
                         logIn(user)
                     } else if codeText == "3333" {
                         logIn(user)
