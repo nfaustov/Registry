@@ -13,11 +13,7 @@ struct IndicatorsScreen: View {
     var body: some View {
         Form {
             CashboxReportingChart()
-            PatientsChart()
-            SchedulesChart()
-            DoctorsChart()
         }
-        .listRowSpacing(8)
         .scrollBounceBehavior(.basedOnSize)
     }
 }

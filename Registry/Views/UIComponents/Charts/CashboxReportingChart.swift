@@ -7,38 +7,40 @@
 
 import SwiftUI
 import SwiftData
-import Charts
 
 struct CashboxReportingChart: View {
     // MARK: - Dependencies
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     // MARK: - State
 
     @State private var selectedReporting: Reporting = .income
-    @State private var selectedAngle: Double?
-    @State private var selectedPaymentType: PaymentType?
-    @State private var timeRemaining = 4
-
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     // MARK: -
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text("Касса " + DateFormat.date.string(from: .now))
-                    .font(.title)
-
-                Spacer()
-
-                Text("\(Int(todayReport?.cashBalance ?? 0)) ₽")
-                    .font(.title)
+        Section {
+            if let todayReport = reports.first {
+                LabeledContent {
+                    Button("Отчет") {
+                        coordinator.present(.report(todayReport))
+                    }
+                } label: {
+                    Text("\(Int(reports.first?.cashBalance ?? 0)) ₽")
+                        .font(.title3)
+                }
+            } else {
+                Text("0 ₽")
             }
-            .padding(.vertical, 8)
+        } header: {
+            Text("Касса")
+        }
 
-            if let todayReport, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
+        if let todayReport = reports.first, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
+            Section {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in
                         if reporting != .profit {
@@ -56,61 +58,47 @@ struct CashboxReportingChart: View {
                     }
                 }
 
-                Chart(PaymentType.allCases, id: \.rawValue) { type in
-                    SectorMark(
-                        angle: .value("Доходы/Расходы", abs(todayReport.reporting(selectedReporting, of: type))),
-                        innerRadius: .ratio(0.618),
-                        outerRadius: selectedPaymentType == type ? 120 : 108,
-                        angularInset: 1.5
-                    )
-                    .cornerRadius(4)
-                    .foregroundStyle(chartStyle(type))
-                    .opacity(type == selectedPaymentType ? 1 : 0.5)
+                if todayReport.reporting(selectedReporting, of: .bank) != 0 {
+                    LabeledContent("Терминал", value: "\(Int(todayReport.reporting(selectedReporting, of: .bank)))")
                 }
-                .chartAngleSelection(value: $selectedAngle)
-                .chartBackground { _ in
-                    VStack {
-                        if let selectedPaymentType {
-                            Text(selectedPaymentType.rawValue)
-                                .contentTransition(.identity)
-                        }
-                        Text("\(Int(todayReport.reporting(selectedReporting, of: selectedPaymentType))) ₽")
-                            .font(.title)
-                            .contentTransition(.numericText())
-                    }
+                if todayReport.reporting(selectedReporting, of: .cash) != 0 {
+                    LabeledContent("Наличные", value: "\(Int(todayReport.reporting(selectedReporting, of: .cash)))")
                 }
-                .frame(height: 240)
-                .onChange(of: selectedAngle) { _, newValue in
-                    if let newValue {
-                        withAnimation {
-                            getSelectedPaymentType(value: newValue)
-                            timeRemaining = 4
-                        }
-                    }
+                if todayReport.reporting(selectedReporting, of: .card) != 0 {
+                    LabeledContent("Перевод", value: "\(Int(todayReport.reporting(selectedReporting, of: .card)))")
                 }
-                .onReceive(timer) { _ in
-                    if timeRemaining > 0 {
-                        timeRemaining -= 1
-                    } else if timeRemaining == 0 {
-                        withAnimation {
-                            selectedPaymentType = nil
-                        }
-                    }
-                }
-            } else {
-                ContentUnavailableView(
-                    "Нет данных",
-                    systemImage: "chart.pie",
-                    description: Text("За выбранный период не совершено ни одного платежа")
-                )
             }
 
-            Group {
-                ForEach(lastReports) { report in
-                    reportView(report)
+            Section {
+                DisclosureGroup("Платежи") {
+                    List(todayReport.payments.sorted(by: { $0.date > $1.date })) { payment in
+                        HStack {
+                            Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
+                                .padding()
+                                .background(paymentBackground(payment).opacity(0.1))
+                                .clipShape(.rect(cornerRadius: 12))
+
+                            VStack(alignment: .leading) {
+                                Text(payment.purpose.title)
+                                    .font(.headline)
+                                Text(payment.purpose.descripiton)
+                                    .font(.subheadline)
+                            }
+
+                            Spacer()
+
+                            Text("\(Int(payment.totalAmount)) ₽")
+                                .foregroundStyle(payment.totalAmount > 0 ? .teal : payment.purpose == .collection ? .purple : .red)
+                        }
+                    }
                 }
             }
-            .padding(.bottom)
+        } else {
+            ContentUnavailableView(
+                "Нет данных",
+                systemImage: "chart.pie",
+                description: Text("За выбранный период не совершено ни одного платежа")
+            )
         }
     }
 }
@@ -134,18 +122,8 @@ private extension CashboxReportingChart {
         .frame(maxWidth: .infinity)
     }
 
-    var lastReports: [Report] {
-        reports.filter { $0.date > .now.addingTimeInterval(-618_400) }
-    }
-}
-
-// MARK: - Calculations
-
-private extension CashboxReportingChart {
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else { return nil }
+    func paymentBackground(_ payment: Payment) -> Color {
+        payment.totalAmount > 0 ? .blue : payment.purpose == .collection ? .purple : .red
     }
 
     func chartStyle(_ type: PaymentType) -> Color {
@@ -156,19 +134,6 @@ private extension CashboxReportingChart {
             return .purple
         case .card:
             return .green
-        }
-    }
-
-    func getSelectedPaymentType(value: Double) {
-        var cumulativeTotal = 0.0
-        _ = PaymentType.allCases.first { type in
-            cumulativeTotal += abs(todayReport?.reporting(selectedReporting, of: type) ?? 0)
-            if value <= cumulativeTotal {
-                selectedPaymentType = type
-                return true
-            }
-
-            return false
         }
     }
 }
