@@ -79,20 +79,19 @@ struct DoctorPayoutView: View {
                     if doctor.agentFee > 0 {
                         DisclosureGroup {
                             List(Array(servicesByAgent.keys), id: \.self) { date in
-                                VStack(alignment: .leading) {
-                                    DateText(date, format: .date)
-                                        .fontWeight(.medium)
-                                    ForEach(servicesByAgent[date] ?? []) { service in
-                                        Divider()
-                                        HStack {
-                                            Text(service.pricelistItem.title)
-                                            Spacer()
-                                            Text("\(Int(service.pricelistItem.price * 0.1)) ₽")
-                                                .frame(width: 60)
-                                        }
+                                DateText(date, format: .date)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                ForEach(servicesByAgent[date] ?? []) { service in
+                                    Divider()
+                                    HStack {
+                                        Text(service.pricelistItem.title)
+                                        Spacer()
+                                        Text("\(Int(service.pricelistItem.price * 0.1)) ₽")
+                                            .frame(width: 60)
                                     }
+                                    .font(.subheadline)
                                 }
-                                .font(.subheadline)
                             }
                         } label: { agentFeeTitle }
 
