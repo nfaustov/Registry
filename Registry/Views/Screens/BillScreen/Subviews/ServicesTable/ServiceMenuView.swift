@@ -22,6 +22,7 @@ struct ServiceMenuView: View {
     var body: some View {
         Section {
             menu(of: \.performer)
+                .disabled(service.pricelistItem.category == .laboratory)
             menu(of: \.agent)
         }
 

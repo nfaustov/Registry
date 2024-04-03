@@ -72,7 +72,8 @@ private extension ServicesTable {
             for item in droppedItems {
                 let renderedService = RenderedService(
                     pricelistItem: item.short,
-                    performer: doctor.employee
+                    performer: item.category == .laboratory ? nil : doctor.employee,
+                    agent: item.category == .laboratory ? doctor.employee : nil
                 )
                 withAnimation {
                     bill.services.insert(renderedService, at: 0)
