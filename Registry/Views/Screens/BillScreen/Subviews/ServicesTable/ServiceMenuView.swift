@@ -22,7 +22,7 @@ struct ServiceMenuView: View {
     var body: some View {
         Section {
             menu(of: \.performer)
-                .disabled(service.pricelistItem.category == .laboratory)
+                .disabled(service?.pricelistItem.category == .laboratory)
             menu(of: \.agent)
         }
 
@@ -34,7 +34,8 @@ struct ServiceMenuView: View {
             } label: {
                 Label("Удалить", systemImage: "trash")
             }
-        }    }
+        }
+    }
 }
 
 #Preview {
@@ -56,9 +57,11 @@ private extension ServiceMenuView {
     func doctorButton(_ doctor: Doctor?, role: WritableKeyPath<RenderedService, AnyEmployee?>) -> some View {
         Button(doctor?.initials ?? "-") {
             withAnimation {
-                var updatedService = service
-                updatedService[keyPath: role] = doctor?.employee
-                bill.services.replace([service], with: [updatedService])
+                if let service {
+                    var updatedService = service
+                    updatedService[keyPath: role] = doctor?.employee
+                    bill.services.replace([service], with: [updatedService])
+                }
             }
         }
     }
@@ -67,8 +70,7 @@ private extension ServiceMenuView {
 // MARK: - Calculations
 
 private extension ServiceMenuView {
-    var service: RenderedService {
-        guard let service = bill.services.first(where: { $0.id == serviceID }) else { fatalError() }
-        return service
+    var service: RenderedService? {
+        bill.services.first(where: { $0.id == serviceID })
     }
 }
