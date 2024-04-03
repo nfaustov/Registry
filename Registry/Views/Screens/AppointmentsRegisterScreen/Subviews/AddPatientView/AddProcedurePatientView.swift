@@ -85,8 +85,8 @@ struct AddProcedurePatientView: View {
                         Text(selectedPatient.phoneNumber)
                     } else {
                         PhoneNumberTextField(text: $phoneNumberText)
-                            .onSubmit {
-                                if let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
+                            .onChange(of: phoneNumberText) {
+                                if phoneNumberText.count == 18, let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
                                     selectedPatient = patient
                                 }
                             }
