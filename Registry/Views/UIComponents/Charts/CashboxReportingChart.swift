@@ -23,7 +23,7 @@ struct CashboxReportingChart: View {
 
     var body: some View {
         Section {
-            if let todayReport = reports.first {
+            if let todayReport = reports.first, Calendar.current.isDateInToday(todayReport.date) {
                 LabeledContent {
                     Button("Отчет") {
                         coordinator.present(.report(todayReport))
@@ -39,7 +39,9 @@ struct CashboxReportingChart: View {
             Text("Касса")
         }
 
-        if let todayReport = reports.first, todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0 {
+        if let todayReport = reports.first,
+            Calendar.current.isDateInToday(todayReport.date),
+            (todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0) {
             Section {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in
