@@ -10,6 +10,8 @@ import SwiftUI
 struct AppointmentsListView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
 
     @Bindable var schedule: DoctorSchedule
@@ -104,12 +106,24 @@ private extension AppointmentsListView {
 
             Section {
                 Button(role: .destructive) {
-                    if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
-                        patient.cancelVisit(for: appointment.id)
-                        schedule.cancelPatientAppointment(appointment)
-                    } else if let visit = patient.visit(forAppointmentID: appointment.id) {
-                        schedule.cancelPatientAppointment(appointment)
-                        patient.specifyVisitDate(visit.id)
+                    withAnimation {
+                        if schedule.doctor?.department == .procedure {
+                            if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
+                                patient.cancelVisit(for: appointment.id)
+                                schedule.patientAppointments?.removeAll(where: { $0.id == appointment.id })
+                            } else if let visit = patient.visit(forAppointmentID: appointment.id) {
+                                schedule.patientAppointments?.removeAll(where: { $0.id == appointment.id })
+                                patient.specifyVisitDate(visit.id)
+                            }
+                        } else {
+                            if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
+                                patient.cancelVisit(for: appointment.id)
+                                schedule.cancelPatientAppointment(appointment)
+                            } else if let visit = patient.visit(forAppointmentID: appointment.id) {
+                                schedule.cancelPatientAppointment(appointment)
+                                patient.specifyVisitDate(visit.id)
+                            }
+                        }
                     }
                 } label: {
                     Label("Отменить прием", systemImage: "person.badge.minus")
