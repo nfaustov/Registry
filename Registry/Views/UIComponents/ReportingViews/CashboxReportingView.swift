@@ -1,5 +1,5 @@
 //
-//  CashboxReportingChart.swift
+//  CashboxReportingView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 14.03.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct CashboxReportingChart: View {
+struct CashboxReportingView: View {
     // MARK: - Dependencies
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
@@ -113,12 +113,12 @@ struct CashboxReportingChart: View {
 }
 
 #Preview {
-    CashboxReportingChart()
+    CashboxReportingView()
 }
 
 // MARK: - Subviews
 
-private extension CashboxReportingChart {
+private extension CashboxReportingView {
     func reportView(_ report: Report) -> some View {
         HStack {
             Text(DateFormat.date.string(from: report.date))

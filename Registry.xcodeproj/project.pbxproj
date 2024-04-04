@@ -57,7 +57,7 @@
 		8B7A3C002B8C7C5300A48646 /* DoctorPayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */; };
 		8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */; };
 		8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7D5C7C2B592B3400E46AD8 /* Algorithms */; };
-		8B7EA85E2BA335C400DE722C /* CashboxReportingChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */; };
+		8B7EA85E2BA335C400DE722C /* CashboxReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA85D2BA335C400DE722C /* CashboxReportingView.swift */; };
 		8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA8602BA36F2E00DE722C /* SuperUser.swift */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
@@ -179,7 +179,7 @@
 		8B78014E2B87C32B0064DBFB /* DoctorSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSelectionView.swift; sourceTree = "<group>"; };
 		8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorPayoutView.swift; sourceTree = "<group>"; };
 		8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorFutureSchedulesView.swift; sourceTree = "<group>"; };
-		8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxReportingChart.swift; sourceTree = "<group>"; };
+		8B7EA85D2BA335C400DE722C /* CashboxReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxReportingView.swift; sourceTree = "<group>"; };
 		8B7EA8602BA36F2E00DE722C /* SuperUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperUser.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
@@ -603,16 +603,16 @@
 			path = DoctorFutureSchedulesView;
 			sourceTree = "<group>";
 		};
-		8B7EA85C2BA3357E00DE722C /* Charts */ = {
+		8B7EA85C2BA3357E00DE722C /* ReportingViews */ = {
 			isa = PBXGroup;
 			children = (
-				8B7EA85D2BA335C400DE722C /* CashboxReportingChart.swift */,
+				8B7EA85D2BA335C400DE722C /* CashboxReportingView.swift */,
 				8B5B49C22BA4C60B006867EF /* PatientsChart.swift */,
 				8B6C68622BBB365000F08486 /* DoctorsChart.swift */,
 				8B6C68642BBB390F00F08486 /* SchedulesChart.swift */,
 				8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */,
 			);
-			path = Charts;
+			path = ReportingViews;
 			sourceTree = "<group>";
 		};
 		8B7EA85F2BA36F0600DE722C /* User */ = {
@@ -915,7 +915,7 @@
 			children = (
 				8B7491DD2BBA942E0016FDE9 /* EditViews */,
 				8B45E61A2BB564F800834AE6 /* UserView */,
-				8B7EA85C2BA3357E00DE722C /* Charts */,
+				8B7EA85C2BA3357E00DE722C /* ReportingViews */,
 				8B0FE9ED2B56F774003F474B /* DatePicker */,
 				8B0FE9E92B56F69B003F474B /* DoctorView */,
 				8B285F422B4DC80200C29E20 /* PersonImageView */,
@@ -1182,7 +1182,7 @@
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
 				8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */,
 				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,
-				8B7EA85E2BA335C400DE722C /* CashboxReportingChart.swift in Sources */,
+				8B7EA85E2BA335C400DE722C /* CashboxReportingView.swift in Sources */,
 				8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,
