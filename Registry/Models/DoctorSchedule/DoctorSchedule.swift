@@ -66,6 +66,10 @@ public final class DoctorSchedule {
         return patientAppointments.count - scheduledPatients.count
     }
 
+    public var completedAppointments: [PatientAppointment] {
+        patientAppointments?.filter { $0.status == .completed } ?? []
+    }
+
     public var duration: TimeInterval {
         ending.timeIntervalSince(starting)
     }

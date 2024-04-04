@@ -20,7 +20,7 @@ struct AppointmentView: View {
         HStack {
             Circle()
                 .frame(width: 8)
-                .foregroundColor(Color(.systemFill))
+                .foregroundStyle(style)
 
             Text(timePoint(appointment.scheduledTime))
                 .foregroundColor(appointment.status == .completed ? .secondary : .primary)
@@ -93,5 +93,16 @@ private extension AppointmentView {
     func timePoint(_ time: Date) -> String {
         DateFormatter.shared.dateFormat = "H:mm"
         return DateFormatter.shared.string(from: time)
+    }
+
+    var style: Color {
+        switch appointment.status {
+        case .came:
+                .red
+        case .inProgress:
+                .purple
+        default:
+            Color(.systemFill)
+        }
     }
 }

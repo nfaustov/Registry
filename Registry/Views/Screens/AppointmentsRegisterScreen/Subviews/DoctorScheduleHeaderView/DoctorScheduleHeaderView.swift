@@ -33,14 +33,25 @@ struct DoctorScheduleHeaderView: View {
                     Spacer()
 
                     Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
-                        .padding(.vertical, 4)
+                        .padding(.bottom, 4)
+
                     Label(duration, systemImage: "timer")
+                        .padding(.bottom, 4)
+
                     HStack {
-                        Label("\(doctorSchedule.scheduledPatients.count)", systemImage: "person.fill")
-                        Divider()
-                            .frame(height: 20)
-                        Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
+                        if !doctorSchedule.completedAppointments.isEmpty {
+                            Label("\(doctorSchedule.completedAppointments.count)", systemImage: "person.fill.checkmark")
+                            Divider()
+                        }
+
+                        Label("\(incompletedAppointments)", systemImage: "person.badge.clock.fill")
+
+                        if doctorSchedule.availableAppointments > 0 {
+                            Divider()
+                            Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
+                        }
                     }
+                    .frame(height: 20)
                 }
                 .font(.subheadline)
 
@@ -50,7 +61,7 @@ struct DoctorScheduleHeaderView: View {
                     if doctor.department != .procedure {
                         Section {
                             Button("Выплата") {
-                                coordinator.present(.doctorPayout(for: doctor, disabled: !allAppointmentsCompleted))
+                                coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
                             }
 
                             Button("Расписания врача") {
@@ -82,10 +93,8 @@ struct DoctorScheduleHeaderView: View {
 // MARK: - Calculations
 
 private extension DoctorScheduleHeaderView {
-    var allAppointmentsCompleted: Bool {
-        doctorSchedule.scheduledPatients.count == doctorSchedule.patientAppointments?
-            .filter { $0.status == .completed }
-            .count
+    var incompletedAppointments: Int {
+        doctorSchedule.scheduledPatients.count - doctorSchedule.completedAppointments.count
     }
 
     var duration: String {

@@ -145,6 +145,7 @@ struct BillScreen: View {
                     .listStyle(.plain)
             }
         }
+        .ignoresSafeArea(.keyboard)
         .onAppear { loadBasicService() }
         .disabled(isCompleted)
     }
