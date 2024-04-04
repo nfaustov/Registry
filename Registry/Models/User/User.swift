@@ -45,7 +45,7 @@ public struct AnyUser: User, Codable, Hashable {
     public var firstName: String
     public var patronymicName: String
     public var phoneNumber: String
-    public private(set) var balance: Double
+    public var balance: Double
     public var accessLevel: UserAccessLevel
     public var image: Data?
 }

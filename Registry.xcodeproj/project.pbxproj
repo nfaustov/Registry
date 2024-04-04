@@ -56,6 +56,7 @@
 		8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78014E2B87C32B0064DBFB /* DoctorSelectionView.swift */; };
 		8B7A3C002B8C7C5300A48646 /* DoctorPayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */; };
 		8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */; };
+		8B7AC6632BBE99EE004653FA /* RefillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7AC6622BBE99EE004653FA /* RefillView.swift */; };
 		8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7D5C7C2B592B3400E46AD8 /* Algorithms */; };
 		8B7EA85E2BA335C400DE722C /* CashboxReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA85D2BA335C400DE722C /* CashboxReportingView.swift */; };
 		8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA8602BA36F2E00DE722C /* SuperUser.swift */; };
@@ -179,6 +180,7 @@
 		8B78014E2B87C32B0064DBFB /* DoctorSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSelectionView.swift; sourceTree = "<group>"; };
 		8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorPayoutView.swift; sourceTree = "<group>"; };
 		8B7A3C022B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorFutureSchedulesView.swift; sourceTree = "<group>"; };
+		8B7AC6622BBE99EE004653FA /* RefillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefillView.swift; sourceTree = "<group>"; };
 		8B7EA85D2BA335C400DE722C /* CashboxReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxReportingView.swift; sourceTree = "<group>"; };
 		8B7EA8602BA36F2E00DE722C /* SuperUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperUser.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
@@ -603,6 +605,14 @@
 			path = DoctorFutureSchedulesView;
 			sourceTree = "<group>";
 		};
+		8B7AC6612BBE99DB004653FA /* RefillView */ = {
+			isa = PBXGroup;
+			children = (
+				8B7AC6622BBE99EE004653FA /* RefillView.swift */,
+			);
+			path = RefillView;
+			sourceTree = "<group>";
+		};
 		8B7EA85C2BA3357E00DE722C /* ReportingViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -913,6 +923,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B7AC6612BBE99DB004653FA /* RefillView */,
 				8B7491DD2BBA942E0016FDE9 /* EditViews */,
 				8B45E61A2BB564F800834AE6 /* UserView */,
 				8B7EA85C2BA3357E00DE722C /* ReportingViews */,
@@ -1169,6 +1180,7 @@
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
 				8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */,
 				8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */,
+				8B7AC6632BBE99EE004653FA /* RefillView.swift in Sources */,
 				8B8DA9632BA1E5AC00F6F847 /* MessageService.swift in Sources */,
 				8B96739D2B361BB200FD2E7C /* Doctor.swift in Sources */,
 				8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */,

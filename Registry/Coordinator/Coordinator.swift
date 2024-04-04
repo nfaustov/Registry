@@ -96,6 +96,8 @@ extension Coordinator {
             CreateDoctorView()
         case .createPricelistItem:
             CreatePricelistItemView()
+        case .refillBalance(let person):
+            RefillView(person: person)
         case .billPayment(let appointment, let isPaid):
             BillPaymentView(appointment: appointment, isPaid: isPaid)
         }

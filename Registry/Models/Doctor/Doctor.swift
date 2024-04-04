@@ -23,7 +23,7 @@ public final class Doctor: Employee, User {
     public var salary: Salary = Salary.pieceRate(rate: 0.4)
     public private(set) var agentFee: Double = 0
     public private(set) var agentFeePaymentDate: Date = Date.now
-    public private(set) var balance: Double = 0
+    public var balance: Double = 0
     public var info: String = ""
     public let createdAt: Date = Date.now
     @Attribute(.externalStorage)

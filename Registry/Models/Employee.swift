@@ -18,7 +18,7 @@ public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
     public var firstName: String
     public var patronymicName: String
     public var phoneNumber: String
-    public private(set) var balance: Double
+    public var balance: Double
     public var salary: Salary
     public private(set) var agentFee: Double
     public var image: Data?

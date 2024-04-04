@@ -15,7 +15,7 @@ public final class Patient: Person {
     public var firstName: String =  ""
     public var patronymicName: String = ""
     public var phoneNumber: String = ""
-    public private(set) var balance: Double = Double.zero
+    public var balance: Double = Double.zero
     public var passport: PassportData = PassportData()
     public var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     public var treatmentPlan: TreatmentPlan?

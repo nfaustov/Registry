@@ -60,8 +60,18 @@ struct DoctorScheduleHeaderView: View {
                 Menu {
                     if doctor.department != .procedure {
                         Section {
-                            Button("Выплата") {
-                                coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
+                            Menu("Операции") {
+                                Button("Пополнение") {
+                                    coordinator.present(
+                                        .refillBalance(
+                                            for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance })
+                                        )
+                                    )
+                                }
+
+                                Button("Выплата") {
+                                    coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
+                                }
                             }
 
                             Button("Расписания врача") {
