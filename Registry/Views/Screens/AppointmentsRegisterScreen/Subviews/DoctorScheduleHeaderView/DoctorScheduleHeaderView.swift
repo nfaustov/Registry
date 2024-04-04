@@ -78,7 +78,7 @@ struct DoctorScheduleHeaderView: View {
                     Image(systemName: "ellipsis.circle")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 20)
+                        .frame(width: 24)
                 }
             }
         }

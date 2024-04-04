@@ -78,19 +78,14 @@ struct DoctorPayoutView: View {
                 Section {
                     if doctor.agentFee > 0 {
                         DisclosureGroup {
-                            List(Array(servicesByAgent.keys), id: \.self) { date in
+                            List(Array(servicesByAgent.keys.sorted(by: <)), id: \.self) { date in
                                 DateText(date, format: .date)
                                     .font(.subheadline)
                                     .fontWeight(.medium)
+                                    .foregroundStyle(.secondary)
                                 ForEach(servicesByAgent[date] ?? []) { service in
-                                    Divider()
-                                    HStack {
-                                        Text(service.pricelistItem.title)
-                                        Spacer()
-                                        Text("\(Int(service.pricelistItem.price * 0.1)) ₽")
-                                            .frame(width: 60)
-                                    }
-                                    .font(.subheadline)
+                                    LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price * 0.1)) ₽")
+                                        .font(.subheadline)
                                 }
                             }
                         } label: { agentFeeTitle }
@@ -254,9 +249,7 @@ private extension DoctorPayoutView {
     }
 
     var servicesByAgent: [Date: [RenderedService]] {
-        let reports = reports
-            .filter { $0.date > doctor.agentFeePaymentDate && $0.date < .now }
-            .sorted(by: { $0.date < $1.date })
+        let reports = reports.filter { $0.date > doctor.agentFeePaymentDate && $0.date < .now }
 
         var dict = [Date: [RenderedService]]()
 
