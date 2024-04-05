@@ -13,6 +13,8 @@ struct DoctorDetailScreen: View {
 
     @Environment(\.user) private var user
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     @StateObject private var viewModel = PhotosPickerViewModel()
 
     @Bindable var doctor: Doctor
@@ -68,6 +70,18 @@ struct DoctorDetailScreen: View {
                 .tint(.primary)
             } header: {
                 Text("Дата рождения")
+            }
+
+            Section("Баланс") {
+                LabeledContent("\(Int(doctor.balance)) ₽") {
+                    Button("Пополнить") {
+                        coordinator.present(
+                            .refillBalance(
+                                for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance })
+                            )
+                        )
+                    }
+                }
             }
 
             Section {
