@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ServicesTable: View {
     // MARK: - Dependencies
+
+    @Environment(\.servicesTablePurpose) private var purpose
+
+    @Query private var doctors: [Doctor]
 
     @Binding var bill: Bill
 
@@ -45,9 +50,27 @@ struct ServicesTable: View {
             }
         }
         .overlay { if editMode { tableOverlay } }
-        .contextMenu(forSelectionType: RenderedService.ID.self) { servicesID in
-            if let id = servicesID.first {
-                ServiceMenuView(bill: $bill, serviceID: id)
+        .contextMenu(forSelectionType: RenderedService.ID.self) { selectionIdentifiers in
+            if let id = selectionIdentifiers.first {
+                Section {
+                    if let service = service(with: id), service.pricelistItem.category != .laboratory {
+                        menu(of: \.performer, for: id)
+                    }
+
+                    menu(of: \.agent, for: id)
+                }
+
+                if purpose == .createAndPay {
+                    Section {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                bill.services.removeAll(where: { $0.id == id })
+                            }
+                        } label: {
+                            Label("Удалить", systemImage: "trash")
+                        }
+                    }
+                }
             }
         }
         .onChange(of: sortOrder) { _, newValue in
@@ -81,8 +104,59 @@ private extension ServicesTable {
             }
 
             return true
-        } isTargeted: { isTargeted in
-            self.isTargeted = isTargeted
+        } isTargeted: { isTargeted = $0 }
+    }
+
+    func menu(of kind: WritableKeyPath<RenderedService, AnyEmployee?>, for serviceID: RenderedService.ID) -> some View {
+        Menu(kind == \.performer ? "Исполнитель" : "Агент") {
+            doctorButton(nil, role: kind, for: serviceID)
+            ForEach(doctors) { doctor in
+                doctorButton(doctor, role: kind, for: serviceID)
+            }
         }
+    }
+
+    func doctorButton(_ doctor: Doctor?, role: WritableKeyPath<RenderedService, AnyEmployee?>, for serviceID: RenderedService.ID) -> some View {
+        Button(doctor?.initials ?? "-") {
+            withAnimation {
+                if let service = service(with: serviceID) {
+                    var updatedService = service
+                    updatedService[keyPath: role] = doctor?.employee
+                    bill.services.replace([service], with: [updatedService])
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Calculations
+
+private extension ServicesTable {
+    func service(with id: UUID) -> RenderedService? {
+        bill.services.first(where: { $0.id == id })
+    }
+}
+
+// MARK: - Purpose
+
+enum ServicesTablePurpose {
+    case createAndPay
+    case editRoles
+}
+
+private struct ServicesTablePurposeKey: EnvironmentKey {
+    static var defaultValue: ServicesTablePurpose = .createAndPay
+}
+
+extension EnvironmentValues {
+    var servicesTablePurpose: ServicesTablePurpose {
+        get { self[ServicesTablePurposeKey.self] }
+        set { self[ServicesTablePurposeKey.self] = newValue }
+    }
+}
+
+extension View {
+    func servicesTablePurpose(_ purpose: ServicesTablePurpose) -> some View {
+        environment(\.servicesTablePurpose, purpose)
     }
 }

@@ -13,6 +13,9 @@ struct CompletedAppointmentView: View {
 
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+
+    @EnvironmentObject private var coordinator: Coordinator
 
     @Query private var doctors: [Doctor]
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
@@ -91,7 +94,15 @@ struct CompletedAppointmentView: View {
                         balancePaymentSection
                     }
                 }
-                
+
+                if Calendar.current.isDateInToday(visit.visitDate), visit.refund == nil {
+                    Section {
+                        Button("Редактировать роли") {
+                            dismiss()
+                            coordinator.push(.bill(for: appointment, purpose: .editRoles))
+                        }
+                    }
+                }
             }
             .sheetToolbar(
                 title: "Счет",

@@ -57,6 +57,22 @@ public final class Report {
         guard reporting(kind) != 0 else { return 0 }
         return reporting(kind, of: type) / reporting(kind)
     }
+
+    public func updatePayment(for updatedBill: Bill) {
+        guard let payment = payments
+            .filter({ payment in
+                switch payment.subject {
+                case .bill(let bill): return bill.id == updatedBill.id
+                default: return false
+                }
+            }).first else { return }
+
+        guard let paymentIndex = payments.firstIndex(of: payment) else { return }
+
+        var newPayment = payments.remove(at: paymentIndex)
+        newPayment.subject = .bill(updatedBill)
+        payments.append(newPayment)
+    }
 }
 
 // MARK: - Private methods
@@ -94,7 +110,6 @@ public extension Report {
             .filter { !$0.isRefund }
             .flatMap { $0.services }
             .filter { $0[keyPath: role]?.id == employee.id }
-            .filter { $0.pricelistItem.category != .laboratory }
     }
 
     func daySalary(of employee: Employee) -> Double {
@@ -102,7 +117,9 @@ public extension Report {
         case .pieceRate(let rate):
             return renderedServices(by: employee, role: \.performer)
                 .reduce(0.0) { partialResult, service in
-                    if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
+                    if service.pricelistItem.category == .laboratory {
+                        partialResult + 0
+                    } else if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
                         partialResult + fixedSalaryAmount
                     } else {
                         partialResult + service.pricelistItem.price * rate

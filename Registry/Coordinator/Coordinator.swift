@@ -63,8 +63,9 @@ extension Coordinator {
         switch route {
         case .appointments:
             AppointmentsRegisterScreen()
-        case .bill(let appointment):
+        case .bill(let appointment, let purpose):
             BillScreen(appointment: appointment)
+                .servicesTablePurpose(purpose)
         case .doctorDetail(let doctor):
             DoctorDetailScreen(doctor: doctor)
         case .patientCard(let patient):
