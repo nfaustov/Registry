@@ -1098,11 +1098,12 @@
 			};
 			buildConfigurationList = 8B96737D2B36187D00FD2E7C /* Build configuration list for PBXProject "Registry" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 8B9673792B36187D00FD2E7C;
 			packageReferences = (
