@@ -27,6 +27,7 @@ struct PriceCalculationView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
+                Spacer()
                 HStack {
                     Text(bill.discount > 0 ? "Промежуточный итог:" : "Итог:")
                         .font(.headline)

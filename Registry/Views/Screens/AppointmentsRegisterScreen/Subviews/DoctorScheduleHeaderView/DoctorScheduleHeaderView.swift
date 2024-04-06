@@ -84,7 +84,7 @@ struct DoctorScheduleHeaderView: View {
                     }
                     .disabled(doctorSchedule.scheduledPatients.count > 0)
                 } label: {
-                    Label("Действия", image: "ellipsis.circle")
+                    Label("Действия", systemImage: "ellipsis.circle")
                 }
             }
         }

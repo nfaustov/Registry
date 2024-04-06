@@ -30,6 +30,7 @@ struct BillScreen: View {
     @State private var isCompleted = false
     @State private var searchText: String = ""
     @State private var isSearching: Bool = false
+    @State private var selectedTemplate: BillTemplate?
 
     // MARK: -
 
@@ -80,18 +81,42 @@ struct BillScreen: View {
             .padding([.horizontal, .bottom])
 
             if servicesTablePurpose == .createAndPay {
-                PriceCalculationView(
-                    appointment: appointment,
-                    bill: $bill,
-                    isCompleted: $isCompleted
-                )
-                .padding([.horizontal, .bottom])
-                .frame(height: 132)
-                .onChange(of: isCompleted) { _, newValue in
-                    if newValue {
-                        dismiss()
+                HStack(alignment: .bottom) {
+                    PriceCalculationView(
+                        appointment: appointment,
+                        bill: $bill,
+                        isCompleted: $isCompleted
+                    )
+                    .onChange(of: isCompleted) { _, newValue in
+                        if newValue {
+                            dismiss()
+                        }
+                    }
+
+                    if let selectedTemplate {
+                        Spacer()
+                        Menu {
+                            Button("Удалить", role: .destructive) {
+                                withAnimation {
+                                    modelContext.delete(selectedTemplate)
+                                    self.selectedTemplate = nil
+                                }
+                            }
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text("Шаблон")
+                                    .font(.headline)
+                                Text("\(selectedTemplate.title)")
+                                    .font(.subheadline)
+                            }
+                            .padding(12)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.blue)
                     }
                 }
+                .padding([.horizontal, .bottom])
+                .frame(maxHeight: 140)
             } else if servicesTablePurpose == .editRoles {
                 Button {
                     if let patient = appointment.patient {
@@ -172,8 +197,9 @@ private extension BillScreen {
                     ForEach(billTemplates) { template in
                         Button(template.title) {
                             withAnimation {
+                                selectedTemplate = template
                                 bill.services.append(contentsOf: template.services)
-                                bill.discount = template.discount
+                                bill.discount += template.discount
                             }
                         }
                     }
@@ -184,7 +210,7 @@ private extension BillScreen {
             } label: {
                 Label("Действия", systemImage: "ellipsis.circle")
             }
-            .disabled(addServices)
+            .disabled(addServices || (bill.services.isEmpty && billTemplates.isEmpty))
 
             Spacer()
 
