@@ -35,13 +35,15 @@ struct AddProcedurePatientView: View {
 
     init(schedule: DoctorSchedule) {
         self.schedule = schedule
-
-        if Calendar.current.isDateInToday(schedule.starting) {
-            _time = State(initialValue: .now)
-        } else {
-            _time = State(initialValue: Calendar.current.date(bySetting: .hour, value: 8, of: schedule.starting) ?? schedule.starting)
-        }
-
+        _time = State(
+            initialValue: min(
+                max(
+                    WorkingHours(for: schedule.starting).start,
+                    Calendar.current.date(bySetting: .minute, value: 0, of: .now) ?? .now
+                ),
+                WorkingHours(for: schedule.starting).end.addingTimeInterval(-(schedule.doctor?.serviceDuration ?? 600))
+            )
+        )
         _duration = State(initialValue: schedule.doctor?.serviceDuration ?? 0)
 
         UIDatePicker.appearance().minuteInterval = 5
@@ -52,7 +54,12 @@ struct AddProcedurePatientView: View {
             Form {
                 Section {
                     DateText(time, format: .weekDay)
-                    DatePicker("Время", selection: $time, displayedComponents: .hourAndMinute)
+                    DatePicker(
+                        "Время",
+                        selection: $time,
+                        in: datePickerRange,
+                        displayedComponents: .hourAndMinute
+                    )
                 } header: {
                     Text("Дата / Время")
                 }
@@ -148,12 +155,21 @@ struct AddProcedurePatientView: View {
 // MARK: - Calculations
 
 private extension AddProcedurePatientView {
+    var datePickerRange: ClosedRange<Date> {
+        let workingHours = WorkingHours(for: schedule.starting)
+        let minDate = workingHours.start
+        let maxDate = workingHours.end.addingTimeInterval(-(schedule.doctor?.serviceDuration ?? 600))
+
+        return minDate...maxDate
+    }
+
     var durationBounds: ClosedRange<TimeInterval> {
         guard let doctor = schedule.doctor else { return 300...1800 }
 
         let minDuration = doctor.serviceDuration
+        let maxDuration = schedule.maxServiceDuration(forAppointmentTime: time)
 
-        return minDuration...3600
+        return minDuration...maxDuration
     }
 
     var emptyTextDetection: Bool {

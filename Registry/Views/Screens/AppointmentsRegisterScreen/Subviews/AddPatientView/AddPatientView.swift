@@ -205,7 +205,7 @@ private extension AddPatientView {
               let doctor = selectedSchedule.doctor else { return 300...1800 }
 
         let minDuration = doctor.serviceDuration
-        let maxDuration = selectedSchedule.maxServiceDuration(for: appointment)
+        let maxDuration = selectedSchedule.maxServiceDuration(forAppointmentTime: appointment.scheduledTime)
 
         return minDuration...maxDuration
     }

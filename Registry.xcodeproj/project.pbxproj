@@ -279,8 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */,
-				8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */,
 				8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */,
+				8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */,
 			);
 			path = AddPatientView;
 			sourceTree = "<group>";

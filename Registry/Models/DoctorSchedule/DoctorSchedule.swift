@@ -76,13 +76,13 @@ public final class DoctorSchedule {
 
     /// Calculate available duration for patient's appointment.
     /// - Parameter appointment: Appointment for calculation.
-    public func maxServiceDuration(for appointment: PatientAppointment) -> TimeInterval {
+    public func maxServiceDuration(forAppointmentTime time: Date) -> TimeInterval {
         if let nextReservedAppointment = patientAppointments?
-            .filter({ $0.scheduledTime > appointment.scheduledTime })
+            .filter({ $0.scheduledTime > time })
             .first(where: { $0.patient != nil }) {
-            return nextReservedAppointment.scheduledTime.timeIntervalSince(appointment.scheduledTime)
+            return nextReservedAppointment.scheduledTime.timeIntervalSince(time)
         } else {
-            return ending.timeIntervalSince(appointment.scheduledTime)
+            return ending.timeIntervalSince(time)
         }
     }
 
