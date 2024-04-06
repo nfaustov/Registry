@@ -29,12 +29,22 @@ struct UpdateBalanceView: View {
     init(person: Binding<Person>, kind: UpdateBalanceKind) {
         _person = person
         self.kind = kind
-        _paymentMethod = State(
-            initialValue: Payment.Method(
-                .cash,
-                value: person.wrappedValue.balance > 0 ? 0 : -person.wrappedValue.balance
+
+        if kind == .payout {
+            _paymentMethod = State(
+                initialValue: Payment.Method(
+                    .cash,
+                    value: person.wrappedValue.balance < 0 ? 0 : person.wrappedValue.balance
+                )
             )
-        )
+        } else {
+            _paymentMethod = State(
+                initialValue: Payment.Method(
+                    .cash,
+                    value: person.wrappedValue.balance > 0 ? 0 : -person.wrappedValue.balance
+                )
+            )
+        }
     }
 
     var body: some View {

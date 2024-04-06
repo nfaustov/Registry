@@ -58,12 +58,21 @@ struct DoctorScheduleHeaderView: View {
                 Spacer()
 
                 Menu {
-                    if doctor.department != .procedure {
-                        Section {
-                            Button("Выплата") {
+                    Section {
+                        Button("Выплата") {
+                            if doctor.department == .procedure {
+                                coordinator.present(
+                                    .updateBalance(
+                                        for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance }),
+                                        kind: .payout
+                                    )
+                                )
+                            } else {
                                 coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
                             }
+                        }
 
+                        if doctor.department != .procedure {
                             Button("Расписания врача") {
                                 coordinator.present(.doctorFutureSchedules(doctorSchedule: doctorSchedule))
                             }
@@ -75,10 +84,7 @@ struct DoctorScheduleHeaderView: View {
                     }
                     .disabled(doctorSchedule.scheduledPatients.count > 0)
                 } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
+                    Label("Действия", image: "ellipsis.circle")
                 }
             }
         }
