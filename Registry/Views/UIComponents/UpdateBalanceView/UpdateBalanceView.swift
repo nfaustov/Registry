@@ -1,5 +1,5 @@
 //
-//  RefillView.swift
+//  UpdateBalanceView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 04.04.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct RefillView: View {
+struct UpdateBalanceView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
@@ -18,9 +18,24 @@ struct RefillView: View {
 
     @Binding var person: Person
 
-    @State private var value: Double = .zero
+    private let kind: UpdateBalanceKind
+
+    // MARK: - State
+
+    @State private var paymentMethod: Payment.Method
 
     // MARK: -
+
+    init(person: Binding<Person>, kind: UpdateBalanceKind) {
+        _person = person
+        self.kind = kind
+        _paymentMethod = State(
+            initialValue: Payment.Method(
+                .cash,
+                value: person.wrappedValue.balance > 0 ? 0 : -person.wrappedValue.balance
+            )
+        )
+    }
 
     var body: some View {
         NavigationStack {
@@ -34,22 +49,27 @@ struct RefillView: View {
                     }
                 }
 
+                Section("Способ оплаты") {
+                    Text(paymentMethod.type.rawValue)
+                        .foregroundStyle(.secondary)
+                }
+
                 Section {
-                    TextField("Сумма", value: $value, format: .number)
+                    TextField("Сумма", value: $paymentMethod.value, format: .number)
                 } header: {
                     Text("Сумма")
                 }
             }
-            .sheetToolbar(
-                title: "Пополнение",
-                confirmationDisabled: value == 0
-            ) {
-                let totalValue = abs(value)
-                person.balance += totalValue
+            .sheetToolbar(title: kind.rawValue, confirmationDisabled: paymentMethod.value == 0) {
+                paymentMethod.value = kind == .refill ? 
+                abs(paymentMethod.value) :
+                -abs(paymentMethod.value)
+
+                person.balance += paymentMethod.value
 
                 let payment = Payment(
-                    purpose: .toBalance(person.initials),
-                    methods: [Payment.Method(.cash, value: totalValue)],
+                    purpose: kind == .refill ? .toBalance(person.initials) : .fromBalance(person.initials),
+                    methods: [paymentMethod],
                     createdBy: user.asAnyUser
                 )
 
@@ -64,12 +84,12 @@ struct RefillView: View {
 }
 
 #Preview {
-    RefillView(person: .constant(ExampleData.doctor))
+    UpdateBalanceView(person: .constant(ExampleData.doctor), kind: .payout)
 }
 
 // MARK: - Calculations
 
-private extension RefillView {
+private extension UpdateBalanceView {
     var todayReport: Report? {
         if let report = reports.first, Calendar.current.isDateInToday(report.date) {
             return report
@@ -89,4 +109,11 @@ private extension RefillView {
             firstReport.payments.append(payment)
         }
     }
+}
+
+// MARK: - UpdateBalanceKind
+
+enum UpdateBalanceKind: String {
+    case refill = "Пополнение"
+    case payout = "Выплата"
 }

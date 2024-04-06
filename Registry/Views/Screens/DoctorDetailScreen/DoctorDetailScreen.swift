@@ -76,8 +76,9 @@ struct DoctorDetailScreen: View {
                 LabeledContent("\(Int(doctor.balance)) ₽") {
                     Button("Пополнить") {
                         coordinator.present(
-                            .refillBalance(
-                                for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance })
+                            .updateBalance(
+                                for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance }),
+                                kind: .refill
                             )
                         )
                     }
