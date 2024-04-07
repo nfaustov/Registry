@@ -132,7 +132,7 @@ private extension PatientCardScreen {
                 person: Binding(get: { patient }, set: { patient.phoneNumber = $0.phoneNumber })
             )
         case .visits:
-            VisitsDetailView(visits: patient.visits)
+            VisitsDetailView(patient: patient)
         case .passport:
             PassportDetailView(patient: patient)
         }

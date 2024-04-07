@@ -70,6 +70,8 @@ extension Coordinator {
             DoctorDetailScreen(doctor: doctor)
         case .patientCard(let patient):
             PatientCardScreen(patient: patient)
+        case .contract(let patient, let visit):
+            ContractScreen(patient: patient, visit: visit)
         }
     }
 

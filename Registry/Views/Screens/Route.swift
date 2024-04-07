@@ -12,4 +12,5 @@ enum Route: Hashable {
     case bill(for: PatientAppointment, purpose: ServicesTablePurpose = .createAndPay)
     case doctorDetail(Doctor)
     case patientCard(Patient)
+    case contract(for: Patient, visit: Visit)
 }

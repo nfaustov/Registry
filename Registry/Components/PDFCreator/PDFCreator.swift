@@ -75,7 +75,7 @@ final class PDFCreator: NSObject {
         let identifierStringSize = attributedIdentifier.size()
         let identifierStringRect = CGRect(
             x: pageRect.width - identifierStringSize.width - 30,
-            y: 5,
+            y: 15,
             width: identifierStringSize.width,
             height: identifierStringSize.height
         )

@@ -11,7 +11,9 @@ import Algorithms
 struct VisitsDetailView: View {
     // MARK: - Dependencies
 
-    let visits: [Visit]
+    @EnvironmentObject private var coordinator: Coordinator
+
+    let patient: Patient
 
     // MARK: -
 
@@ -19,7 +21,7 @@ struct VisitsDetailView: View {
         List {
             ForEach(uniqueDates, id: \.self) { date in
                 Section {
-                    ForEach(visits.filter { Calendar.current.isDate($0.visitDate, inSameDayAs: date) }) { visit in
+                    ForEach(patient.visits.filter { Calendar.current.isDate($0.visitDate, inSameDayAs: date) }) { visit in
                         visitView(visit)
                     }
                 } header: {
@@ -31,7 +33,8 @@ struct VisitsDetailView: View {
 }
 
 #Preview {
-    VisitsDetailView(visits: ExampleData.patient.visits)
+    VisitsDetailView(patient: ExampleData.patient)
+        .environmentObject(Coordinator())
 }
 
 // MARK: - Calculations
@@ -39,7 +42,7 @@ struct VisitsDetailView: View {
 private extension VisitsDetailView {
     var uniqueDates: [Date] {
         Array(
-            visits
+            patient.visits
                 .map { Calendar.current.dateComponents([.year, .month, .day], from: $0.visitDate) }
                 .map { Calendar.current.date(from: $0)! }
                 .uniqued()
@@ -84,6 +87,13 @@ private extension VisitsDetailView {
                 }
 
                 if visit.refund == nil {
+                    Button {
+                        coordinator.push(.contract(for: patient, visit: visit))
+                    } label: {
+                        Label("Договор", systemImage: "doc.text")
+                            .tint(.primary)
+                    }
+
                     HStack {
                         let doctors = bill.services.compactMap { $0.performer }
                         let uniqueDoctors = Array(doctors.uniqued())

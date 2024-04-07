@@ -64,6 +64,7 @@
 		8B80FECE2BC257F800BB76E0 /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FECD2BC257F800BB76E0 /* PDFCreator.swift */; };
 		8B80FED12BC25A1800BB76E0 /* PDFDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */; };
 		8B80FED42BC25D1B00BB76E0 /* ContractScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */; };
+		8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
 		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
@@ -191,6 +192,7 @@
 		8B80FECD2BC257F800BB76E0 /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentView.swift; sourceTree = "<group>"; };
 		8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractScreen.swift; sourceTree = "<group>"; };
+		8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
@@ -676,6 +678,14 @@
 			path = ContractScreen;
 			sourceTree = "<group>";
 		};
+		8B80FED52BC2A6B800BB76E0 /* ActivityView */ = {
+			isa = PBXGroup;
+			children = (
+				8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */,
+			);
+			path = ActivityView;
+			sourceTree = "<group>";
+		};
 		8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,6 +975,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B80FED52BC2A6B800BB76E0 /* ActivityView */,
 				8B80FECF2BC25A0700BB76E0 /* PDFDocumentView */,
 				8B7AC6612BBE99DB004653FA /* UpdateBalanceView */,
 				8B7491DD2BBA942E0016FDE9 /* EditViews */,
@@ -1184,6 +1195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */,
+				8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */,
 				8B183BAB2B86605900FA1D46 /* Payment.swift in Sources */,
 				8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */,
 				8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */,

@@ -11,19 +11,45 @@ import PDFKit
 struct ContractScreen: View {
     // MARK: - Dependencies
 
-    let contractBody: ContractBody
-    let date: Date
+    private let pdfData: Data
+
+    // MARK: - State
+
+    @State private var showActivity: Bool = false
 
     // MARK: -
 
+    init(patient: Patient, visit: Visit) {
+        let contractBody = ContractBody(patient: patient, bill: visit.bill ?? Bill(services: []))
+        let pdfCreator = PDFCreator(date: visit.visitDate, body: contractBody)
+        pdfData = pdfCreator.createContract()
+    }
+
     var body: some View {
         VStack {
-            let pdfCreator = PDFCreator(date: date, body: contractBody)
-            PDFDocumentView(pdfData: pdfCreator.createContract())
+            PDFDocumentView(pdfData: pdfData)
+        }
+        .ignoresSafeArea()
+        .navigationTitle("Договор")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem {
+                Button("", systemImage: "square.and.arrow.up") {
+                    showActivity = true
+                }
+                .popover(isPresented: $showActivity) {
+                    ActivityView(items: [pdfData])
+                }
+            }
         }
     }
 }
 
 #Preview {
-    ContractScreen(contractBody: .init(patient: ExampleData.patient, bill: Bill(services: [ExampleData.service], discount: 200)), date: .now)
+    NavigationStack {
+        ContractScreen(patient: ExampleData.patient, visit: ExampleData.visit)
+    }
+    .navigationTitle("Договор")
+    .navigationBarTitleDisplayMode(.inline)
+
 }
