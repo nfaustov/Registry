@@ -9,31 +9,44 @@ import Foundation
 
 public enum Message {
     case appointmentConfirmation(PatientAppointment)
+    case appointmentReminder(PatientAppointment)
 
-    var text: String {
+    var text: String? {
         switch self {
         case .appointmentConfirmation(let patientAppointment):
-            guard let schedule = patientAppointment.schedule,
-                  let doctor = schedule.doctor else { return "" }
-
-            let date = DateFormat.date.string(from: patientAppointment.scheduledTime)
-            let time = DateFormat.time.string(from: patientAppointment.scheduledTime)
-
-            return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 8(4742)25-04-04"
+            text(for: patientAppointment)
+        case .appointmentReminder(let patientAppointment):
+            text(for: patientAppointment)
         }
     }
 
     var sendingTime: Date? {
-        switch self {
-        case .appointmentConfirmation:
-            .now.addingTimeInterval(60)
-        }
+        .now.addingTimeInterval(60)
     }
 
     var phoneNumber: String? {
         switch self {
         case .appointmentConfirmation(let patientAppointment):
             patientAppointment.patient?.phoneNumber
+        case .appointmentReminder(let patientAppointment):
+            patientAppointment.patient?.phoneNumber
+        }
+    }
+}
+
+private extension Message {
+    func text(for appointment: PatientAppointment) -> String? {
+        guard let schedule = appointment.schedule,
+              let doctor = schedule.doctor else { return nil }
+
+        let date = DateFormat.date.string(from: appointment.scheduledTime)
+        let time = DateFormat.time.string(from: appointment.scheduledTime)
+
+        switch self {
+        case .appointmentConfirmation:
+            return "Вы записаны \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 artmedics.ru"
+        case .appointmentReminder:
+            return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 artmedics.ru"
         }
     }
 }

@@ -39,7 +39,7 @@ struct CashboxReportingView: View {
                     Text("\(Int(cashBalance)) ₽")
                         .font(.title3)
                 }
-            } else if let lastReport {
+            } else if lastReport != nil {
                 Text("\(Int(cashBalance)) ₽")
             }
         } header: {
@@ -116,7 +116,7 @@ struct CashboxReportingView: View {
                     }
                 } label: {
                     LabeledContent("Платежи") {
-                        Text(profit > 0 ? "+\(profit) ₽" : "-\(profit) ₽")
+                        Text(profit > 0 ? "+\(Int(profit)) ₽" : "-\(Int(profit)) ₽")
                             .foregroundStyle(profit > 0 ? .green : .red)
                     }
                 }

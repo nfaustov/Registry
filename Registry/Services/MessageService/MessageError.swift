@@ -8,12 +8,14 @@
 import Foundation
 
 enum MessageError: LocalizedError {
-    case phoneError
+    case phoneError, textError
 
     var errorDescription: String? {
         switch self {
         case .phoneError:
             "Не найден номер телефона для отправки смс."
+        case .textError:
+            "Не удалось сформировать данные для отправки смс."
         }
     }
 }

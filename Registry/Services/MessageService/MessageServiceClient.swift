@@ -11,7 +11,7 @@ final class MessageServiceClient: MessageService {
     private let apiID = "77D875DA-CCDF-2E94-624C-FF1117015D6F"
 
     func sendMessage(_ message: Message) async throws -> MessageEntity {
-        guard let phoneNumber = message.phoneNumber else { throw MessageError.phoneError}
+        guard let phoneNumber = message.phoneNumber else { throw MessageError.phoneError }
 
         var formattedNumber = phoneNumber
 
@@ -19,7 +19,9 @@ final class MessageServiceClient: MessageService {
             formattedNumber = formattedNumber.replacingOccurrences(of: symbol, with: "")
         }
 
-        var urlString = "https://sms.ru/sms/send?api_id=\(apiID)&to=\(formattedNumber)&msg=\(message.text)&json=1"
+        guard let text = message.text else { throw MessageError.textError }
+
+        var urlString = "https://sms.ru/sms/send?api_id=\(apiID)&to=\(formattedNumber)&msg=\(text)&json=1"
 
         if let time = message.sendingTime {
             urlString.append("&time=\(time.timeIntervalSince1970)")
