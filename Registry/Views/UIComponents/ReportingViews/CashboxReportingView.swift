@@ -11,6 +11,7 @@ import SwiftData
 struct CashboxReportingView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     @EnvironmentObject private var coordinator: Coordinator
@@ -18,30 +19,45 @@ struct CashboxReportingView: View {
     // MARK: - State
 
     @State private var selectedReporting: Reporting = .income
+    @State private var cashBalance: Double = .zero
+    @State private var todayReport: Report?
+    @State private var lastReport: Report?
+    @State private var profit: Double = .zero
+    @State private var income: Double = .zero
+    @State private var expense: Double = .zero
 
     // MARK: -
 
     var body: some View {
         Section {
-            if let todayReport = reports.first, Calendar.current.isDateInToday(todayReport.date) {
+            if let todayReport {
                 LabeledContent {
                     Button("Отчет") {
                         coordinator.present(.report(todayReport))
                     }
                 } label: {
-                    Text("\(Int(reports.first?.cashBalance ?? 0)) ₽")
+                    Text("\(Int(cashBalance)) ₽")
                         .font(.title3)
                 }
-            } else {
-                Text("0 ₽")
+            } else if let lastReport {
+                Text("\(Int(cashBalance)) ₽")
             }
         } header: {
             Text("Касса")
         }
+        .task {
+            var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            descriptor.fetchLimit = 1
+            lastReport = try? modelContext.fetch(descriptor).first
 
-        if let todayReport = reports.first,
-            Calendar.current.isDateInToday(todayReport.date),
-            (todayReport.reporting(.income) != 0 || todayReport.reporting(.expense) != 0) {
+            if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
+                todayReport = lastReport
+            }
+
+            cashBalance = lastReport?.cashBalance ?? 0
+        }
+
+        if let todayReport, !todayReport.payments.isEmpty {
             Section {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in
@@ -52,10 +68,13 @@ struct CashboxReportingView: View {
                 }
                 .pickerStyle(.segmented)
                 .disabled(todayReport.reporting(.income) == 0 || todayReport.reporting(.expense) == 0)
-                .onAppear {
-                    if todayReport.reporting(.income) != 0 {
+                .task {
+                    income = todayReport.reporting(.income)
+                    expense = todayReport.reporting(.expense)
+
+                    if income != 0 {
                         selectedReporting = .income
-                    } else if todayReport.reporting(.expense) != 0 {
+                    } else if expense != 0 {
                         selectedReporting = .expense
                     }
                 }
@@ -69,7 +88,7 @@ struct CashboxReportingView: View {
                 if todayReport.reporting(selectedReporting, of: .card) != 0 {
                     LabeledContent("Перевод", value: "\(Int(todayReport.reporting(selectedReporting, of: .card)))")
                 }
-                LabeledContent("Всего", value: "\(Int(todayReport.reporting(selectedReporting)))")
+                LabeledContent("Всего", value: "\(Int(selectedReporting == .income ? income : expense))")
                     .font(.headline)
             }
 
@@ -97,10 +116,13 @@ struct CashboxReportingView: View {
                     }
                 } label: {
                     LabeledContent("Платежи") {
-                        Text(todayReport.reporting(.profit) > 0 ? "+\(Int(todayReport.reporting(.profit))) ₽" : "-\(Int(todayReport.reporting(.profit))) ₽")
-                            .foregroundStyle(todayReport.reporting(.profit) > 0 ? .green : .red)
+                        Text(profit > 0 ? "+\(profit) ₽" : "-\(profit) ₽")
+                            .foregroundStyle(profit > 0 ? .green : .red)
                     }
                 }
+            }
+            .task {
+                profit = todayReport.reporting(.profit)
             }
         } else {
             ContentUnavailableView(
@@ -119,30 +141,7 @@ struct CashboxReportingView: View {
 // MARK: - Subviews
 
 private extension CashboxReportingView {
-    func reportView(_ report: Report) -> some View {
-        HStack {
-            Text(DateFormat.date.string(from: report.date))
-            Text("Доход: \(Int(report.reporting(.income))) ₽")
-        }
-        .foregroundStyle(.white)
-        .padding()
-        .background(Color(.systemFill))
-        .cornerRadius(8)
-        .frame(maxWidth: .infinity)
-    }
-
     func paymentBackground(_ payment: Payment) -> Color {
         payment.totalAmount > 0 ? .blue : payment.purpose == .collection ? .purple : .red
-    }
-
-    func chartStyle(_ type: PaymentType) -> Color {
-        switch type {
-        case .cash:
-            return .orange
-        case .bank:
-            return .purple
-        case .card:
-            return .green
-        }
     }
 }
