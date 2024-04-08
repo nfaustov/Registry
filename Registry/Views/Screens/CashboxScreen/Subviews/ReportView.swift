@@ -12,6 +12,14 @@ struct ReportView: View {
 
     let report: Report
 
+    // MARK: - State
+
+    @State private var income: Double = 0
+    @State private var expense: Double = 0
+    @State private var collected: Double = 0
+    @State private var cashBalance: Double = 0
+    @State private var isLoading: Bool = false
+
     // MARK: -
 
     var body: some View {
@@ -25,7 +33,12 @@ struct ReportView: View {
                     }
                 }
 
-                if report.reporting(.income) > 0 {
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                }
+
+                if income > 0 {
                     Section {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let income = report.reporting(.income, of: type)
@@ -43,7 +56,7 @@ struct ReportView: View {
                     }
                 }
 
-                if report.reporting(.expense) < 0 {
+                if expense < 0 {
                     Section {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let expense = report.reporting(.expense, of: type)
@@ -62,12 +75,12 @@ struct ReportView: View {
                     }
                 }
 
-                if report.collected != 0 {
+                if collected != 0 {
                     Section {
                         HStack {
                             Text("Инкассация")
                             Spacer()
-                            Text("\(Int(report.collected)) ₽")
+                            Text("\(Int(collected)) ₽")
                                 .fontWeight(.medium)
                         }
                         .foregroundStyle(.purple)
@@ -78,7 +91,7 @@ struct ReportView: View {
                     HStack {
                         Text("Остаток в кассе")
                         Spacer()
-                        Text("\(Int(report.cashBalance)) ₽")
+                        Text("\(Int(cashBalance)) ₽")
                             .fontWeight(.medium)
                     }
                     .foregroundStyle(.secondary)
@@ -88,6 +101,24 @@ struct ReportView: View {
                 title: "Отчет",
                 subtitle: DateFormat.weekDay.string(from: report.date)
             )
+        }
+        .task {
+            isLoading = true
+
+            Task {
+                income = report.reporting(.income)
+            }
+            Task {
+                expense = report.reporting(.expense)
+            }
+            Task {
+                collected = report.collected
+            }
+            Task {
+                cashBalance = report.cashBalance
+            }
+
+            isLoading = false
         }
     }
 }

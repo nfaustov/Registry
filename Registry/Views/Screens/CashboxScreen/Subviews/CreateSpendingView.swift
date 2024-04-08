@@ -11,10 +11,12 @@ struct CreateSpendingView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
-    @Bindable var report: Report
+
+    let report: Report
 
     // MARK: - State
 
+    @State private var cashBalance: Double = 0
     @State private var paymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
     @State private var paymentPurpose: Payment.Purpose = .collection
 
@@ -63,20 +65,23 @@ struct CreateSpendingView: View {
                 } header: {
                     Text("Сумма оплаты")
                 } footer: {
-                    if paymentMethod.value > report.cashBalance {
-                        Text("Недостаточно средств. В кассе \(Int(report.cashBalance)) ₽")
+                    if paymentMethod.value > cashBalance {
+                        Text("Недостаточно средств. В кассе \(Int(cashBalance)) ₽")
                             .foregroundStyle(.red)
                     }
                 }
             }
             .sheetToolbar(
                 title: "Списание средств",
-                confirmationDisabled: paymentMethod.value == 0 || abs(paymentMethod.value) > report.cashBalance
+                confirmationDisabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
             ) {
                 paymentMethod.value = -abs(paymentMethod.value)
                 let payment = Payment(purpose: paymentPurpose, methods: [paymentMethod], createdBy: user.asAnyUser)
                 report.payments.append(payment)
             }
+        }
+        .task {
+            cashBalance = report.cashBalance
         }
     }
 }

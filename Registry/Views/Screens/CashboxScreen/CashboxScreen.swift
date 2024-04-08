@@ -17,7 +17,12 @@ struct CashboxScreen: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
+    // MARK: - State
+
+    @State private var cashBalance: Double = .zero
+    @State private var todayReport: Report?
+    @State private var lastReport: Report?
+    @State private var isLoading: Bool = false
 
     // MARK: -
 
@@ -27,29 +32,31 @@ struct CashboxScreen: View {
                 if let todayReport {
                     Section {
                         LabeledContent {
-                            Button {
+                            Button("Списание") {
                                 coordinator.present(.createSpending(in: todayReport))
-                            } label: {
-                                Text("Списание")
                             }
                             .disabled(user.accessLevel < .registrar)
                         } label: {
-                            Text("\(Int(todayReport.cashBalance)) ₽")
+                            Text("\(Int(cashBalance)) ₽")
                                 .fontWeight(.medium)
                         }
                     }
                 }
 
                 Section {
-                    if let todayReport {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(.blue)
+                    } else if let todayReport {
                         Button("Отчет") {
                             coordinator.present(.report(todayReport))
                         }
                         .tint(.primary)
                     } else {
                         Button("Открыть смену") {
-                            if let report = reports.first {
-                                let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+                            if lastReport != nil {
+                                let newReport = Report(date: .now, startingCash: cashBalance, payments: [])
                                 modelContext.insert(newReport)
                             } else {
                                 let firstReport = Report(date: .now, startingCash: 0, payments: [])
@@ -75,6 +82,21 @@ struct CashboxScreen: View {
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)
+        .task {
+            isLoading = true
+
+            var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            descriptor.fetchLimit = 1
+            lastReport = try? modelContext.fetch(descriptor).first
+
+            if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
+                todayReport = lastReport
+            }
+
+            cashBalance = lastReport?.cashBalance ?? 0
+
+            isLoading = false
+        }
     }
 }
 
@@ -82,16 +104,4 @@ struct CashboxScreen: View {
     CashboxScreen()
         .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
-}
-
-// MARK: - Calculations
-
-private extension CashboxScreen {
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else {
-            return nil
-        }
-    }
 }
