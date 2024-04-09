@@ -30,7 +30,7 @@ struct CreateDoctorScheduleView: View {
         self.onConfirm = onConfirm
         _cabinet = State(initialValue: doctor.defaultCabinet)
 
-        UIDatePicker.appearance().minuteInterval = 5
+        UIDatePicker.appearance().minuteInterval = Int(doctor.serviceDuration / 60)
     }
 
     var body: some View {
