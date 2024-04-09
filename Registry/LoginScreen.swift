@@ -28,6 +28,7 @@ struct LoginScreen: View {
     @State private var userCandidate: User? = nil
     @State private var animate: Bool = false
     @State private var phoneIsValid: Bool = true
+    @State private var isCalling: Bool = false
 
     var body: some View {
         ZStack {
@@ -49,8 +50,9 @@ struct LoginScreen: View {
                 }
             }
             .clipShape(.rect(cornerRadius: 16, style: .continuous))
-            .frame(width: 400, height: 300)
+            .frame(width: 400)
             .frame(maxHeight: .infinity)
+            .padding()
             .alert(
                 "Ошибка",
                 isPresented: $authController.showErrorMessage,
@@ -71,92 +73,161 @@ struct LoginScreen: View {
 
 private extension LoginScreen {
     var phoneLoginView: some View {
-        Form {
-            if !lastPhoneNumber.isEmpty, let doctor = doctors.first(where: { $0.phoneNumber == lastPhoneNumber }) {
-                Section {
-                    Button("Войти как \(doctor.initials)") {
-                        userCandidate = doctor
-                    }
-                }
-            }
-            
-            Section {
-                PhoneNumberTextField(text: $phoneNumberText)
-                    .onChange(of: phoneNumberText) { errorMessage = "" }
-            } header: {
-                Text("Номер телефона")
-            } footer: {
-                Text(errorMessage)
-                    .foregroundStyle(.red)
-            }
-
-            Section {
-                Button("Прислать пароль") {
-                    withAnimation {
-                        if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }) {
-                            userCandidate = doctor
-                            
-                            Task {
-                                await authController.call(doctor.phoneNumber)
-
-                                if let authCode = authController.code {
-                                    lastPhoneNumber = phoneNumberText
-                                    code = authCode
-                                }
+        VStack {
+            Form {
+                if !lastPhoneNumber.isEmpty, let doctor = doctors.first(where: { $0.phoneNumber == lastPhoneNumber }) {
+                    Section {
+                        Button("Войти как \(doctor.initials)") {
+                            withAnimation {
+                                userCandidate = doctor
                             }
-                        } else if phoneNumberText == SuperUser.boss.phoneNumber {
-                            userCandidate = SuperUser.boss
-                        } else {
-                            errorMessage = "Пользователь не найден"
                         }
                     }
                 }
-                .frame(maxWidth: .infinity)
-            }
-
-            Section {
-                Button {
-                    withAnimation {
-                        logIn(AnonymousUser())
+                
+                Section {
+                    LabeledContent(phoneNumberText) {
+                        Image(systemName: "iphone.radiowaves.left.and.right")
+                            .foregroundStyle(.purple.gradient)
+                            .symbolEffect(.disappear, isActive: !isCalling)
+                            .symbolEffect(.variableColor.hideInactiveLayers, isActive: isCalling)
                     }
-                } label: {
-                    Label("Войти анонимно", systemImage: "arrow.forward.circle")
+                    .onChange(of: phoneNumberText) { _, newValue in
+                        if newValue.count < 2 {
+                            phoneNumberText = "+7"
+                        }
+
+                        phoneNumberText = formatter(phoneNumber: phoneNumberText)
+                        errorMessage = ""
+                    }
+                    .onAppear {
+                        if phoneNumberText.isEmpty { phoneNumberText = "+7"}
+                    }
+                    .listRowBackground(Rectangle().foregroundStyle(.thinMaterial))
+                } header: {
+                    Text("Номер телефона")
+                } footer: {
+                    Text(errorMessage)
+                        .foregroundStyle(.red)
                 }
-                .frame(maxWidth: .infinity)
+
+                Section {
+                    Button("Прислать пароль") {
+                        if let doctor = doctors.first(where: { $0.phoneNumber == phoneNumberText }), !isCalling {
+                            isCalling = true
+                            withAnimation {
+                                    userCandidate = doctor
+
+                                    Task {
+                                        await authController.call(doctor.phoneNumber)
+
+                                        if let authCode = authController.code {
+                                            lastPhoneNumber = phoneNumberText
+                                            code = authCode
+                                            isCalling = false
+                                        }
+                                    }
+                            }
+                        } else if phoneNumberText == SuperUser.boss.phoneNumber {
+                            withAnimation {
+                                userCandidate = SuperUser.boss
+                            }
+                        } else {
+                            withAnimation {
+                                errorMessage = "Пользователь не найден"
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
+                Section {
+                    Button {
+                        withAnimation {
+                            logIn(AnonymousUser())
+                        }
+                    } label: {
+                        Label("Войти анонимно", systemImage: "arrow.forward.circle")
+                    }
+                    .frame(maxWidth: .infinity)
+                }
             }
+            .scrollContentBackground(.hidden)
+            .frame(height: 300)
+
+            NumPadView(text: $phoneNumberText)
+                .padding(.horizontal, 32)
         }
-        .scrollContentBackground(.hidden)
-        .background(.ultraThinMaterial)
     }
 
     func passwordView(user: User) -> some View {
-        Form {
-            Section {
-                TextField("", text: $codeText)
-                    .onChange(of: codeText) { errorMessage = "" }
-            } header: {
-                Text("Пароль")
-            } footer: {
-                Text(errorMessage)
-                    .foregroundStyle(.red)
-            }
+        VStack {
+            Form {
+                Section {
+                    Text(codeText)
+                        .listRowBackground(Rectangle().foregroundStyle(.thinMaterial))
+                        .onChange(of: codeText) {
+                            withAnimation {
+                                errorMessage = ""
 
-            Button("Отправить") {
-                withAnimation {
-                    if authController.code == codeText {
-                        logIn(user)
-                    } else if !code.isEmpty, user.phoneNumber == lastPhoneNumber, code == codeText {
-                        logIn(user)
-                    } else if codeText == "3333" {
-                        logIn(user)
-                    } else {
-                        errorMessage = "Неверный пароль"
+                                if codeText.count == 4 {
+                                    if authController.code == codeText {
+                                        logIn(user)
+                                    } else if !code.isEmpty, user.phoneNumber == lastPhoneNumber, code == codeText {
+                                        logIn(user)
+                                    } else if codeText == "3333" {
+                                        logIn(user)
+                                    } else {
+                                        errorMessage = "Неверный пароль"
+                                    }
+                                }
+                            }
+                        }
+                } header: {
+                    Text("Пароль")
+                } footer: {
+                    Text(errorMessage)
+                        .foregroundStyle(.red)
+                }
+
+                Section {
+                    Button {
+                        withAnimation {
+                            userCandidate = nil
+                        }
+                    } label: {
+                        Label("Назад", systemImage: "arrow.backward.circle")
                     }
+                    .frame(maxWidth: .infinity)
                 }
             }
-            .frame(maxWidth: .infinity)
+            .scrollContentBackground(.hidden)
+            .frame(height: 300)
+
+            NumPadView(text: $codeText)
+                .padding(.horizontal, 32)
         }
-        .scrollContentBackground(.hidden)
-        .background(.ultraThinMaterial)
+    }
+}
+
+// MARK: - Calculations
+
+private extension LoginScreen {
+    func formatter(phoneNumber: String) -> String {
+        let number = phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        var result: String = ""
+        var index = number.startIndex
+        let mask = "+X (XXX) XXX-XX-XX"
+
+        for character in mask where index < number.endIndex {
+            if character == "X" {
+                result.append(number[index])
+                index = number.index(after: index)
+            } else {
+                result.append(character)
+            }
+        }
+
+        return result
     }
 }
