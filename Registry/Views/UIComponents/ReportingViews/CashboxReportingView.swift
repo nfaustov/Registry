@@ -25,12 +25,20 @@ struct CashboxReportingView: View {
     @State private var profit: Double = .zero
     @State private var income: Double = .zero
     @State private var expense: Double = .zero
+    @State private var isLoading: Bool = true
 
     // MARK: -
 
     var body: some View {
         Section {
-            if let todayReport {
+            if isLoading {
+                HStack {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.blue)
+                        .frame(maxWidth: .infinity)
+                }
+            } else if let todayReport {
                 LabeledContent {
                     Button("Отчет") {
                         coordinator.present(.report(todayReport))
@@ -55,6 +63,8 @@ struct CashboxReportingView: View {
             }
 
             cashBalance = lastReport?.cashBalance ?? 0
+
+            isLoading = false
         }
 
         if let todayReport, !todayReport.payments.isEmpty {

@@ -22,7 +22,7 @@ struct CashboxScreen: View {
     @State private var cashBalance: Double = .zero
     @State private var todayReport: Report?
     @State private var lastReport: Report?
-    @State private var isLoading: Bool = false
+    @State private var isLoading: Bool = true
 
     // MARK: -
 
@@ -45,9 +45,12 @@ struct CashboxScreen: View {
 
                 Section {
                     if isLoading {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .tint(.blue)
+                        HStack {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.blue)
+                                .frame(maxWidth: .infinity)
+                        }
                     } else if let todayReport {
                         Button("Отчет") {
                             coordinator.present(.report(todayReport))
@@ -83,8 +86,6 @@ struct CashboxScreen: View {
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)
         .task {
-            isLoading = true
-
             var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
             descriptor.fetchLimit = 1
             lastReport = try? modelContext.fetch(descriptor).first

@@ -18,7 +18,7 @@ struct ReportView: View {
     @State private var expense: Double = 0
     @State private var collected: Double = 0
     @State private var cashBalance: Double = 0
-    @State private var isLoading: Bool = false
+    @State private var isLoading: Bool = true
 
     // MARK: -
 
@@ -34,8 +34,14 @@ struct ReportView: View {
                 }
 
                 if isLoading {
-                    ProgressView()
-                        .progressViewStyle(.circular)
+                    Section {
+                        HStack {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.blue)
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
                 }
 
                 if income > 0 {
@@ -43,9 +49,7 @@ struct ReportView: View {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let income = report.reporting(.income, of: type)
                             if income > 0 {
-                                HStack {
-                                    Text(type.rawValue)
-                                    Spacer()
+                                LabeledContent(type.rawValue) {
                                     Text("\(Int(income)) ₽")
                                         .fontWeight(.medium)
                                 }
@@ -61,9 +65,7 @@ struct ReportView: View {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let expense = report.reporting(.expense, of: type)
                             if expense < 0 {
-                                HStack {
-                                    Text(type.rawValue)
-                                    Spacer()
+                                LabeledContent(type.rawValue) {
                                     Text("\(Int(expense)) ₽")
                                         .foregroundStyle(.red)
                                         .fontWeight(.medium)
@@ -102,23 +104,30 @@ struct ReportView: View {
                 subtitle: DateFormat.weekDay.string(from: report.date)
             )
         }
-        .task {
-            isLoading = true
+        .onAppear {
+            var incomeFinished = false
+            var expenseFinished = false
+            var collectedFinished = false
+            var cashBalanceFinished = false
 
             Task {
                 income = report.reporting(.income)
+                incomeFinished = true
             }
             Task {
                 expense = report.reporting(.expense)
+                expenseFinished = true
             }
             Task {
                 collected = report.collected
+                collectedFinished = true
             }
             Task {
                 cashBalance = report.cashBalance
+                cashBalanceFinished = true
             }
 
-            isLoading = false
+            isLoading = incomeFinished && expenseFinished && collectedFinished && cashBalanceFinished
         }
     }
 }
