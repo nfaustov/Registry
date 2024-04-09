@@ -18,7 +18,6 @@ public extension Payment {
         case fromBalance(String = "")
         case equipment(String = "")
         case consumables(String = "")
-        case laboratory(String = "")
         case building(String = "")
 
         public var title: String {
@@ -32,7 +31,6 @@ public extension Payment {
             case .fromBalance: return "Списание с баланса"
             case .equipment: return "Оборудование"
             case .consumables: return "Расходники"
-            case .laboratory: return "Лаборатория"
             case .building: return "Помещение"
             }
         }
@@ -49,7 +47,6 @@ public extension Payment {
                 case .fromBalance(let description): return description
                 case .equipment(let description): return description
                 case .consumables(let description): return description
-                case .laboratory(let description): return description
                 case .building(let description): return description
                 }
             }
@@ -63,7 +60,6 @@ public extension Payment {
                 case .fromBalance: self = .fromBalance(newValue)
                 case .equipment: self = .equipment(newValue)
                 case .consumables: self = .consumables(newValue)
-                case .laboratory: self = .laboratory(newValue)
                 case .building: self = .building(newValue)
                 default: break
                 }
@@ -71,7 +67,7 @@ public extension Payment {
         }
 
         public static var userSelectableCases: [Payment.Purpose] {
-            [.collection, .equipment(), .consumables(), .laboratory(), .building()]
+            [.collection, .equipment(), .consumables(), .building()]
         }
     }
 }

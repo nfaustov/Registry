@@ -11,7 +11,7 @@ public struct Payment: Codable, Hashable, Identifiable {
     public let id: UUID
     public let date: Date
     public let purpose: Payment.Purpose
-    public let methods: [Payment.Method]
+    public private(set) var methods: [Payment.Method]
     public var subject: Payment.Subject?
     public let createdBy: AnyUser
 
@@ -32,5 +32,13 @@ public struct Payment: Codable, Hashable, Identifiable {
 
     public var totalAmount: Double {
         methods.reduce(0.0) { $0 + $1.value }
+    }
+
+    public mutating func updateMethodType(on type: PaymentType) {
+        guard methods.count == 1,
+              var method = methods.first else { return }
+
+        method.type = type
+        methods = [method]
     }
 }

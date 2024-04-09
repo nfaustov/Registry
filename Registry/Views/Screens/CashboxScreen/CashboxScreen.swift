@@ -76,12 +76,19 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            PaymentsView(payments: todayReport?.payments.sorted(by: { $0.date > $1.date }) ?? []) { payment in
-                todayReport?.payments.removeAll(where: { $0 == payment })
+            if let todayReport {
+                PaymentsView(report: todayReport)
+                    .padding()
+                    .edgesIgnoringSafeArea([.all])
+                    .disabled(user.accessLevel < .registrar)
+                    .onChange(of: todayReport.payments) { _, newValue in
+                        Task {
+                            isLoading = true
+                            cashBalance = todayReport.cashBalance
+                            isLoading = false
+                        }
+                    }
             }
-            .padding()
-            .edgesIgnoringSafeArea([.all])
-            .disabled(user.accessLevel < .registrar)
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)

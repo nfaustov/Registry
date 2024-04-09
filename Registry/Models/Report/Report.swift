@@ -73,6 +73,13 @@ public final class Report {
         newPayment.subject = .bill(updatedBill)
         payments.append(newPayment)
     }
+
+    public func replacePayment(with newPayment: Payment) {
+        guard let paymentIndex = payments.firstIndex(where: { $0.id == newPayment.id }) else { return }
+
+        payments.remove(at: paymentIndex)
+        payments.append(newPayment)
+    }
 }
 
 // MARK: - Private methods

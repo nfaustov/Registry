@@ -10,8 +10,7 @@ import SwiftUI
 struct PaymentsView: View {
     // MARK: - Dependencies
 
-    let payments: [Payment]
-    var onDelete: (Payment) -> Void
+    let report: Report
 
     // MARK: - State
 
@@ -40,7 +39,7 @@ struct PaymentsView: View {
                     .padding(.horizontal)
 
                 List {
-                    ForEach(filteredPayments) { payment in
+                    ForEach(filteredPayments.sorted(by: { $0.date > $1.date })) { payment in
                         paymentRow(payment)
                             .padding(8)
                             .background(selectedPayment == payment ? Color(.tertiarySystemFill) : .clear)
@@ -61,10 +60,19 @@ struct PaymentsView: View {
                 .scrollBounceBehavior(.basedOnSize)
 
                 if let selectedPayment {
-                    PaymentDetailView(payment: selectedPayment) {
-                        onDelete(selectedPayment)
-                        self.selectedPayment = nil
-                    }
+                    PaymentDetailView(
+                        payment: Binding(
+                            get: { selectedPayment },
+                            set: {
+                                report.replacePayment(with: $0)
+                                self.selectedPayment = $0
+                            }
+                        ),
+                        onDelete: {
+                            report.payments.removeAll(where: { $0.id == selectedPayment.id })
+                            self.selectedPayment = nil
+                        }
+                    )
                     .padding([.horizontal, .bottom])
                 }
             }
@@ -75,7 +83,7 @@ struct PaymentsView: View {
 }
 
 #Preview {
-    PaymentsView(payments: [ExampleData.payment1, ExampleData.payment2, ExampleData.payment3], onDelete: { _ in })
+    PaymentsView(report: ExampleData.report)
 }
 
 // MARK: - Subviews
@@ -115,10 +123,10 @@ private extension PaymentsView {
 
     var filteredPayments: [Payment] {
         switch operationType {
-        case .all: return payments
-        case .bills: return payments.filter { $0.subject != nil }
-        case .spendings: return payments.filter { $0.totalAmount < 0 && $0.purpose != .collection }
-        case .collections: return payments.filter { $0.purpose == .collection }
+        case .all: return report.payments
+        case .bills: return report.payments.filter { $0.subject != nil }
+        case .spendings: return report.payments.filter { $0.totalAmount < 0 && $0.purpose != .collection }
+        case .collections: return report.payments.filter { $0.purpose == .collection }
         }
     }
 }

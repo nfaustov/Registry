@@ -367,8 +367,8 @@
 		8B183BA42B865F8800FA1D46 /* PaymentsView */ = {
 			isa = PBXGroup;
 			children = (
-				8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */,
 				8B183BB52B867A3100FA1D46 /* PaymentsView.swift */,
+				8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */,
 			);
 			path = PaymentsView;
 			sourceTree = "<group>";

@@ -10,10 +10,16 @@ import SwiftUI
 struct PaymentDetailView: View {
     // MARK: - Dependencies
 
-    let payment: Payment
+    @Binding var payment: Payment
+
     var onDelete: () -> Void
 
     // MARK: -
+
+    init(payment: Binding<Payment>, onDelete: @escaping () -> Void) {
+        _payment = payment
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,7 +45,7 @@ struct PaymentDetailView: View {
             }
             .padding(.bottom)
 
-            HStack(spacing: 40) {
+            HStack {
                 Text(payment.purpose.descripiton)
                     .lineLimit(3)
 
@@ -61,11 +67,26 @@ struct PaymentDetailView: View {
                 Spacer()
 
                 VStack(alignment: .trailing) {
-                    ForEach(payment.methods, id: \.self) { method in
-                        let text = Text(payment.methods.count > 1 ? " (\(Int(method.value)))" : "")
-                        Text("\(method.type.rawValue)\(text)")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                    if !Payment.Purpose.userSelectableCases.contains(where: { payment.purpose.title == $0.title }),
+                       payment.methods.count == 1,
+                       let method = payment.methods.first {
+                        Menu {
+                            ForEach(PaymentType.allCases, id: \.self) { type in
+                                Button(type.rawValue) {
+                                    payment.updateMethodType(on: type)
+                                }
+                            }
+                        } label: {
+                            Text(method.type.rawValue)
+                                .font(.subheadline)
+                        }
+                    } else {
+                        ForEach(payment.methods, id: \.self) { method in
+                            let text = Text(payment.methods.count > 1 ? " (\(Int(method.value)))" : "")
+                            Text("\(method.type.rawValue)\(text)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }
@@ -74,5 +95,5 @@ struct PaymentDetailView: View {
 }
 
 #Preview {
-    PaymentDetailView(payment: ExampleData.payment1, onDelete: { })
+    PaymentDetailView(payment: .constant(ExampleData.payment1), onDelete: { })
 }
