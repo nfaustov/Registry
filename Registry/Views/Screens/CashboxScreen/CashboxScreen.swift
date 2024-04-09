@@ -37,21 +37,21 @@ struct CashboxScreen: View {
                             }
                             .disabled(user.accessLevel < .registrar)
                         } label: {
-                            Text("\(Int(cashBalance)) ₽")
-                                .fontWeight(.medium)
+                            HStack {
+                                Text("\(Int(cashBalance)) ₽")
+                                    .fontWeight(.medium)
+                                if isLoading {
+                                    ProgressView()
+                                        .progressViewStyle(.circular)
+                                        .tint(.blue)
+                                }
+                            }
                         }
                     }
                 }
 
                 Section {
-                    if isLoading {
-                        HStack {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                                .tint(.blue)
-                                .frame(maxWidth: .infinity)
-                        }
-                    } else if let todayReport {
+                    if let todayReport {
                         Button("Отчет") {
                             coordinator.present(.report(todayReport))
                         }
@@ -81,13 +81,26 @@ struct CashboxScreen: View {
                     .padding()
                     .edgesIgnoringSafeArea([.all])
                     .disabled(user.accessLevel < .registrar)
-                    .onChange(of: todayReport.payments) { _, newValue in
+                    .onChange(of: todayReport.payments) {
+                        isLoading = true
+
                         Task {
-                            isLoading = true
                             cashBalance = todayReport.cashBalance
                             isLoading = false
                         }
                     }
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .foregroundStyle(.white)
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(.blue)
+                            .scaleEffect(1.2)
+                    }
+                }
+                .padding(.horizontal)
             }
         }
         .background(Color(.systemGroupedBackground))

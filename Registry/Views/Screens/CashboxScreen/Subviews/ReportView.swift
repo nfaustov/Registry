@@ -18,7 +18,6 @@ struct ReportView: View {
     @State private var expense: Double = 0
     @State private var collected: Double = 0
     @State private var cashBalance: Double = 0
-    @State private var isLoading: Bool = true
 
     // MARK: -
 
@@ -30,17 +29,6 @@ struct ReportView: View {
                         Text("Открытие смены")
                         Spacer()
                         Text("\(Int(report.startingCash)) ₽")
-                    }
-                }
-
-                if isLoading {
-                    Section {
-                        HStack {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                                .tint(.blue)
-                                .frame(maxWidth: .infinity)
-                        }
                     }
                 }
 
@@ -105,29 +93,18 @@ struct ReportView: View {
             )
         }
         .onAppear {
-            var incomeFinished = false
-            var expenseFinished = false
-            var collectedFinished = false
-            var cashBalanceFinished = false
-
             Task {
                 income = report.reporting(.income)
-                incomeFinished = true
             }
             Task {
                 expense = report.reporting(.expense)
-                expenseFinished = true
             }
             Task {
                 collected = report.collected
-                collectedFinished = true
             }
             Task {
                 cashBalance = report.cashBalance
-                cashBalanceFinished = true
             }
-
-            isLoading = incomeFinished && expenseFinished && collectedFinished && cashBalanceFinished
         }
     }
 }
