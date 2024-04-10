@@ -69,6 +69,11 @@ struct BillScreen: View {
                 if let doctor = appointment.schedule?.doctor {
                     ServicesTable(bill: $bill, doctor: doctor, editMode: addServices)
                         .servicesTablePurpose(servicesTablePurpose)
+                        .onChange(of: bill.services) { _, newValue in
+                            if !newValue.contains(selectedTemplate?.services ?? []) {
+                                selectedTemplate = nil
+                            }
+                        }
                 }
 
                 if servicesTablePurpose == .createAndPay {

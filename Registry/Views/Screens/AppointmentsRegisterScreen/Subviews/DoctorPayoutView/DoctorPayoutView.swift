@@ -276,7 +276,8 @@ private extension DoctorPayoutView {
         additionalPaymentMethod?.value = -abs(additionalPaymentMethod?.value ?? 0)
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
-        let payment = Payment(purpose: .salary(doctor.initials), methods: methods, createdBy: user.asAnyUser)
+        let purpose: Payment.Purpose = doctor.salary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
+        let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)
 
         if let todayReport {
             todayReport.payments.append(payment)
