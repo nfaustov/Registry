@@ -61,6 +61,7 @@ private extension PatientsScreen {
     static var initialDescriptor: FetchDescriptor<Patient> {
         var descriptor = FetchDescriptor<Patient>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         descriptor.fetchLimit = 100
+        descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
 
         return descriptor
     }
@@ -72,7 +73,8 @@ private extension PatientsScreen {
             patient.firstName.localizedStandardContains(searchText) ||
             patient.patronymicName.localizedStandardContains(searchText)
         }
-        let descriptor = FetchDescriptor(predicate: patientsPredicate)
+        var descriptor = FetchDescriptor(predicate: patientsPredicate)
+        descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
 
         return descriptor
     }
