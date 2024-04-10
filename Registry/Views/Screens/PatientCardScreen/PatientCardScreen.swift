@@ -11,6 +11,8 @@ struct PatientCardScreen: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
 
     @Bindable var patient: Patient
 
@@ -73,6 +75,15 @@ struct PatientCardScreen: View {
                         Text("Баланс:")
                         Spacer()
                         Text("\(Int(patient.balance)) ₽")
+                    }
+                }
+            }
+
+            if user.accessLevel == .boss {
+                Section {
+                    Button("Удалить", role: .destructive) {
+                        dismiss()
+                        modelContext.delete(patient)
                     }
                 }
             }
