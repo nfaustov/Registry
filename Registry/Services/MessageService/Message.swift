@@ -44,9 +44,9 @@ private extension Message {
 
         switch self {
         case .appointmentConfirmation:
-            return "Вы записаны \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 artmedics.ru"
+            return "Вы записаны \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс artmedics.ru wa.me/79912170440"
         case .appointmentReminder:
-            return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс wa.me/79912170440 artmedics.ru"
+            return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс artmedics.ru wa.me/79912170440"
         }
     }
 }

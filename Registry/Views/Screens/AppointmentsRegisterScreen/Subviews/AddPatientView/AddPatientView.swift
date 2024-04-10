@@ -84,11 +84,15 @@ struct AddPatientView: View {
                                 if phoneNumberText.count == 18, let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
                                     selectedPatient = patient
                                 }
+                                if disableNotification {
+                                    smsNotification = false
+                                }
                             }
                     }
 
                     if let doctor = appointment.schedule?.doctor, doctor.department != .procedure {
                         Toggle("СМС оповещение", isOn: $smsNotification)
+                            .disabled(disableNotification)
                     }
                 } header: {
                     Text("Номер телефона")
@@ -189,6 +193,13 @@ struct AddPatientView: View {
             .sheet(isPresented: $findPatient) {
                 PatientsList(selectedPatient: $selectedPatient)
             }
+            .alert(
+                "Не удалось отправить SMS",
+                isPresented: $messageController.showErrorMessage,
+                presenting: messageController.errorMessage
+            ) { _ in
+                Button("Ok") { messageController.showErrorMessage = false }
+            } message: { Text($0) }
         }
     }
 }
@@ -223,6 +234,14 @@ private extension AddPatientView {
             return true
         } else {
             return phoneNumberText.count == 18 || phoneNumberText == "+7"
+        }
+    }
+
+    var disableNotification: Bool {
+        if let selectedPatient {
+            return selectedPatient.phoneNumber.count != 18
+        } else {
+            return phoneNumberText.count != 18
         }
     }
 

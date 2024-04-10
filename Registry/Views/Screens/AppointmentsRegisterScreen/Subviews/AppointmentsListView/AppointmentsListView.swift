@@ -14,6 +14,8 @@ struct AppointmentsListView: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
+    @StateObject private var messageController = MessageController()
+
     @Bindable var schedule: DoctorSchedule
 
     // MARK: -
@@ -50,6 +52,14 @@ struct AppointmentsListView: View {
                             menuView(for: appointment)
                         }
                     }
+                    .alert(
+                        "Не удалось отправить SMS",
+                        isPresented: $messageController.showErrorMessage,
+                        presenting: messageController.errorMessage
+                    ) { _ in 
+                        Button("Ok") { messageController.showErrorMessage = false }
+                    } message: { Text($0) }
+                    
             }
         }
         .listStyle(.plain)
@@ -82,6 +92,11 @@ private extension AppointmentsListView {
     var isExpiredForUpdating: Bool {
         schedule.starting < Calendar.current.startOfDay(for: .now)
     }
+
+    func disableNotification(for appointment: PatientAppointment) -> Bool {
+        guard let patient = appointment.patient else { return true }
+        return patient.phoneNumber.count != 18
+    }
 }
 
 // MARK: - Subviews
@@ -100,6 +115,23 @@ private extension AppointmentsListView {
                     coordinator.push(.patientCard(patient))
                 } label: {
                     Label("Карта пациента", systemImage: "info.circle")
+                }
+            }
+
+            if appointment.status == .registered {
+                Section {
+                    Button {
+                        Task {
+                            await messageController.send(.appointmentReminder(appointment))
+
+                            if !messageController.showErrorMessage {
+                                appointment.status = .notified
+                            }
+                        }
+                    } label: {
+                        Label("Отправить SMS", systemImage: "arrow.up.message")
+                    }
+                    .disabled(disableNotification(for: appointment))
                 }
             }
 

@@ -17,8 +17,9 @@ public final class PatientAppointment {
     public private(set) var patient: Patient?
     public var status: PatientAppointment.Status?
     public private(set) var visitID: Visit.ID?
+
     public var schedule: DoctorSchedule?
-    
+
     public var endTime: Date {
         scheduledTime.addingTimeInterval(duration)
     }
@@ -74,7 +75,6 @@ extension PatientAppointment {
     public enum Status: String, Codable, Identifiable {
         case registered = "Зарегистрирован"
         case notified = "СМС уведомление"
-        case confirmed = "Подтвержден"
         case came = "Пришел"
         case inProgress = "На приеме"
         case completed = "Завершен"
@@ -84,7 +84,7 @@ extension PatientAppointment {
         }
 
         public static var selectableCases: [Status] {
-            [.registered, .confirmed, .came, .inProgress]
+            [.registered, .came, .inProgress]
         }
     }
 }

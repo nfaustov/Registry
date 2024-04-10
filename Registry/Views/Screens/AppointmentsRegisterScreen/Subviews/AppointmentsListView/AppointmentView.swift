@@ -55,6 +55,7 @@ struct AppointmentView: View {
                             Image(systemName: "checkmark.circle")
                             Text("SMS")
                         }
+                        .font(.subheadline)
                         .foregroundStyle(.teal)
                         .padding(4)
                     }
