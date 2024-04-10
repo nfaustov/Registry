@@ -22,8 +22,10 @@ struct SchedulesListView: View {
                 ForEach(schedules) { schedule in
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(schedule.doctor?.fullName ?? "")
-                                .lineLimit(2)
+                            if let doctor = schedule.doctor {
+                                Text(isPhoneUserInterfaceIdiom ? doctor.initials : doctor.fullName)
+                                    .lineLimit(2)
+                            }
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .font(.footnote)
@@ -73,6 +75,10 @@ struct SchedulesListView: View {
 private extension SchedulesListView {
     var gradient: AngularGradient {
         AngularGradient(gradient: Gradient(colors: [.secondary.opacity(0.7), .clear, .clear, .secondary.opacity(0.7)]), center: .center, angle: .degrees(90))
+    }
+
+    var isPhoneUserInterfaceIdiom: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone
     }
 
     func scheduleBounds(_ schedule: DoctorSchedule) -> String {

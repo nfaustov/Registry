@@ -18,25 +18,36 @@ struct DoctorScheduleHeaderView: View {
     // MARK: -
 
     var body: some View {
-        HStack(alignment: .top, spacing: 24) {
+        HStack(alignment: .top, spacing: 0) {
             if let doctor = doctorSchedule.doctor {
                 PersonImageView(person: doctor)
-                    .frame(width: 120, height: 150, alignment: .top)
+                    .frame(width: isPhoneUserInterfaceIdiom ? 80 : 120, height: isPhoneUserInterfaceIdiom ? 100 : 150, alignment: .top)
                     .clipped()
                     .cornerRadius(12)
 
                 VStack(alignment: .leading) {
-                    Text(doctor.fullName)
+                    Text(isPhoneUserInterfaceIdiom ? doctor.initials : doctor.fullName)
                         .font(.title3).bold()
                     Text(doctor.department.specialization)
-
-                    Spacer()
-
-                    Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
                         .padding(.bottom, 4)
 
-                    Label(duration, systemImage: "timer")
+                    if !isPhoneUserInterfaceIdiom {
+                        Spacer()
+                    }
+
+                    if isPhoneUserInterfaceIdiom {
+                        HStack(spacing: 20) {
+                            Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
+                            Label(duration, systemImage: "timer")
+                        }
                         .padding(.bottom, 4)
+                    } else {
+                        Label(" \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
+                            .padding(.bottom, 4)
+
+                        Label(duration, systemImage: "timer")
+                            .padding(.bottom, 4)
+                    }
 
                     HStack {
                         if !doctorSchedule.completedAppointments.isEmpty {
@@ -54,6 +65,7 @@ struct DoctorScheduleHeaderView: View {
                     .frame(height: 20)
                 }
                 .font(.subheadline)
+                .padding(.horizontal)
 
                 Spacer()
 
@@ -115,5 +127,9 @@ private extension DoctorScheduleHeaderView {
         }
 
         return result
+    }
+
+    var isPhoneUserInterfaceIdiom: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone
     }
 }
