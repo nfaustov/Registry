@@ -43,14 +43,13 @@ struct AppointmentsListView: View {
                     }
                     .swipeActions(edge: .leading) {
                         leadingSwipeActions(for: appointment)
-                            .disabled(schedule.doctor?.department == .procedure)
+                            .disabled(schedule.doctor?.department == .procedure || isExpiredForUpdating)
                     }
                     .contextMenu {
                         if !isExpiredForUpdating {
                             menuView(for: appointment)
                         }
                     }
-                    .disabled(isExpiredForUpdating)
             }
         }
         .listStyle(.plain)
