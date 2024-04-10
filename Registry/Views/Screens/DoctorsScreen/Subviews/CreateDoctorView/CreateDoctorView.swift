@@ -134,8 +134,8 @@ struct CreateDoctorView: View {
                         Stepper(
                             "Cтавка \(Int(salaryRate * 100)) %",
                             value: $salaryRate,
-                            in: 0.2...0.6,
-                            step: 0.1
+                            in: 0.25...0.6,
+                            step: 0.05
                         )
                         .onChange(of: salaryRate) { _, newValue in
                             salary = .pieceRate(rate: newValue)
