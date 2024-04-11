@@ -21,7 +21,11 @@ public enum Message {
     }
 
     var sendingTime: Date? {
-        .now.addingTimeInterval(60)
+        switch self {
+        case .appointmentConfirmation(let patientAppointment):
+            .now.addingTimeInterval(60)
+        default: nil
+        }
     }
 
     var phoneNumber: String? {
