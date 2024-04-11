@@ -22,7 +22,7 @@ public enum Message {
 
     var sendingTime: Date? {
         switch self {
-        case .appointmentConfirmation(let patientAppointment):
+        case .appointmentConfirmation:
             .now.addingTimeInterval(60)
         default: nil
         }
