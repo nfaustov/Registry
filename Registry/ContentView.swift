@@ -11,13 +11,6 @@ import SwiftData
 struct ContentView: View {
     // MARK: - Dependencies
 
-//    @Environment(\.modelContext) private var modelContext
-//    @Query private var pricelistItems: [PricelistItem]
-//    @Query private var schedules: [DoctorSchedule]
-//    @Query private var doctors: [Doctor]
-//    @Query private var patients: [Patient]
-//    @Query private var reports: [Report]
-
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
@@ -74,18 +67,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-            .onAppear {
-//                schedules.forEach { modelContext.delete($0) }
-//                doctors.forEach { modelContext.delete($0) }
-//                patients.forEach { modelContext.delete($0) }
-//                reports.forEach { modelContext.delete($0) }
-//                pricelistItems.forEach { modelContext.delete($0) }
-                
-//                let pricelistItems: [PricelistItem] = load("priceList(new).json")
-//                for pricelistItem in pricelistItems {
-//                    modelContext.insert(pricelistItem)
-//                }
-            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }

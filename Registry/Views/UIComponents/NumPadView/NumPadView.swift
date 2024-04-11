@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct NumPadView: View {
     // MARK: - Dependencies
@@ -45,6 +46,7 @@ struct NumPadView: View {
 
 #Preview {
     NumPadView(text: .constant(""))
+        .background(.blue.opacity(0.4))
 }
 
 // MARK: - Subviews
@@ -52,6 +54,7 @@ struct NumPadView: View {
 private extension NumPadView {
     private var deleteButton: some View {
         Button {
+            AudioServicesPlaySystemSound(1104)
             text.removeLast()
         } label: {
             ZStack {
@@ -64,12 +67,13 @@ private extension NumPadView {
                     .fontWeight(.light)
             }
         }
-        .tint(.primary)
+        .buttonStyle(CustomButtonStyle())
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func numButton(_ n: Int) -> some View {
         Button {
+            AudioServicesPlaySystemSound(1104)
             text.append("\(n)")
         } label: {
             ZStack {
@@ -81,7 +85,19 @@ private extension NumPadView {
                     .fontWeight(.light)
             }
         }
-        .tint(.primary)
+        .buttonStyle(CustomButtonStyle())
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+// MARK: - CustomButtonStyle
+
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .overlay {
+                Circle()
+                    .foregroundStyle(.white.opacity(configuration.isPressed ? 0.6 : 0))
+            }
     }
 }
