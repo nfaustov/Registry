@@ -119,20 +119,37 @@ public extension Report {
             .filter { $0[keyPath: role]?.id == employee.id }
     }
 
-    func daySalary(of employee: Employee) -> Double {
+//    func daySalary(of employee: Employee) -> Double {
+//        switch employee.salary {
+//        case .pieceRate(let rate):
+//            let services = renderedServices(by: employee, role: \.performer)
+//            return pieceRateSalary(rate, from: services)
+//        default: return 0
+//        }
+//    }
+
+    func employeeSalary(_ employee: Employee, from services: [RenderedService]) -> Double {
         switch employee.salary {
         case .pieceRate(let rate):
-            return renderedServices(by: employee, role: \.performer)
-                .reduce(0.0) { partialResult, service in
-                    if service.pricelistItem.category == .laboratory {
-                        partialResult + 0
-                    } else if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
-                        partialResult + fixedSalaryAmount
-                    } else {
-                        partialResult + service.pricelistItem.price * rate
-                    }
-                }
+            return pieceRateSalary(rate, from: services)
         default: return 0
         }
+    }
+}
+
+// MARK: - Private methods
+
+private extension Report {
+    func pieceRateSalary(_ rate: Double, from services: [RenderedService]) -> Double {
+        services
+            .reduce(0.0) { partialResult, service in
+                if service.pricelistItem.category == .laboratory {
+                    partialResult + 0
+                } else if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
+                    partialResult + fixedSalaryAmount
+                } else {
+                    partialResult + service.pricelistItem.price * rate
+                }
+            }
     }
 }

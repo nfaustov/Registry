@@ -14,8 +14,6 @@ struct DoctorPayoutView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
-
     private let doctor: Doctor
     private let disabled: Bool
 
@@ -23,6 +21,8 @@ struct DoctorPayoutView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
+    @State private var todayReport: Report?
+    @State private var lastReport: Report?
 
     // MARK: -
 
@@ -37,136 +37,36 @@ struct DoctorPayoutView: View {
             Form {
                 Section("Врач") {
                     Text(doctor.fullName)
-
-                    HStack {
-                        Text("Баланс")
-                        Spacer()
+                    LabeledContent("Баланс") {
                         Text("\(Int(doctor.balance)) ₽")
                             .font(.headline)
                             .foregroundStyle(doctor.balance < 0 ? .red : .primary)
                     }
                 }
 
-                if let todayReport, todayReport.daySalary(of: doctor) > 0 {
-                    Section {
-                        DisclosureGroup {
-                            List(todayReport.renderedServices(by: doctor, role: \.performer)) { service in
-                                HStack {
-                                    Text(service.pricelistItem.title)
-                                    Spacer()
-                                    if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
-                                        Text("\(Int(fixedSalaryAmount)) ₽")
-                                            .frame(width: 60)
-                                    } else if let rate = doctor.salary.rate {
-                                        Text("\(Int(service.pricelistItem.price * rate)) ₽")
-                                            .frame(width: 60)
-                                    }
-                                }
-                                .font(.subheadline)
-                            }
-                        } label: {
-                            HStack {
-                                Text("Заработано сегодня")
-                                Spacer()
-                                Text("\(Int(todayReport.daySalary(of: doctor))) ₽")
-                                    .font(.headline)
-                            }
-                        }
-                    }
+                if let todayReport {
+                    DaySalaryView(report: todayReport, doctor: doctor)
                 }
 
-                Section {
-                    if doctor.agentFee > 0 {
-                        DisclosureGroup {
-                            List(Array(servicesByAgent.keys.sorted(by: <)), id: \.self) { date in
-                                DateText(date, format: .date)
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(.secondary)
-                                ForEach(servicesByAgent[date] ?? []) { service in
-                                    LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price * 0.1)) ₽")
-                                        .font(.subheadline)
-                                }
-                            }
-                        } label: { agentFeeTitle }
+                AgentFeeView(doctor: doctor)
 
-                        Button("Выплатить") {
-                            doctor.agentFeePayment()
-                        }
-                    } else {
-                        agentFeeTitle
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                Section {
-                    if let additionalPaymentMethod {
-                        HStack {
-                            Text(paymentMethod.type.rawValue)
-                            Spacer()
-                            textField(type: paymentMethod.type)
-                                .onChange(of: paymentMethod.value) { _, newValue in
-                                    self.additionalPaymentMethod?.value = doctor.balance - newValue
-                                }
-                        }
-
-                        HStack {
-                            Text(additionalPaymentMethod.type.rawValue)
-                            Spacer()
-                            textField(type: additionalPaymentMethod.type)
-                                .onChange(of: self.additionalPaymentMethod?.value ?? 0) { _, newValue in
-                                    paymentMethod.value = doctor.balance - newValue
-                                }
-                        }
-                    } else {
-                        Picker(paymentMethod.type.rawValue, selection: $paymentMethod.type) {
-                            ForEach(PaymentType.allCases, id: \.self) { type in
-                                if type != .bank {
-                                    Text(type.rawValue)
-                                }
-                            }
-                        }
-                    }
-                } header: {
-                    HStack {
-                        Text("Способ оплаты")
-
-                        if additionalPaymentMethod != nil {
-                            Spacer()
-                            Button {
-                                withAnimation {
-                                    additionalPaymentMethod = nil
-                                    paymentMethod.value = doctor.balance
-                                }
-                            } label: {
-                                Image(systemName: "arrow.uturn.left")
-                            }
-                        }
-                    }
-                }
-                
-                Button("Добавить способ оплаты") {
-                    withAnimation {
-                        paymentMethod = Payment.Method(.cash, value: doctor.balance)
-                        additionalPaymentMethod = Payment.Method(.card, value: 0)
-                    }
-                }
-                .disabled(additionalPaymentMethod != nil)
+                PaymentMethodView(
+                    account: doctor,
+                    paymentMethod: $paymentMethod,
+                    additionalPaymentMethod: $additionalPaymentMethod
+                )
 
                 if additionalPaymentMethod == nil {
                     Section {
-                        HStack {
+                        LabeledContent {
+                            Image(systemName: "pencil")
+                        } label: {
                             TextField("Сумма выплаты", value: $paymentMethod.value, format: .number)
                                 .onChange(of: paymentMethod.value) { _, newValue in
                                     if newValue < 0 {
                                         paymentMethod.value = -newValue
                                     }
                                 }
-
-                            Spacer()
-
-                            Image(systemName: "pencil")
-                                .foregroundColor(.secondary)
                         }
                     } header: {
                         Text("Сумма вылаты")
@@ -185,40 +85,21 @@ struct DoctorPayoutView: View {
                 doctorPayout()
                 payment()
             }
+            .task {
+                var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+                descriptor.fetchLimit = 1
+                lastReport = try? modelContext.fetch(descriptor).first
+
+                if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
+                    todayReport = lastReport
+                }
+            }
         }
     }
 }
 
 #Preview {
     DoctorPayoutView(doctor: ExampleData.doctor, disabled: false)
-}
-
-// MARK: - Subviews
-
-private extension DoctorPayoutView {
-    func textField(type: PaymentType) -> some View {
-        ZStack(alignment: .trailing) {
-            Color.gray
-                .opacity(0.1)
-                .cornerRadius(8)
-            TextField(
-                type.rawValue,
-                value: type == paymentMethod.type ? $paymentMethod.value : Binding(get: { additionalPaymentMethod!.value }, set: { additionalPaymentMethod?.value = $0 }),
-                format: .number
-            )
-            .padding(.horizontal)
-        }
-        .frame(width: 120)
-    }
-
-    var agentFeeTitle: some View {
-        HStack {
-            Text("Агентские")
-            Spacer()
-            Text("\(Int(doctor.agentFee)) ₽")
-                .font(.headline)
-        }
-    }
 }
 
 // MARK: - Calculations
@@ -228,17 +109,9 @@ private extension DoctorPayoutView {
         Int(doctor.balance - paymentMethod.value - (additionalPaymentMethod?.value ?? 0))
     }
 
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else {
-            return nil
-        }
-    }
-
     func createReportWithPayment(_ payment: Payment) {
-        if let report = reports.first {
-            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+        if let lastReport {
+            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [])
             modelContext.insert(newReport)
             newReport.payments.append(payment)
         } else {
@@ -246,22 +119,6 @@ private extension DoctorPayoutView {
             modelContext.insert(firstReport)
             firstReport.payments.append(payment)
         }
-    }
-
-    var servicesByAgent: [Date: [RenderedService]] {
-        let reports = reports.filter { $0.date > doctor.agentFeePaymentDate && $0.date < .now }
-
-        var dict = [Date: [RenderedService]]()
-
-        for report in reports {
-            let services = report.renderedServices(by: doctor, role: \.agent)
-
-            if !services.isEmpty {
-                dict[report.date] = services
-            }
-        }
-
-        return dict
     }
 
     func doctorPayout() {
