@@ -18,7 +18,6 @@ struct BillScreen: View {
     @EnvironmentObject private var coordinator: Coordinator
 
     @Query private var billTemplates: [BillTemplate]
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     private let appointment: PatientAppointment
     private let initialBill: Bill
@@ -126,14 +125,23 @@ struct BillScreen: View {
                 Button {
                     if let patient = appointment.patient {
                         patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
+
                         let descriptor = FetchDescriptor<Doctor>()
 
                         if let doctors = try? modelContext.fetch(descriptor) {
                             SalaryCharger.cancelCharge(for: initialBill, doctors: doctors)
                             SalaryCharger.charge(for: .bill(bill), doctors: doctors)
                         }
-                        
-                        todayReport?.updatePayment(for: bill)
+
+                        Task {
+                            var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+                            descriptor.fetchLimit = 1
+
+                            if let report = try? modelContext.fetch(descriptor).first, 
+                                Calendar.current.isDateInToday(report.date) {
+                                report.updatePayment(for: bill)
+                            }
+                        }
                     }
 
                     dismiss()
@@ -237,14 +245,6 @@ private extension BillScreen {
 // MARK: - Calculations
 
 private extension BillScreen {
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else {
-            return nil
-        }
-    }
-
     func loadBasicService() {
         if bill.services.isEmpty, let patient = appointment.patient {
             patient.mergedAppointments(forAppointmentID: appointment.id).forEach { visitAppointment in
