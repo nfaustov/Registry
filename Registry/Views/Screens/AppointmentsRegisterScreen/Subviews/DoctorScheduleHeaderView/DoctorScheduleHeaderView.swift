@@ -83,6 +83,7 @@ struct DoctorScheduleHeaderView: View {
                                 coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
                             }
                         }
+                        .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
 
                         if doctor.department != .procedure {
                             Button("Расписания врача") {

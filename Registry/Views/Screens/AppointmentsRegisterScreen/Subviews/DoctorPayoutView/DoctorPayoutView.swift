@@ -44,7 +44,7 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if let todayReport, Calendar.current.isDateInToday(todayReport.date) {
+                if let todayReport {
                     DaySalaryView(report: todayReport, employee: doctor)
                 }
 
