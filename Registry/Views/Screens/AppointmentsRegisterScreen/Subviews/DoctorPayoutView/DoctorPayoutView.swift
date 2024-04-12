@@ -57,25 +57,7 @@ struct DoctorPayoutView: View {
                 )
 
                 if additionalPaymentMethod == nil {
-                    Section {
-                        LabeledContent {
-                            Image(systemName: "pencil")
-                        } label: {
-                            TextField("Сумма выплаты", value: $paymentMethod.value, format: .number)
-                                .onChange(of: paymentMethod.value) { _, newValue in
-                                    if newValue < 0 {
-                                        paymentMethod.value = -newValue
-                                    }
-                                }
-                        }
-                    } header: {
-                        Text("Сумма вылаты")
-                    } footer: {
-                        HStack {
-                            Text("Остаток на балансе: \(paymentBalance) ₽")
-                                .foregroundColor(paymentBalance < 0 ? .red : .secondary)
-                        }
-                    }
+                    PaymentValueView(account: doctor, value: $paymentMethod.value)
                 }
             }
             .sheetToolbar(
@@ -105,10 +87,6 @@ struct DoctorPayoutView: View {
 // MARK: - Calculations
 
 private extension DoctorPayoutView {
-    var paymentBalance: Int {
-        Int(doctor.balance - paymentMethod.value - (additionalPaymentMethod?.value ?? 0))
-    }
-
     func createReportWithPayment(_ payment: Payment) {
         if let lastReport {
             let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [])
