@@ -15,21 +15,14 @@ struct BillScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.servicesTablePurpose) private var servicesTablePurpose
 
-    @EnvironmentObject private var coordinator: Coordinator
-
-    @Query private var billTemplates: [BillTemplate]
-
     private let appointment: PatientAppointment
     private let initialBill: Bill
 
     // MARK: - State
 
     @State private var bill: Bill
-    @State private var addServices: Bool = false
-    @State private var isCompleted = false
-    @State private var searchText: String = ""
-    @State private var isSearching: Bool = false
-    @State private var selectedTemplate: BillTemplate?
+    @State private var isCompleted: Bool = false
+    @State private var isPriselistPresented: Bool = false
 
     // MARK: -
 
@@ -49,40 +42,27 @@ struct BillScreen: View {
     var body: some View {
         VStack(alignment: .leading) {
             if let patient = appointment.patient {
-                HStack {
-                    Text(patient.fullName)
-                        .font(.title3)
-                        .padding(.horizontal)
-
-                    Spacer()
-
+                LabeledContent {
                     if patient.balance != 0 {
                         Text("Баланс: \(Int(patient.balance)) ₽")
                             .foregroundStyle(patient.balance < 0 ? .red : .primary)
                     }
+                } label: {
+                    Text(patient.fullName)
+                        .font(.title3)
+                        .padding(.horizontal)
                 }
                 .padding()
             }
 
-            VStack(spacing: 0) {
-                if let doctor = appointment.schedule?.doctor {
-                    ServicesTable(bill: $bill, doctor: doctor, editMode: addServices)
-                        .servicesTablePurpose(servicesTablePurpose)
-                        .onChange(of: bill.services) { _, newValue in
-                            if !newValue.contains(selectedTemplate?.services ?? []) {
-                                selectedTemplate = nil
-                            }
-                        }
-                }
-
-                if servicesTablePurpose == .createAndPay {
-                    controls
-                }
+            if let doctor = appointment.schedule?.doctor {
+                ServicesTable(doctor: doctor, bill: $bill, editMode: $isPriselistPresented)
+                    .servicesTablePurpose(servicesTablePurpose)
+                    .background()
+                    .cornerRadius(16)
+                    .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+                    .padding([.horizontal, .bottom])
             }
-            .background()
-            .cornerRadius(16)
-            .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-            .padding([.horizontal, .bottom])
 
             if servicesTablePurpose == .createAndPay {
                 HStack(alignment: .bottom) {
@@ -96,55 +76,12 @@ struct BillScreen: View {
                             dismiss()
                         }
                     }
-
-                    if let selectedTemplate {
-                        Spacer()
-                        Menu {
-                            Button("Удалить", role: .destructive) {
-                                withAnimation {
-                                    modelContext.delete(selectedTemplate)
-                                    self.selectedTemplate = nil
-                                }
-                            }
-                        } label: {
-                            VStack(alignment: .leading) {
-                                Text("Шаблон")
-                                    .font(.headline)
-                                Text("\(selectedTemplate.title)")
-                                    .font(.subheadline)
-                            }
-                            .padding(12)
-                        }
-                        .buttonStyle(.bordered)
-                        .tint(.blue)
-                    }
                 }
                 .padding([.horizontal, .bottom])
                 .frame(maxHeight: 140)
             } else if servicesTablePurpose == .editRoles {
                 Button {
-                    if let patient = appointment.patient {
-                        patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
-
-                        let descriptor = FetchDescriptor<Doctor>()
-
-                        if let doctors = try? modelContext.fetch(descriptor) {
-                            SalaryCharger.cancelCharge(for: initialBill, doctors: doctors)
-                            SalaryCharger.charge(for: .bill(bill), doctors: doctors)
-                        }
-
-                        Task {
-                            var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-                            descriptor.fetchLimit = 1
-
-                            if let report = try? modelContext.fetch(descriptor).first, 
-                                Calendar.current.isDateInToday(report.date) {
-                                report.updatePayment(for: bill)
-                            }
-                        }
-                    }
-
-                    dismiss()
+                    editRoles()
                 } label: {
                     Text("Готово")
                         .font(.headline)
@@ -157,12 +94,8 @@ struct BillScreen: View {
         }
         .navigationTitle("Счет")
         .navigationBarTitleDisplayMode(.inline)
-        .sideSheet(isPresented: $addServices) {
-            VStack(alignment: .trailing, spacing: 0) {
-                SearchBar(text: $searchText, isPresented: $isSearching)
-                PricelistView(filterText: searchText, size: .compact, isSearching: $isSearching)
-                    .listStyle(.plain)
-            }
+        .sideSheet(isPresented: $isPriselistPresented) {
+            PricelistSideSheetView()
         }
         .ignoresSafeArea(.keyboard)
         .onAppear {
@@ -181,67 +114,6 @@ struct BillScreen: View {
     .previewInterfaceOrientation(.landscapeRight)
 }
 
-// MARK: - Subviews
-
-private extension BillScreen {
-    var controls: some View {
-        HStack {
-            Menu {
-                Section {
-                    Button(role: .destructive) {
-                        withAnimation {
-                            bill.services = []
-                            bill.discount = 0
-                        }
-                    } label: {
-                        Label("Очистить", systemImage: "trash")
-                    }
-                    .disabled(bill.services.isEmpty)
-                }
-
-                Button {
-                    coordinator.present(.createBillTemplate(services: bill.services))
-                } label: {
-                    Label("Создать шаблон", systemImage: "note.text.badge.plus")
-                }
-                .disabled(bill.services.isEmpty)
-
-                Menu {
-                    ForEach(billTemplates) { template in
-                        Button(template.title) {
-                            withAnimation {
-                                selectedTemplate = template
-                                bill.services.append(contentsOf: template.services)
-                                bill.discount += template.discount
-                            }
-                        }
-                    }
-                } label: {
-                    Label("Использовать шаблон", systemImage: "note.text")
-                }
-                .disabled(billTemplates.isEmpty)
-            } label: {
-                Label("Действия", systemImage: "ellipsis.circle")
-            }
-            .disabled(addServices || (bill.services.isEmpty && billTemplates.isEmpty))
-
-            Spacer()
-
-            Button {
-                withAnimation {
-                    addServices = true
-                }
-            } label: {
-                HStack {
-                    Text("Добавить услуги")
-                    Image(systemName: "chevron.right")
-                }
-            }
-        }
-        .padding()
-    }
-}
-
 // MARK: - Calculations
 
 private extension BillScreen {
@@ -255,6 +127,33 @@ private extension BillScreen {
                     patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
                 }
             }
+        }
+    }
+
+    func editRoles() {
+        if let patient = appointment.patient {
+            Task {
+                patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
+
+                let descriptor = FetchDescriptor<Doctor>()
+
+                if let doctors = try? modelContext.fetch(descriptor) {
+                    SalaryCharger.cancelCharge(for: initialBill, doctors: doctors)
+                    SalaryCharger.charge(for: .bill(bill), doctors: doctors)
+                }
+            }
+
+            Task {
+                var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+                descriptor.fetchLimit = 1
+
+                if let report = try? modelContext.fetch(descriptor).first,
+                    Calendar.current.isDateInToday(report.date) {
+                    report.updatePayment(for: bill)
+                }
+            }
+
+            dismiss()
         }
     }
 }

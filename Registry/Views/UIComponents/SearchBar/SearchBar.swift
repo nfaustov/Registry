@@ -59,7 +59,6 @@ struct SearchBar: UIViewRepresentable {
         searchBar.delegate = context.coordinator
         searchBar.searchBarStyle = .minimal
         searchBar.setShowsCancelButton(false, animated: true)
-//        searchBar.backgroundColor = .secondarySystemBackground
 
         return searchBar
     }

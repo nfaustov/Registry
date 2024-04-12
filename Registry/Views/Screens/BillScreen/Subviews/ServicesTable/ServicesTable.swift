@@ -15,72 +15,78 @@ struct ServicesTable: View {
 
     @Query private var doctors: [Doctor]
 
-    @Binding var bill: Bill
-
     let doctor: Doctor
-    let editMode: Bool
+
+    @Binding var bill: Bill
+    @Binding var editMode: Bool
 
     // MARK: - State
 
     @State private var sortOrder = [KeyPathComparator(\RenderedService.performer?.secondName)]
     @State private var selection: Set<RenderedService.ID> = []
-
     @State private var isTargeted: Bool = false
 
     // MARK: -
 
     var body: some View {
-        Table(bill.services, selection: $selection, sortOrder: $sortOrder) {
-            TableColumn("Услуга", value: \.pricelistItem.title) { service in
-                Text(service.pricelistItem.title)
-                    .lineLimit(4)
-            }.width(600)
-            TableColumn("Стоимость", value: \.pricelistItem.price) { service in
-                Text("\(Int(service.pricelistItem.price)) ₽")
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
-            }.width(120)
-            TableColumn("Исполнитель") { service in
-                Text(service.performer?.initials ?? "-")
-                    .foregroundColor(.secondary)
+        VStack(spacing: 0) {
+            Table(bill.services, selection: $selection, sortOrder: $sortOrder) {
+                TableColumn("Услуга", value: \.pricelistItem.title) { service in
+                    Text(service.pricelistItem.title)
+                        .lineLimit(4)
+                }.width(600)
+                TableColumn("Стоимость", value: \.pricelistItem.price) { service in
+                    Text("\(Int(service.pricelistItem.price)) ₽")
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
+                }.width(120)
+                TableColumn("Исполнитель") { service in
+                    Text(service.performer?.initials ?? "-")
+                        .foregroundColor(.secondary)
+                }
+                TableColumn("Агент") { service in
+                    Text(service.agent?.initials ?? "-")
+                        .foregroundColor(.secondary)
+                }
             }
-            TableColumn("Агент") { service in
-                Text(service.agent?.initials ?? "-")
-                    .foregroundColor(.secondary)
-            }
-        }
-        .overlay { if editMode { tableOverlay } }
-        .contextMenu(forSelectionType: RenderedService.ID.self) { selectionIdentifiers in
-            if let id = selectionIdentifiers.first {
-                Section {
-                    if let service = service(with: id), service.pricelistItem.category != .laboratory {
-                        menu(of: \.performer, for: id)
+            .overlay { if editMode { tableOverlay } }
+            .contextMenu(forSelectionType: RenderedService.ID.self) { selectionIdentifiers in
+                if let id = selectionIdentifiers.first {
+                    Section {
+                        if let service = service(with: id), service.pricelistItem.category != .laboratory {
+                            menu(of: \.performer, for: id)
+                        }
+
+                        menu(of: \.agent, for: id)
                     }
 
-                    menu(of: \.agent, for: id)
-                }
-
-                if purpose == .createAndPay {
-                    Section {
-                        Button(role: .destructive) {
-                            withAnimation {
-                                bill.services.removeAll(where: { $0.id == id })
+                    if purpose == .createAndPay {
+                        Section {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    bill.services.removeAll(where: { $0.id == id })
+                                }
+                            } label: {
+                                Label("Удалить", systemImage: "trash")
                             }
-                        } label: {
-                            Label("Удалить", systemImage: "trash")
                         }
                     }
                 }
             }
-        }
-        .onChange(of: sortOrder) { _, newValue in
-            bill.services.sort(using: newValue)
+            .onChange(of: sortOrder) { _, newValue in
+                bill.services.sort(using: newValue)
+            }
+
+            if purpose == .createAndPay {
+                ServicesTableControls(bill: $bill, isPricelistPresented: $editMode)
+                    .padding()
+            }
         }
     }
 }
 
 #Preview {
-    ServicesTable(bill: .constant(Bill(services: [])), doctor: ExampleData.doctor, editMode: false)
+    ServicesTable(doctor: ExampleData.doctor, bill: .constant(Bill(services: [])), editMode: .constant(false))
 }
 
 // MARK: - Subviews

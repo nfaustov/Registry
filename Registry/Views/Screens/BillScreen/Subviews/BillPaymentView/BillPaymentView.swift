@@ -172,6 +172,7 @@ private extension BillPaymentView {
         methods.append(paymentMethod)
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill), createdBy: user.asAnyUser)
+
         if let todayReport {
             todayReport.payments.append(payment)
         } else {

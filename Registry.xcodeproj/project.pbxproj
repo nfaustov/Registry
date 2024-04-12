@@ -28,6 +28,8 @@
 		8B1B64E82BC80F9F009F73A4 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1B64E72BC80F9F009F73A4 /* PasswordView.swift */; };
 		8B1E353C2BC909A9003B448E /* PaymentValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E353B2BC909A9003B448E /* PaymentValueView.swift */; };
 		8B1E353F2BC9A822003B448E /* CreatePaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */; };
+		8B1E35442BC9B626003B448E /* ServicesTableControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E35432BC9B626003B448E /* ServicesTableControls.swift */; };
+		8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E35452BC9C80D003B448E /* PricelistSideSheetView.swift */; };
 		8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */; };
 		8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* PersonImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
@@ -166,6 +168,8 @@
 		8B1B64E72BC80F9F009F73A4 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		8B1E353B2BC909A9003B448E /* PaymentValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentValueView.swift; sourceTree = "<group>"; };
 		8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentView.swift; sourceTree = "<group>"; };
+		8B1E35432BC9B626003B448E /* ServicesTableControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTableControls.swift; sourceTree = "<group>"; };
+		8B1E35452BC9C80D003B448E /* PricelistSideSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistSideSheetView.swift; sourceTree = "<group>"; };
 		8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusBoxToggleStyle.swift; sourceTree = "<group>"; };
 		8B285F432B4DC81800C29E20 /* PersonImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
@@ -359,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8AE9902B584BFC001A9143 /* PricelistView.swift */,
+				8B1E35452BC9C80D003B448E /* PricelistSideSheetView.swift */,
 			);
 			path = PricelistView;
 			sourceTree = "<group>";
@@ -563,6 +568,7 @@
 			isa = PBXGroup;
 			children = (
 				8B6BAA012B8DD193000FF417 /* ServicesTable.swift */,
+				8B1E35432BC9B626003B448E /* ServicesTableControls.swift */,
 			);
 			path = ServicesTable;
 			sourceTree = "<group>";
@@ -1344,6 +1350,7 @@
 				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,
 				8B7EA85E2BA335C400DE722C /* CashboxReportingView.swift in Sources */,
 				8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */,
+				8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,
 				8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */,
@@ -1407,6 +1414,7 @@
 				8B183BAF2B8661C000FA1D46 /* Payment.Purpose.swift in Sources */,
 				8B8B188A2B88D4B0006ABD82 /* SchedulesListView.swift in Sources */,
 				8B78014C2B87BFD70064DBFB /* CreateDoctorScheduleView.swift in Sources */,
+				8B1E35442BC9B626003B448E /* ServicesTableControls.swift in Sources */,
 				8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
