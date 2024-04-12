@@ -100,6 +100,12 @@ public extension PricelistItem {
     }
 
     var short: PricelistItem.Short {
-        Short(id: id, category: category, title: title, price: price, salaryAmount: salaryAmount)
+        Short(
+            id: id,
+            category: category,
+            title: title,
+            price: price,
+            salaryAmount: salaryAmount
+        )
     }
 }

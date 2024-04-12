@@ -94,7 +94,7 @@ private extension AppointmentsListView {
     }
 
     func disableNotification(for appointment: PatientAppointment) -> Bool {
-        guard let patient = appointment.patient else { return true }
+        guard appointment.scheduledTime > .now, let patient = appointment.patient else { return true }
         return patient.phoneNumber.count != 18
     }
 }

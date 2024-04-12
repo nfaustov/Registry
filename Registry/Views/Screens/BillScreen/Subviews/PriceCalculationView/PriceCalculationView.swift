@@ -10,6 +10,8 @@ import SwiftUI
 struct PriceCalculationView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
+
     @EnvironmentObject private var coordinator: Coordinator
 
     let appointment: PatientAppointment
@@ -21,6 +23,7 @@ struct PriceCalculationView: View {
     @State private var addDiscount: Bool = false
     @State private var payBill: Bool = false
     @State private var discountPercent: Int = 0
+    @State private var showDiscountSheet: Bool = false
 
     // MARK: -
 
@@ -87,9 +90,23 @@ struct PriceCalculationView: View {
                         discountButton(7)
                         discountButton(10)
 
+                        if user.accessLevel == .boss {
+                            Button("Ввести сумму") {
+                                showDiscountSheet = true
+                            }
+                        }
+
                         Button("Отменить", role: .destructive) {
                             bill.discount = 0
                             discountPercent = 0
+                        }
+                    }
+                    .sheet(isPresented: $showDiscountSheet) {
+                        NavigationStack {
+                            Form {
+                                TextField("Сумма скидки", value: $bill.discount, format: .number)
+                            }
+                            .sheetToolbar(title: "Сумма скидки")
                         }
                     }
                 }
