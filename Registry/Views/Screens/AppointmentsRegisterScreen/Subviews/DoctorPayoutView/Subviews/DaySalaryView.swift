@@ -11,7 +11,7 @@ struct DaySalaryView: View {
     // MARK: - Dependencies
 
     let report: Report
-    let doctor: Doctor
+    let employee: Employee
 
     // MARK: - State
 
@@ -24,14 +24,27 @@ struct DaySalaryView: View {
 
     var body: some View {
         Section {
-            if daySalary > 0 {
+            if isLoading {
+                HStack {
+                    Text("Оказанные услуги")
+                        .foregroundStyle(.secondary)
+                    
+                    CircularProgressView()
+                        .padding(.horizontal)
+                }
+                .task {
+                    renderedServices = report.renderedServices(by: employee, role: \.performer)
+                    daySalary = report.employeeSalary(employee, from: renderedServices)
+                    isLoading = false
+                }
+            } else if !renderedServices.isEmpty {
                 DisclosureGroup(isExpanded: $isExpanded) {
                     List(renderedServices) { service in
                         LabeledContent(service.pricelistItem.title) {
                             if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
                                 Text("\(Int(fixedSalaryAmount)) ₽")
                                     .frame(width: 60)
-                            } else if let rate = doctor.salary.rate {
+                            } else if let rate = employee.salary.rate {
                                 Text("\(Int(service.pricelistItem.price * rate)) ₽")
                                     .frame(width: 60)
                             }
@@ -40,29 +53,19 @@ struct DaySalaryView: View {
                     }
                 } label: {
                     LabeledContent {
-                        Text("\(Int(daySalary)) ₽")
-                            .font(.headline)
-                    } label: {
-                        HStack {
-                            Text("Заработано сегодня")
-
-                            if isLoading {
-                                CircularProgressView()
-                                    .padding(.horizontal)
-                            }
+                        if daySalary > 0 {
+                            Text("\(Int(daySalary)) ₽")
+                                .font(.headline)
                         }
+                    } label: {
+                        Text(daySalary > 0 ? "Заработано сегодня" : "Оказанные услуги")
                     }
                 }
             }
-        }
-        .task {
-            renderedServices = report.renderedServices(by: doctor, role: \.performer)
-            daySalary = report.employeeSalary(doctor, from: renderedServices)
-            isLoading = false
         }
     }
 }
 
 #Preview {
-    DaySalaryView(report: ExampleData.report, doctor: ExampleData.doctor)
+    DaySalaryView(report: ExampleData.report, employee: ExampleData.doctor)
 }
