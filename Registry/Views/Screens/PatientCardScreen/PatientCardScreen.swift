@@ -14,6 +14,8 @@ struct PatientCardScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     @Bindable var patient: Patient
 
     // MARK: - State
@@ -69,12 +71,15 @@ struct PatientCardScreen: View {
                 }
             }
 
-            if patient.balance != 0 {
-                Section {
-                    HStack {
-                        Text("Баланс:")
-                        Spacer()
-                        Text("\(Int(patient.balance)) ₽")
+            Section("Баланс") {
+                LabeledContent("\(Int(patient.balance)) ₽") {
+                    Button("Пополнить") {
+                        coordinator.present(
+                            .updateBalance(
+                                for: Binding(get: { patient }, set: { value in patient.balance = value.balance }),
+                                kind: .refill
+                            )
+                        )
                     }
                 }
             }
