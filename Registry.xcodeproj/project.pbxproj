@@ -27,6 +27,7 @@
 		8B1B64E62BC8052E009F73A4 /* PhoneLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1B64E52BC8052E009F73A4 /* PhoneLoginView.swift */; };
 		8B1B64E82BC80F9F009F73A4 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1B64E72BC80F9F009F73A4 /* PasswordView.swift */; };
 		8B1E353C2BC909A9003B448E /* PaymentValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E353B2BC909A9003B448E /* PaymentValueView.swift */; };
+		8B1E353F2BC9A822003B448E /* CreatePaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */; };
 		8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */; };
 		8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* PersonImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
@@ -164,6 +165,7 @@
 		8B1B64E52BC8052E009F73A4 /* PhoneLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginView.swift; sourceTree = "<group>"; };
 		8B1B64E72BC80F9F009F73A4 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		8B1E353B2BC909A9003B448E /* PaymentValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentValueView.swift; sourceTree = "<group>"; };
+		8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentView.swift; sourceTree = "<group>"; };
 		8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusBoxToggleStyle.swift; sourceTree = "<group>"; };
 		8B285F432B4DC81800C29E20 /* PersonImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
@@ -436,6 +438,24 @@
 			path = Subviews;
 			sourceTree = "<group>";
 		};
+		8B1E353D2BC9A80E003B448E /* CreatePaymentView */ = {
+			isa = PBXGroup;
+			children = (
+				8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */,
+				8B1E35402BC9AB26003B448E /* Subviews */,
+			);
+			path = CreatePaymentView;
+			sourceTree = "<group>";
+		};
+		8B1E35402BC9AB26003B448E /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */,
+				8B1E353B2BC909A9003B448E /* PaymentValueView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		8B285F3F2B4DB8A300C29E20 /* MinusBoxToggleStyle */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,8 +527,6 @@
 			children = (
 				8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */,
 				8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */,
-				8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */,
-				8B1E353B2BC909A9003B448E /* PaymentValueView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1037,6 +1055,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B1E353D2BC9A80E003B448E /* CreatePaymentView */,
 				8B4ECD4C2BC8505100A82A2A /* CircularProgressView */,
 				8B0FA05E2BC538BB0077D4D9 /* NumPadView */,
 				8B80FED52BC2A6B800BB76E0 /* ActivityView */,
@@ -1283,6 +1302,7 @@
 				8B0FA0602BC538C80077D4D9 /* NumPadView.swift in Sources */,
 				8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */,
 				8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */,
+				8B1E353F2BC9A822003B448E /* CreatePaymentView.swift in Sources */,
 				8B8DA9672BA209E700F6F847 /* MessageEntity.swift in Sources */,
 				8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */,
 				8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */,

@@ -60,104 +60,37 @@ struct BillPaymentView: View {
                     Text("К оплате")
                 }
 
-                Section {
-                    if let additionalPaymentMethod {
-                        HStack {
-                            Text(paymentMethod.type.rawValue)
-                            Spacer()
-                            textField(type: paymentMethod.type)
-                                .onChange(of: paymentMethod.value) { _, newValue in
-                                    self.additionalPaymentMethod?.value = bill.totalPrice - patient.balance - newValue
-                                }
-                        }
-
-                        HStack {
-                            Text(additionalPaymentMethod.type.rawValue)
-                            Spacer()
-                            textField(type: additionalPaymentMethod.type)
-                                .onChange(of: self.additionalPaymentMethod!.value) { _, newValue in
-                                    paymentMethod.value = bill.totalPrice - patient.balance - newValue
-                                }
-                        }
-                    } else {
-                        Picker(paymentMethod.type.rawValue, selection: $paymentMethod.type) {
-                            ForEach(PaymentType.allCases, id: \.self) { type in
-                                Text(type.rawValue)
-                            }
-                        }
-                    }
-                } header: {
-                    HStack {
-                        Text("Способ оплаты")
-
-                        if additionalPaymentMethod != nil {
-                            Spacer()
-                            Button {
-                                withAnimation {
-                                    self.additionalPaymentMethod = nil
-                                    paymentMethod.value = bill.totalPrice - patient.balance
-                                }
-                            } label: {
-                                Image(systemName: "arrow.uturn.left")
-                            }
-                        }
-                    }
-                }
-                
-                Menu("Добавить способ оплаты") {
-                    ForEach(PaymentType.allCases, id: \.self) { type in
-                        if type != paymentMethod.type {
-                            Button(type.rawValue) {
-                                withAnimation {
-                                    additionalPaymentMethod = Payment.Method(type, value: 0)
-                                    paymentMethod.value = bill.totalPrice - patient.balance
-                                }
-                            }
-                        }
-                    }
-                }
-                .disabled(additionalPaymentMethod != nil)
-                
-                if additionalPaymentMethod == nil {
-                    Section {
-                        HStack {
-                            TextField("Сумма оплаты", value: $paymentMethod.value, format: .number)
-
-                            Spacer()
-
-                            Image(systemName: "pencil")
-                                .foregroundColor(.secondary)
-                        }
-                    } header: {
-                        Text("Сумма оплаты")
-                    } footer: {
-                        if paymentBalance != 0 {
+                CreatePaymentView(
+                    account: patient,
+                    paymentMethod: $paymentMethod,
+                    additionalPaymentMethod: $additionalPaymentMethod,
+                    paymentFooter: { paymentBalance in
+                        if paymentBalance < 0 {
+                            Text("Долг \(-paymentBalance) ₽.")
+                                .foregroundColor(.red)
+                        } else {
                             HStack {
-                                if paymentBalance < 0 {
-                                    Text("Долг \(-paymentBalance) ₽.")
-                                        .foregroundColor(.red)
-                                } else {
-                                    Text(addToBalance ?
-                                         "Баланс пациента составит \(paymentBalance) ₽." :
-                                         "Сдача: \(paymentBalance) ₽."
-                                    )
+                                Text(addToBalance ?
+                                     "Баланс пациента составит \(paymentBalance) ₽." :
+                                     "Сдача: \(paymentBalance) ₽."
+                                )
 
-                                    Spacer()
+                                Spacer()
 
-                                    Button(addToBalance ? "Выдать сдачу" : "Записать на счёт") {
-                                        addToBalance.toggle()
-                                    }
-                                    .font(.footnote)
+                                Button(addToBalance ? "Выдать сдачу" : "Записать на счёт") {
+                                    addToBalance.toggle()
                                 }
+                                .font(.footnote)
                             }
                         }
                     }
-                }
+                )
+                .paymentKind(.bill(totalPrice: bill.totalPrice))
             }
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 if paymentBalance < 0 || addToBalance {
-                    balancePayment(value: Double(paymentBalance))
-                    patient.updateBalance(increment: Double(paymentBalance))
+                    balancePayment(value: paymentBalance)
+                    patient.updateBalance(increment: paymentBalance)
                 } else if patient.balance != 0 {
                     balancePayment(value: -patient.balance)
                     patient.updateBalance(increment: -patient.balance)
@@ -182,28 +115,6 @@ struct BillPaymentView: View {
     )
 }
 
-// MARK: - Subviews
-
-private extension BillPaymentView {
-    func textField(type: PaymentType) -> some View {
-        ZStack(alignment: .trailing) {
-            Color.gray
-                .opacity(0.1)
-                .cornerRadius(8)
-            TextField(
-                type.rawValue,
-                value: type == paymentMethod.type ? $paymentMethod.value : Binding(
-                    get: { additionalPaymentMethod?.value ?? 0 },
-                    set: { additionalPaymentMethod?.value = $0 }
-                ),
-                format: .number
-            )
-            .padding(.horizontal)
-        }
-        .frame(width: 120)
-    }
-}
-
 // MARK: - Calculations
 
 private extension BillPaymentView {
@@ -212,8 +123,8 @@ private extension BillPaymentView {
         return additionalPaymentMethod.value == 0 || paymentMethod.value == 0
     }
 
-    var paymentBalance: Int {
-        Int(patient.balance + paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice)
+    var paymentBalance: Double {
+        patient.balance + paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice
     }
 
     var todayReport: Report? {

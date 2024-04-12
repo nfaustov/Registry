@@ -50,15 +50,16 @@ struct DoctorPayoutView: View {
 
                 AgentFeeView(doctor: doctor)
 
-                PaymentMethodView(
+                CreatePaymentView(
                     account: doctor,
                     paymentMethod: $paymentMethod,
-                    additionalPaymentMethod: $additionalPaymentMethod
+                    additionalPaymentMethod: $additionalPaymentMethod,
+                    paymentFooter: { paymentBalance in
+                        Text("Остаток на балансе: \(paymentBalance) ₽")
+                            .foregroundColor(paymentBalance < 0 ? .red : .secondary)
+                    }
                 )
-
-                if additionalPaymentMethod == nil {
-                    PaymentValueView(account: doctor, value: $paymentMethod.value)
-                }
+                .paymentKind(.balance)
             }
             .sheetToolbar(
                 title: "Выплата",
