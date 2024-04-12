@@ -41,9 +41,8 @@ struct CashboxScreen: View {
                                 Text("\(Int(cashBalance)) ₽")
                                     .fontWeight(.medium)
                                 if isLoading {
-                                    ProgressView()
-                                        .progressViewStyle(.circular)
-                                        .tint(.blue)
+                                    CircularProgressView()
+                                        .padding(.horizontal)
                                 }
                             }
                         }
@@ -61,9 +60,11 @@ struct CashboxScreen: View {
                             if lastReport != nil {
                                 let newReport = Report(date: .now, startingCash: cashBalance, payments: [])
                                 modelContext.insert(newReport)
+                                todayReport = newReport
                             } else {
                                 let firstReport = Report(date: .now, startingCash: 0, payments: [])
                                 modelContext.insert(firstReport)
+                                todayReport = firstReport
                             }
                         }
                         .disabled(user.accessLevel < .registrar)
@@ -94,9 +95,7 @@ struct CashboxScreen: View {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .foregroundStyle(.white)
                     if isLoading {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .tint(.blue)
+                        CircularProgressView()
                             .scaleEffect(1.2)
                     }
                 }

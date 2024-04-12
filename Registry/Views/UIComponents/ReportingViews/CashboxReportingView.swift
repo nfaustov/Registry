@@ -33,9 +33,7 @@ struct CashboxReportingView: View {
         Section {
             if isLoading {
                 HStack {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .tint(.blue)
+                    CircularProgressView()
                         .frame(maxWidth: .infinity)
                 }
             } else if let todayReport {
