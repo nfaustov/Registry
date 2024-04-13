@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreatePaymentView<Footer: View>: View {
+struct CreatePaymentView: View {
     // MARK: - Dependencies
 
     @Environment(\.paymentKind) private var paymentKind
@@ -16,8 +16,6 @@ struct CreatePaymentView<Footer: View>: View {
 
     @Binding var paymentMethod: Payment.Method
     @Binding var additionalPaymentMethod: Payment.Method?
-
-    @ViewBuilder let paymentFooter: (Int) -> Footer
 
     // MARK: -
 
@@ -31,12 +29,8 @@ struct CreatePaymentView<Footer: View>: View {
             .paymentKind(paymentKind)
 
             if additionalPaymentMethod == nil {
-                PaymentValueView(
-                    account: account,
-                    value: $paymentMethod.value,
-                    footer: paymentFooter
-                )
-                .paymentKind(paymentKind)
+                PaymentValueView(account: account, value: $paymentMethod.value)
+                    .paymentKind(paymentKind)
             }
         }
     }
@@ -47,8 +41,7 @@ struct CreatePaymentView<Footer: View>: View {
         CreatePaymentView(
             account: ExampleData.patient,
             paymentMethod: .constant(Payment.Method(.cash, value: 1000)),
-            additionalPaymentMethod: .constant(Payment.Method(.card, value: 1500)),
-            paymentFooter: { _ in }
+            additionalPaymentMethod: .constant(Payment.Method(.card, value: 1500))
         )
         .paymentKind(.balance)
     }

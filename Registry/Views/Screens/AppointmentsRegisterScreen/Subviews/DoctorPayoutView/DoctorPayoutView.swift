@@ -53,11 +53,7 @@ struct DoctorPayoutView: View {
                 CreatePaymentView(
                     account: doctor,
                     paymentMethod: $paymentMethod,
-                    additionalPaymentMethod: $additionalPaymentMethod,
-                    paymentFooter: { paymentBalance in
-                        Text("Остаток на балансе: \(paymentBalance) ₽")
-                            .foregroundColor(paymentBalance < 0 ? .red : .secondary)
-                    }
+                    additionalPaymentMethod: $additionalPaymentMethod
                 )
                 .paymentKind(.balance)
             }

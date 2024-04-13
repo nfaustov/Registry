@@ -25,7 +25,6 @@ struct BillPaymentView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
-    @State private var addToBalance: Bool = false
     @State private var todayReport: Report?
     @State private var lastReport: Report?
 
@@ -59,37 +58,14 @@ struct BillPaymentView: View {
                 CreatePaymentView(
                     account: patient,
                     paymentMethod: $paymentMethod,
-                    additionalPaymentMethod: $additionalPaymentMethod,
-                    paymentFooter: { paymentBalance in
-                        if paymentBalance < 0 {
-                            Text("Долг \(-paymentBalance) ₽.")
-                                .foregroundColor(.red)
-                        } else {
-                            HStack {
-                                Text(addToBalance ?
-                                     "Баланс пациента составит \(paymentBalance) ₽." :
-                                     "Сдача: \(paymentBalance) ₽."
-                                )
-
-                                Spacer()
-
-                                Button(addToBalance ? "Выдать сдачу" : "Записать на счёт") {
-                                    addToBalance.toggle()
-                                }
-                                .font(.footnote)
-                            }
-                        }
-                    }
+                    additionalPaymentMethod: $additionalPaymentMethod
                 )
                 .paymentKind(.bill(totalPrice: bill.totalPrice))
             }
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
-                if paymentBalance < 0 || addToBalance {
-                    balancePayment(value: paymentBalance)
+                if paymentBalance != 0 {
+                    balancePayment()
                     patient.updateBalance(increment: paymentBalance)
-                } else if patient.balance != 0 {
-                    balancePayment(value: -patient.balance)
-                    patient.updateBalance(increment: -patient.balance)
                 }
 
                 patient.mergedAppointments(forAppointmentID: appointment.id)
@@ -129,7 +105,7 @@ private extension BillPaymentView {
     }
 
     var paymentBalance: Double {
-        patient.balance + paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice
+        paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice
     }
 
     func createReportWIthPayment(_ payment: Payment) {
@@ -144,11 +120,11 @@ private extension BillPaymentView {
         }
     }
 
-    func balancePayment(value: Double) {
+    func balancePayment() {
         var balancePaymentMethod = paymentMethod
-        balancePaymentMethod.value = value
+        balancePaymentMethod.value = paymentBalance
         let balancePayment = Payment(
-            purpose: value > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
+            purpose: paymentBalance > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
             methods: [balancePaymentMethod],
             createdBy: user.asAnyUser
         )

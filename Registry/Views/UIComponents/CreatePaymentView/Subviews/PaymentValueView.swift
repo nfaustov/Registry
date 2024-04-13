@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PaymentValueView<Footer: View>: View {
+struct PaymentValueView: View {
     // MARK: - Dependencies
 
     @Environment(\.paymentKind) private var paymentKind
@@ -16,8 +16,6 @@ struct PaymentValueView<Footer: View>: View {
 
     @Binding var value: Double
 
-    @ViewBuilder let footer: (Int) -> Footer
-
     // MARK: -
 
     var body: some View {
@@ -25,31 +23,41 @@ struct PaymentValueView<Footer: View>: View {
             LabeledContent {
                 Image(systemName: "pencil")
             } label: {
-                TextField("Сумма выплаты", value: $value, format: .number)
+                TextField(textFieldTitle, value: $value, format: .number)
             }
         } header: {
-            Text("Сумма вылаты")
+            Text(textFieldTitle)
         } footer: {
-            if paymentBalance != 0 {
-                footer(paymentBalance)
+            if finalAccountBalance != 0 {
+                Text("Остаток на балансе: \(finalAccountBalance) ₽")
+                    .foregroundColor(finalAccountBalance < 0 ? .red : .secondary)
             }
         }
     }
 }
 
 #Preview {
-    PaymentValueView(account: ExampleData.doctor, value: .constant(1500)) { _ in }
+    PaymentValueView(account: ExampleData.doctor, value: .constant(1500))
 }
 
 // MARK: - Calculations
 
 private extension PaymentValueView {
-    var paymentBalance: Int {
+    var finalAccountBalance: Int {
         switch paymentKind {
         case .balance:
             return Int(account.balance - value)
         case .bill(let totalPrice):
             return Int(account.balance + value - totalPrice)
+        }
+    }
+
+    var textFieldTitle: String {
+        switch paymentKind {
+        case .balance:
+            return "Сумма выплаты"
+        case .bill:
+            return "Сумма оплаты"
         }
     }
 }
