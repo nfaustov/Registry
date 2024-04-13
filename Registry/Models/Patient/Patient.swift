@@ -79,9 +79,7 @@ public final class Patient: Person {
     }
 
     public func isNewPatient(for period: StatisticsPeriod) -> Bool {
-        visits
-            .filter { $0.visitDate < period.start() }
-            .isEmpty
+        createdAt > period.start()
     }
 
     public func updateBalance(increment: Double) {

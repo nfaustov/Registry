@@ -13,6 +13,7 @@ struct IndicatorsScreen: View {
     var body: some View {
         Form {
             CashboxReportingView()
+            PatientsChart()
         }
         .scrollBounceBehavior(.basedOnSize)
     }
