@@ -38,6 +38,25 @@ public final class Report {
             .reduce(0.0) { $0 + $1.value }
     }
 
+    public func billsIncome(of type: PaymentType) -> Double {
+        payments
+            .filter { $0.subject != nil }
+            .flatMap { $0.methods }
+            .filter { $0.type == type }
+            .reduce(0.0) { $0 + $1.value }
+    }
+
+    public func othersIncome(of type: PaymentType) -> Double {
+        let methods = payments
+            .filter { $0.subject == nil }
+            .flatMap { $0.methods }
+
+        return methods
+            .filter { $0.value > 0 }
+            .filter { $0.type == type }
+            .reduce(0.0) { $0 + $1.value }
+    }
+
     public func reporting(_ reporting: Reporting, of type: PaymentType? = nil) -> Double {
         switch reporting {
         case .profit:

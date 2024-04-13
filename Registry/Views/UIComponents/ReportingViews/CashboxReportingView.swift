@@ -12,7 +12,6 @@ struct CashboxReportingView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -87,15 +86,14 @@ struct CashboxReportingView: View {
                     }
                 }
 
-                if todayReport.reporting(selectedReporting, of: .bank) != 0 {
-                    LabeledContent("Терминал", value: "\(Int(todayReport.reporting(selectedReporting, of: .bank)))")
+                ForEach(PaymentType.allCases, id: \.self) { type in
+                    let reporting = todayReport.reporting(selectedReporting, of: type)
+
+                    if reporting != 0 {
+                        LabeledContent(type.rawValue, value: "\(Int(reporting)) ₽")
+                    }
                 }
-                if todayReport.reporting(selectedReporting, of: .cash) != 0 {
-                    LabeledContent("Наличные", value: "\(Int(todayReport.reporting(selectedReporting, of: .cash)))")
-                }
-                if todayReport.reporting(selectedReporting, of: .card) != 0 {
-                    LabeledContent("Перевод", value: "\(Int(todayReport.reporting(selectedReporting, of: .card)))")
-                }
+
                 LabeledContent("Всего", value: "\(Int(selectedReporting == .income ? income : expense))")
                     .font(.headline)
             }

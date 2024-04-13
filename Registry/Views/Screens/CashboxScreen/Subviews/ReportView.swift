@@ -14,7 +14,6 @@ struct ReportView: View {
 
     // MARK: - State
 
-    @State private var income: Double = 0
     @State private var expense: Double = 0
     @State private var collected: Double = 0
     @State private var cashBalance: Double = 0
@@ -32,19 +31,31 @@ struct ReportView: View {
                     }
                 }
 
-                if income > 0 {
-                    Section {
+                if !report.payments.filter({ $0.subject != nil }).isEmpty {
+                    Section("Доход") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
-                            let income = report.reporting(.income, of: type)
-                            if income > 0 {
+                            let billIncome = report.billsIncome(of: type)
+                            if billIncome > 0 {
                                 LabeledContent(type.rawValue) {
-                                    Text("\(Int(income)) ₽")
+                                    Text("\(Int(billIncome)) ₽")
                                         .fontWeight(.medium)
                                 }
                             }
                         }
-                    } header: {
-                        Text("Доход")
+                    }
+                }
+
+                if !report.payments.filter({ $0.subject == nil }).isEmpty {
+                    Section("Пополнения") {
+                        ForEach(PaymentType.allCases, id: \.self) { type in
+                            let othersIncome = report.othersIncome(of: type)
+                            if othersIncome > 0 {
+                                LabeledContent(type.rawValue) {
+                                    Text("\(Int(othersIncome)) ₽")
+                                        .fontWeight(.medium)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -93,9 +104,6 @@ struct ReportView: View {
             )
         }
         .onAppear {
-            Task {
-                income = report.reporting(.income)
-            }
             Task {
                 expense = report.reporting(.expense)
             }

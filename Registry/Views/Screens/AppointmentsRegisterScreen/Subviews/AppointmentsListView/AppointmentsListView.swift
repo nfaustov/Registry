@@ -10,8 +10,6 @@ import SwiftUI
 struct AppointmentsListView: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
     @EnvironmentObject private var coordinator: Coordinator
 
     @StateObject private var messageController = MessageController()
