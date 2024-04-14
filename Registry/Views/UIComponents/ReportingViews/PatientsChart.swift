@@ -65,7 +65,7 @@ private extension PatientsChart {
         Array(
             schedules
                 .flatMap { $0.scheduledPatients }
-                .uniqued()
+                .uniqued(on: { $0.id })
         )
     }
 

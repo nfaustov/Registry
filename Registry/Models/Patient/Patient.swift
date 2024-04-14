@@ -79,7 +79,8 @@ public final class Patient: Person {
     }
 
     public func isNewPatient(for period: StatisticsPeriod) -> Bool {
-        createdAt > period.start()
+        guard let firstVisit = visits.sorted(by: { $0.visitDate < $1.visitDate }).first, firstVisit.cancellationDate == nil else { return false }
+        return firstVisit.visitDate > period.start()
     }
 
     public func updateBalance(increment: Double) {
