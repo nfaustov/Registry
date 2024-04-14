@@ -38,6 +38,29 @@ public final class Report {
             .reduce(0.0) { $0 + $1.value }
     }
 
+    public var hasBillIncome: Bool {
+        !payments
+            .compactMap { $0.subject }
+            .isEmpty
+    }
+
+    public var hasOtherIncome: Bool {
+        !payments
+            .filter { $0.subject == nil }
+            .flatMap { $0.methods }
+            .filter { $0.value > 0 }
+            .isEmpty
+    }
+
+    public var hasExpense: Bool {
+        !payments
+            .filter { $0.subject == nil }
+            .filter { $0.purpose != .collection }
+            .flatMap { $0.methods }
+            .filter { $0.value < 0 }
+            .isEmpty
+    }
+
     public func billsIncome(of type: PaymentType) -> Double {
         payments
             .filter { $0.subject != nil }
@@ -46,15 +69,19 @@ public final class Report {
             .reduce(0.0) { $0 + $1.value }
     }
 
-    public func othersIncome(of type: PaymentType) -> Double {
+    public func othersIncome(of type: PaymentType? = nil) -> Double {
         let methods = payments
             .filter { $0.subject == nil }
             .flatMap { $0.methods }
-
-        return methods
             .filter { $0.value > 0 }
-            .filter { $0.type == type }
-            .reduce(0.0) { $0 + $1.value }
+
+        if let type {
+            return methods
+                .filter { $0.type == type }
+                .reduce(0.0) { $0 + $1.value }
+        } else {
+            return methods.reduce(0.0) { $0 + $1.value }
+        }
     }
 
     public func reporting(_ reporting: Reporting, of type: PaymentType? = nil) -> Double {

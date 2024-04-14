@@ -14,9 +14,10 @@ struct ReportView: View {
 
     // MARK: - State
 
-    @State private var expense: Double = 0
     @State private var collected: Double = 0
     @State private var cashBalance: Double = 0
+    @State private var isCashBalanceLoading: Bool = true
+    @State private var isCollectedLoading: Bool = true
 
     // MARK: -
 
@@ -24,14 +25,10 @@ struct ReportView: View {
         NavigationStack {
             Form {
                 Section {
-                    HStack {
-                        Text("Открытие смены")
-                        Spacer()
-                        Text("\(Int(report.startingCash)) ₽")
-                    }
+                    LabeledContent("Открытие смены", value: "\(Int(report.startingCash)) ₽")
                 }
 
-                if !report.payments.filter({ $0.subject != nil }).isEmpty {
+                if report.hasBillIncome {
                     Section("Доход") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let billIncome = report.billsIncome(of: type)
@@ -45,7 +42,7 @@ struct ReportView: View {
                     }
                 }
 
-                if !report.payments.filter({ $0.subject == nil }).isEmpty {
+                if report.hasOtherIncome {
                     Section("Пополнения") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let othersIncome = report.othersIncome(of: type)
@@ -59,8 +56,8 @@ struct ReportView: View {
                     }
                 }
 
-                if expense < 0 {
-                    Section {
+                if report.hasExpense {
+                    Section("Списания") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let expense = report.reporting(.expense, of: type)
                             if expense < 0 {
@@ -71,29 +68,41 @@ struct ReportView: View {
                                 }
                             }
                         }
-                    } header: {
-                        Text("Расход")
                     }
                 }
 
                 if collected != 0 {
                     Section {
-                        HStack {
-                            Text("Инкассация")
-                            Spacer()
+                        LabeledContent {
                             Text("\(Int(collected)) ₽")
                                 .fontWeight(.medium)
+                        } label: {
+                            HStack {
+                                Text("Инкассация")
+
+                                if isCollectedLoading {
+                                    CircularProgressView()
+                                        .padding(.horizontal)
+                                }
+                            }
                         }
                         .foregroundStyle(.purple)
                     }
                 }
 
                 Section {
-                    HStack {
-                        Text("Остаток в кассе")
-                        Spacer()
+                    LabeledContent {
                         Text("\(Int(cashBalance)) ₽")
                             .fontWeight(.medium)
+                    } label: {
+                        HStack {
+                            Text("Остаток в кассе")
+
+                            if isCashBalanceLoading {
+                                CircularProgressView()
+                                    .padding(.horizontal)
+                            }
+                        }
                     }
                     .foregroundStyle(.secondary)
                 }
@@ -103,15 +112,14 @@ struct ReportView: View {
                 subtitle: DateFormat.weekDay.string(from: report.date)
             )
         }
-        .onAppear {
-            Task {
-                expense = report.reporting(.expense)
-            }
+        .task {
             Task {
                 collected = report.collected
+                isCollectedLoading = false
             }
             Task {
                 cashBalance = report.cashBalance
+                isCashBalanceLoading = false
             }
         }
     }
