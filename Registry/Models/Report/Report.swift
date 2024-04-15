@@ -128,20 +128,6 @@ public final class Report {
     }
 }
 
-// MARK: - Private methods
-
-private extension Report {
-    func paymentMethods(ofType type: PaymentType?) -> [Payment.Method] {
-        let methods = payments
-            .filter { $0.purpose != .collection }
-            .flatMap { $0.methods }
-
-        if let type { return methods.filter { $0.type == type } }
-
-        return methods
-    }
-}
-
 // MARK: - Reporting
 
 public enum Reporting: String, Hashable, Identifiable, CaseIterable {
@@ -165,19 +151,18 @@ public extension Report {
             .filter { $0[keyPath: role]?.id == employee.id }
     }
 
-//    func daySalary(of employee: Employee) -> Double {
-//        switch employee.salary {
-//        case .pieceRate(let rate):
-//            let services = renderedServices(by: employee, role: \.performer)
-//            return pieceRateSalary(rate, from: services)
-//        default: return 0
-//        }
-//    }
+    func refundedServices(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
+        payments
+            .compactMap { $0.subject }
+            .filter { $0.isRefund }
+            .flatMap { $0.services }
+            .filter { $0[keyPath: role]?.id == employee.id }
+    }
 
     func employeeSalary(_ employee: Employee, from services: [RenderedService]) -> Double {
         switch employee.salary {
         case .pieceRate(let rate):
-            return pieceRateSalary(rate, from: services)
+            return pieceRateSalary(rate, from: services) - pieceRateSalary(rate, from: refundedServices(by: employee, role: \.performer))
         default: return 0
         }
     }
@@ -186,6 +171,16 @@ public extension Report {
 // MARK: - Private methods
 
 private extension Report {
+    func paymentMethods(ofType type: PaymentType?) -> [Payment.Method] {
+        let methods = payments
+            .filter { $0.purpose != .collection }
+            .flatMap { $0.methods }
+
+        if let type { return methods.filter { $0.type == type } }
+
+        return methods
+    }
+
     func pieceRateSalary(_ rate: Double, from services: [RenderedService]) -> Double {
         services
             .reduce(0.0) { partialResult, service in

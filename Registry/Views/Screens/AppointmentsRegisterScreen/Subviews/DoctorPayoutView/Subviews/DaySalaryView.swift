@@ -16,6 +16,7 @@ struct DaySalaryView: View {
     // MARK: - State
 
     @State private var renderedServices: [RenderedService] = []
+    @State private var refundedServicesIds: [RenderedService.ID] = []
     @State private var daySalary: Double = .zero
     @State private var isLoading: Bool = true
     @State private var isExpanded: Bool = false
@@ -34,6 +35,7 @@ struct DaySalaryView: View {
                 }
                 .task {
                     renderedServices = report.renderedServices(by: employee, role: \.performer)
+                    refundedServicesIds = report.refundedServices(by: employee, role: \.performer).map { $0.id }
                     daySalary = report.employeeSalary(employee, from: renderedServices)
                     isLoading = false
                 }
@@ -50,6 +52,7 @@ struct DaySalaryView: View {
                             }
                         }
                         .font(.subheadline)
+                        .foregroundStyle(refundedServicesIds.contains(service.id) ? .red.opacity(0.6) : .primary)
                     }
                 } label: {
                     LabeledContent {

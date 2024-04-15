@@ -17,7 +17,8 @@ struct AgentFeeView: View {
 
     // MARK: - State
 
-    @State private var servicesByAgent: [Date: [RenderedService]] = [:]
+    @State private var agentServicesByDate: [Date: [RenderedService]] = [:]
+    @State private var refundedServicesIDs: [RenderedService.ID] = []
     @State private var isLoading: Bool = false
     @State private var isExpanded: Bool = false
 
@@ -27,24 +28,25 @@ struct AgentFeeView: View {
         Section {
             if doctor.agentFee > 0 {
                 DisclosureGroup(isExpanded: $isExpanded) {
-                    List(Array(servicesByAgent.keys.sorted(by: <)), id: \.self) { date in
+                    List(Array(agentServicesByDate.keys.sorted(by: <)), id: \.self) { date in
                         DateText(date, format: .date)
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
-                        ForEach(servicesByAgent[date] ?? []) { service in
+                        ForEach(agentServicesByDate[date] ?? []) { service in
                             LabeledContent(
                                 service.pricelistItem.title,
                                 value: "\(Int(service.pricelistItem.price * 0.1)) ₽"
                             )
                             .font(.subheadline)
+                            .foregroundStyle(refundedServicesIDs.contains(service.id) ? .red.opacity(0.6) : .primary)
                         }
                     }
                 } label: {
                     agentFeeTitle
                 }
                 .onChange(of: isExpanded) { _, newValue in
-                    if newValue, servicesByAgent.isEmpty {
+                    if newValue, agentServicesByDate.isEmpty {
                         isLoading = true
 
                         Task {
@@ -98,13 +100,18 @@ private extension AgentFeeView {
         let descriptor = FetchDescriptor<Report>(predicate: predicate, sortBy: [SortDescriptor(\Report.date, order: .reverse)])
 
         if let reports = try? modelContext.fetch(descriptor) {
-            servicesByAgent = await withTaskGroup(
+            agentServicesByDate = await withTaskGroup(
                 of: (Date, [RenderedService]).self,
                 returning: [Date: [RenderedService]].self
             ) { taskGroup in
                 for report in reports {
                     taskGroup.addTask {
+                        let refundedServices = report.refundedServices(by: doctor, role: \.agent)
+                        let IDs = refundedServices.map { $0.id }
+                        refundedServicesIDs.append(contentsOf: IDs)
+
                         let services = report.renderedServices(by: doctor, role: \.agent)
+
                         return (report.date, services)
                     }
                 }

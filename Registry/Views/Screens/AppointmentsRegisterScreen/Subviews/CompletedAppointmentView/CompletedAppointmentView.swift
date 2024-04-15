@@ -225,7 +225,7 @@ private extension CompletedAppointmentView {
 
     func serviceItemForegroudColor(_ service: RenderedService) -> Color {
         if let refund = visit.refund {
-            return refund.services.contains(service) ? .red.opacity(0.5) : .primary
+            return refund.services.contains(service) ? .red.opacity(0.6) : .primary
         } else {
             return createdRefund.services.contains(service) ? .red : .primary
         }
