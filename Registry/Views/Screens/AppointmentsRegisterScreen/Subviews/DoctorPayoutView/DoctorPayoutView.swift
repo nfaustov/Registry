@@ -23,6 +23,7 @@ struct DoctorPayoutView: View {
     @State private var additionalPaymentMethod: Payment.Method? = nil
     @State private var todayReport: Report?
     @State private var lastReport: Report?
+    @State private var payoutType: PayoutType = .balance
 
     // MARK: -
 
@@ -44,11 +45,26 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if let todayReport {
-                    DaySalaryView(report: todayReport, employee: doctor)
-                }
+                Section {
+                    if doctor.agentFee > 0 {
+                        Picker("Выплата", selection: $payoutType) {
+                            ForEach(PayoutType.allCases, id: \.self) { type in
+                                Text(type.title(for: doctor))
+                            }
+                        }
+                    } else {
+                        Text(payoutType.title(for: doctor))
+                            .foregroundStyle(.secondary)
+                    }
 
-                AgentFeeView(doctor: doctor)
+                    if payoutType == .balance {
+                        if let todayReport {
+                            DaySalaryView(report: todayReport, employee: doctor)
+                        }
+                    } else if payoutType == .agentFee {
+                        AgentFeeView(doctor: doctor)
+                    }
+                }
 
                 CreatePaymentView(
                     account: doctor,
@@ -59,7 +75,9 @@ struct DoctorPayoutView: View {
             }
             .sheetToolbar(
                 title: "Выплата",
-                confirmationDisabled: paymentMethod.value == 0 || doctor.balance <= 0 || disabled
+                confirmationDisabled: paymentMethod.value == 0 ||
+                disabled || disabledAgentFee ||
+                disabledBalancePayment
             ) {
                 doctorPayout()
                 payment()
@@ -98,7 +116,12 @@ private extension DoctorPayoutView {
 
     func doctorPayout() {
         let totalPaymentValue = abs(paymentMethod.value) + abs(additionalPaymentMethod?.value ?? 0)
-        doctor.charge(as: \.performer, amount: Double(-totalPaymentValue))
+        switch payoutType {
+        case .balance: 
+            doctor.charge(as: \.performer, amount: -totalPaymentValue)
+        case .agentFee:
+            doctor.agentFeePayment(value: totalPaymentValue)
+        }
     }
 
     func payment() {
@@ -108,13 +131,51 @@ private extension DoctorPayoutView {
         additionalPaymentMethod?.value = -abs(additionalPaymentMethod?.value ?? 0)
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
-        let purpose: Payment.Purpose = doctor.salary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
-        let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)
+        let payment = Payment(purpose: paymentPurpose(), methods: methods, createdBy: user.asAnyUser)
 
         if let todayReport {
             todayReport.payments.append(payment)
         } else {
             createReportWithPayment(payment)
+        }
+    }
+
+    func paymentPurpose() -> Payment.Purpose {
+        switch payoutType {
+        case .balance:
+            return doctor.salary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
+        case .agentFee:
+            return .agentFee(doctor.initials)
+        }
+    }
+
+    var disabledAgentFee: Bool {
+         payoutType == .agentFee && doctor.agentFee <= 0
+    }
+
+    var disabledBalancePayment: Bool {
+        payoutType == .balance && doctor.balance <= 0
+    }
+}
+
+// MARK: - PayoutType
+
+private extension DoctorPayoutView {
+    enum PayoutType: Hashable, CaseIterable {
+        case balance
+        case agentFee
+
+        func title(for employee: Employee) -> String {
+            switch self {
+            case .balance:
+                if employee.salary.rate != nil {
+                    return "Заработная плата"
+                } else {
+                    return "Выплата с баланса"
+                }
+            case .agentFee:
+                return "Агентские"
+            }
         }
     }
 }

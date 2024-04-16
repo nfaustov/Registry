@@ -81,9 +81,12 @@ public final class Doctor: Employee, User {
         }
     }
 
-    public func agentFeePayment() {
-        balance += agentFee
+    public func agentFeePayment(value: Double) {
+        guard value >= agentFee else { return }
+
+        let diff = value - agentFee
         agentFee = 0
+        balance += diff
         agentFeePaymentDate = .now
     }
 }

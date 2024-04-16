@@ -527,15 +527,6 @@
 			path = UserDetailScreen;
 			sourceTree = "<group>";
 		};
-		8B4ECD492BC83CD700A82A2A /* Subviews */ = {
-			isa = PBXGroup;
-			children = (
-				8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */,
-				8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */,
-			);
-			path = Subviews;
-			sourceTree = "<group>";
-		};
 		8B4ECD4C2BC8505100A82A2A /* CircularProgressView */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,15 +674,6 @@
 			path = DoctorSelectionView;
 			sourceTree = "<group>";
 		};
-		8B7A3BFE2B8C7C4000A48646 /* DoctorPayoutView */ = {
-			isa = PBXGroup;
-			children = (
-				8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */,
-				8B4ECD492BC83CD700A82A2A /* Subviews */,
-			);
-			path = DoctorPayoutView;
-			sourceTree = "<group>";
-		};
 		8B7A3C012B8C8EA300A48646 /* DoctorFutureSchedulesView */ = {
 			isa = PBXGroup;
 			children = (
@@ -831,7 +813,7 @@
 				8B01B9B12B8B96A4008A0AA7 /* AppointmentsListView */,
 				8B8B18882B88D49A006ABD82 /* SchedulesListView */,
 				8B8B188D2B88D78F006ABD82 /* DoctorScheduleHeaderView */,
-				8B7A3BFE2B8C7C4000A48646 /* DoctorPayoutView */,
+				8BC649542BCE66A8002200F5 /* DoctorPayoutView */,
 				8B7A3C012B8C8EA300A48646 /* DoctorFutureSchedulesView */,
 			);
 			path = Subviews;
@@ -1154,6 +1136,16 @@
 				8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		8BC649542BCE66A8002200F5 /* DoctorPayoutView */ = {
+			isa = PBXGroup;
+			children = (
+				8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */,
+				8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */,
+				8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */,
+			);
+			path = DoctorPayoutView;
 			sourceTree = "<group>";
 		};
 		8BDCCFD32B83BBD00086BF4D /* PatientsScreen */ = {

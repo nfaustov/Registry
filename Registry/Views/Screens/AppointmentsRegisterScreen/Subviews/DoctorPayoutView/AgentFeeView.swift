@@ -55,10 +55,6 @@ struct AgentFeeView: View {
                         }
                     }
                 }
-
-                Button("Выплатить") {
-                    doctor.agentFeePayment()
-                }
             } else {
                 agentFeeTitle
             }
