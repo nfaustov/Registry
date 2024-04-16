@@ -144,12 +144,22 @@ public enum Reporting: String, Hashable, Identifiable, CaseIterable {
 
 public extension Report {
     func services(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
-        let services = payments
+        payments
             .compactMap { $0.subject }
             .flatMap { $0.services }
             .filter { $0[keyPath: role]?.id == employee.id }
+    }
 
-        return services
+    func services(
+        by employee: Employee,
+        role: KeyPath<RenderedService, AnyEmployee?>,
+        fromDate: Date
+    ) -> [RenderedService] {
+        payments
+            .filter { $0.date > fromDate }
+            .compactMap { $0.subject }
+            .flatMap { $0.services }
+            .filter { $0[keyPath: role]?.id == employee.id }
     }
 
     func employeeSalary(_ employee: Employee, from services: [RenderedService]) -> Double {
