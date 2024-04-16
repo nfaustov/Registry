@@ -16,7 +16,7 @@ struct DaySalaryView: View {
     // MARK: - State
 
     @State private var renderedServices: [RenderedService] = []
-    @State private var refundedServicesIds: [RenderedService.ID] = []
+    @State private var refundedServicesIDs: [RenderedService.ID] = []
     @State private var daySalary: Double = .zero
     @State private var isLoading: Bool = true
     @State private var isExpanded: Bool = false
@@ -34,9 +34,11 @@ struct DaySalaryView: View {
                         .padding(.horizontal)
                 }
                 .task {
-                    renderedServices = report.renderedServices(by: employee, role: \.performer)
-                    refundedServicesIds = report.refundedServices(by: employee, role: \.performer).map { $0.id }
-                    daySalary = report.employeeSalary(employee, from: renderedServices)
+                    let services = report.services(by: employee, role: \.performer)
+                    renderedServices = Array(services.uniqued())
+                    refundedServicesIDs = duplicateServices(in: services).map { $0.id }
+                    let balancedServices = singleCopyServices(in: services)
+                    daySalary = report.employeeSalary(employee, from: balancedServices)
                     isLoading = false
                 }
             } else if !renderedServices.isEmpty {
@@ -52,7 +54,7 @@ struct DaySalaryView: View {
                             }
                         }
                         .font(.subheadline)
-                        .foregroundStyle(refundedServicesIds.contains(service.id) ? .red.opacity(0.6) : .primary)
+                        .foregroundStyle(refundedServicesIDs.contains(service.id) ? .red.opacity(0.6) : .primary)
                     }
                 } label: {
                     LabeledContent {
@@ -71,4 +73,22 @@ struct DaySalaryView: View {
 
 #Preview {
     DaySalaryView(report: ExampleData.report, employee: ExampleData.doctor)
+}
+
+// MARK: - Calculations
+
+private extension DaySalaryView {
+    func duplicateServices(in services: [RenderedService]) -> [RenderedService] {
+        let duplicates = Dictionary(grouping: services, by: { $0.id })
+            .filter { $1.count > 1 }
+            .flatMap { $0.value }
+
+        return Array(duplicates.uniqued())
+    }
+
+    func singleCopyServices(in services: [RenderedService]) -> [RenderedService] {
+        Dictionary(grouping: services, by: { $0.id })
+            .filter { $1.count == 1 }
+            .flatMap { $0.value }
+    }
 }

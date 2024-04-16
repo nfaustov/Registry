@@ -143,26 +143,19 @@ public enum Reporting: String, Hashable, Identifiable, CaseIterable {
 // MARK: - Salary calculation
 
 public extension Report {
-    func renderedServices(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
-        payments
+    func services(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
+        let services = payments
             .compactMap { $0.subject }
-            .filter { !$0.isRefund }
             .flatMap { $0.services }
             .filter { $0[keyPath: role]?.id == employee.id }
-    }
 
-    func refundedServices(by employee: Employee, role: KeyPath<RenderedService, AnyEmployee?>) -> [RenderedService] {
-        payments
-            .compactMap { $0.subject }
-            .filter { $0.isRefund }
-            .flatMap { $0.services }
-            .filter { $0[keyPath: role]?.id == employee.id }
+        return services
     }
 
     func employeeSalary(_ employee: Employee, from services: [RenderedService]) -> Double {
         switch employee.salary {
         case .pieceRate(let rate):
-            return pieceRateSalary(rate, from: services) - pieceRateSalary(rate, from: refundedServices(by: employee, role: \.performer))
+            return pieceRateSalary(rate, from: services)
         default: return 0
         }
     }

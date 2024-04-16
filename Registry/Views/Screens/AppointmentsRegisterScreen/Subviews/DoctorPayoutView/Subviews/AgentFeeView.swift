@@ -106,13 +106,12 @@ private extension AgentFeeView {
             ) { taskGroup in
                 for report in reports {
                     taskGroup.addTask {
-                        let refundedServices = report.refundedServices(by: doctor, role: \.agent)
-                        let IDs = refundedServices.map { $0.id }
-                        refundedServicesIDs.append(contentsOf: IDs)
+                        let services = report.services(by: doctor, role: \.agent)
+                        let renderedServices = Array(services.uniqued())
+                        let reportRefundedServicesIDs = duplicateServices(in: services).map { $0.id }
+                        refundedServicesIDs.append(contentsOf: reportRefundedServicesIDs)
 
-                        let services = report.renderedServices(by: doctor, role: \.agent)
-
-                        return (report.date, services)
+                        return (report.date, renderedServices)
                     }
                 }
 
@@ -127,5 +126,13 @@ private extension AgentFeeView {
                 return dict
             }
         }
+    }
+
+    func duplicateServices(in services: [RenderedService]) -> [RenderedService] {
+        let duplicates = Dictionary(grouping: services, by: { $0.id })
+            .filter { $1.count > 1 }
+            .flatMap { $0.value }
+
+        return Array(duplicates.uniqued())
     }
 }
