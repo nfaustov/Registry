@@ -10,6 +10,8 @@ import SwiftUI
 struct DoctorSettingsView: View {
     // MARK: - Dependencies
 
+    @Environment(\.user) private var user
+
     @Bindable var doctor: Doctor
 
     // MARK: - State
@@ -64,17 +66,21 @@ struct DoctorSettingsView: View {
 
             if let rate = doctor.salary.rate {
                 Section("Заработная плата") {
-                    Stepper(
-                        "Ставка \(Int(salaryRate * 100)) %",
-                        value: $salaryRate,
-                        in: 0.25...0.6,
-                        step: 0.05
-                    )
-                    .onChange(of: salaryRate) { _, newValue in
-                        doctor.salary = .pieceRate(rate: newValue)
-                    }
-                    .onAppear {
-                        salaryRate = rate
+                    if user.accessLevel == .boss {
+                        Stepper(
+                            "Ставка \(Int(salaryRate * 100)) %",
+                            value: $salaryRate,
+                            in: 0.25...0.6,
+                            step: 0.01
+                        )
+                        .onChange(of: salaryRate) { _, newValue in
+                            doctor.salary = .pieceRate(rate: newValue)
+                        }
+                        .onAppear {
+                            salaryRate = rate
+                        }
+                    } else {
+                        Text("Ставка \(Int(salaryRate * 100)) %")
                     }
                 }
             }
