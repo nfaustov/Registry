@@ -19,7 +19,7 @@ struct CatalogToolbarViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if user.accessLevel >= .registrar {
+                if user.accessLevel == .boss {
                     ToolbarItem(placement: .primaryAction) {
                         Button {
                             addAction()
