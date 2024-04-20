@@ -17,20 +17,20 @@ struct ServicesTable: View {
 
     let doctor: Doctor
 
-    @Binding var bill: Bill
+    @Bindable var check: Check
     @Binding var editMode: Bool
 
     // MARK: - State
 
-    @State private var sortOrder = [KeyPathComparator(\RenderedService.performer?.secondName)]
-    @State private var selection: Set<RenderedService.ID> = []
+    @State private var sortOrder = [KeyPathComparator(\MedicalService.performer?.secondName)]
+    @State private var selection: Set<PersistentIdentifier> = []
     @State private var isTargeted: Bool = false
 
     // MARK: -
 
     var body: some View {
         VStack(spacing: 0) {
-            Table(bill.services, selection: $selection, sortOrder: $sortOrder) {
+            Table(check.services, selection: $selection, sortOrder: $sortOrder) {
                 TableColumn("Услуга", value: \.pricelistItem.title) { service in
                     Text(service.pricelistItem.title)
                         .lineLimit(4)
@@ -50,7 +50,7 @@ struct ServicesTable: View {
                 }
             }
             .overlay { if editMode { tableOverlay } }
-            .contextMenu(forSelectionType: RenderedService.ID.self) { selectionIdentifiers in
+            .contextMenu(forSelectionType: PersistentIdentifier.self) { selectionIdentifiers in
                 if let id = selectionIdentifiers.first {
                     Section {
                         if let service = service(with: id), service.pricelistItem.category != .laboratory {
@@ -64,7 +64,7 @@ struct ServicesTable: View {
                         Section {
                             Button(role: .destructive) {
                                 withAnimation {
-                                    bill.services.removeAll(where: { $0.id == id })
+                                    check.services.removeAll(where: { $0.id == id })
                                 }
                             } label: {
                                 Label("Удалить", systemImage: "trash")
@@ -74,11 +74,11 @@ struct ServicesTable: View {
                 }
             }
             .onChange(of: sortOrder) { _, newValue in
-                bill.services.sort(using: newValue)
+                check.services.sort(using: newValue)
             }
 
             if purpose == .createAndPay {
-                ServicesTableControls(bill: $bill, isPricelistPresented: $editMode)
+                ServicesTableControls(check: check, isPricelistPresented: $editMode)
                     .padding()
             }
         }
@@ -86,7 +86,7 @@ struct ServicesTable: View {
 }
 
 #Preview {
-    ServicesTable(doctor: ExampleData.doctor, bill: .constant(Bill(services: [])), editMode: .constant(false))
+    ServicesTable(doctor: ExampleData.doctor, check: Check(services: []), editMode: .constant(false))
 }
 
 // MARK: - Subviews
@@ -99,13 +99,13 @@ private extension ServicesTable {
         }
         .dropDestination(for: PricelistItem.self) { droppedItems, location in
             for item in droppedItems {
-                let renderedService = RenderedService(
-                    pricelistItem: item.short,
-                    performer: item.category == .laboratory ? nil : doctor.employee,
-                    agent: item.category == .laboratory ? (doctor.department == .procedure ? nil : doctor.employee) : nil
+                let medicalService = MedicalService(
+                    pricelistItem: item.snapshot,
+                    performer: item.category == .laboratory ? nil : doctor,
+                    agent: item.category == .laboratory ? (doctor.department == .procedure ? nil : doctor) : nil
                 )
                 withAnimation {
-                    bill.services.insert(renderedService, at: 0)
+                    check.services.insert(medicalService, at: 0)
                 }
             }
 
@@ -113,7 +113,7 @@ private extension ServicesTable {
         } isTargeted: { isTargeted = $0 }
     }
 
-    func menu(of kind: WritableKeyPath<RenderedService, AnyEmployee?>, for serviceID: RenderedService.ID) -> some View {
+    func menu(of kind: WritableKeyPath<MedicalService, Doctor?>, for serviceID: PersistentIdentifier) -> some View {
         Menu(kind == \.performer ? "Исполнитель" : "Агент") {
             doctorButton(nil, role: kind, for: serviceID)
             ForEach(doctors) { doctor in
@@ -122,13 +122,13 @@ private extension ServicesTable {
         }
     }
 
-    func doctorButton(_ doctor: Doctor?, role: WritableKeyPath<RenderedService, AnyEmployee?>, for serviceID: RenderedService.ID) -> some View {
+    func doctorButton(_ doctor: Doctor?, role: WritableKeyPath<MedicalService, Doctor?>, for serviceID: PersistentIdentifier) -> some View {
         Button(doctor?.initials ?? "-") {
             withAnimation {
                 if let service = service(with: serviceID) {
                     var updatedService = service
-                    updatedService[keyPath: role] = doctor?.employee
-                    bill.services.replace([service], with: [updatedService])
+                    updatedService[keyPath: role] = doctor
+                    check.services.replace([service], with: [updatedService])
                 }
             }
         }
@@ -138,8 +138,8 @@ private extension ServicesTable {
 // MARK: - Calculations
 
 private extension ServicesTable {
-    func service(with id: UUID) -> RenderedService? {
-        bill.services.first(where: { $0.id == id })
+    func service(with id: PersistentIdentifier) -> MedicalService? {
+        check.services.first(where: { $0.id == id })
     }
 }
 

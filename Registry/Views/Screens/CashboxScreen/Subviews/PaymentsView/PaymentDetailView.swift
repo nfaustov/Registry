@@ -10,16 +10,11 @@ import SwiftUI
 struct PaymentDetailView: View {
     // MARK: - Dependencies
 
-    @Binding var payment: Payment
+    @Bindable var payment: Payment
 
     var onDelete: () -> Void
 
     // MARK: -
-
-    init(payment: Binding<Payment>, onDelete: @escaping () -> Void) {
-        _payment = payment
-        self.onDelete = onDelete
-    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -95,5 +90,5 @@ struct PaymentDetailView: View {
 }
 
 #Preview {
-    PaymentDetailView(payment: .constant(ExampleData.payment1), onDelete: { })
+    PaymentDetailView(payment: ExampleData.payment1, onDelete: { })
 }

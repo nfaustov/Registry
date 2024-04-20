@@ -7,26 +7,30 @@
 
 import Foundation
 
-public protocol Employee: Person {
-    var salary: Salary { get set }
-    var agentFee: Double { get }
+extension RegistrySchemaV1 {
+    protocol Employee: Person {
+        var salary: Salary { get set }
+        var agentFee: Double { get }
+    }
 }
 
-public struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
-    public let id: UUID
-    public var secondName: String
-    public var firstName: String
-    public var patronymicName: String
-    public var phoneNumber: String
-    public var balance: Double
-    public var salary: Salary
-    public private(set) var agentFee: Double
-    public var image: Data?
+extension RegistrySchemaV1 {
+    struct AnyEmployee: Employee, Codable, Hashable, Identifiable {
+        let id: UUID
+        var secondName: String
+        var firstName: String
+        var patronymicName: String
+        var phoneNumber: String
+        var balance: Double
+        var salary: Salary
+        private(set) var agentFee: Double
+        var image: Data?
+    }
 }
 
-public extension Employee {
-    var employee: AnyEmployee {
-        AnyEmployee(
+extension RegistrySchemaV1.Employee {
+    var employee: RegistrySchemaV1.AnyEmployee {
+        RegistrySchemaV1.AnyEmployee(
             id: id,
             secondName: secondName,
             firstName: firstName,
@@ -37,5 +41,12 @@ public extension Employee {
             agentFee: agentFee,
             image: image
         )
+    }
+}
+
+extension RegistrySchemaV3 {
+    protocol Employee: Person {
+        var doctorSalary: Salary { get set }
+        var agentFee: Double { get }
     }
 }

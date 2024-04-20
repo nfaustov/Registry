@@ -21,7 +21,10 @@ struct VisitsDetailView: View {
         List {
             ForEach(uniqueDates, id: \.self) { date in
                 Section {
-                    ForEach(patient.visits.filter { Calendar.current.isDate($0.visitDate, inSameDayAs: date) }) { visit in
+                    let visits = patient.appointments?.filter {
+                        Calendar.current.isDate($0.scheduledTime, inSameDayAs: date)
+                    }
+                    ForEach(visits ?? []) { visit in
                         visitView(visit)
                     }
                 } header: {
@@ -41,61 +44,67 @@ struct VisitsDetailView: View {
 
 private extension VisitsDetailView {
     var uniqueDates: [Date] {
-        Array(
-            patient.visits
-                .map { Calendar.current.dateComponents([.year, .month, .day], from: $0.visitDate) }
-                .map { Calendar.current.date(from: $0)! }
-                .uniqued()
-        )
-        .sorted(by: >)
+        if let appointments = patient.appointments {
+            return Array(
+                appointments
+                    .map { Calendar.current.dateComponents([.year, .month, .day], from: $0.scheduledTime) }
+                    .map { Calendar.current.date(from: $0)! }
+                    .uniqued()
+            )
+            .sorted(by: >)
+        } else { return [] }
     }
 }
 
 // MARK: - Subviews
 
 private extension VisitsDetailView {
-    func visitView(_ visit: Visit) -> some View {
+    func visitView(_ appointment: PatientAppointment) -> some View {
         Section {
-            if let bill = visit.bill {
-                DisclosureGroup {
-                    ForEach(bill.services) { service in
-                        LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
-                    }
+            if let check = appointment.check {
+                if !check.services.isEmpty {
+                    DisclosureGroup {
+                        ForEach(check.services) { service in
+                            LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
+                        }
 
-                    if bill.discount > 0 {
-                        LabeledContent("Скидка", value: "\(Int(-bill.discount)) ₽")
+                        if check.discount > 0 {
+                            LabeledContent("Скидка", value: "\(Int(-check.discount)) ₽")
+                                .foregroundStyle(.blue)
+                                .fontWeight(.light)
+                        }
+                    } label: {
+                        LabeledContent("Счет", value: "\(Int(check.totalPrice)) ₽")
+                            .font(.headline)
                             .foregroundStyle(.blue)
-                            .fontWeight(.light)
                     }
-                } label: {
-                    LabeledContent("Счет", value: "\(Int(bill.totalPrice)) ₽")
-                        .font(.headline)
-                        .foregroundStyle(.blue)
                 }
 
-                if let refund = visit.refund {
+                if let refund = check.refund {
                     DisclosureGroup {
                         ForEach(refund.services) { service in
                             LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
                         }
                     } label: {
-                        LabeledContent("Возврат", value: "\(Int(refund.price - refund.price * bill.discountRate)) ₽")
+                        LabeledContent("Возврат", value: "\(Int(-refund.totalAmount(discountRate: check.discountRate))) ₽")
                             .font(.headline)
                             .foregroundStyle(.red)
                     }
                     .tint(.red)
                 }
 
-                if visit.refund == nil {
-                    Button {
-                        coordinator.push(.contract(for: patient, visit: visit))
-                    } label: {
-                        Label("Договор", systemImage: "doc.text")
-                            .tint(.primary)
+                if check.refund == nil, !check.services.isEmpty {
+                    if check.payment != nil {
+                        Button {
+                            coordinator.push(.contract(for: patient, check: check))
+                        } label: {
+                            Label("Договор", systemImage: "doc.text")
+                                .tint(.primary)
+                        }
                     }
 
                     HStack {
-                        let doctors = bill.services.compactMap { $0.performer }
+                        let doctors = check.services.compactMap { $0.performer }
                         let uniqueDoctors = Array(doctors.uniqued())
 
                         if uniqueDoctors.count > 0 {
@@ -114,21 +123,17 @@ private extension VisitsDetailView {
                 }
             }
 
-            LabeledContent("Дата регистрации") {
-                DateText(visit.registrationDate, format: .dateTime)
+            if let registrationDate = appointment.registrationDate {
+                LabeledContent("Дата регистрации") {
+                    DateText(registrationDate, format: .dateTime)
+                }
             }
 
-            LabeledContent("Регистратор", value: visit.registrar.initials)
-
-            if let cancellationDate = visit.cancellationDate {
-                LabeledContent("Отменен") {
-                    DateText(cancellationDate, format: .dateTime)
-                }
-                .foregroundStyle(.brown)
-                .listRowBackground(Color(.secondarySystemFill))
+            if let registrar = appointment.registrar {
+                LabeledContent("Регистратор", value: registrar.initials)
             }
         } header: {
-            DateText(visit.visitDate, format: .time)
+            DateText(appointment.scheduledTime, format: .time)
                 .font(.headline)
                 .foregroundStyle(.secondary)
         }

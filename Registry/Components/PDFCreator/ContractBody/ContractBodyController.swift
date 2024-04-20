@@ -9,10 +9,10 @@ import Foundation
 
 struct ContractBodyController {
     private let patient: Patient
-    private let services: [RenderedService]
+    private let services: [MedicalService]
     private let totalCost: Double
 
-    init(patient: Patient, services: [RenderedService], totalCost: Double) {
+    init(patient: Patient, services: [MedicalService], totalCost: Double) {
         self.patient = patient
         self.services = services
         self.totalCost = totalCost

@@ -7,15 +7,15 @@
 
 import Foundation
 
-public final class AnonymousUser: User {
-    public let id: UUID
-    public var secondName: String
-    public var firstName: String
-    public var patronymicName: String
-    public var phoneNumber: String
-    public var balance: Double
-    public var accessLevel: UserAccessLevel
-    public var image: Data?
+final class AnonymousUser: User {
+    let id: UUID
+    var secondName: String
+    var firstName: String
+    var patronymicName: String
+    var phoneNumber: String
+    var balance: Double
+    var accessLevel: UserAccessLevel
+    var image: Data?
 
     init() {
         id = UUID()

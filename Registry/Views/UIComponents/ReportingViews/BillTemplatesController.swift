@@ -13,7 +13,7 @@ struct BillTemplatesController: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @Query private var billTemplates: [BillTemplate]
+    @Query private var checkTemplates: [CheckTemplate]
 
     // MARK: -
 
@@ -23,7 +23,7 @@ struct BillTemplatesController: View {
                 .font(.title)
                 .padding(.bottom, 20)
 
-            List(billTemplates) { template in
+            List(checkTemplates) { template in
                 Text(template.title)
                     .swipeActions(edge: .trailing) {
                         trailingSwipeAction(for: template)
@@ -41,7 +41,7 @@ struct BillTemplatesController: View {
 // MARK: - Subviews
 
 private extension BillTemplatesController {
-    func trailingSwipeAction(for template: BillTemplate) -> some View {
+    func trailingSwipeAction(for template: CheckTemplate) -> some View {
         Button(role: .destructive) {
             modelContext.delete(template)
         } label: {

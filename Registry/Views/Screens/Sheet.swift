@@ -16,7 +16,7 @@ enum Sheet: Identifiable {
     case addPatient(for: PatientAppointment)
     case addProcedurePatient(for: DoctorSchedule)
     case completedAppointment(appointment: PatientAppointment)
-    case createBillTemplate(services: [RenderedService])
+    case createBillTemplate(services: [MedicalService])
     case createDoctor
     case createPricelistItem
     case updateBalance(for: Binding<Person>, kind: UpdateBalanceKind)

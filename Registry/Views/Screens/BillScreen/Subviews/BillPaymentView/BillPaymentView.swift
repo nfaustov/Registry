@@ -17,7 +17,7 @@ struct BillPaymentView: View {
     @Query private var doctors: [Doctor]
 
     private let appointment: PatientAppointment
-    private let bill: Bill
+    private let check: Check
     private let patient: Patient
     @Binding private var isPaid: Bool
 
@@ -35,12 +35,11 @@ struct BillPaymentView: View {
         _isPaid = isPaid
 
         guard let patient = appointment.patient,
-              let visit = patient.visit(forAppointmentID: appointment.id),
-              let bill = visit.bill else { fatalError() }
+              let check = appointment.check else { fatalError() }
 
         self.patient = patient
-        self.bill = bill
-        let paymentAmount = bill.totalPrice - patient.balance
+        self.check = check
+        let paymentAmount = check.totalPrice - patient.balance
         _paymentMethod = State(initialValue: Payment.Method(.cash, value: paymentAmount))
     }
 
@@ -50,7 +49,7 @@ struct BillPaymentView: View {
                 Section("Пациент") {
                     Text(patient.fullName)
                     LabeledContent("К оплате") {
-                        Text("\(Int(bill.totalPrice - patient.balance)) ₽")
+                        Text("\(Int(check.totalPrice - patient.balance)) ₽")
                             .font(.headline)
                     }
                 }
@@ -60,19 +59,19 @@ struct BillPaymentView: View {
                     paymentMethod: $paymentMethod,
                     additionalPaymentMethod: $additionalPaymentMethod
                 )
-                .paymentKind(.bill(totalPrice: bill.totalPrice))
+                .paymentKind(.bill(totalPrice: check.totalPrice))
             }
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 if paymentBalance != 0 {
                     balancePayment()
-                    patient.updateBalance(increment: paymentBalance)
+                    patient.balance += paymentBalance
                 }
 
-                patient.mergedAppointments(forAppointmentID: appointment.id)
+                patient.mergedAppointments(forCheckID: check.id)
                     .forEach { $0.status = .completed }
 
                 payment()
-                SalaryCharger.charge(for: .bill(bill), doctors: doctors)
+                check.makeChargesForServices()
 
                 isPaid = true
             }
@@ -105,18 +104,16 @@ private extension BillPaymentView {
     }
 
     var paymentBalance: Double {
-        paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - bill.totalPrice
+        paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - check.totalPrice
     }
 
     func createReportWIthPayment(_ payment: Payment) {
         if let lastReport {
-            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [])
+            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [payment])
             modelContext.insert(newReport)
-            newReport.payments.append(payment)
         } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
             modelContext.insert(firstReport)
-            firstReport.payments.append(payment)
         }
     }
 
@@ -130,7 +127,7 @@ private extension BillPaymentView {
         )
 
         if let todayReport {
-            todayReport.payments.append(balancePayment)
+            todayReport.payment(balancePayment)
         } else {
             createReportWIthPayment(balancePayment)
         }
@@ -142,15 +139,15 @@ private extension BillPaymentView {
         if let additionalPaymentMethod {
             methods.append(additionalPaymentMethod)
         } else {
-            paymentMethod.value = bill.totalPrice
+            paymentMethod.value = check.totalPrice
         }
 
         methods.append(paymentMethod)
 
-        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: .bill(bill), createdBy: user.asAnyUser)
+        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payments.append(payment)
+            todayReport.payment(payment)
         } else {
             createReportWIthPayment(payment)
         }

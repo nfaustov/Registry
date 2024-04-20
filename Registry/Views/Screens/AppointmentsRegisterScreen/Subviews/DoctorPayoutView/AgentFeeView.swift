@@ -17,8 +17,8 @@ struct AgentFeeView: View {
 
     // MARK: - State
 
-    @State private var agentServicesByDate: [Date: [RenderedService]] = [:]
-    @State private var refundedServicesIDs: [RenderedService.ID] = []
+    @State private var agentServicesByDate: [Date: [MedicalService]] = [:]
+    @State private var refundedServices: [MedicalService] = []
     @State private var isLoading: Bool = false
     @State private var isExpanded: Bool = false
 
@@ -34,12 +34,10 @@ struct AgentFeeView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                         ForEach(agentServicesByDate[date] ?? []) { service in
-                            LabeledContent(
-                                service.pricelistItem.title,
-                                value: "\(Int(service.pricelistItem.price * 0.1)) ₽"
-                            )
-                            .font(.subheadline)
-                            .foregroundStyle(refundedServicesIDs.contains(service.id) ? .red.opacity(0.6) : .primary)
+                            let value = service.pricelistItem.fixedAgentFee ?? service.pricelistItem.price * 0.1
+                            LabeledContent(service.pricelistItem.title, value: "\(Int(value)) ₽")
+                                .font(.subheadline)
+                                .foregroundStyle(refundedServices.contains(service) ? .red.opacity(0.6) : .primary)
                         }
                     }
                 } label: {
@@ -50,7 +48,19 @@ struct AgentFeeView: View {
                         isLoading = true
 
                         Task {
-                            await getAgentServices()
+                            let services = doctor.appointedServices?.filter { service in
+                                if let date = service.date {
+                                    return date > doctor.agentFeePaymentDate
+                                } else {
+                                    return false
+                                }
+                            } ?? []
+
+                            if !services.isEmpty {
+                                refundedServices = services.filter { $0.refund != nil }
+                                agentServicesByDate = Dictionary(grouping: services, by: { $0.date ?? .now })
+                            }
+
                             isLoading = false
                         }
                     }
@@ -83,60 +93,5 @@ private extension AgentFeeView {
                 }
             }
         }
-    }
-}
-
-// MARK: - Calculations
-
-private extension AgentFeeView {
-    func getAgentServices() async {
-        let now = Date.now
-        let startOfAgentFeePaymentDate = Calendar.current.startOfDay(for: doctor.agentFeePaymentDate)
-        let predicate = #Predicate<Report> { $0.date >= startOfAgentFeePaymentDate && $0.date < now }
-        let descriptor = FetchDescriptor<Report>(predicate: predicate, sortBy: [SortDescriptor(\Report.date, order: .reverse)])
-
-        if let reports = try? modelContext.fetch(descriptor) {
-            agentServicesByDate = await withTaskGroup(
-                of: (Date, [RenderedService]).self,
-                returning: [Date: [RenderedService]].self
-            ) { taskGroup in
-                for report in reports {
-                    taskGroup.addTask {
-                        let services = agentServices(from: report)
-                        let renderedServices = Array(services.uniqued())
-                        let reportRefundedServicesIDs = duplicateServices(in: services).map { $0.id }
-                        refundedServicesIDs.append(contentsOf: reportRefundedServicesIDs)
-
-                        return (report.date, renderedServices)
-                    }
-                }
-
-                var dict = [Date: [RenderedService]]()
-
-                for await (date, services) in taskGroup {
-                    if !services.isEmpty {
-                        dict[date] = services
-                    }
-                }
-
-                return dict
-            }
-        }
-    }
-
-    func agentServices(from report: Report) -> [RenderedService] {
-        if Calendar.current.isDate(report.date, inSameDayAs: doctor.agentFeePaymentDate) {
-            return report.services(by: doctor, role: \.agent, fromDate: doctor.agentFeePaymentDate)
-        } else {
-            return report.services(by: doctor, role: \.agent)
-        }
-    }
-
-    func duplicateServices(in services: [RenderedService]) -> [RenderedService] {
-        let duplicates = Dictionary(grouping: services, by: { $0.id })
-            .filter { $1.count > 1 }
-            .flatMap { $0.value }
-
-        return Array(duplicates.uniqued())
     }
 }

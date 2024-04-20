@@ -7,17 +7,17 @@
 
 import Foundation
 
-public protocol User: Person {
+protocol User: Person {
     var accessLevel: UserAccessLevel { get set }
 }
 
-public enum UserAccessLevel: Int, Codable, Hashable, Identifiable {
+enum UserAccessLevel: Int, Codable, Hashable, Identifiable {
     case anonymous = 0
     case doctor = 1
     case registrar = 2
     case boss = 3
 
-    public var title: String {
+    var title: String {
         switch self {
         case .anonymous:
             "Анонимный пользователь"
@@ -30,27 +30,27 @@ public enum UserAccessLevel: Int, Codable, Hashable, Identifiable {
         }
     }
 
-    public var id: Self {
+    var id: Self {
         self
     }
 
-    public static var selectableCases: [UserAccessLevel] {
+    static var selectableCases: [UserAccessLevel] {
         [.doctor, .registrar]
     }
 }
 
-public struct AnyUser: User, Codable, Hashable {
-    public let id: UUID
-    public var secondName: String
-    public var firstName: String
-    public var patronymicName: String
-    public var phoneNumber: String
-    public var balance: Double
-    public var accessLevel: UserAccessLevel
-    public var image: Data?
+struct AnyUser: User, Codable, Hashable {
+    let id: UUID
+    var secondName: String
+    var firstName: String
+    var patronymicName: String
+    var phoneNumber: String
+    var balance: Double
+    var accessLevel: UserAccessLevel
+    var image: Data?
 }
 
-public extension User {
+extension User {
     var asAnyUser: AnyUser {
         AnyUser(
             id: id,
@@ -66,7 +66,7 @@ public extension User {
 }
 
 extension UserAccessLevel: Comparable {
-    public static func < (lhs: UserAccessLevel, rhs: UserAccessLevel) -> Bool {
+    static func < (lhs: UserAccessLevel, rhs: UserAccessLevel) -> Bool {
         lhs.rawValue < rhs.rawValue
     }
 }

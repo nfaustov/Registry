@@ -10,6 +10,8 @@ import SwiftUI
 struct AppointmentsListView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
 
     @StateObject private var messageController = MessageController()
@@ -137,21 +139,9 @@ private extension AppointmentsListView {
                 Button(role: .destructive) {
                     withAnimation {
                         if schedule.doctor?.department == .procedure {
-                            if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
-                                patient.cancelVisit(for: appointment.id)
-                                schedule.patientAppointments?.removeAll(where: { $0.id == appointment.id })
-                            } else if let visit = patient.visit(forAppointmentID: appointment.id) {
-                                schedule.patientAppointments?.removeAll(where: { $0.id == appointment.id })
-                                patient.specifyVisitDate(visit.id)
-                            }
+                            modelContext.delete(appointment)
                         } else {
-                            if patient.mergedAppointments(forAppointmentID: appointment.id).count == 1 {
-                                patient.cancelVisit(for: appointment.id)
-                                schedule.cancelPatientAppointment(appointment)
-                            } else if let visit = patient.visit(forAppointmentID: appointment.id) {
-                                schedule.cancelPatientAppointment(appointment)
-                                patient.specifyVisitDate(visit.id)
-                            }
+                            schedule.cancelPatientAppointment(appointment)
                         }
                     }
                 } label: {

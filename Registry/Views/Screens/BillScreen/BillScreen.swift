@@ -16,26 +16,26 @@ struct BillScreen: View {
     @Environment(\.servicesTablePurpose) private var servicesTablePurpose
 
     private let appointment: PatientAppointment
-    private let initialBill: Bill
+    private let initialCheck: Check
 
     // MARK: - State
 
-    @State private var bill: Bill
+    @State private var check: Check
     @State private var isCompleted: Bool = false
     @State private var isPriselistPresented: Bool = false
+    @State private var inProcess: Bool = false
 
     // MARK: -
 
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        if let visit = appointment.patient?.visit(forAppointmentID: appointment.id),
-           let bill = visit.bill {
-            _bill = State(initialValue: bill)
-            initialBill = bill
+        if let check = appointment.patient?.check(forAppointmentID: appointment.id) {
+            _check = State(initialValue: check)
+            initialCheck = check
         } else {
-            _bill = State(initialValue: Bill(services: []))
-            initialBill = Bill(services: [])
+            _check = State(initialValue: Check())
+            initialCheck = Check()
         }
     }
 
@@ -56,7 +56,7 @@ struct BillScreen: View {
             }
 
             if let doctor = appointment.schedule?.doctor {
-                ServicesTable(doctor: doctor, bill: $bill, editMode: $isPriselistPresented)
+                ServicesTable(doctor: doctor, check: check, editMode: $isPriselistPresented)
                     .servicesTablePurpose(servicesTablePurpose)
                     .background()
                     .cornerRadius(16)
@@ -68,7 +68,7 @@ struct BillScreen: View {
                 HStack(alignment: .bottom) {
                     PriceCalculationView(
                         appointment: appointment,
-                        bill: $bill,
+                        check: check,
                         isCompleted: $isCompleted
                     )
                     .onChange(of: isCompleted) { _, newValue in
@@ -83,10 +83,15 @@ struct BillScreen: View {
                 Button {
                     editRoles()
                 } label: {
-                    Text("Готово")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 28)
+                    if inProcess {
+                        CircularProgressView()
+                            .padding(.horizontal)
+                    } else {
+                        Text("Готово")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 28)
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .padding([.horizontal, .bottom])
@@ -98,11 +103,6 @@ struct BillScreen: View {
             PricelistSideSheetView()
         }
         .ignoresSafeArea(.keyboard)
-        .onAppear {
-            if servicesTablePurpose == .createAndPay {
-                loadBasicService()
-            }
-        }
     }
 }
 
@@ -117,43 +117,27 @@ struct BillScreen: View {
 // MARK: - Calculations
 
 private extension BillScreen {
-    func loadBasicService() {
-        if bill.services.isEmpty, let patient = appointment.patient {
-            patient.mergedAppointments(forAppointmentID: appointment.id).forEach { visitAppointment in
-                if let doctor = visitAppointment.schedule?.doctor, 
-                    let pricelistItem = doctor.basicService {
-                    let service = RenderedService(pricelistItem: pricelistItem, performer: doctor.employee)
-                    bill.services.append(service)
-                    patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
-                }
-            }
-        }
-    }
-
     func editRoles() {
         if let patient = appointment.patient {
-            Task {
-                patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
-
-                let descriptor = FetchDescriptor<Doctor>()
-
-                if let doctors = try? modelContext.fetch(descriptor) {
-                    SalaryCharger.cancelCharge(for: initialBill, doctors: doctors)
-                    SalaryCharger.charge(for: .bill(bill), doctors: doctors)
-                }
-            }
+            inProcess = true
 
             Task {
-                var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-                descriptor.fetchLimit = 1
+                patient.updateCheck(check, forAppointmentID: appointment.id)
 
-                if let report = try? modelContext.fetch(descriptor).first,
+                initialCheck.cancelChargesForServices()
+                check.makeChargesForServices()
+
+                var reportDescriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+                reportDescriptor.fetchLimit = 1
+
+                if let report = try? modelContext.fetch(reportDescriptor).first,
                     Calendar.current.isDateInToday(report.date) {
-                    report.updatePayment(for: bill)
+                    report.updatePayment(for: check)
                 }
-            }
 
-            dismiss()
+                inProcess = false
+                dismiss()
+            }
         }
     }
 }

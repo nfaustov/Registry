@@ -44,7 +44,7 @@ private struct MessageServiceKey: ServiceKey {
     static var currentValue: MessageService = MessageServiceClient()
 }
 
-public extension ArtmedicsServices {
+extension ArtmedicsServices {
     var messageService: MessageService {
         get { Self[MessageServiceKey.self] }
         set { Self[MessageServiceKey.self] = newValue }

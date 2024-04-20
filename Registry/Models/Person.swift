@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol Accountable {
+protocol Accountable {
     var balance: Double { get set }
 }
 
-public protocol Person: Accountable {
+protocol Person: Accountable {
     var id: UUID { get }
     var secondName: String { get set }
     var firstName: String { get set }
@@ -20,7 +20,7 @@ public protocol Person: Accountable {
     var image: Data? { get set }
 }
 
-public extension Person {
+extension Person {
     var fullName: String {
         secondName + " " + firstName + " " + patronymicName
     }

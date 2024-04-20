@@ -7,15 +7,15 @@
 
 import Foundation
 
-public extension Patient {
+extension RegistrySchemaV3.Patient {
     struct PassportData: Codable, Hashable {
-        public var gender: Gender
-        public var seriesNumber: String
-        public var birthday: Date
-        public var issueDate: Date
-        public var authority: String
+        var gender: Gender
+        var seriesNumber: String
+        var birthday: Date
+        var issueDate: Date
+        var authority: String
 
-        public init(
+        init(
             gender: Gender = .unknown,
             seriesNumber: String = "",
             birthday: Date = Date(timeIntervalSinceReferenceDate: 0),
@@ -31,7 +31,7 @@ public extension Patient {
     }
 }
 
-public enum Gender: String, Codable, Hashable, CaseIterable {
+enum Gender: String, Codable, Hashable, CaseIterable {
     case male = "муж"
     case female = "жен"
     case unknown = "неизвестен"

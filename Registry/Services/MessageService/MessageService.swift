@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol MessageService {
+protocol MessageService {
     func sendMessage(_ message: Message) async throws -> MessageEntity
 }

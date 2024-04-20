@@ -58,9 +58,7 @@ struct DoctorPayoutView: View {
                     }
 
                     if payoutType == .balance {
-                        if let todayReport {
-                            DaySalaryView(report: todayReport, employee: doctor)
-                        }
+                        DaySalaryView(doctor: doctor)
                     } else if payoutType == .agentFee {
                         AgentFeeView(doctor: doctor)
                     }
@@ -104,13 +102,11 @@ struct DoctorPayoutView: View {
 private extension DoctorPayoutView {
     func createReportWithPayment(_ payment: Payment) {
         if let lastReport {
-            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [])
+            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [payment])
             modelContext.insert(newReport)
-            newReport.payments.append(payment)
         } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
             modelContext.insert(firstReport)
-            firstReport.payments.append(payment)
         }
     }
 
@@ -134,7 +130,7 @@ private extension DoctorPayoutView {
         let payment = Payment(purpose: paymentPurpose(), methods: methods, createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payments.append(payment)
+            todayReport.payment(payment)
         } else {
             createReportWithPayment(payment)
         }
@@ -143,7 +139,7 @@ private extension DoctorPayoutView {
     func paymentPurpose() -> Payment.Purpose {
         switch payoutType {
         case .balance:
-            return doctor.salary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
+            return doctor.doctorSalary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
         case .agentFee:
             return .agentFee(doctor.initials)
         }
@@ -168,7 +164,7 @@ private extension DoctorPayoutView {
         func title(for employee: Employee) -> String {
             switch self {
             case .balance:
-                if employee.salary.rate != nil {
+                if employee.doctorSalary.rate != nil {
                     return "Заработная плата"
                 } else {
                     return "Выплата с баланса"

@@ -190,10 +190,10 @@ struct CreateDoctorView: View {
                     phoneNumber: phoneNumberText,
                     birthDate: birthDate,
                     department: department,
-                    basicService: basicService?.short,
+                    defaultPricelistItem: basicService,
                     serviceDuration: serviceDuration,
                     defaultCabinet: defaultCabinet,
-                    salary: salary,
+                    doctorSalary: salary,
                     info: infoText,
                     image: viewModel.imageData,
                     accessLevel: userLevel

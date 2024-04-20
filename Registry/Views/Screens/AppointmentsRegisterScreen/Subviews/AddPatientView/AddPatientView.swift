@@ -29,7 +29,7 @@ struct AddPatientView: View {
     @State private var patronymicNameText = ""
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
-    @State private var selection: Visit.ID?
+    @State private var selection: Check?
     @State private var smsNotification: Bool = false
 
     // MARK: -
@@ -115,22 +115,22 @@ struct AddPatientView: View {
                     Text("Длительность")
                 }
 
-                if let selectedPatient, !selectedPatient.currentVisits(for: appointment.scheduledTime).isEmpty {
+                if let selectedPatient, !selectedPatient.checks(for: appointment.scheduledTime).isEmpty {
                     Section {
-                        ForEach(selectedPatient.currentVisits(for: appointment.scheduledTime)) { visit in
+                        ForEach(selectedPatient.checks(for: appointment.scheduledTime)) { check in
                             LabeledContent {
-                                Image(systemName: selection == visit.id ? "personalhotspot.circle.fill": "personalhotspot.circle")
+                                Image(systemName: selection == check ? "personalhotspot.circle.fill": "personalhotspot.circle")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .foregroundStyle(selection == visit.id ? .blue : .secondary)
+                                    .foregroundStyle(selection == check ? .blue : .secondary)
                                     .frame(width: 24, height: 24)
                                     .padding(.horizontal)
                             } label: {
                                 VStack {
-                                    ForEach(selectedPatient.mergedAppointments(forVisitID: visit.id).sorted(by: { $0.scheduledTime < $1.scheduledTime })) { visitAppointment in
-                                        if let doctor = visitAppointment.schedule?.doctor {
+                                    ForEach(selectedPatient.mergedAppointments(forCheckID: check.id).sorted(by: { $0.scheduledTime < $1.scheduledTime })) { checkAppointment in
+                                        if let doctor = checkAppointment.schedule?.doctor {
                                             LabeledContent {
-                                                DateText(visitAppointment.scheduledTime, format: .time)
+                                                DateText(checkAppointment.scheduledTime, format: .time)
                                                     .padding(.horizontal)
                                             } label: {
                                                 Text(doctor.initials)
@@ -142,10 +142,10 @@ struct AddPatientView: View {
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    if selection == visit.id {
+                                    if selection == check {
                                         selection = nil
                                     } else {
-                                        selection = visit.id
+                                        selection = check
                                     }
                                 }
                             }
@@ -163,12 +163,12 @@ struct AddPatientView: View {
                 replaceAppointmentsIfNeeded()
 
                 if let selectedPatient {
-                    if let selection {
-                        appointment.registerPatient(selectedPatient, duration: duration, mergedVisitID: selection)
-                        selectedPatient.specifyVisitDate(selection)
-                    } else {
-                        appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)
-                    }
+                    appointment.registerPatient(
+                        selectedPatient,
+                        duration: duration,
+                        registrar: user.asAnyUser,
+                        mergedCheck: selection
+                    )
                 } else {
                     let patient = Patient(
                         secondName: secondNameText.trimmingCharacters(in: .whitespaces),

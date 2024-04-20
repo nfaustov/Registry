@@ -21,8 +21,10 @@ struct PricelistItemView: View {
     @State private var title: String
     @State private var price: Double
     @State private var costPrice: Double
-    @State private var salaryAmount: Double?
+    @State private var fixedSalary: Double?
+    @State private var fixedAgentFee: Double?
     @State private var fixedDoctorsSalary: Bool
+    @State private var fixedDoctorAgentFee: Bool
 
     // MARK: -
 
@@ -31,8 +33,10 @@ struct PricelistItemView: View {
         _title = State(initialValue: pricelistItem.title)
         _price = State(initialValue: pricelistItem.price)
         _costPrice = State(initialValue: pricelistItem.costPrice)
-        _salaryAmount = State(initialValue: pricelistItem.salaryAmount)
-        _fixedDoctorsSalary = State(initialValue: pricelistItem.salaryAmount != nil)
+        _fixedSalary = State(initialValue: pricelistItem.fixedSalary)
+        _fixedAgentFee = State(initialValue: pricelistItem.fixedAgentFee)
+        _fixedDoctorsSalary = State(initialValue: pricelistItem.fixedSalary != nil)
+        _fixedDoctorAgentFee = State(initialValue: pricelistItem.fixedAgentFee != nil)
     }
 
     var body: some View {
@@ -62,17 +66,34 @@ struct PricelistItemView: View {
                         if user.accessLevel == .boss {
                             if fixedDoctorsSalary {
                                 HStack {
-                                    TextField("Премия врача", value: $salaryAmount, format: .number)
+                                    TextField("Премия врача", value: $fixedSalary, format: .number)
                                     Button("Отменить", role: .destructive) {
-                                        salaryAmount = nil
+                                        fixedSalary = nil
                                         fixedDoctorsSalary = false
                                     }
                                 }
                             } else {
-                                Button("Зафиксировать премию врача") { fixedDoctorsSalary = true }
+                                Button("Зафиксировать оплату врача") { fixedDoctorsSalary = true }
                             }
-                        } else if let salaryAmount {
-                            Text("\(Int(salaryAmount)) ₽")
+
+                            if fixedDoctorAgentFee {
+                                HStack {
+                                    TextField("Агентские", value: $fixedAgentFee, format: .number)
+                                    Button("Отменить", role: .destructive) {
+                                        fixedAgentFee = nil
+                                        fixedDoctorAgentFee = false
+                                    }
+                                }
+                            } else {
+                                Button("Зафиксировать агентские врача") { fixedDoctorAgentFee = true }
+                            }
+                        } else {
+                            if let fixedSalary {
+                                Text("\(Int(fixedSalary)) ₽")
+                            }
+                            if let fixedAgentFee {
+                                Text("\(Int(fixedAgentFee)) ₽")
+                            }
                         }
                     } header: {
                         Text("Фиксированная премия врача")
@@ -115,7 +136,8 @@ struct PricelistItemView: View {
                     pricelistItem.title = title
                     pricelistItem.price = price
                     pricelistItem.costPrice = costPrice
-                    pricelistItem.salaryAmount = salaryAmount
+                    pricelistItem.fixedSalary = fixedSalary
+                    pricelistItem.fixedAgentFee = fixedAgentFee
                 }
             )
         }

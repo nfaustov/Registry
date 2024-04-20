@@ -19,9 +19,10 @@ struct ContractScreen: View {
 
     // MARK: -
 
-    init(patient: Patient, visit: Visit) {
-        let contractBody = ContractBody(patient: patient, bill: visit.bill ?? Bill(services: []))
-        let pdfCreator = PDFCreator(date: visit.visitDate, body: contractBody)
+    init(patient: Patient, check: Check) {
+        let contractBody = ContractBody(patient: patient, check: check)
+        guard let date = check.payment?.date else { fatalError() }
+        let pdfCreator = PDFCreator(date: date, body: contractBody)
         pdfData = pdfCreator.createContract()
     }
 
@@ -47,7 +48,7 @@ struct ContractScreen: View {
 
 #Preview {
     NavigationStack {
-        ContractScreen(patient: ExampleData.patient, visit: ExampleData.visit)
+        ContractScreen(patient: ExampleData.patient, check: ExampleData.check)
     }
     .navigationTitle("Договор")
     .navigationBarTitleDisplayMode(.inline)

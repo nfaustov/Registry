@@ -77,7 +77,7 @@ struct CreateSpendingView: View {
             ) {
                 paymentMethod.value = -abs(paymentMethod.value)
                 let payment = Payment(purpose: paymentPurpose, methods: [paymentMethod], createdBy: user.asAnyUser)
-                report.payments.append(payment)
+                report.payment(payment)
             }
         }
         .task {

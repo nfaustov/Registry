@@ -72,9 +72,8 @@ struct CreateDoctorScheduleView: View {
             ) {
                 let schedule = DoctorSchedule(
                     doctor: doctor,
-                    starting: startingDate,
-                    ending: endingDate,
-                    cabinet: cabinet
+                    cabinet: cabinet, starting: startingDate,
+                    ending: endingDate
                 )
                 modelContext.insert(schedule)
                 onConfirm()

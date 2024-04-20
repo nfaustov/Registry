@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Payment {
+extension RegistrySchemaV3.Payment {
     enum Purpose: Codable, Hashable {
         case collection
         case salary(String = "")
@@ -20,7 +20,7 @@ public extension Payment {
         case consumables(String = "")
         case building(String = "")
 
-        public var title: String {
+        var title: String {
             switch self {
             case .collection: return "Инкассация"
             case .salary: return "Заработная плата"
@@ -35,7 +35,7 @@ public extension Payment {
             }
         }
 
-        public var descripiton: String {
+        var descripiton: String {
             get {
                 switch self {
                 case .collection: return ""
@@ -66,7 +66,7 @@ public extension Payment {
             }
         }
 
-        public static var userSelectableCases: [Payment.Purpose] {
+        static var userSelectableCases: [Payment.Purpose] {
             [.collection, .equipment(), .consumables(), .building()]
         }
     }

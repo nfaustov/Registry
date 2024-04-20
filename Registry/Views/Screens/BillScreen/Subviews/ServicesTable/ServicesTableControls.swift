@@ -13,10 +13,10 @@ struct ServicesTableControls: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Binding var bill: Bill
+    @Bindable var check: Check
     @Binding var isPricelistPresented: Bool
 
-    @Query private var billTemplates: [BillTemplate]
+    @Query private var checkTemplates: [CheckTemplate]
 
     // MARK: -
 
@@ -26,39 +26,39 @@ struct ServicesTableControls: View {
                 Section {
                     Button(role: .destructive) {
                         withAnimation {
-                            bill.services = []
-                            bill.discount = 0
+                            check.services = []
+                            check.discount = 0
                         }
                     } label: {
                         Label("Очистить", systemImage: "trash")
                     }
-                    .disabled(bill.services.isEmpty)
+                    .disabled(check.services.isEmpty)
                 }
 
                 Button {
-                    coordinator.present(.createBillTemplate(services: bill.services))
+                    coordinator.present(.createBillTemplate(services: check.services))
                 } label: {
                     Label("Создать шаблон", systemImage: "note.text.badge.plus")
                 }
-                .disabled(bill.services.isEmpty)
+                .disabled(check.services.isEmpty)
 
                 Menu {
-                    ForEach(billTemplates) { template in
+                    ForEach(checkTemplates) { template in
                         Button(template.title) {
                             withAnimation {
-                                bill.services.append(contentsOf: template.services)
-                                bill.discount += template.discount
+                                check.services.append(contentsOf: template.services ?? [])
+                                check.discount += template.discount
                             }
                         }
                     }
                 } label: {
                     Label("Использовать шаблон", systemImage: "note.text")
                 }
-                .disabled(billTemplates.isEmpty)
+                .disabled(checkTemplates.isEmpty)
             } label: {
                 Label("Действия", systemImage: "ellipsis.circle")
             }
-            .disabled(isPricelistPresented || (bill.services.isEmpty && billTemplates.isEmpty))
+            .disabled(isPricelistPresented || (check.services.isEmpty && checkTemplates.isEmpty))
 
             Spacer()
 
@@ -78,7 +78,7 @@ struct ServicesTableControls: View {
 
 #Preview {
     ServicesTableControls(
-        bill: .constant(Bill(services: [ExampleData.service])),
+        check: Check(services: []),
         isPricelistPresented: .constant(false)
     )
 }

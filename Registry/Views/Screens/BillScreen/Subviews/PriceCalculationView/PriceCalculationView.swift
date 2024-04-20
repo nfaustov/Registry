@@ -15,7 +15,7 @@ struct PriceCalculationView: View {
     @EnvironmentObject private var coordinator: Coordinator
 
     let appointment: PatientAppointment
-    @Binding var bill: Bill
+    @Bindable var check: Check
     @Binding var isCompleted: Bool
 
     // MARK: - State
@@ -32,10 +32,10 @@ struct PriceCalculationView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Spacer()
                 HStack {
-                    Text(bill.discount > 0 ? "Промежуточный итог:" : "Итог:")
+                    Text(check.discount > 0 ? "Промежуточный итог:" : "Итог:")
                         .font(.headline)
                     Spacer()
-                    Text("\(Int(bill.price)) ₽")
+                    Text("\(Int(check.price)) ₽")
                         .font(.title3)
                 }
 
@@ -49,19 +49,19 @@ struct PriceCalculationView: View {
                     }
                 }
 
-                if bill.discount > 0 {
+                if check.discount > 0 {
                     HStack {
                         Text("Скидка (\(discountPercent)%):")
                             .font(.headline)
                         Spacer()
-                        Text("\(-Int(bill.discount)) ₽")
+                        Text("\(-Int(check.discount)) ₽")
                             .font(.title3)
                     }
                 }
 
                 HStack {
                     Button {
-                        patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
+                        patient.updateCheck(check, forAppointmentID: appointment.id)
                         coordinator.present(
                             .billPayment(
                                 appointment: appointment,
@@ -69,7 +69,7 @@ struct PriceCalculationView: View {
                             )
                         )
                     } label: {
-                        Text("₽ \(Int(isCompleted ? bill.totalPrice + patient.balance : bill.totalPrice - patient.balance))")
+                        Text("₽ \(Int(isCompleted ? check.totalPrice + patient.balance : check.totalPrice - patient.balance))")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 28)
@@ -97,14 +97,14 @@ struct PriceCalculationView: View {
                         }
 
                         Button("Отменить", role: .destructive) {
-                            bill.discount = 0
+                            check.discount = 0
                             discountPercent = 0
                         }
                     }
                     .sheet(isPresented: $showDiscountSheet) {
                         NavigationStack {
                             Form {
-                                TextField("Сумма скидки", value: $bill.discount, format: .number)
+                                TextField("Сумма скидки", value: $check.discount, format: .number)
                             }
                             .sheetToolbar(title: "Сумма скидки")
                         }
@@ -114,19 +114,19 @@ struct PriceCalculationView: View {
             .frame(width: 500)
         }
         .onAppear {
-            if bill.discount > 0 {
-                discountPercent = Int(bill.discount / bill.price * 100)
+            if check.discount > 0 {
+                discountPercent = Int(check.discount / check.price * 100)
             }
         }
         .onDisappear {
             if !isCompleted {
-                patient.updatePaymentSubject(.bill(bill), forAppointmentID: appointment.id)
+                patient.updateCheck(check, forAppointmentID: appointment.id)
             }
         }
-        .onChange(of: bill.discount) { _, newValue in
+        .onChange(of: check.discount) { _, newValue in
             if newValue > 0 {
                 withAnimation {
-                    discountPercent = Int(bill.discount / bill.price * 100)
+                    discountPercent = Int(check.discount / check.price * 100)
                 }
             }
         }
@@ -136,7 +136,7 @@ struct PriceCalculationView: View {
 #Preview {
     PriceCalculationView(
         appointment: ExampleData.appointment,
-        bill: .constant(Bill(services: [])),
+        check: Check(services: []),
         isCompleted: .constant(false)
     )
     .environmentObject(Coordinator())
@@ -146,9 +146,9 @@ struct PriceCalculationView: View {
 
 private extension PriceCalculationView {
     @ViewBuilder func discountButton(_ percent: Double) -> some View {
-        let discount = bill.price * percent / 100
+        let discount = check.price * percent / 100
         Button("\(Int(percent))% (\(Int(discount.rounded())) ₽)") {
-            bill.discount = discount.rounded()
+            check.discount = discount.rounded()
             discountPercent = Int(percent)
         }
     }

@@ -84,7 +84,7 @@ struct UpdateBalanceView: View {
                 )
 
                 if let todayReport {
-                    todayReport.payments.append(payment)
+                    todayReport.payment(payment)
                 } else {
                     createReportWithPayment(payment)
                 }
@@ -110,13 +110,11 @@ private extension UpdateBalanceView {
 
     func createReportWithPayment(_ payment: Payment) {
         if let report = reports.first {
-            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [payment])
             modelContext.insert(newReport)
-            newReport.payments.append(payment)
         } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
             modelContext.insert(firstReport)
-            firstReport.payments.append(payment)
         }
     }
 }

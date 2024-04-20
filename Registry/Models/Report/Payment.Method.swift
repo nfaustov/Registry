@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Payment {
+extension RegistrySchemaV3.Payment {
     struct Method: Codable, Hashable {
         public var type: PaymentType
         public var value: Double
@@ -19,7 +19,7 @@ public extension Payment {
     }
 }
 
-public enum PaymentType: String, Codable, Hashable, CaseIterable {
+enum PaymentType: String, Codable, Hashable, CaseIterable {
     case cash = "Наличные"
     case bank = "Терминал"
     case card = "Карта"

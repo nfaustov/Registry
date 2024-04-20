@@ -8,22 +8,46 @@
 import Foundation
 import SwiftData
 
-@Model
-public final class BillTemplate {
-    public let id: UUID = UUID()
-    public var title: String = ""
-    public var services: [RenderedService] = []
-    public var discount: Double = Double.zero
+extension RegistrySchemaV1 {
+    @Model
+    final class BillTemplate {
+        let id: UUID = UUID()
+        var title: String = ""
+        var services: [RenderedService] = []
+        var discount: Double = Double.zero
 
-    public init(
-        id: UUID = UUID(),
-        title: String,
-        services: [RenderedService] = [],
-        discount: Double = Double.zero
-    ) {
-        self.id = id
-        self.title = title
-        self.services = services
-        self.discount = discount
+        init(
+            id: UUID = UUID(),
+            title: String,
+            services: [RenderedService] = [],
+            discount: Double = Double.zero
+        ) {
+            self.id = id
+            self.title = title
+            self.services = services
+            self.discount = discount
+        }
+    }
+}
+
+extension RegistrySchemaV2 {
+    @Model
+    final class BillTemplate {
+        let id: UUID = UUID()
+        var title: String = ""
+        var services: [RenderedService] = []
+        var discount: Double = Double.zero
+
+        init(
+            id: UUID = UUID(),
+            title: String,
+            services: [RenderedService] = [],
+            discount: Double = Double.zero
+        ) {
+            self.id = id
+            self.title = title
+            self.services = services
+            self.discount = discount
+        }
     }
 }

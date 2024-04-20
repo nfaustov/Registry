@@ -61,15 +61,9 @@ struct PaymentsView: View {
 
                 if let selectedPayment {
                     PaymentDetailView(
-                        payment: Binding(
-                            get: { selectedPayment },
-                            set: {
-                                report.replacePayment(with: $0)
-                                self.selectedPayment = $0
-                            }
-                        ),
+                        payment: selectedPayment,
                         onDelete: {
-                            report.payments.removeAll(where: { $0.id == selectedPayment.id })
+                            report.cancelPayment(selectedPayment.id)
                             self.selectedPayment = nil
                         }
                     )
@@ -123,10 +117,10 @@ private extension PaymentsView {
 
     var filteredPayments: [Payment] {
         switch operationType {
-        case .all: return report.payments
-        case .bills: return report.payments.filter { $0.subject != nil }
-        case .spendings: return report.payments.filter { $0.totalAmount < 0 && $0.purpose != .collection }
-        case .collections: return report.payments.filter { $0.purpose == .collection }
+        case .all: return report.payments ?? []
+        case .bills: return report.payments?.filter { $0.subject != nil } ?? []
+        case .spendings: return report.payments?.filter { $0.totalAmount < 0 && $0.purpose != .collection } ?? []
+        case .collections: return report.payments?.filter { $0.purpose == .collection } ?? []
         }
     }
 }

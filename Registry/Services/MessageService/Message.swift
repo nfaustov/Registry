@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Message {
+enum Message {
     case appointmentConfirmation(PatientAppointment)
     case appointmentReminder(PatientAppointment)
 

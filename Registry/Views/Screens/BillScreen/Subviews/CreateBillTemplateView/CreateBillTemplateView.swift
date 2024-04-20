@@ -12,7 +12,7 @@ struct CreateBillTemplateView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    let services: [RenderedService]
+    let services: [MedicalService]
 
     // MARK: - State
 
@@ -81,7 +81,7 @@ struct CreateBillTemplateView: View {
                 }
             }
             .sheetToolbar(title: "Новый шаблон", confirmationDisabled: templateTitleText.isEmpty) {
-                let template = BillTemplate(title: templateTitleText, services: services, discount: discount)
+                let template = CheckTemplate(title: templateTitleText, services: services, discount: discount)
                 modelContext.insert(template)
             }
         }

@@ -22,7 +22,6 @@ struct CompletedAppointmentView: View {
 
     private let appointment: PatientAppointment
     private let patient: Patient
-    private let visit: Visit
 
     // MARK: - State
 
@@ -30,18 +29,16 @@ struct CompletedAppointmentView: View {
     @State private var includeBalance: Bool
     @State private var paymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
     @State private var balancePaymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
-    @State private var createdRefund: Refund = Refund(services: [])
+    @State private var createdRefund: Refund = Refund()
 
     // MARK: -
 
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        guard let visit = appointment.patient?.visit(forAppointmentID: appointment.id),
-              let patient = appointment.patient else { fatalError() }
+        guard let patient = appointment.patient else { fatalError() }
 
         self.patient = patient
-        self.visit = visit
         _includeBalance = State(initialValue: patient.balance < 0)
     }
 
@@ -49,7 +46,7 @@ struct CompletedAppointmentView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(visit.bill?.services ?? []) { service in
+                    ForEach(appointment.check?.services ?? []) { service in
                         HStack {
                             if editMode { toggle(service: service).padding(.trailing) }
 
@@ -69,22 +66,22 @@ struct CompletedAppointmentView: View {
                 }
 
                 Section {
-                    Text("Цена: \(Int(visit.bill?.price ?? 0)) ₽")
+                    Text("Цена: \(Int(appointment.check?.price ?? 0)) ₽")
                         .font(.subheadline)
 
-                    if let discount = visit.bill?.discount, discount != 0 {
+                    if let discount = appointment.check?.discount, discount != 0 {
                         Text("Скидка: \(Int(discount)) ₽")
                             .font(.subheadline)
                     }
 
-                    Text("Оплачено: \(Int(visit.bill?.totalPrice ?? 0)) ₽")
+                    Text("Оплачено: \(Int(appointment.check?.totalPrice ?? 0)) ₽")
                         .font(.headline)
                 } header: {
                     Text("Итог")
                 }
 
-                if let refund = visit.refund {
-                    Text("Возврат: \(Int(refund.totalAmount(discountRate: visit.bill?.discountRate ?? 0))) ₽")
+                if let refund = appointment.check?.refund {
+                    Text("Возврат: \(Int(refund.totalAmount(discountRate: appointment.check?.discountRate ?? 0))) ₽")
                         .font(.headline)
                         .foregroundColor(.red)
                 } else {
@@ -95,7 +92,7 @@ struct CompletedAppointmentView: View {
                     }
                 }
 
-                if Calendar.current.isDateInToday(visit.visitDate), visit.refund == nil {
+                if Calendar.current.isDateInToday(appointment.scheduledTime), appointment.check?.refund == nil {
                     Section {
                         Button("Редактировать роли") {
                             dismiss()
@@ -107,11 +104,10 @@ struct CompletedAppointmentView: View {
             .sheetToolbar(
                 title: "Счет",
                 subtitle: appointment.patient?.fullName,
-                confirmationDisabled: visit.refund != nil || (visit.refund == nil && createdRefund.services.isEmpty) || editMode,
-                onConfirm: visit.refund != nil ? nil : {
+                confirmationDisabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
+                onConfirm: appointment.check?.refund != nil ? nil : {
                     createPayment()
-                    SalaryCharger.charge(for: .refund(createdRefund), doctors: doctors)
-                    patient.updatePaymentSubject(.refund(createdRefund), forAppointmentID: appointment.id)
+                    appointment.check?.makeRefund(createdRefund)
                     if includeBalance {
                         createBalancePayment()
                     }
@@ -131,7 +127,7 @@ private extension CompletedAppointmentView {
     var refundSection: some View {
         Section {
             if !createdRefund.services.isEmpty {
-                Text("Возврат: \(Int(createdRefund.totalAmount(discountRate: visit.bill?.discountRate ?? 0))) ₽")
+                Text("Возврат: \(Int(createdRefund.totalAmount(discountRate: appointment.check?.discountRate ?? 0))) ₽")
                     .font(.headline)
                     .foregroundColor(.red)
 
@@ -182,9 +178,9 @@ private extension CompletedAppointmentView {
         }
     }
 
-    func toggle(service: RenderedService) -> some View {
+    func toggle(service: MedicalService) -> some View {
         Toggle(
-            service.id.uuidString,
+            "",
             isOn: Binding(
                 get: { createdRefund.services.contains(service) },
                 set: { value in
@@ -211,20 +207,18 @@ private extension CompletedAppointmentView {
         }
     }
 
-    func createReportWIthPayment(_ payment: Payment) {
+    func createReportWithPayment(_ payment: Payment) {
         if let report = reports.first {
-            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [])
+            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [payment])
             modelContext.insert(newReport)
-            newReport.payments.append(payment)
         } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [])
+            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
             modelContext.insert(firstReport)
-            firstReport.payments.append(payment)
         }
     }
 
-    func serviceItemForegroudColor(_ service: RenderedService) -> Color {
-        if let refund = visit.refund {
+    func serviceItemForegroudColor(_ service: MedicalService) -> Color {
+        if let refund = appointment.check?.refund {
             return refund.services.contains(service) ? .red.opacity(0.6) : .primary
         } else {
             return createdRefund.services.contains(service) ? .red : .primary
@@ -232,13 +226,13 @@ private extension CompletedAppointmentView {
     }
 
     func createPayment() {
-        paymentMethod.value = createdRefund.totalAmount(discountRate: visit.bill?.discountRate ?? 0)
-        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: .refund(createdRefund), createdBy: user.asAnyUser)
+        paymentMethod.value = createdRefund.totalAmount(discountRate: appointment.check?.discountRate ?? 0)
+        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: nil, createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payments.append(payment)
+            todayReport.payment(payment)
         } else {
-            createReportWIthPayment(payment)
+            createReportWithPayment(payment)
         }
     }
 
@@ -248,11 +242,11 @@ private extension CompletedAppointmentView {
         let payment = Payment(purpose: purpose, methods: [balancePaymentMethod], createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payments.append(payment)
+            todayReport.payment(payment)
         } else {
-            createReportWIthPayment(payment)
+            createReportWithPayment(payment)
         }
 
-        patient.updateBalance(increment: -patient.balance)
+        patient.balance -= patient.balance
     }
 }

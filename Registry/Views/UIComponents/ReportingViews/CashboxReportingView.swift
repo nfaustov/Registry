@@ -64,7 +64,7 @@ struct CashboxReportingView: View {
             isLoading = false
         }
 
-        if let todayReport, !todayReport.payments.isEmpty {
+        if let todayReport, let payments = todayReport.payments, !payments.isEmpty {
             Section {
                 Picker("Тип операции", selection: $selectedReporting) {
                     ForEach(Reporting.allCases) { reporting in
@@ -100,7 +100,8 @@ struct CashboxReportingView: View {
 
             Section {
                 DisclosureGroup{
-                    List(todayReport.payments.sorted(by: { $0.date > $1.date })) { payment in
+                    let sortedPayments = todayReport.payments?.sorted(by: { $0.date > $1.date })
+                    List(sortedPayments ?? []) { payment in
                         HStack {
                             Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
                                 .padding()

@@ -7,12 +7,12 @@
 
 import Foundation
 
-public extension Payment {
+extension RegistrySchemaV1.Payment {
     enum Subject: Codable, Hashable {
-        case bill(Bill)
-        case refund(Refund)
+        case bill(RegistrySchemaV1.Bill)
+        case refund(RegistrySchemaV1.Refund)
 
-        var services: [RenderedService] {
+        var services: [RegistrySchemaV1.RenderedService] {
             switch self {
             case .bill(let bill): return bill.services
             case .refund(let refund): return refund.services

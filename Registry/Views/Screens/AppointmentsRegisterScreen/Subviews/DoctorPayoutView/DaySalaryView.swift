@@ -6,17 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DaySalaryView: View {
     // MARK: - Dependencies
 
-    let report: Report
-    let employee: Employee
+    let doctor: Doctor
 
     // MARK: - State
 
-    @State private var renderedServices: [RenderedService] = []
-    @State private var refundedServicesIDs: [RenderedService.ID] = []
+    @State private var renderedServices: [MedicalService] = []
+    @State private var refundedServices: [MedicalService] = []
     @State private var daySalary: Double = .zero
     @State private var isLoading: Bool = true
     @State private var isExpanded: Bool = false
@@ -34,27 +34,34 @@ struct DaySalaryView: View {
                         .padding(.horizontal)
                 }
                 .task {
-                    let services = report.services(by: employee, role: \.performer)
-                    renderedServices = Array(services.uniqued())
-                    refundedServicesIDs = duplicateServices(in: services).map { $0.id }
-                    let balancedServices = singleCopyServices(in: services)
-                    daySalary = report.employeeSalary(employee, from: balancedServices)
+                    let services = doctor.performedServices?.filter { service in
+                        if let date = service.date {
+                            return Calendar.current.isDateInToday(date)
+                        } else { return false }
+                    } ?? []
+                    
+                    if !services.isEmpty {
+                        renderedServices = services
+                        refundedServices = services.filter { $0.refund != nil }
+                        daySalary = doctor.pieceRateSalary(for: services)
+                    }
+
                     isLoading = false
                 }
             } else if !renderedServices.isEmpty {
                 DisclosureGroup(isExpanded: $isExpanded) {
                     List(renderedServices) { service in
                         LabeledContent(service.pricelistItem.title) {
-                            if let fixedSalaryAmount = service.pricelistItem.salaryAmount {
+                            if let fixedSalaryAmount = service.pricelistItem.fixedSalary {
                                 Text("\(Int(fixedSalaryAmount)) ₽")
                                     .frame(width: 60)
-                            } else if let rate = employee.salary.rate {
+                            } else if let rate = doctor.doctorSalary.rate {
                                 Text("\(Int(service.pricelistItem.price * rate)) ₽")
                                     .frame(width: 60)
                             }
                         }
                         .font(.subheadline)
-                        .foregroundStyle(refundedServicesIDs.contains(service.id) ? .red.opacity(0.6) : .primary)
+                        .foregroundStyle(refundedServices.contains(service) ? .red.opacity(0.6) : .primary)
                     }
                 } label: {
                     LabeledContent {
@@ -72,13 +79,13 @@ struct DaySalaryView: View {
 }
 
 #Preview {
-    DaySalaryView(report: ExampleData.report, employee: ExampleData.doctor)
+    DaySalaryView(doctor: ExampleData.doctor)
 }
 
 // MARK: - Calculations
 
 private extension DaySalaryView {
-    func duplicateServices(in services: [RenderedService]) -> [RenderedService] {
+    func duplicateServices(in services: [MedicalService]) -> [MedicalService] {
         let duplicates = Dictionary(grouping: services, by: { $0.id })
             .filter { $1.count > 1 }
             .flatMap { $0.value }
@@ -86,7 +93,7 @@ private extension DaySalaryView {
         return Array(duplicates.uniqued())
     }
 
-    func singleCopyServices(in services: [RenderedService]) -> [RenderedService] {
+    func singleCopyServices(in services: [MedicalService]) -> [MedicalService] {
         Dictionary(grouping: services, by: { $0.id })
             .filter { $1.count == 1 }
             .flatMap { $0.value }

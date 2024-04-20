@@ -9,15 +9,15 @@ import PDFKit
 
 final class ContractBody {
     private let patient: Patient
-    private let bill: Bill
+    private let check: Check
 
     private var controller: ContractBodyController {
-        .init(patient: patient, services: bill.services, totalCost: bill.totalPrice)
+        .init(patient: patient, services: check.services, totalCost: check.totalPrice)
     }
 
-    init(patient: Patient, bill: Bill) {
+    init(patient: Patient, check: Check) {
         self.patient = patient
-        self.bill = bill
+        self.check = check
     }
 
     func makeFirstPage(_ drawContext: CGContext, pageRect: CGRect, textTop: CGFloat) {
@@ -112,7 +112,7 @@ private extension ContractBody {
 
         addServicesListTitle(tableY: tableY, tableWidth: tableWidth, separatorX: separatorX)
         let servicesListHeight = addServicesList(tableY: tableY, tableWidth: tableWidth, separatorX: separatorX)
-        let titleMultiplier: CGFloat = bill.discountRate == 0 ? 2 : 3
+        let titleMultiplier: CGFloat = check.discountRate == 0 ? 2 : 3
         let tableBottom = tableY + Size.tableTitleRectHeight * titleMultiplier + servicesListHeight
         addServicesListTotal(tableBottom: tableBottom, tableWidth: tableWidth, separatorX: separatorX)
 
@@ -149,7 +149,7 @@ private extension ContractBody {
     func addServicesList(tableY: CGFloat, tableWidth: CGFloat, separatorX: CGFloat) -> CGFloat {
         var listHeight: CGFloat = 0
 
-        bill.services.forEach { service in
+        check.services.forEach { service in
             let attributedService = NSAttributedString(
                 string: service.pricelistItem.title,
                 attributes: Attributes.lightFont
@@ -210,13 +210,13 @@ private extension ContractBody {
     }
 
     func addServicesListTotal(tableBottom: CGFloat, tableWidth: CGFloat, separatorX: CGFloat) {
-        let titleMultiplier: CGFloat = bill.discountRate == 0 ? 1 : 2
+        let titleMultiplier: CGFloat = check.discountRate == 0 ? 1 : 2
         let totalRectHeight = Size.tableTitleRectHeight * titleMultiplier
-        let totalTitle = bill.discountRate == 0 ? "ИТОГО" : "Скидка\nИТОГО"
-        let totalValue = String(format: "%.2f", bill.totalPrice)
-        let totalPrice = bill.discount > 0 ?
+        let totalTitle = check.discountRate == 0 ? "ИТОГО" : "Скидка\nИТОГО"
+        let totalValue = String(format: "%.2f", check.totalPrice)
+        let totalPrice = check.discount > 0 ?
         """
-        \(String(format: "%.2f", bill.discount))
+        \(String(format: "%.2f", check.discount))
         \(totalValue)
         """ : "\(totalValue)"
 

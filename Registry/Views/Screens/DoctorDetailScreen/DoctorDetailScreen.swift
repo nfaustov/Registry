@@ -25,7 +25,6 @@ struct DoctorDetailScreen: View {
     @State private var showPricelist: Bool = false
     @State private var isSearchingPricelistItem: Bool = false
     @State private var searchText: String = ""
-    @State private var basicService: PricelistItem?
 
     // MARK: -
 

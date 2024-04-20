@@ -7,15 +7,15 @@
 
 import Foundation
 
-public extension Patient {
+extension RegistrySchemaV3.Patient {
     struct PlaceOfResidence: Codable, Hashable {
-        public var region: String
-        public var locality: String
-        public var streetAdress: String
-        public var house: String
-        public var appartment: String
+        var region: String
+        var locality: String
+        var streetAdress: String
+        var house: String
+        var appartment: String
 
-        public init(
+        init(
             region: String = "",
             locality: String = "",
             streetAdress: String = "",

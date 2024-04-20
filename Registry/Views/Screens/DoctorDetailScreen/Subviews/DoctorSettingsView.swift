@@ -21,6 +21,9 @@ struct DoctorSettingsView: View {
     @State private var searchText: String = ""
     @State private var basicService: PricelistItem?
     @State private var salaryRate: Double = .zero
+    @State private var minSalaryAmount: Double = .zero
+    @State private var salaryType: Salary = .pieceRate()
+    @State private var monthlyAmount: Int = 0
 
     // MARK: -
 
@@ -36,7 +39,7 @@ struct DoctorSettingsView: View {
                 Button {
                     showPricelist = true
                 } label: {
-                    LabeledContent(doctor.basicService?.title ?? "Базовая услуга") {
+                    LabeledContent(doctor.defaultPricelistItem?.title ?? "Базовая услуга") {
                         Image(systemName: "chevron.right")
                     }
                 }
@@ -64,8 +67,19 @@ struct DoctorSettingsView: View {
                 Text("Кабинет (по умолчанию)")
             }
 
-            if let rate = doctor.salary.rate {
-                Section("Заработная плата") {
+            Section("Заработная плата") {
+                if user.accessLevel == .boss {
+                    Picker("Заработная плата", selection: $salaryType) {
+                        ForEach(Salary.allCases, id: \.self) { type in
+                            Text(type.title)
+                        }
+                    }
+                    .onChange(of: salaryType) { _, newValue in
+                        doctor.doctorSalary = salaryType
+                    }
+                }
+
+                if let rate = doctor.doctorSalary.rate {
                     if user.accessLevel == .boss {
                         Stepper(
                             "Ставка \(Int(salaryRate * 100)) %",
@@ -74,15 +88,42 @@ struct DoctorSettingsView: View {
                             step: 0.01
                         )
                         .onChange(of: salaryRate) { _, newValue in
-                            doctor.salary = .pieceRate(rate: newValue)
+                            doctor.doctorSalary = .pieceRate(rate: newValue, minAmount: minSalaryAmount)
                         }
                         .onAppear {
                             salaryRate = rate
                         }
+
+                        LabeledContent("Минимальная оплата") {
+                            TextField("Минимальная оплата", value: $minSalaryAmount, format: .number)
+                        }
+                        .onChange(of: minSalaryAmount) { _, newValue in
+                            doctor.doctorSalary = .pieceRate(rate: salaryRate, minAmount: newValue)
+                        }
+                        .onAppear {
+                            minSalaryAmount = doctor.doctorSalary.minAmount ?? 0
+                        }
                     } else {
-                        Text("Ставка \(Int(salaryRate * 100)) %")
+                        LabeledContent("Ставка", value: "\(Int(rate * 100)) %")
+
+                        if let minAmount = doctor.doctorSalary.minAmount {
+                            LabeledContent("Минимальная оплата", value: "\(Int(minAmount)) ₽")
+                        }
+                    }
+                } else if let monthlySalary = doctor.doctorSalary.monthlyAmount {
+                    if user.accessLevel == .boss {
+                        TextField("Ежемесячная оплата", value: $monthlyAmount, format: .number)
+                            .onChange(of: monthlyAmount) { _, newValue in
+                                doctor.doctorSalary = .monthly(amount: newValue)
+                            }
+                            .onAppear {
+                                monthlyAmount = monthlySalary
+                            }
                     }
                 }
+            }
+            .onAppear {
+                salaryType = doctor.doctorSalary
             }
         }
         .sheet(isPresented: $showPricelist) {
@@ -100,7 +141,7 @@ struct DoctorSettingsView: View {
                 )
                 .sheetToolbar(title: "Выберите услугу")
                 .onChange(of: basicService) { _, newValue in
-                    doctor.basicService = basicService?.short
+                    doctor.defaultPricelistItem = basicService
                     showPricelist = false
                 }
             }
