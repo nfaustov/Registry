@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RegistrySchemaV3.Patient {
+extension Patient {
     struct PassportData: Codable, Hashable {
         var gender: Gender
         var seriesNumber: String

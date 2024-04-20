@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RegistrySchemaV3.Payment {
+extension Payment {
     enum Purpose: Codable, Hashable {
         case collection
         case salary(String = "")

@@ -8,42 +8,20 @@
 import Foundation
 import SwiftData
 
-extension RegistrySchemaV2 {
-    @Model
-    final class CheckTemplate {
-        var title: String = ""
-        @Relationship(inverse: \MedicalService.checkTemplates)
-        var services: [MedicalService]?
-        var discount: Double = Double.zero
+@Model
+final class CheckTemplate {
+    var title: String = ""
+    @Relationship(inverse: \MedicalService.checkTemplates)
+    var services: [MedicalService]?
+    var discount: Double = Double.zero
 
-        init(
-            title: String,
-            services: [MedicalService]? = nil,
-            discount: Double = .zero
-        ) {
-            self.title = title
-            self.services = services
-            self.discount = discount
-        }
-    }
-}
-
-extension RegistrySchemaV3 {
-    @Model
-    final class CheckTemplate {
-        var title: String = ""
-        @Relationship(inverse: \MedicalService.checkTemplates)
-        var services: [MedicalService]?
-        var discount: Double = Double.zero
-
-        init(
-            title: String,
-            services: [MedicalService]? = nil,
-            discount: Double = .zero
-        ) {
-            self.title = title
-            self.services = services
-            self.discount = discount
-        }
+    init(
+        title: String,
+        services: [MedicalService]? = nil,
+        discount: Double = .zero
+    ) {
+        self.title = title
+        self.services = services
+        self.discount = discount
     }
 }

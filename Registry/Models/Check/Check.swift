@@ -8,124 +8,61 @@
 import Foundation
 import SwiftData
 
-extension RegistrySchemaV2 {
-    @Model
-    final class Check {
-        @Relationship(deleteRule: .cascade, inverse: \MedicalService.check)
-        private var _services: [MedicalService]?
-        var discount: Double = 0
-        @Relationship(deleteRule: .cascade, inverse: \Refund.check)
-        private(set) var refund: Refund? = nil
+@Model
+final class Check {
+    @Relationship(deleteRule: .cascade, inverse: \MedicalService.check)
+    private var _services: [MedicalService]?
+    var discount: Double = 0
+    @Relationship(deleteRule: .cascade, inverse: \Refund.check)
+    private(set) var refund: Refund? = nil
 
-        var appointments: [PatientAppointment]?
-        var payment: Payment?
+    var appointments: [PatientAppointment]?
+    var payment: Payment?
 
-        var services: [MedicalService] {
-            get {
-                _services ?? []
-            }
-            set {
-                _services = newValue
-            }
+    var services: [MedicalService] {
+        get {
+            _services ?? []
         }
-
-        var price: Double {
-            services
-                .map { $0.pricelistItem.price }
-                .reduce(0.0, +)
-        }
-
-        var totalPrice: Double {
-            price - discount
-        }
-
-        var discountRate: Double {
-            guard price != 0 else { return 0 }
-            return discount / price
-        }
-
-        init(
-            services: [MedicalService]? = [],
-            discount: Double = 0,
-            refund: Refund? = nil
-        ) {
-            self._services = services
-            self.discount = discount
-            self.refund = refund
-        }
-
-        func makeChargesForServices() {
-            _services?.forEach { $0.makeCharges() }
-        }
-
-        func cancelChargesForServices() {
-            _services?.forEach { $0.cancelCharges() }
-        }
-
-        func makeRefund(_ refund: Refund) {
-            self.refund = refund
-            refund.cancelChargesForServices()
+        set {
+            _services = newValue
         }
     }
-}
 
-extension RegistrySchemaV3 {
-    @Model
-    final class Check {
-        @Relationship(deleteRule: .cascade, inverse: \MedicalService.check)
-        private var _services: [MedicalService]?
-        var discount: Double = 0
-        @Relationship(deleteRule: .cascade, inverse: \Refund.check)
-        private(set) var refund: Refund? = nil
+    var price: Double {
+        services
+            .map { $0.pricelistItem.price }
+            .reduce(0.0, +)
+    }
 
-        var appointments: [PatientAppointment]?
-        var payment: Payment?
+    var totalPrice: Double {
+        price - discount
+    }
 
-        var services: [MedicalService] {
-            get {
-                _services ?? []
-            }
-            set {
-                _services = newValue
-            }
-        }
+    var discountRate: Double {
+        guard price != 0 else { return 0 }
+        return discount / price
+    }
 
-        var price: Double {
-            services
-                .map { $0.pricelistItem.price }
-                .reduce(0.0, +)
-        }
+    init(
+        services: [MedicalService]? = [],
+        discount: Double = 0,
+        refund: Refund? = nil
+    ) {
+        self._services = services
+        self.discount = discount
+        self.refund = refund
+    }
 
-        var totalPrice: Double {
-            price - discount
-        }
+    func makeChargesForServices() {
+        _services?.forEach { $0.makeCharges() }
+    }
 
-        var discountRate: Double {
-            guard price != 0 else { return 0 }
-            return discount / price
-        }
+    func cancelChargesForServices() {
+        _services?.forEach { $0.cancelCharges() }
+    }
 
-        init(
-            services: [MedicalService]? = [],
-            discount: Double = 0,
-            refund: Refund? = nil
-        ) {
-            self._services = services
-            self.discount = discount
-            self.refund = refund
-        }
-
-        func makeChargesForServices() {
-            _services?.forEach { $0.makeCharges() }
-        }
-
-        func cancelChargesForServices() {
-            _services?.forEach { $0.cancelCharges() }
-        }
-
-        func makeRefund(_ refund: Refund) {
-            self.refund = refund
-            refund.cancelChargesForServices()
-        }
+    func makeRefund(_ refund: Refund) {
+        self.refund = refund
+        refund.cancelChargesForServices()
     }
 }

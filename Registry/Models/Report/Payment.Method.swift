@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RegistrySchemaV3.Payment {
+extension Payment {
     struct Method: Codable, Hashable {
         public var type: PaymentType
         public var value: Double

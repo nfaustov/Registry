@@ -8,80 +8,39 @@
 import Foundation
 import SwiftData
 
-extension RegistrySchemaV2 {
-    @Model
-    final class Refund {
-        let date: Date = Date.now
-        @Relationship(inverse: \MedicalService.refund)
-        private var _services: [MedicalService]?
+@Model
+final class Refund {
+    let date: Date = Date.now
+    @Relationship(inverse: \MedicalService.refund)
+    private var _services: [MedicalService]?
 
-        var services: [MedicalService] {
-            get {
-                _services ?? []
-            }
-            set {
-                _services = newValue
-            }
+    var services: [MedicalService] {
+        get {
+            _services ?? []
         }
-
-        var check: Check?
-
-        var price: Double {
-            services
-                .map { $0.pricelistItem.price }
-                .reduce(0.0, +)
-        }
-
-        init(services: [MedicalService]? = []) {
-            self.date = .now
-            self._services = services
-        }
-
-        func totalAmount(discountRate rate: Double) -> Double {
-            rate * price - price
-        }
-
-        func cancelChargesForServices() {
-            _services?.forEach { $0.cancelCharges() }
+        set {
+            _services = newValue
         }
     }
-}
 
-extension RegistrySchemaV3 {
-    @Model
-    final class Refund {
-        let date: Date = Date.now
-        @Relationship(inverse: \MedicalService.refund)
-        private var _services: [MedicalService]?
+    var check: Check?
 
-        var services: [MedicalService] {
-            get {
-                _services ?? []
-            }
-            set {
-                _services = newValue
-            }
-        }
+    var price: Double {
+        services
+            .map { $0.pricelistItem.price }
+            .reduce(0.0, +)
+    }
 
-        var check: Check?
+    init(services: [MedicalService]? = []) {
+        self.date = .now
+        self._services = services
+    }
 
-        var price: Double {
-            services
-                .map { $0.pricelistItem.price }
-                .reduce(0.0, +)
-        }
+    func totalAmount(discountRate rate: Double) -> Double {
+        rate * price - price
+    }
 
-        init(services: [MedicalService]? = []) {
-            self.date = .now
-            self._services = services
-        }
-
-        func totalAmount(discountRate rate: Double) -> Double {
-            rate * price - price
-        }
-
-        func cancelChargesForServices() {
-            _services?.forEach { $0.cancelCharges() }
-        }
+    func cancelChargesForServices() {
+        _services?.forEach { $0.cancelCharges() }
     }
 }

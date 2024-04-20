@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RegistrySchemaV3.Patient {
+extension Patient {
     struct PlaceOfResidence: Codable, Hashable {
         var region: String
         var locality: String
