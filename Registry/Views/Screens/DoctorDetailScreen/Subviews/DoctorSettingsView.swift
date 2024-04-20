@@ -20,12 +20,19 @@ struct DoctorSettingsView: View {
     @State private var isSearchingPricelistItem: Bool = false
     @State private var searchText: String = ""
     @State private var basicService: PricelistItem?
-    @State private var salaryRate: Double = .zero
-    @State private var minSalaryAmount: Double = .zero
-    @State private var salaryType: Salary = .pieceRate()
-    @State private var monthlyAmount: Int = 0
+    @State private var salaryRate: Double
+    @State private var minSalaryAmount: Double
+    @State private var monthlyAmount: Int
+
 
     // MARK: -
+
+    init(doctor: Doctor) {
+        self.doctor = doctor
+        _salaryRate = State(initialValue: doctor.doctorSalary.rate ?? 0.4)
+        _minSalaryAmount = State(initialValue: doctor.doctorSalary.minAmount ?? 0)
+        _monthlyAmount = State(initialValue: doctor.doctorSalary.monthlyAmount ?? 0)
+    }
 
     var body: some View {
         Form {
@@ -67,63 +74,49 @@ struct DoctorSettingsView: View {
                 Text("Кабинет (по умолчанию)")
             }
 
-            Section("Заработная плата") {
+            Section {
                 if user.accessLevel == .boss {
-                    Picker("Заработная плата", selection: $salaryType) {
+                    Picker(doctor.doctorSalary.title, selection: $doctor.doctorSalary) {
                         ForEach(Salary.allCases, id: \.self) { type in
                             Text(type.title)
+                                .tag(doctor.doctorSalary.title)
                         }
                     }
-                    .onChange(of: salaryType) { _, newValue in
-                        doctor.doctorSalary = salaryType
-                    }
                 }
-
+                
                 if let rate = doctor.doctorSalary.rate {
                     if user.accessLevel == .boss {
                         Stepper(
-                            "Ставка \(Int(salaryRate * 100)) %",
+                            "Ставка \(Int(rate * 100)) %",
                             value: $salaryRate,
                             in: 0.25...0.6,
                             step: 0.01
                         )
                         .onChange(of: salaryRate) { _, newValue in
-                            doctor.doctorSalary = .pieceRate(rate: newValue, minAmount: minSalaryAmount)
+                            doctor.doctorSalary = .pieceRate(rate: newValue)
                         }
-                        .onAppear {
-                            salaryRate = rate
-                        }
-
+                        
                         LabeledContent("Минимальная оплата") {
                             TextField("Минимальная оплата", value: $minSalaryAmount, format: .number)
                         }
                         .onChange(of: minSalaryAmount) { _, newValue in
                             doctor.doctorSalary = .pieceRate(rate: salaryRate, minAmount: newValue)
                         }
-                        .onAppear {
-                            minSalaryAmount = doctor.doctorSalary.minAmount ?? 0
-                        }
                     } else {
                         LabeledContent("Ставка", value: "\(Int(rate * 100)) %")
-
+                        
                         if let minAmount = doctor.doctorSalary.minAmount {
                             LabeledContent("Минимальная оплата", value: "\(Int(minAmount)) ₽")
                         }
                     }
-                } else if let monthlySalary = doctor.doctorSalary.monthlyAmount {
+                } else if doctor.doctorSalary.monthlyAmount != nil {
                     if user.accessLevel == .boss {
                         TextField("Ежемесячная оплата", value: $monthlyAmount, format: .number)
                             .onChange(of: monthlyAmount) { _, newValue in
                                 doctor.doctorSalary = .monthly(amount: newValue)
                             }
-                            .onAppear {
-                                monthlyAmount = monthlySalary
-                            }
                     }
                 }
-            }
-            .onAppear {
-                salaryType = doctor.doctorSalary
             }
         }
         .sheet(isPresented: $showPricelist) {
