@@ -14,8 +14,6 @@ struct UpdateBalanceView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
-
     private let person: AccountablePerson
     private let kind: UpdateBalanceKind
 
@@ -70,22 +68,14 @@ struct UpdateBalanceView: View {
                 }
             }
             .sheetToolbar(title: kind.rawValue, confirmationDisabled: paymentMethod.value == 0) {
-                paymentMethod.value = kind == .refill ? 
-                abs(paymentMethod.value) :
-                -abs(paymentMethod.value)
+                Task {
+                    let ledger = Ledger(modelContainer: modelContext.container)
 
-                person.updateBalance(increment: paymentMethod.value)
+                    paymentMethod.value = kind == .refill ?
+                    abs(paymentMethod.value) :
+                    -abs(paymentMethod.value)
 
-                let payment = Payment(
-                    purpose: kind == .refill ? .toBalance(person.initials) : .fromBalance(person.initials),
-                    methods: [paymentMethod],
-                    createdBy: user.asAnyUser
-                )
-
-                if let todayReport {
-                    todayReport.makePayment(payment)
-                } else {
-                    createReportWithPayment(payment)
+                    await ledger.makeBalancePayment(from: person, method: paymentMethod, createdBy: user)
                 }
             }
         }
@@ -94,28 +84,6 @@ struct UpdateBalanceView: View {
 
 #Preview {
     UpdateBalanceView(person: ExampleData.doctor, kind: .payout)
-}
-
-// MARK: - Calculations
-
-private extension UpdateBalanceView {
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else {
-            return nil
-        }
-    }
-
-    func createReportWithPayment(_ payment: Payment) {
-        if let report = reports.first {
-            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [payment])
-            modelContext.insert(newReport)
-        } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
-            modelContext.insert(firstReport)
-        }
-    }
 }
 
 // MARK: - UpdateBalanceKind

@@ -35,7 +35,12 @@ actor Ledger {
         record(payment)
     }
 
-    func makeSalaryPayment(doctor: Doctor, _ payoutType: PayoutType, methods: [Payment.Method], createdBy user: User) {
+    func makeSalaryPayment(
+        doctor: Doctor,
+        _ payoutType: PayoutType,
+        methods: [Payment.Method],
+        createdBy user: User
+    ) {
         var paymentValue = methods.reduce(0.0) { $0 + $1.value }
         var purpose: Payment.Purpose
 
@@ -80,6 +85,15 @@ actor Ledger {
         let purpose: Payment.Purpose = method.value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
         let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
         person.updateBalance(increment: method.value)
+        record(payment)
+    }
+
+    func makeSpendingPayment(
+        purpose: Payment.Purpose,
+        method: Payment.Method,
+        createdBy user: User
+    ) {
+        let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
         record(payment)
     }
 }
