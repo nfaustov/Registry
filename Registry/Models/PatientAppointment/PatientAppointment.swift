@@ -67,7 +67,10 @@ final class PatientAppointment {
             self.check = check
         } else {
             if let doctor = schedule?.doctor, let pricelistItem = doctor.defaultPricelistItem {
-                let service = MedicalService(pricelistItem: pricelistItem.snapshot, performer: pricelistItem.category == .laboratory ? nil : doctor)
+                let service = MedicalService(
+                    pricelistItem: pricelistItem.snapshot,
+                    performer: pricelistItem.category == .laboratory ? nil : doctor
+                )
                 check = Check(services: [service])
             } else {
                 check = Check()

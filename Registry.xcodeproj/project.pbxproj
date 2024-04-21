@@ -1192,20 +1192,12 @@
 		8BDCCFD92B849F7C0086BF4D /* Patient */ = {
 			isa = PBXGroup;
 			children = (
-				8BDCCFE22B84A2FE0086BF4D /* Visit */,
 				8BDCCFDA2B849F960086BF4D /* Patient.swift */,
 				8BDCCFDC2B84A0C40086BF4D /* PassportData.swift */,
 				8BDCCFDE2B84A20C0086BF4D /* PlaceOfResidence.swift */,
 				8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */,
 			);
 			path = Patient;
-			sourceTree = "<group>";
-		};
-		8BDCCFE22B84A2FE0086BF4D /* Visit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Visit;
 			sourceTree = "<group>";
 		};
 		8BE4C6882BB33E0D00264557 /* CallAuthorizationService */ = {

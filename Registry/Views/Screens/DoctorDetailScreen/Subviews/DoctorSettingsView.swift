@@ -23,12 +23,14 @@ struct DoctorSettingsView: View {
     @State private var salaryRate: Double
     @State private var minSalaryAmount: Double
     @State private var monthlyAmount: Int
+    @State private var salary: Salary
 
 
     // MARK: -
 
     init(doctor: Doctor) {
         self.doctor = doctor
+        _salary = State(initialValue: doctor.doctorSalary)
         _salaryRate = State(initialValue: doctor.doctorSalary.rate ?? 0.4)
         _minSalaryAmount = State(initialValue: doctor.doctorSalary.minAmount ?? 0)
         _monthlyAmount = State(initialValue: doctor.doctorSalary.monthlyAmount ?? 0)
@@ -74,18 +76,19 @@ struct DoctorSettingsView: View {
                 Text("Кабинет (по умолчанию)")
             }
 
-            Section {
-                if user.accessLevel == .boss {
-                    Picker(doctor.doctorSalary.title, selection: $doctor.doctorSalary) {
+            if user.accessLevel == .boss {
+                Section("Заработная плата") {
+                    Menu(doctor.doctorSalary.title) {
                         ForEach(Salary.allCases, id: \.self) { type in
-                            Text(type.title)
-                                .tag(doctor.doctorSalary.title)
+                            Button(type.title) {
+                                withAnimation {
+                                    doctor.doctorSalary = type
+                                }
+                            }
                         }
                     }
-                }
-                
-                if let rate = doctor.doctorSalary.rate {
-                    if user.accessLevel == .boss {
+                    
+                    if let rate = doctor.doctorSalary.rate {
                         Stepper(
                             "Ставка \(Int(rate * 100)) %",
                             value: $salaryRate,
@@ -102,15 +105,7 @@ struct DoctorSettingsView: View {
                         .onChange(of: minSalaryAmount) { _, newValue in
                             doctor.doctorSalary = .pieceRate(rate: salaryRate, minAmount: newValue)
                         }
-                    } else {
-                        LabeledContent("Ставка", value: "\(Int(rate * 100)) %")
-                        
-                        if let minAmount = doctor.doctorSalary.minAmount {
-                            LabeledContent("Минимальная оплата", value: "\(Int(minAmount)) ₽")
-                        }
-                    }
-                } else if doctor.doctorSalary.monthlyAmount != nil {
-                    if user.accessLevel == .boss {
+                    } else if doctor.doctorSalary.monthlyAmount != nil {
                         TextField("Ежемесячная оплата", value: $monthlyAmount, format: .number)
                             .onChange(of: monthlyAmount) { _, newValue in
                                 doctor.doctorSalary = .monthly(amount: newValue)
