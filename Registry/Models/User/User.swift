@@ -58,7 +58,7 @@ extension User {
             firstName: firstName,
             patronymicName: patronymicName,
             phoneNumber: phoneNumber,
-            balance: balance,
+            balance: 0,
             accessLevel: accessLevel,
             image: image
         )

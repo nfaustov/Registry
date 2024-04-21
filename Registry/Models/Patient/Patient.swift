@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Patient: Person {
+final class Patient: AccountablePerson {
     let id: UUID = UUID()
     var secondName: String = ""
     var firstName: String =  ""

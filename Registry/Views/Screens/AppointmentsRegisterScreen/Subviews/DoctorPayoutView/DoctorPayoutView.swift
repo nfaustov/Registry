@@ -130,7 +130,7 @@ private extension DoctorPayoutView {
         let payment = Payment(purpose: paymentPurpose(), methods: methods, createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payment(payment)
+            todayReport.makePayment(payment)
         } else {
             createReportWithPayment(payment)
         }

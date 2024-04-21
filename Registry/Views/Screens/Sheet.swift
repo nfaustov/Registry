@@ -19,7 +19,7 @@ enum Sheet: Identifiable {
     case createBillTemplate(services: [MedicalService])
     case createDoctor
     case createPricelistItem
-    case updateBalance(for: Binding<Person>, kind: UpdateBalanceKind)
+    case updateBalance(for: Binding<AccountablePerson>, kind: UpdateBalanceKind)
     case billPayment(appointment: PatientAppointment, isPaid: Binding<Bool>)
 
     var id: UUID {

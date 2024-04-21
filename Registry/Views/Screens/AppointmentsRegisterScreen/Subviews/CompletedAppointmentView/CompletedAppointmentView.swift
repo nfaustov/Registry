@@ -17,9 +17,6 @@ struct CompletedAppointmentView: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query private var doctors: [Doctor]
-    @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
-
     private let appointment: PatientAppointment
     private let patient: Patient
 
@@ -106,10 +103,17 @@ struct CompletedAppointmentView: View {
                 subtitle: appointment.patient?.fullName,
                 confirmationDisabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
                 onConfirm: appointment.check?.refund != nil ? nil : {
-                    createPayment()
-                    appointment.check?.makeRefund(createdRefund)
-                    if includeBalance {
-                        createBalancePayment()
+                    Task {
+                        let ledger = Ledger(modelContainer: modelContext.container)
+                        let refundPayment = refundPayment()
+                        await ledger.makePayment(refundPayment)
+
+                        if includeBalance {
+                            balancePaymentMethod.value = -patient.balance
+                            await ledger.makeBalancePayment(from: patient, methods: [balancePaymentMethod], createdBy: user)
+                        }
+
+                        appointment.check?.makeRefund(createdRefund)
                     }
                 }
             )
@@ -199,24 +203,6 @@ private extension CompletedAppointmentView {
 // MARK: - Calculations
 
 private extension CompletedAppointmentView {
-    var todayReport: Report? {
-        if let report = reports.first, Calendar.current.isDateInToday(report.date) {
-            return report
-        } else {
-            return nil
-        }
-    }
-
-    func createReportWithPayment(_ payment: Payment) {
-        if let report = reports.first {
-            let newReport = Report(date: .now, startingCash: report.cashBalance, payments: [payment])
-            modelContext.insert(newReport)
-        } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
-            modelContext.insert(firstReport)
-        }
-    }
-
     func serviceItemForegroudColor(_ service: MedicalService) -> Color {
         if let refund = appointment.check?.refund {
             return refund.services.contains(service) ? .red.opacity(0.6) : .primary
@@ -225,28 +211,10 @@ private extension CompletedAppointmentView {
         }
     }
 
-    func createPayment() {
+    func refundPayment() -> Payment {
         paymentMethod.value = createdRefund.totalAmount(discountRate: appointment.check?.discountRate ?? 0)
-        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], subject: nil, createdBy: user.asAnyUser)
+        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], createdBy: user.asAnyUser)
 
-        if let todayReport {
-            todayReport.payment(payment)
-        } else {
-            createReportWithPayment(payment)
-        }
-    }
-
-    func createBalancePayment() {
-        balancePaymentMethod.value = -patient.balance
-        let purpose: Payment.Purpose = patient.balance > 0 ? .fromBalance(patient.initials) : .toBalance(patient.initials)
-        let payment = Payment(purpose: purpose, methods: [balancePaymentMethod], createdBy: user.asAnyUser)
-
-        if let todayReport {
-            todayReport.payment(payment)
-        } else {
-            createReportWithPayment(payment)
-        }
-
-        patient.balance -= patient.balance
+        return payment
     }
 }

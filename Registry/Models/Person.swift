@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol Accountable {
+protocol Accountable: AnyObject {
     var balance: Double { get set }
 }
 
-protocol Person: Accountable {
+protocol Person {
     var id: UUID { get }
     var secondName: String { get set }
     var firstName: String { get set }
@@ -32,3 +32,5 @@ extension Person {
         return "\(secondName) \(firstNameLetter).\(patronymicNameLetter)."
     }
 }
+
+typealias AccountablePerson = Person & Accountable

@@ -73,7 +73,7 @@ final class Report {
             .reduce(0.0) { $0 + $1.value } ?? 0
     }
 
-    func payment(_ payment: Payment) {
+    func makePayment(_ payment: Payment) {
         payments?.append(payment)
     }
 

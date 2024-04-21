@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Employee: Person {
+protocol Employee: AccountablePerson {
     var doctorSalary: Salary { get set }
     var agentFee: Double { get }
 }

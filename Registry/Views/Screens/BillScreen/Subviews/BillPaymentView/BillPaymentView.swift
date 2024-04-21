@@ -127,7 +127,7 @@ private extension BillPaymentView {
         )
 
         if let todayReport {
-            todayReport.payment(balancePayment)
+            todayReport.makePayment(balancePayment)
         } else {
             createReportWIthPayment(balancePayment)
         }
@@ -147,7 +147,7 @@ private extension BillPaymentView {
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
 
         if let todayReport {
-            todayReport.payment(payment)
+            todayReport.makePayment(payment)
         } else {
             createReportWIthPayment(payment)
         }

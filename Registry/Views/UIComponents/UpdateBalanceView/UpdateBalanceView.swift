@@ -16,7 +16,7 @@ struct UpdateBalanceView: View {
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
-    @Binding var person: Person
+    @Binding var person: AccountablePerson
 
     private let kind: UpdateBalanceKind
 
@@ -26,7 +26,7 @@ struct UpdateBalanceView: View {
 
     // MARK: -
 
-    init(person: Binding<Person>, kind: UpdateBalanceKind) {
+    init(person: Binding<Person & Accountable>, kind: UpdateBalanceKind) {
         _person = person
         self.kind = kind
 
@@ -84,7 +84,7 @@ struct UpdateBalanceView: View {
                 )
 
                 if let todayReport {
-                    todayReport.payment(payment)
+                    todayReport.makePayment(payment)
                 } else {
                     createReportWithPayment(payment)
                 }

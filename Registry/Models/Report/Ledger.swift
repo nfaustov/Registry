@@ -7,13 +7,56 @@
 
 import SwiftUI
 
-//public final class Ledger{
-//    private var reports: [Report]
-//
-//    public init(reports: [Report]) {
-//        self.reports = reports
+import Foundation
+import SwiftData
+
+@ModelActor
+actor Ledger {
+    func makePayment(_ payment: Payment) {
+        if let todayReport {
+            todayReport.makePayment(payment)
+        } else {
+            createReportWithPayment(payment)
+        }
+    }
+
+//    func makeRefundPayment(to check: Check, methods: [Payment.Method], createdBy: User) {
+//        
 //    }
-//}
+
+    func makeBalancePayment(
+        from person: AccountablePerson,
+        method: Payment.Method,
+        createdBy user: User
+    ) {
+        let purpose: Payment.Purpose = method.value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
+        let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
+        person.balance += method.value
+        makePayment(payment)
+    }
+}
+
+// MARK: - Private methods
+
+private extension Ledger {
+    var lastReport: Report? {
+        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+        descriptor.fetchLimit = 1
+        return try? modelContext.fetch(descriptor).first
+    }
+
+    var todayReport: Report? {
+        guard let lastReport,
+                Calendar.current.isDateInToday(lastReport.date) else { return nil }
+        return lastReport
+    }
+
+    func createReportWithPayment(_ payment: Payment) {
+        let newReport = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0, payments: [payment])
+        modelContext.insert(newReport)
+        try? modelContext.save()
+    }
+}
 
 // MARK: - Statistic methods
 
