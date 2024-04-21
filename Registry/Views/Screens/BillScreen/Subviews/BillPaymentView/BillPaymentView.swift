@@ -14,8 +14,6 @@ struct BillPaymentView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
-    @Query private var doctors: [Doctor]
-
     private let appointment: PatientAppointment
     private let check: Check
     private let patient: Patient
@@ -25,8 +23,6 @@ struct BillPaymentView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
-    @State private var todayReport: Report?
-    @State private var lastReport: Report?
 
     // MARK: -
 
@@ -62,27 +58,19 @@ struct BillPaymentView: View {
                 .paymentKind(.bill(totalPrice: check.totalPrice))
             }
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
-                if paymentBalance != 0 {
-                    balancePayment()
-                    patient.balance += paymentBalance
+                Task {
+                    let ledger = Ledger(modelContainer: modelContext.container)
+
+                    if paymentBalance != 0 {
+                        var balancePaymentMethod = paymentMethod
+                        balancePaymentMethod.value = paymentBalance
+                        await ledger.makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
+                    }
+
+                    await ledger.makeMedicalServicePayment(from: patient, methods: paymentMethods, check: check, cretaedBy: user)
                 }
-
-                patient.mergedAppointments(forCheckID: check.id)
-                    .forEach { $0.status = .completed }
-
-                payment()
-                check.makeChargesForServices()
 
                 isPaid = true
-            }
-            .task {
-                var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-                descriptor.fetchLimit = 1
-                lastReport = try? modelContext.fetch(descriptor).first
-
-                if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
-                    todayReport = lastReport
-                }
             }
         }
     }
@@ -107,33 +95,7 @@ private extension BillPaymentView {
         paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - check.totalPrice
     }
 
-    func createReportWIthPayment(_ payment: Payment) {
-        if let lastReport {
-            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [payment])
-            modelContext.insert(newReport)
-        } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
-            modelContext.insert(firstReport)
-        }
-    }
-
-    func balancePayment() {
-        var balancePaymentMethod = paymentMethod
-        balancePaymentMethod.value = paymentBalance
-        let balancePayment = Payment(
-            purpose: paymentBalance > 0 ? .toBalance(patient.initials) : .fromBalance(patient.initials),
-            methods: [balancePaymentMethod],
-            createdBy: user.asAnyUser
-        )
-
-        if let todayReport {
-            todayReport.makePayment(balancePayment)
-        } else {
-            createReportWIthPayment(balancePayment)
-        }
-    }
-
-    func payment() {
+    var paymentMethods: [Payment.Method] {
         var methods = [Payment.Method]()
 
         if let additionalPaymentMethod {
@@ -144,12 +106,6 @@ private extension BillPaymentView {
 
         methods.append(paymentMethod)
 
-        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
-
-        if let todayReport {
-            todayReport.makePayment(payment)
-        } else {
-            createReportWIthPayment(payment)
-        }
+        return methods
     }
 }

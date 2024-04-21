@@ -12,12 +12,16 @@ import SwiftData
 
 @ModelActor
 actor Ledger {
-    func makePayment(_ payment: Payment) {
-        if let todayReport {
-            todayReport.makePayment(payment)
-        } else {
-            createReportWithPayment(payment)
-        }
+    func makeMedicalServicePayment(
+        from person: Person,
+        methods: [Payment.Method],
+        check: Check,
+        cretaedBy user: User
+    ) {
+        let payment = Payment(purpose: .medicalServices(person.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
+        check.makeChargesForServices()
+        check.appointments?.forEach { $0.status = .completed }
+        makePayment(payment)
     }
 
     func makeRefundPayment(
@@ -35,6 +39,8 @@ actor Ledger {
         makePayment(payment)
     }
 
+    // можно использовать ненулевой баланс для оплаты,
+    // а можно записать недоплаченные/переплаченные средства на баланс
     func makeBalancePayment(
         from person: AccountablePerson,
         method: Payment.Method,
@@ -42,6 +48,8 @@ actor Ledger {
     ) {
         let purpose: Payment.Purpose = method.value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
         let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
+        // зачисляем оплату на баланс
+        // (вычислять когда списывать, а когда зачислять)
         person.balance += method.value
         makePayment(payment)
     }
@@ -62,10 +70,19 @@ private extension Ledger {
         return lastReport
     }
 
+    func makePayment(_ payment: Payment) {
+        if let todayReport {
+            todayReport.makePayment(payment)
+        } else {
+            createReportWithPayment(payment)
+        }
+
+        try? modelContext.save()
+    }
+
     func createReportWithPayment(_ payment: Payment) {
         let newReport = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0, payments: [payment])
         modelContext.insert(newReport)
-        try? modelContext.save()
     }
 }
 
