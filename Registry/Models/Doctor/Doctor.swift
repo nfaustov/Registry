@@ -24,7 +24,7 @@ final class Doctor: Employee, User {
     var doctorSalary: Salary = Salary.pieceRate(rate: 0.4)
     private(set) var agentFee: Double = 0
     private(set) var agentFeePaymentDate: Date = Date.now
-    var balance: Double = 0
+    private(set) var balance: Double = 0
     var info: String = ""
     let createdAt: Date = Date.now
     @Attribute(.externalStorage)
@@ -72,6 +72,10 @@ final class Doctor: Employee, User {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
+    }
+
+    func updateBalance(increment: Double) {
+        balance += increment
     }
 
     func charge(as role: KeyPath<MedicalService, Doctor?>, amount: Double) {

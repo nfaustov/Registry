@@ -14,7 +14,6 @@ struct BillPaymentView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
-    private let appointment: PatientAppointment
     private let check: Check
     private let patient: Patient
     @Binding private var isPaid: Bool
@@ -27,7 +26,6 @@ struct BillPaymentView: View {
     // MARK: -
 
     init(appointment: PatientAppointment, isPaid: Binding<Bool>) {
-        self.appointment = appointment
         _isPaid = isPaid
 
         guard let patient = appointment.patient,
@@ -60,14 +58,7 @@ struct BillPaymentView: View {
             .sheetToolbar(title: "Оплата счёта", confirmationDisabled: undefinedPaymentValues) {
                 Task {
                     let ledger = Ledger(modelContainer: modelContext.container)
-
-                    if paymentBalance != 0 {
-                        var balancePaymentMethod = paymentMethod
-                        balancePaymentMethod.value = paymentBalance
-                        await ledger.makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
-                    }
-
-                    await ledger.makeMedicalServicePayment(from: patient, methods: paymentMethods, check: check, cretaedBy: user)
+                    await ledger.makeMedicalServicePayment(check: check, methods: paymentMethods, createdBy: user)
                 }
 
                 isPaid = true
@@ -89,10 +80,6 @@ private extension BillPaymentView {
     var undefinedPaymentValues: Bool {
         guard let additionalPaymentMethod else { return paymentMethod.value == 0 }
         return additionalPaymentMethod.value == 0 || paymentMethod.value == 0
-    }
-
-    var paymentBalance: Double {
-        paymentMethod.value + (additionalPaymentMethod?.value ?? 0) - check.totalPrice
     }
 
     var paymentMethods: [Payment.Method] {

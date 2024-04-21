@@ -35,16 +35,11 @@ struct UserDetailScreen: View {
                 Text(user.accessLevel.title)
             }
 
-            if let user = user as? Doctor {
+            if let doctor = user as? Doctor {
                 Section("Баланс") {
-                    LabeledContent("\(Int(user.balance)) ₽") {
+                    LabeledContent("\(Int(doctor.balance)) ₽") {
                         Button("Выплата") {
-                            coordinator.present(
-                                .updateBalance(
-                                    for: Binding(get: { user }, set: { value in user.balance = value.balance }),
-                                    kind: .payout
-                                )
-                            )
+                            coordinator.present(.updateBalance(for: doctor, kind: .payout))
                         }
                     }
                 }

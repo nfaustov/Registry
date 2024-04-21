@@ -16,8 +16,7 @@ struct UpdateBalanceView: View {
 
     @Query(sort: \Report.date, order: .reverse) private var reports: [Report]
 
-    @Binding var person: AccountablePerson
-
+    private let person: AccountablePerson
     private let kind: UpdateBalanceKind
 
     // MARK: - State
@@ -26,22 +25,22 @@ struct UpdateBalanceView: View {
 
     // MARK: -
 
-    init(person: Binding<Person & Accountable>, kind: UpdateBalanceKind) {
-        _person = person
+    init(person: AccountablePerson, kind: UpdateBalanceKind) {
+        self.person = person
         self.kind = kind
 
         if kind == .payout {
             _paymentMethod = State(
                 initialValue: Payment.Method(
                     .cash,
-                    value: person.wrappedValue.balance < 0 ? 0 : person.wrappedValue.balance
+                    value: person.balance < 0 ? 0 : person.balance
                 )
             )
         } else {
             _paymentMethod = State(
                 initialValue: Payment.Method(
                     .cash,
-                    value: person.wrappedValue.balance > 0 ? 0 : -person.wrappedValue.balance
+                    value: person.balance > 0 ? 0 : -person.balance
                 )
             )
         }
@@ -75,7 +74,7 @@ struct UpdateBalanceView: View {
                 abs(paymentMethod.value) :
                 -abs(paymentMethod.value)
 
-                person.balance += paymentMethod.value
+                person.updateBalance(increment: paymentMethod.value)
 
                 let payment = Payment(
                     purpose: kind == .refill ? .toBalance(person.initials) : .fromBalance(person.initials),
@@ -94,7 +93,7 @@ struct UpdateBalanceView: View {
 }
 
 #Preview {
-    UpdateBalanceView(person: .constant(ExampleData.doctor), kind: .payout)
+    UpdateBalanceView(person: ExampleData.doctor, kind: .payout)
 }
 
 // MARK: - Calculations

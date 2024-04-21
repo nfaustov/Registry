@@ -15,7 +15,7 @@ final class Patient: AccountablePerson {
     var firstName: String =  ""
     var patronymicName: String = ""
     var phoneNumber: String = ""
-    var balance: Double = Double.zero
+    private(set) var balance: Double = Double.zero
     var passport: PassportData = PassportData()
     var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     var treatmentPlan: TreatmentPlan?
@@ -48,6 +48,10 @@ final class Patient: AccountablePerson {
         self.treatmentPlan = treatmentPlan
         self.createdAt = .now
         self.image = image
+    }
+
+    func updateBalance(increment: Double) {
+        balance += increment
     }
 
     func mergedAppointments(forCheckID checkID: PersistentIdentifier) -> [PatientAppointment] {

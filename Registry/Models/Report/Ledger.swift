@@ -13,15 +13,26 @@ import SwiftData
 @ModelActor
 actor Ledger {
     func makeMedicalServicePayment(
-        from person: Person,
-        methods: [Payment.Method],
         check: Check,
-        cretaedBy user: User
+        methods: [Payment.Method],
+        createdBy user: User
     ) {
-        let payment = Payment(purpose: .medicalServices(person.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
+        guard let patient = check.appointments?.first?.patient else { return }
+
+        let paymentValue = methods.reduce(0.0) { $0 + $1.value }
+        let paymentBalance = paymentValue - check.totalPrice
+
+        if paymentBalance != 0 {
+            guard var balancePaymentMethod = methods.first else { return }
+
+            balancePaymentMethod.value = paymentBalance
+            makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
+        }
+
+        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
-        makePayment(payment)
+        record(payment)
     }
 
     func makeRefundPayment(
@@ -30,17 +41,15 @@ actor Ledger {
         method: Payment.Method,
         createdBy user: User
     ) {
-        guard let patient = check.appointments?.compactMap({ $0.patient }).first else { return }
+        guard let patient = check.appointments?.first?.patient else { return }
 
         let paymentValue = refund.totalAmount(discountRate: check.discountRate)
         let refundMethod = Payment.Method(method.type, value: paymentValue)
         let payment = Payment(purpose: .refund(patient.initials), methods: [refundMethod], createdBy: user.asAnyUser)
         check.makeRefund(refund)
-        makePayment(payment)
+        record(payment)
     }
 
-    // можно использовать ненулевой баланс для оплаты,
-    // а можно записать недоплаченные/переплаченные средства на баланс
     func makeBalancePayment(
         from person: AccountablePerson,
         method: Payment.Method,
@@ -48,10 +57,8 @@ actor Ledger {
     ) {
         let purpose: Payment.Purpose = method.value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
         let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
-        // зачисляем оплату на баланс
-        // (вычислять когда списывать, а когда зачислять)
-        person.balance += method.value
-        makePayment(payment)
+        person.updateBalance(increment: method.value)
+        record(payment)
     }
 }
 
@@ -70,7 +77,7 @@ private extension Ledger {
         return lastReport
     }
 
-    func makePayment(_ payment: Payment) {
+    func record(_ payment: Payment) {
         if let todayReport {
             todayReport.makePayment(payment)
         } else {

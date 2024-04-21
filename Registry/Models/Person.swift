@@ -8,7 +8,9 @@
 import Foundation
 
 protocol Accountable: AnyObject {
-    var balance: Double { get set }
+    var balance: Double { get }
+
+    func updateBalance(increment: Double)
 }
 
 protocol Person {

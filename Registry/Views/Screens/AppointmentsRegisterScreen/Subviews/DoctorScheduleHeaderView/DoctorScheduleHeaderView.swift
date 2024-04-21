@@ -73,12 +73,7 @@ struct DoctorScheduleHeaderView: View {
                     Section {
                         Button("Выплата") {
                             if doctor.department == .procedure {
-                                coordinator.present(
-                                    .updateBalance(
-                                        for: Binding(get: { doctor }, set: { value in doctor.balance = value.balance }),
-                                        kind: .payout
-                                    )
-                                )
+                                coordinator.present(.updateBalance(for: doctor, kind: .payout))
                             } else {
                                 coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
                             }
