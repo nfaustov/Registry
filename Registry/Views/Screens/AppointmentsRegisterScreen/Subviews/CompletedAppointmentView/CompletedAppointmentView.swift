@@ -105,15 +105,15 @@ struct CompletedAppointmentView: View {
                 onConfirm: appointment.check?.refund != nil ? nil : {
                     Task {
                         let ledger = Ledger(modelContainer: modelContext.container)
-                        let refundPayment = refundPayment()
-                        await ledger.makePayment(refundPayment)
+
+                        if let check = appointment.check {
+                            await ledger.makeRefundPayment(createdRefund, to: check, method: paymentMethod, createdBy: user)
+                        }
 
                         if includeBalance {
                             balancePaymentMethod.value = -patient.balance
-                            await ledger.makeBalancePayment(from: patient, methods: [balancePaymentMethod], createdBy: user)
+                            await ledger.makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
                         }
-
-                        appointment.check?.makeRefund(createdRefund)
                     }
                 }
             )
@@ -198,23 +198,12 @@ private extension CompletedAppointmentView {
         )
         .toggleStyle(.minusBox)
     }
-}
 
-// MARK: - Calculations
-
-private extension CompletedAppointmentView {
     func serviceItemForegroudColor(_ service: MedicalService) -> Color {
         if let refund = appointment.check?.refund {
             return refund.services.contains(service) ? .red.opacity(0.6) : .primary
         } else {
             return createdRefund.services.contains(service) ? .red : .primary
         }
-    }
-
-    func refundPayment() -> Payment {
-        paymentMethod.value = createdRefund.totalAmount(discountRate: appointment.check?.discountRate ?? 0)
-        let payment = Payment(purpose: .refund(patient.initials), methods: [paymentMethod], createdBy: user.asAnyUser)
-
-        return payment
     }
 }

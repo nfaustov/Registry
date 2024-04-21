@@ -20,9 +20,20 @@ actor Ledger {
         }
     }
 
-//    func makeRefundPayment(to check: Check, methods: [Payment.Method], createdBy: User) {
-//        
-//    }
+    func makeRefundPayment(
+        _ refund: Refund,
+        to check: Check,
+        method: Payment.Method,
+        createdBy user: User
+    ) {
+        guard let patient = check.appointments?.compactMap({ $0.patient }).first else { return }
+
+        let paymentValue = refund.totalAmount(discountRate: check.discountRate)
+        let refundMethod = Payment.Method(method.type, value: paymentValue)
+        let payment = Payment(purpose: .refund(patient.initials), methods: [refundMethod], createdBy: user.asAnyUser)
+        check.makeRefund(refund)
+        makePayment(payment)
+    }
 
     func makeBalancePayment(
         from person: AccountablePerson,
