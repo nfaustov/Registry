@@ -34,11 +34,7 @@ struct DaySalaryView: View {
                         .padding(.horizontal)
                 }
                 .task {
-                    let services = doctor.performedServices?.filter { service in
-                        if let date = service.date {
-                            return Calendar.current.isDateInToday(date)
-                        } else { return false }
-                    } ?? []
+                    let services = doctor.performedServices(from: Calendar.current.startOfDay(for: .now))
                     
                     if !services.isEmpty {
                         renderedServices = services

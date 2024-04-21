@@ -21,8 +21,6 @@ struct DoctorPayoutView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
-    @State private var todayReport: Report?
-    @State private var lastReport: Report?
     @State private var payoutType: PayoutType = .balance
 
     // MARK: -
@@ -77,16 +75,9 @@ struct DoctorPayoutView: View {
                 disabled || disabledAgentFee ||
                 disabledBalancePayment
             ) {
-                doctorPayout()
-                payment()
-            }
-            .task {
-                var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-                descriptor.fetchLimit = 1
-                lastReport = try? modelContext.fetch(descriptor).first
-
-                if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
-                    todayReport = lastReport
+                Task {
+                    let ledger = Ledger(modelContainer: modelContext.container)
+                    await ledger.makeSalaryPayment(doctor: doctor, payoutType, methods: paymentMethods, createdBy: user)
                 }
             }
         }
@@ -100,49 +91,12 @@ struct DoctorPayoutView: View {
 // MARK: - Calculations
 
 private extension DoctorPayoutView {
-    func createReportWithPayment(_ payment: Payment) {
-        if let lastReport {
-            let newReport = Report(date: .now, startingCash: lastReport.cashBalance, payments: [payment])
-            modelContext.insert(newReport)
-        } else {
-            let firstReport = Report(date: .now, startingCash: 0, payments: [payment])
-            modelContext.insert(firstReport)
-        }
-    }
-
-    func doctorPayout() {
-        let totalPaymentValue = abs(paymentMethod.value) + abs(additionalPaymentMethod?.value ?? 0)
-        switch payoutType {
-        case .balance: 
-            doctor.charge(as: \.performer, amount: -totalPaymentValue)
-        case .agentFee:
-            doctor.agentFeePayment(value: totalPaymentValue)
-        }
-    }
-
-    func payment() {
-        paymentMethod.value = -abs(paymentMethod.value)
+    var paymentMethods: [Payment.Method] {
         var methods = [paymentMethod]
 
-        additionalPaymentMethod?.value = -abs(additionalPaymentMethod?.value ?? 0)
         if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
-        let payment = Payment(purpose: paymentPurpose(), methods: methods, createdBy: user.asAnyUser)
-
-        if let todayReport {
-            todayReport.makePayment(payment)
-        } else {
-            createReportWithPayment(payment)
-        }
-    }
-
-    func paymentPurpose() -> Payment.Purpose {
-        switch payoutType {
-        case .balance:
-            return doctor.doctorSalary.rate == nil ? .fromBalance(doctor.initials) : .salary(doctor.initials)
-        case .agentFee:
-            return .agentFee(doctor.initials)
-        }
+        return methods
     }
 
     var disabledAgentFee: Bool {
@@ -156,22 +110,20 @@ private extension DoctorPayoutView {
 
 // MARK: - PayoutType
 
-private extension DoctorPayoutView {
-    enum PayoutType: Hashable, CaseIterable {
-        case balance
-        case agentFee
+enum PayoutType: Hashable, CaseIterable {
+    case balance
+    case agentFee
 
-        func title(for employee: Employee) -> String {
-            switch self {
-            case .balance:
-                if employee.doctorSalary.rate != nil {
-                    return "Заработная плата"
-                } else {
-                    return "Выплата с баланса"
-                }
-            case .agentFee:
-                return "Агентские"
+    func title(for employee: Employee) -> String {
+        switch self {
+        case .balance:
+            if employee.doctorSalary.rate != nil {
+                return "Заработная плата"
+            } else {
+                return "Выплата с баланса"
             }
+        case .agentFee:
+            return "Агентские"
         }
     }
 }

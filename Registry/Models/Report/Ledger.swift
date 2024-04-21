@@ -35,6 +35,28 @@ actor Ledger {
         record(payment)
     }
 
+    func makeSalaryPayment(doctor: Doctor, _ payoutType: PayoutType, methods: [Payment.Method], createdBy user: User) {
+        var paymentValue = methods.reduce(0.0) { $0 + $1.value }
+        var purpose: Payment.Purpose
+
+        switch payoutType {
+        case .balance:
+            if doctor.doctorSalary.rate != nil {
+                purpose = .salary(doctor.initials)
+            } else {
+                purpose = .fromBalance(doctor.initials)
+            }
+
+            doctor.updateBalance(increment: -paymentValue)
+        case .agentFee:
+            purpose = .agentFee(doctor.initials)
+            doctor.agentFeePayment(value: paymentValue)
+        }
+
+        let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)
+        record(payment)
+    }
+
     func makeRefundPayment(
         _ refund: Refund,
         to check: Check,

@@ -78,6 +78,15 @@ final class Doctor: Employee, User {
         balance += increment
     }
 
+    func performedServices(from date: Date) -> [MedicalService] {
+        performedServices?
+            .filter { service in
+                if let serviceDate = service.date {
+                    return serviceDate > date
+                } else { return false }
+            } ?? []
+    }
+
     func charge(as role: KeyPath<MedicalService, Doctor?>, amount: Double) {
         switch role {
         case \.performer:
