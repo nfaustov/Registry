@@ -25,6 +25,7 @@ struct CashboxReportingView: View {
     @State private var income: Double = .zero
     @State private var expense: Double = .zero
     @State private var isLoading: Bool = true
+    @State private var selectedCheck: Check?
 
     // MARK: -
 
@@ -99,32 +100,63 @@ struct CashboxReportingView: View {
             }
 
             Section {
-                DisclosureGroup{
+                DisclosureGroup {
                     let sortedPayments = todayReport.payments?.sorted(by: { $0.date > $1.date })
                     List(sortedPayments ?? []) { payment in
-                        HStack {
-                            Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
-                                .padding()
-                                .background(paymentBackground(payment).opacity(0.1))
-                                .clipShape(.rect(cornerRadius: 12))
+                        Button {
+                            selectedCheck = payment.subject
+                        } label: {
+                            HStack {
+                                Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
+                                    .padding()
+                                    .background(paymentBackground(payment).opacity(0.1))
+                                    .clipShape(.rect(cornerRadius: 12))
 
-                            VStack(alignment: .leading) {
-                                Text(payment.purpose.title)
-                                    .font(.headline)
-                                Text(payment.purpose.descripiton)
-                                    .font(.subheadline)
+                                VStack(alignment: .leading) {
+                                    Text(payment.purpose.title)
+                                        .font(.headline)
+                                    Text(payment.purpose.descripiton)
+                                        .font(.subheadline)
+                                }
+
+                                Spacer()
+
+                                Text("\(Int(payment.totalAmount)) ₽")
+                                    .foregroundStyle(payment.totalAmount > 0 ? .teal : payment.purpose == .collection ? .purple : .red)
                             }
-
-                            Spacer()
-
-                            Text("\(Int(payment.totalAmount)) ₽")
-                                .foregroundStyle(payment.totalAmount > 0 ? .teal : payment.purpose == .collection ? .purple : .red)
                         }
                     }
                 } label: {
                     LabeledContent("Платежи") {
                         Text(profit > 0 ? "+\(Int(profit)) ₽" : "-\(Int(profit)) ₽")
                             .foregroundStyle(profit > 0 ? .green : .red)
+                    }
+                }
+            }
+            .sheet(item: $selectedCheck) { check in
+                List {
+                    ForEach(check.services) { service in
+                        Section("Услуги") {
+                            LabeledContent(service.pricelistItem.title) {
+                                Text("\(Int(service.pricelistItem.price))")
+                                    .frame(width: 60)
+                            }
+                        }
+                    }
+
+                    Section {
+                        Text("Цена: \(Int(check.price)) ₽")
+                            .font(.subheadline)
+
+                        if check.discount != 0 {
+                            Text("Скидка: \(Int(check.discount)) ₽")
+                                .font(.subheadline)
+                        }
+
+                        Text("Оплачено: \(Int(check.totalPrice)) ₽")
+                            .font(.headline)
+                    } header: {
+                        Text("Итог")
                     }
                 }
             }

@@ -41,7 +41,7 @@ actor Ledger {
         methods: [Payment.Method],
         createdBy user: User
     ) {
-        var paymentValue = methods.reduce(0.0) { $0 + $1.value }
+        let paymentValue = methods.reduce(0.0) { $0 + $1.value }
         var purpose: Payment.Purpose
 
         switch payoutType {
