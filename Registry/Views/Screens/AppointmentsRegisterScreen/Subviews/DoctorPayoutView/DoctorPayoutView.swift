@@ -92,9 +92,13 @@ struct DoctorPayoutView: View {
 
 private extension DoctorPayoutView {
     var paymentMethods: [Payment.Method] {
+        paymentMethod.value = -abs(paymentMethod.value)
         var methods = [paymentMethod]
 
-        if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
+        if var additionalPaymentMethod {
+            additionalPaymentMethod.value = -abs(additionalPaymentMethod.value)
+            methods.append(additionalPaymentMethod)
+        }
 
         return methods
     }

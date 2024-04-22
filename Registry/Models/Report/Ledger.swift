@@ -52,10 +52,10 @@ actor Ledger {
                 purpose = .fromBalance(doctor.initials)
             }
 
-            doctor.updateBalance(increment: -paymentValue)
+            doctor.updateBalance(increment: paymentValue)
         case .agentFee:
             purpose = .agentFee(doctor.initials)
-            doctor.agentFeePayment(value: paymentValue)
+            doctor.agentFeePayment(value: -paymentValue)
         }
 
         let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)
@@ -93,6 +93,8 @@ actor Ledger {
         method: Payment.Method,
         createdBy user: User
     ) {
+        var method = method
+        method.value = -abs(method.value)
         let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
         record(payment)
     }
