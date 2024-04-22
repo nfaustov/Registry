@@ -11,21 +11,31 @@ import SwiftData
 struct DoctorsChart: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
     @Query private var doctors: [Doctor]
-
-    // MARK: - State
 
     // MARK: -
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Врачи")
-                .font(.title)
-                .padding(.bottom, 20)
+        Section {
+            DisclosureGroup("Врачи") {
+                List(doctors) { doctor in
+                    HStack {
+                        PersonImageView(person: doctor)
+                            .frame(width: 56, height: 56, alignment: .top)
+                            .clipShape(Circle())
 
-            Text("Врачей: \(doctors.count)")
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(doctor.id.uuidString)
+                                .font(.footnote)
+                            Text(doctor.fullName)
+                            LabeledContent("Баланс", value: "\(Int(doctor.balance))")
+                                .padding(.top, 4)
+                            LabeledContent("Агентские", value: "\(Int(doctor.agentFee))")
+                        }
+                        .padding(.leading)
+                    }
+                }
+            }
         }
     }
 }

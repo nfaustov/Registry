@@ -125,6 +125,7 @@ struct CashboxReportingView: View {
                                     .foregroundStyle(payment.totalAmount > 0 ? .teal : payment.purpose == .collection ? .purple : .red)
                             }
                         }
+                        .tint(.primary)
                     }
                 } label: {
                     LabeledContent("Платежи") {
@@ -135,8 +136,8 @@ struct CashboxReportingView: View {
             }
             .sheet(item: $selectedCheck) { check in
                 List {
-                    ForEach(check.services) { service in
-                        Section("Услуги") {
+                    Section("Услуги") {
+                        ForEach(check.services) { service in
                             LabeledContent(service.pricelistItem.title) {
                                 Text("\(Int(service.pricelistItem.price))")
                                     .frame(width: 60)
