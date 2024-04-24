@@ -55,7 +55,7 @@ actor Ledger {
             doctor.updateBalance(increment: paymentValue)
         case .agentFee:
             purpose = .agentFee(doctor.initials)
-            doctor.agentFeePayment(value: -paymentValue)
+            doctor.updateAgentFee(increment: paymentValue)
         }
 
         let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)

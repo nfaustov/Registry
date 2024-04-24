@@ -53,10 +53,10 @@ final class MedicalService {
            let rate = performer.doctorSalary.rate,
            pricelistItem.category != .laboratory {
             if let fixedSalary = pricelistItem.fixedSalary {
-                performer.charge(as: \.performer, amount: action == .charge ? fixedSalary: -fixedSalary)
+                performer.updateBalance(increment: action == .charge ? fixedSalary : -fixedSalary)
             } else {
                 let salary = pricelistItem.price * rate
-                performer.charge(as: \.performer, amount: action == .charge ? salary : -salary)
+                performer.updateBalance(increment: action == .charge ? salary : -salary)
             }
         }
     }
@@ -64,10 +64,10 @@ final class MedicalService {
     private func agentFee(_ action: ChargeAction) {
         if let agent {
             if let fixedAgentFee = pricelistItem.fixedAgentFee {
-                agent.charge(as: \.agent, amount: action == .charge ? fixedAgentFee : -fixedAgentFee)
+                agent.updateAgentFee(increment: action == .charge ? fixedAgentFee : -fixedAgentFee)
             } else {
                 let agentFee = pricelistItem.price * 0.1
-                agent.charge(as: \.agent, amount: action == .charge ? agentFee : -agentFee)
+                agent.updateAgentFee(increment: action == .charge ? agentFee : -agentFee)
             }
         }
     }

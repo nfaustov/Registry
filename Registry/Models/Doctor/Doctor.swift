@@ -78,6 +78,14 @@ final class Doctor: Employee, User, Codable {
         balance += increment
     }
 
+    func updateAgentFee(increment: Double) {
+        agentFee += increment
+
+        if increment < 0 {
+            agentFeePaymentDate = .now
+        }
+    }
+
     func performedServices(from date: Date) -> [MedicalService] {
         performedServices?
             .filter { service in
@@ -85,25 +93,6 @@ final class Doctor: Employee, User, Codable {
                     return serviceDate > date
                 } else { return false }
             } ?? []
-    }
-
-    func charge(as role: KeyPath<MedicalService, Doctor?>, amount: Double) {
-        switch role {
-        case \.performer:
-            balance += amount
-        case \.agent:
-            agentFee += amount
-        default: ()
-        }
-    }
-
-    func agentFeePayment(value: Double) {
-        guard value >= agentFee else { return }
-
-        let diff = value - agentFee
-        agentFee = 0
-        balance += diff
-        agentFeePaymentDate = .now
     }
 
     func pieceRateSalary(for services: [MedicalService]) -> Double {
