@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Doctor: Employee, User {
+final class Doctor: Employee, User, Codable {
     let id: UUID = UUID()
     var secondName: String = ""
     var firstName: String = ""
@@ -127,5 +127,51 @@ final class Doctor: Employee, User {
             return max(minAmount ?? 0, salary)
         default: return 0
         }
+    }
+
+    // MARK: - Codable
+
+    private enum CodingKeys: String, CodingKey {
+        case id, secondName, firstName, patronymicName, phoneNUmber, birthDate, department, serviceDuration, defaultCabinet, doctorSalary, agentFee, agentFeePaymentDate, balance, info, createdAt, accessLevel
+    }
+
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.secondName = try container.decode(String.self, forKey: .secondName)
+        self.firstName = try container.decode(String.self, forKey: .firstName)
+        self.patronymicName = try container.decode(String.self, forKey: .patronymicName)
+        self.phoneNumber = try container.decode(String.self, forKey: .phoneNUmber)
+        self.birthDate = try container.decode(Date.self, forKey: .birthDate)
+        self.department = try container.decode(Department.self, forKey: .department)
+        self.serviceDuration = try container.decode(TimeInterval.self, forKey: .serviceDuration)
+        self.defaultCabinet = try container.decode(Int.self, forKey: .defaultCabinet)
+        self.doctorSalary = try container.decode(Salary.self, forKey: .doctorSalary)
+        self.agentFee = try container.decode(Double.self, forKey: .agentFee)
+        self.agentFeePaymentDate = try container.decode(Date.self, forKey: .agentFeePaymentDate)
+        self.balance = try container.decode(Double.self, forKey: .balance)
+        self.info = try container.decode(String.self, forKey: .info)
+        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+        self.accessLevel = try container.decode(UserAccessLevel.self, forKey: .accessLevel)
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(secondName, forKey: .secondName)
+        try container.encode(firstName, forKey: .firstName)
+        try container.encode(patronymicName, forKey: .patronymicName)
+        try container.encode(phoneNumber, forKey: .phoneNUmber)
+        try container.encode(birthDate, forKey: .birthDate)
+        try container.encode(department, forKey: .department)
+        try container.encode(serviceDuration, forKey: .serviceDuration)
+        try container.encode(defaultCabinet, forKey: .defaultCabinet)
+        try container.encode(doctorSalary, forKey: .doctorSalary)
+        try container.encode(agentFee, forKey: .agentFee)
+        try container.encode(agentFeePaymentDate, forKey: .agentFeePaymentDate)
+        try container.encode(balance, forKey: .balance)
+        try container.encode(info, forKey: .info)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(accessLevel, forKey: .accessLevel)
     }
 }

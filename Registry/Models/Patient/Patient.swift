@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Patient: AccountablePerson {
+final class Patient: AccountablePerson, Codable {
     let id: UUID = UUID()
     var secondName: String = ""
     var firstName: String =  ""
@@ -81,5 +81,39 @@ final class Patient: AccountablePerson {
     func updateCheck(_ check: Check, forAppointmentID appointmentID: UUID) {
         guard let appointment = appointments?.first(where: { $0.id == appointmentID }) else { return }
         appointment.check = check
+    }
+
+    // MARK: - Codable
+
+    private enum CodingKeys: String, CodingKey {
+        case id, secondName, firstName, patronymicName, phoneNumber, balance, passport, placeOfResidence, treatmentPlan, createdAt
+    }
+
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.secondName = try container.decode(String.self, forKey: .secondName)
+        self.firstName = try container.decode(String.self, forKey: .firstName)
+        self.patronymicName = try container.decode(String.self, forKey: .patronymicName)
+        self.phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
+        self.balance = try container.decode(Double.self, forKey: .balance)
+        self.passport = try container.decode(PassportData.self, forKey: .passport)
+        self.placeOfResidence = try container.decode(PlaceOfResidence.self, forKey: .placeOfResidence)
+        self.treatmentPlan = try container.decodeIfPresent(TreatmentPlan.self, forKey: .treatmentPlan)
+        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(secondName, forKey: .secondName)
+        try container.encode(firstName, forKey: .firstName)
+        try container.encode(patronymicName, forKey: .patronymicName)
+        try container.encode(phoneNumber, forKey: .phoneNumber)
+        try container.encode(balance, forKey: .balance)
+        try container.encode(passport, forKey: .passport)
+        try container.encode(placeOfResidence, forKey: .placeOfResidence)
+        try container.encode(treatmentPlan, forKey: .treatmentPlan)
+        try container.encode(createdAt, forKey: .createdAt)
     }
 }

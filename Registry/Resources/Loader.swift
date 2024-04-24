@@ -22,11 +22,16 @@ func load<T: Decodable>(_ filename: String) -> T {
 
     do {
         let decoder = JSONDecoder()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
         return try decoder.decode(T.self, from: data)
     } catch {
         fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+    }
+}
+
+func encode<T: Encodable>(_ value: T) -> Data {
+    do {
+        return try JSONEncoder().encode(value)
+    } catch {
+        fatalError("Couldn't encode item of type \(T.self):\n\(error)")
     }
 }
