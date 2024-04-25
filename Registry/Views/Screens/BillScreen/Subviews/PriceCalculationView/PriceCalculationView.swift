@@ -22,7 +22,6 @@ struct PriceCalculationView: View {
 
     @State private var addDiscount: Bool = false
     @State private var payBill: Bool = false
-    @State private var discountPercent: Int = 0
     @State private var showDiscountSheet: Bool = false
 
     // MARK: -
@@ -98,7 +97,6 @@ struct PriceCalculationView: View {
 
                         Button("Отменить", role: .destructive) {
                             check.discount = 0
-                            discountPercent = 0
                         }
                     }
                     .sheet(isPresented: $showDiscountSheet) {
@@ -113,21 +111,9 @@ struct PriceCalculationView: View {
             }
             .frame(width: 500)
         }
-        .onAppear {
-            if check.discount > 0 {
-                discountPercent = Int(check.discount / check.price * 100)
-            }
-        }
         .onDisappear {
             if !isCompleted {
                 patient.updateCheck(check, forAppointmentID: appointment.id)
-            }
-        }
-        .onChange(of: check.discount) { _, newValue in
-            if newValue > 0 {
-                withAnimation {
-                    discountPercent = Int(check.discount / check.price * 100)
-                }
             }
         }
     }
@@ -149,7 +135,6 @@ private extension PriceCalculationView {
         let discount = check.price * percent / 100
         Button("\(Int(percent))% (\(Int(discount.rounded())) ₽)") {
             check.discount = discount.rounded()
-            discountPercent = Int(percent)
         }
     }
 }
@@ -160,5 +145,9 @@ private extension PriceCalculationView {
     var patient: Patient {
         guard let patient = appointment.patient else { fatalError() }
         return patient
+    }
+
+    var discountPercent: Int {
+        Int(check.discountRate * 100)
     }
 }

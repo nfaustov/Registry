@@ -25,6 +25,10 @@ final class Check {
         }
         set {
             _services = newValue
+
+            if newValue.isEmpty {
+                discount = 0
+            }
         }
     }
 
