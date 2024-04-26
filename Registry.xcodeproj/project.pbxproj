@@ -78,6 +78,9 @@
 		8B80FED12BC25A1800BB76E0 /* PDFDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */; };
 		8B80FED42BC25D1B00BB76E0 /* ContractScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */; };
 		8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */; };
+		8B8683512BDBE89D00A5213C /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B86834E2BDBE89D00A5213C /* pricelistItems.json */; };
+		8B8683522BDBE89D00A5213C /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B86834F2BDBE89D00A5213C /* patients.json */; };
+		8B8683532BDBE89D00A5213C /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B8683502BDBE89D00A5213C /* doctors.json */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
 		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
@@ -142,9 +145,6 @@
 		8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */; };
 		8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68F2BB3461000264557 /* AuthorizationController.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
-		8BF714F72BD958EA00AB3A06 /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF714F42BD958EA00AB3A06 /* pricelistItems.json */; };
-		8BF714F82BD958EA00AB3A06 /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF714F52BD958EA00AB3A06 /* doctors.json */; };
-		8BF714F92BD958EA00AB3A06 /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BF714F62BD958EA00AB3A06 /* patients.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -218,6 +218,9 @@
 		8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentView.swift; sourceTree = "<group>"; };
 		8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractScreen.swift; sourceTree = "<group>"; };
 		8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		8B86834E2BDBE89D00A5213C /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
+		8B86834F2BDBE89D00A5213C /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
+		8B8683502BDBE89D00A5213C /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
@@ -285,9 +288,6 @@
 		8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationServiceClient.swift; sourceTree = "<group>"; };
 		8BE4C68F2BB3461000264557 /* AuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
-		8BF714F42BD958EA00AB3A06 /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
-		8BF714F52BD958EA00AB3A06 /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
-		8BF714F62BD958EA00AB3A06 /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -515,9 +515,9 @@
 		8B29E04A2B6A430D0003A647 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8BF714F52BD958EA00AB3A06 /* doctors.json */,
-				8BF714F62BD958EA00AB3A06 /* patients.json */,
-				8BF714F42BD958EA00AB3A06 /* pricelistItems.json */,
+				8B8683502BDBE89D00A5213C /* doctors.json */,
+				8B86834F2BDBE89D00A5213C /* patients.json */,
+				8B86834E2BDBE89D00A5213C /* pricelistItems.json */,
 				8BF10FDD2B8F220D003AD57E /* Loader.swift */,
 			);
 			path = Resources;
@@ -1281,10 +1281,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BF714F72BD958EA00AB3A06 /* pricelistItems.json in Resources */,
+				8B8683512BDBE89D00A5213C /* pricelistItems.json in Resources */,
+				8B8683522BDBE89D00A5213C /* patients.json in Resources */,
 				8B96738F2B36187E00FD2E7C /* Preview Assets.xcassets in Resources */,
-				8BF714F92BD958EA00AB3A06 /* patients.json in Resources */,
-				8BF714F82BD958EA00AB3A06 /* doctors.json in Resources */,
+				8B8683532BDBE89D00A5213C /* doctors.json in Resources */,
 				8B96738C2B36187E00FD2E7C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
