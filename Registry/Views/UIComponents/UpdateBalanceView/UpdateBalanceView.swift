@@ -38,7 +38,7 @@ struct UpdateBalanceView: View {
             _paymentMethod = State(
                 initialValue: Payment.Method(
                     .cash,
-                    value: person.balance > 0 ? 0 : -person.balance
+                    value: person.balance >= 0 ? 0 : -person.balance
                 )
             )
         }
@@ -58,11 +58,14 @@ struct UpdateBalanceView: View {
 
                 Section("Способ оплаты") {
                     Text(paymentMethod.type.rawValue)
-                        .foregroundStyle(.secondary)
                 }
 
                 Section {
-                    TextField("Сумма", value: $paymentMethod.value, format: .number)
+                    LabeledContent {
+                        Image(systemName: "pencil")
+                    } label: {
+                        MoneyField(value: $paymentMethod.value)
+                    }
                 } header: {
                     Text("Сумма")
                 }

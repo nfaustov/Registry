@@ -57,11 +57,10 @@ struct CreateSpendingView: View {
                 }
 
                 Section {
-                    HStack {
-                        TextField("Сумма оплаты", value: $paymentMethod.value, format: .number)
-                        Spacer()
+                    LabeledContent {
                         Image(systemName: "pencil")
-                            .foregroundColor(.secondary)
+                    } label: {
+                        MoneyField(value: $paymentMethod.value)
                     }
                 } header: {
                     Text("Сумма оплаты")

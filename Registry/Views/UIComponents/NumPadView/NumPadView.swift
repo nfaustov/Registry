@@ -68,6 +68,7 @@ private extension NumPadView {
             }
         }
         .buttonStyle(CustomButtonStyle())
+        .disabled(text.isEmpty)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 

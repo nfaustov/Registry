@@ -23,7 +23,7 @@ struct PaymentValueView: View {
             LabeledContent {
                 Image(systemName: "pencil")
             } label: {
-                TextField(textFieldTitle, value: $value, format: .number)
+                MoneyField(value: $value)
             }
         } header: {
             Text(textFieldTitle)
