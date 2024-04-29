@@ -56,19 +56,7 @@ struct UpdateBalanceView: View {
                     }
                 }
 
-                Section("Способ оплаты") {
-                    Text(paymentMethod.type.rawValue)
-                }
-
-                Section {
-                    LabeledContent {
-                        Image(systemName: "pencil")
-                    } label: {
-                        MoneyField(value: $paymentMethod.value)
-                    }
-                } header: {
-                    Text("Сумма")
-                }
+                MoneyFieldSection(paymentMethod.type.rawValue, value: $paymentMethod.value)
             }
             .sheetToolbar(title: kind.rawValue, confirmationDisabled: paymentMethod.value == 0) {
                 Task {

@@ -102,7 +102,7 @@ struct PriceCalculationView: View {
                     .sheet(isPresented: $showDiscountSheet) {
                         NavigationStack {
                             Form {
-                                TextField("Сумма скидки", value: $check.discount, format: .number)
+                                MoneyFieldSection(value: $check.discount)
                             }
                             .sheetToolbar(title: "Сумма скидки")
                         }

@@ -56,15 +56,7 @@ struct CreateSpendingView: View {
                     Text("Способ оплаты")
                 }
 
-                Section {
-                    LabeledContent {
-                        Image(systemName: "pencil")
-                    } label: {
-                        MoneyField(value: $paymentMethod.value)
-                    }
-                } header: {
-                    Text("Сумма оплаты")
-                } footer: {
+                MoneyFieldSection("Сумма оплаты", value: $paymentMethod.value) {
                     if paymentMethod.value > cashBalance {
                         Text("Недостаточно средств. В кассе \(Int(cashBalance)) ₽")
                             .foregroundStyle(.red)

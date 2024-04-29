@@ -19,15 +19,7 @@ struct PaymentValueView: View {
     // MARK: -
 
     var body: some View {
-        Section {
-            LabeledContent {
-                Image(systemName: "pencil")
-            } label: {
-                MoneyField(value: $value)
-            }
-        } header: {
-            Text(textFieldTitle)
-        } footer: {
+        MoneyFieldSection(textFieldTitle, value: $value) {
             if finalAccountBalance != 0 {
                 Text("Остаток на балансе: \(finalAccountBalance) ₽")
                     .foregroundColor(finalAccountBalance < 0 ? .red : .secondary)
