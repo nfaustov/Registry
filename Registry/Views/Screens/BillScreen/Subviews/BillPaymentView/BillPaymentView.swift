@@ -55,7 +55,10 @@ struct BillPaymentView: View {
                 )
                 .paymentKind(.bill(totalPrice: check.totalPrice))
             }
-            .sheetToolbar(title: "Оплата счёта", confirmationDisabled: check.totalPrice == 0 ? false : undefinedPaymentValues) {
+            .sheetToolbar(
+                title: "Оплата счёта",
+                confirmationDisabled: check.totalPrice - patient.balance == 0 ? false : undefinedPaymentValues
+            ) {
                 Task {
                     let ledger = Ledger(modelContainer: modelContext.container)
                     await ledger.makeMedicalServicePayment(check: check, methods: paymentMethods, createdBy: user)
