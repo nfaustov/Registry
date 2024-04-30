@@ -78,9 +78,6 @@
 		8B80FED12BC25A1800BB76E0 /* PDFDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */; };
 		8B80FED42BC25D1B00BB76E0 /* ContractScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */; };
 		8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */; };
-		8B8683512BDBE89D00A5213C /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B86834E2BDBE89D00A5213C /* pricelistItems.json */; };
-		8B8683522BDBE89D00A5213C /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B86834F2BDBE89D00A5213C /* patients.json */; };
-		8B8683532BDBE89D00A5213C /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B8683502BDBE89D00A5213C /* doctors.json */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
 		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
@@ -145,6 +142,9 @@
 		8BE4C68C2BB33F3100264557 /* CallAuthorizationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */; };
 		8BE4C68E2BB3403E00264557 /* CallAuthorizationServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */; };
 		8BE4C6902BB3461000264557 /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4C68F2BB3461000264557 /* AuthorizationController.swift */; };
+		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
+		8BE9D3592BE13EF8006B26FF /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3562BE13EF8006B26FF /* patients.json */; };
+		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 /* End PBXBuildFile section */
 
@@ -219,9 +219,6 @@
 		8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentView.swift; sourceTree = "<group>"; };
 		8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractScreen.swift; sourceTree = "<group>"; };
 		8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
-		8B86834E2BDBE89D00A5213C /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
-		8B86834F2BDBE89D00A5213C /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
-		8B8683502BDBE89D00A5213C /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
@@ -247,7 +244,6 @@
 		8B9673872B36187D00FD2E7C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8B96738B2B36187E00FD2E7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B96738E2B36187E00FD2E7C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8B9673902B36187E00FD2E7C /* Registry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Registry.entitlements; sourceTree = "<group>"; };
 		8B9673912B36187E00FD2E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B96739C2B361BB200FD2E7C /* Doctor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doctor.swift; sourceTree = "<group>"; };
 		8B96739E2B361C0900FD2E7C /* Department.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Department.swift; sourceTree = "<group>"; };
@@ -289,6 +285,9 @@
 		8BE4C68B2BB33F3100264557 /* CallAuthorizationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationEntity.swift; sourceTree = "<group>"; };
 		8BE4C68D2BB3403E00264557 /* CallAuthorizationServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAuthorizationServiceClient.swift; sourceTree = "<group>"; };
 		8BE4C68F2BB3461000264557 /* AuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
+		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
+		8BE9D3562BE13EF8006B26FF /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
+		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -517,9 +516,9 @@
 		8B29E04A2B6A430D0003A647 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8B8683502BDBE89D00A5213C /* doctors.json */,
-				8B86834F2BDBE89D00A5213C /* patients.json */,
-				8B86834E2BDBE89D00A5213C /* pricelistItems.json */,
+				8BE9D3572BE13EF8006B26FF /* doctors.json */,
+				8BE9D3562BE13EF8006B26FF /* patients.json */,
+				8BE9D3552BE13EF8006B26FF /* pricelistItems.json */,
 				8BF10FDD2B8F220D003AD57E /* Loader.swift */,
 			);
 			path = Resources;
@@ -934,7 +933,6 @@
 				8B9673992B361B5200FD2E7C /* Extensions */,
 				8B29E04A2B6A430D0003A647 /* Resources */,
 				8B96738B2B36187E00FD2E7C /* Assets.xcassets */,
-				8B9673902B36187E00FD2E7C /* Registry.entitlements */,
 				8B9673912B36187E00FD2E7C /* Info.plist */,
 				8B96738D2B36187E00FD2E7C /* Preview Content */,
 			);
@@ -1292,10 +1290,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B8683512BDBE89D00A5213C /* pricelistItems.json in Resources */,
-				8B8683522BDBE89D00A5213C /* patients.json in Resources */,
+				8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */,
+				8BE9D3592BE13EF8006B26FF /* patients.json in Resources */,
 				8B96738F2B36187E00FD2E7C /* Preview Assets.xcassets in Resources */,
-				8B8683532BDBE89D00A5213C /* doctors.json in Resources */,
+				8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */,
 				8B96738C2B36187E00FD2E7C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
