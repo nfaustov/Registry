@@ -108,7 +108,7 @@ private extension VisitsDetailView {
                         let uniqueDoctors = Array(doctors.uniqued())
 
                         if uniqueDoctors.count > 0 {
-                            Text(uniqueDoctors.count > 1 ? "Врачи:" : "Врач:")
+                            Text(uniqueDoctors.count > 1 ? "Специалисты:" : "Специалист:")
                                 .font(.headline)
                         }
 
