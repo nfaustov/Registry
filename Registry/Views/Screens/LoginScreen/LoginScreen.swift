@@ -52,10 +52,6 @@ struct LoginScreen: View {
                         }
                     }
                     .onAppear {
-                        for registrar in doctors.filter({ $0.accessLevel == .registrar }) {
-                            print(registrar.initials)
-                            print(pass(for: registrar.id))
-                        }
                         withAnimation {
                             selectedRegistrar = doctors.first(where: { $0.id.uuidString == lastUserID })
                         }
