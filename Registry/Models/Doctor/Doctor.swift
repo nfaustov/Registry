@@ -74,25 +74,32 @@ final class Doctor: Employee, User, Codable {
         self.accessLevel = accessLevel
     }
 
+    var lastAppointedServices: [MedicalService] {
+        appointedServices?.filter { service in
+            if let date = service.date {
+                return date > agentFeePaymentDate
+            } else { return false }
+        } ?? []
+    }
+
     func updateBalance(increment: Double) {
         balance += increment
     }
 
-    func updateAgentFee(increment: Double) {
-        agentFee += increment
-
-        if increment < 0 {
-            agentFeePaymentDate = .now
-        }
+    func appointedServices(from date: Date) -> [MedicalService] {
+        appointedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
     }
 
     func performedServices(from date: Date) -> [MedicalService] {
-        performedServices?
-            .filter { service in
-                if let serviceDate = service.date {
-                    return serviceDate > date
-                } else { return false }
-            } ?? []
+        performedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
     }
 
     func pieceRateSalary(for services: [MedicalService]) -> Double {

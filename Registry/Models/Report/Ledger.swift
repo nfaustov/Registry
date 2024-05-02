@@ -23,10 +23,7 @@ actor Ledger {
         let paymentBalance = paymentValue - check.totalPrice
 
         if paymentBalance != 0 {
-            guard var balancePaymentMethod = methods.first else { return }
-
-            balancePaymentMethod.value = paymentBalance
-            makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
+            makeBalancePayment(from: patient, value: paymentValue, createdBy: user)
         }
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
@@ -35,30 +32,16 @@ actor Ledger {
         record(payment)
     }
 
-    func makeSalaryPayment(
-        doctor: Doctor,
-        _ payoutType: PayoutType,
-        methods: [Payment.Method],
-        createdBy user: User
-    ) {
+    func makeDoctorPayoutPayment(doctor: Doctor, methods: [Payment.Method], createdBy user: User) {
+        guard doctor.doctorSalary.rate != nil else { return }
+
         let paymentValue = methods.reduce(0.0) { $0 + $1.value }
-        var purpose: Payment.Purpose
-
-        switch payoutType {
-        case .balance:
-            if doctor.doctorSalary.rate != nil {
-                purpose = .salary(doctor.initials)
-            } else {
-                purpose = .fromBalance(doctor.initials)
-            }
-
-            doctor.updateBalance(increment: paymentValue)
-        case .agentFee:
-            purpose = .agentFee(doctor.initials)
-            doctor.updateAgentFee(increment: paymentValue)
-        }
-
-        let payment = Payment(purpose: purpose, methods: methods, createdBy: user.asAnyUser)
+        let payment = Payment(
+            purpose: .doctorPayout("Врач: \(doctor.initials)"),
+            methods: methods,
+            createdBy: user.asAnyUser
+        )
+        doctor.updateBalance(increment: -paymentValue)
         record(payment)
     }
 
@@ -79,12 +62,12 @@ actor Ledger {
 
     func makeBalancePayment(
         from person: AccountablePerson,
-        method: Payment.Method,
+        value: Double,
         createdBy user: User
     ) {
-        let purpose: Payment.Purpose = method.value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
-        let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
-        person.updateBalance(increment: method.value)
+        let purpose: Payment.Purpose = value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
+        let payment = Payment(purpose: purpose, methods: [.init(.cash, value: value)], createdBy: user.asAnyUser)
+        person.updateBalance(increment: value)
         record(payment)
     }
 

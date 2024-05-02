@@ -48,13 +48,7 @@ struct AgentFeeView: View {
                         isLoading = true
 
                         Task {
-                            let services = doctor.appointedServices?.filter { service in
-                                if let date = service.date {
-                                    return date > doctor.agentFeePaymentDate
-                                } else {
-                                    return false
-                                }
-                            } ?? []
+                            let services = doctor.lastAppointedServices
 
                             if !services.isEmpty {
                                 refundedServices = services.filter { $0.refund != nil }

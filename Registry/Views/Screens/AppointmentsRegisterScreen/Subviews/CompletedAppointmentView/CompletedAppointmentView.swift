@@ -111,8 +111,7 @@ struct CompletedAppointmentView: View {
                         }
 
                         if includeBalance {
-                            balancePaymentMethod.value = -patient.balance
-                            await ledger.makeBalancePayment(from: patient, method: balancePaymentMethod, createdBy: user)
+                            await ledger.makeBalancePayment(from: patient, value: -patient.balance, createdBy: user)
                         }
                     }
                 }

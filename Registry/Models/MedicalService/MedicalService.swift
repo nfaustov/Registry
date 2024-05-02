@@ -64,10 +64,10 @@ final class MedicalService {
     private func agentFee(_ action: ChargeAction) {
         if let agent {
             if let fixedAgentFee = pricelistItem.fixedAgentFee {
-                agent.updateAgentFee(increment: action == .charge ? fixedAgentFee : -fixedAgentFee)
+                agent.updateBalance(increment: action == .charge ? fixedAgentFee : -fixedAgentFee)
             } else {
                 let agentFee = pricelistItem.price * 0.1
-                agent.updateAgentFee(increment: action == .charge ? agentFee : -agentFee)
+                agent.updateBalance(increment: action == .charge ? agentFee : -agentFee)
             }
         }
     }
