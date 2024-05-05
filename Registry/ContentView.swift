@@ -11,6 +11,8 @@ import SwiftData
 struct ContentView: View {
     // MARK: - Dependencies
 
+//    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
@@ -67,6 +69,10 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
+//            .task {
+//                let paymentModifier = PaymentModifier(modelContainer: modelContext.container)
+//                await paymentModifier.execute()
+//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }

@@ -24,10 +24,7 @@ struct LastChargesView: View {
     // MARK:
 
     var body: some View {
-        if serviceChargesByDate.isEmpty {
-            lastChargesLabel
-                .onAppear { getServiceCharges() }
-        } else {
+        if !serviceChargesByDate.isEmpty || isLoading {
             DisclosureGroup {
                 let dates = Array(serviceChargesByDate.keys.sorted(by: <))
                 List(dates, id: \.self) { date in
@@ -41,6 +38,9 @@ struct LastChargesView: View {
                 }
             } label: {
                 lastChargesLabel
+            }
+            .onAppear {
+                getServiceCharges()
             }
         }
     }
@@ -82,8 +82,7 @@ private extension LastChargesView {
 
 private extension LastChargesView {
     func getLastPayoutDate() -> Date {
-        let purpose = Payment.Purpose.doctorPayout("Врач: \(doctor.initials)")
-        let predicate = #Predicate<Payment> { $0.purpose == purpose }
+        let predicate = #Predicate<Payment> { $0.doctor == doctor }
         var descriptor = FetchDescriptor(predicate: predicate, sortBy: [SortDescriptor(\.date, order: .reverse)])
         descriptor.fetchLimit = 1
 

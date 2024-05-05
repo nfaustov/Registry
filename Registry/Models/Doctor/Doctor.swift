@@ -30,6 +30,8 @@ final class Doctor: Employee, User, Codable {
     @Attribute(.externalStorage)
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
+    @Relationship(inverse: \Payment.doctor)
+    var payouts: [Payment]? = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -52,7 +54,8 @@ final class Doctor: Employee, User, Codable {
         balance: Double = 0,
         info: String = "",
         image: Data? = nil,
-        accessLevel: UserAccessLevel = .doctor
+        accessLevel: UserAccessLevel = .doctor,
+        payouts: [Payment]? = []
     ) {
         self.id = id
         self.secondName = secondName
@@ -72,6 +75,7 @@ final class Doctor: Employee, User, Codable {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
+        self.payouts = payouts
     }
 
     func updateBalance(increment: Double) {
