@@ -40,6 +40,7 @@ struct DoctorPayoutView: View {
                             .font(.headline)
                             .foregroundStyle(doctor.balance < 0 ? .red : .primary)
                     }
+                    LastChargesView(doctor: doctor)
                 }
 
                 CreatePaymentView(
@@ -58,6 +59,7 @@ struct DoctorPayoutView: View {
                     await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
                 }
             }
+            .scrollBounceBehavior(.basedOnSize)
         }
     }
 }

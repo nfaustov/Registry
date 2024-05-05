@@ -74,14 +74,6 @@ final class Doctor: Employee, User, Codable {
         self.accessLevel = accessLevel
     }
 
-    var lastAppointedServices: [MedicalService] {
-        appointedServices?.filter { service in
-            if let date = service.date {
-                return date > agentFeePaymentDate
-            } else { return false }
-        } ?? []
-    }
-
     func updateBalance(increment: Double) {
         balance += increment
     }
@@ -100,29 +92,6 @@ final class Doctor: Employee, User, Codable {
                 return serviceDate > date
             } else { return false }
         } ?? []
-    }
-
-    func pieceRateSalary(for services: [MedicalService]) -> Double {
-        switch doctorSalary {
-        case .pieceRate(let rate, let minAmount):
-            let salary = services
-                .reduce(0.0) { partialResult, service in
-                    if service.refund == nil, service.performer == self {
-                        if service.pricelistItem.category == Department.laboratory {
-                            return partialResult + 0
-                        } else if let fixedSalaryAmount = service.pricelistItem.fixedSalary {
-                            return partialResult + fixedSalaryAmount
-                        } else {
-                            return partialResult + service.pricelistItem.price * rate
-                        }
-                    } else {
-                        return partialResult + 0
-                    }
-                }
-
-            return max(minAmount ?? 0, salary)
-        default: return 0
-        }
     }
 
     // MARK: - Codable
