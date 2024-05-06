@@ -22,7 +22,7 @@ actor PaymentModifier {
             guard let doctor = doctors.first(where: { $0.initials == payment.purpose.descripiton }) else { return }
             // TODO: change purpose property to let constant
             payment.purpose = .doctorPayout("Врач: \(payment.purpose.descripiton)")
-            doctor.payouts?.append(payment)
+            doctor.transactions?.append(payment)
         }
     }
 }

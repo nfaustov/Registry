@@ -37,6 +37,7 @@
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
 		8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */; };
 		8B331EF32BE82484002298E6 /* PaymentModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF22BE82484002298E6 /* PaymentModifier.swift */; };
+		8B331EF52BE82D5A002298E6 /* DoctorTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
@@ -173,6 +174,7 @@
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
 		8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberEditView.swift; sourceTree = "<group>"; };
 		8B331EF22BE82484002298E6 /* PaymentModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentModifier.swift; sourceTree = "<group>"; };
+		8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorTransactionsView.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */,
+				8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1389,6 +1392,7 @@
 				8B8DA9652BA1E5E900F6F847 /* MessageServiceClient.swift in Sources */,
 				8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */,
 				8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */,
+				8B331EF52BE82D5A002298E6 /* DoctorTransactionsView.swift in Sources */,
 				8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */,
 				8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */,
 				8B6BAA0D2B8DE508000FF417 /* CreateBillTemplateView.swift in Sources */,

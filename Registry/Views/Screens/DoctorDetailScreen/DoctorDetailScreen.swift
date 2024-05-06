@@ -80,6 +80,12 @@ struct DoctorDetailScreen: View {
             }
 
             Section {
+                Button("Транзакции") {
+                    currentDetail = .transactions
+                }
+            }
+
+            Section {
                 Button("Настройки расписания") {
                     currentDetail = .doctorSettings
                 }
@@ -111,6 +117,7 @@ private extension DoctorDetailScreen {
         case name
         case phoneNumber
         case birthDate
+        case transactions
         case doctorSettings
         case doctorInfo
 
@@ -124,6 +131,8 @@ private extension DoctorDetailScreen {
                 return "Номер телефона"
             case .birthDate:
                 return "День рождения"
+            case .transactions:
+                return "Транзакции"
             case .doctorSettings:
                 return "Настройки расписания"
             case .doctorInfo:
@@ -177,6 +186,8 @@ private extension DoctorDetailScreen {
                     displayedComponents: .date
                 )
             }
+        case .transactions:
+            DoctorTransactionsView(doctor: doctor)
         case .doctorSettings:
             DoctorSettingsView(doctor: doctor)
         case .doctorInfo:

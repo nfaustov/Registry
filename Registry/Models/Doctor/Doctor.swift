@@ -31,7 +31,7 @@ final class Doctor: Employee, User, Codable {
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
     @Relationship(inverse: \Payment.doctor)
-    var payouts: [Payment]? = []
+    var transactions: [Payment]? = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -55,7 +55,7 @@ final class Doctor: Employee, User, Codable {
         info: String = "",
         image: Data? = nil,
         accessLevel: UserAccessLevel = .doctor,
-        payouts: [Payment]? = []
+        transactions: [Payment]? = []
     ) {
         self.id = id
         self.secondName = secondName
@@ -75,7 +75,7 @@ final class Doctor: Employee, User, Codable {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
-        self.payouts = payouts
+        self.transactions = transactions
     }
 
     func updateBalance(increment: Double) {

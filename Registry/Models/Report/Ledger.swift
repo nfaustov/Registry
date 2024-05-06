@@ -41,7 +41,7 @@ actor Ledger {
             methods: methods,
             createdBy: user.asAnyUser
         )
-        doctor.payouts?.append(payment)
+        doctor.transactions?.append(payment)
         doctor.updateBalance(increment: -abs(paymentValue))
         record(payment)
     }
