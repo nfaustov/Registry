@@ -19,6 +19,7 @@ final class Payment {
 
     var report: Report?
     var doctor: Doctor?
+    var patient: Patient?
 
     init(
         purpose: Payment.Purpose,
