@@ -30,7 +30,6 @@ struct DoctorsChart: View {
                             Text(doctor.fullName)
                             LabeledContent("Баланс", value: "\(Int(doctor.balance))")
                                 .padding(.top, 4)
-                            LabeledContent("Агентские", value: "\(Int(doctor.agentFee))")
                         }
                         .padding(.leading)
                     }

@@ -22,8 +22,6 @@ final class Doctor: Employee, User, Codable {
     var serviceDuration: TimeInterval = 600
     var defaultCabinet: Int = 1
     var doctorSalary: Salary = Salary.pieceRate(rate: 0.4)
-    private(set) var agentFee: Double = 0
-    private(set) var agentFeePaymentDate: Date = Date.now
     private(set) var balance: Double = 0
     var info: String = ""
     let createdAt: Date = Date.now
@@ -49,8 +47,6 @@ final class Doctor: Employee, User, Codable {
         serviceDuration: TimeInterval,
         defaultCabinet: Int,
         doctorSalary: Salary,
-        agentFee: Double = 0,
-        agentFeePaymentDate: Date = .now,
         balance: Double = 0,
         info: String = "",
         image: Data? = nil,
@@ -68,8 +64,6 @@ final class Doctor: Employee, User, Codable {
         self.serviceDuration = serviceDuration
         self.defaultCabinet = defaultCabinet
         self.doctorSalary = doctorSalary
-        self.agentFee = agentFee
-        self.agentFeePaymentDate = agentFeePaymentDate
         self.balance = balance
         self.info = info
         self.createdAt = .now
@@ -116,8 +110,6 @@ final class Doctor: Employee, User, Codable {
         self.serviceDuration = try container.decode(TimeInterval.self, forKey: .serviceDuration)
         self.defaultCabinet = try container.decode(Int.self, forKey: .defaultCabinet)
         self.doctorSalary = try container.decode(Salary.self, forKey: .doctorSalary)
-        self.agentFee = try container.decode(Double.self, forKey: .agentFee)
-        self.agentFeePaymentDate = try container.decode(Date.self, forKey: .agentFeePaymentDate)
         self.balance = try container.decode(Double.self, forKey: .balance)
         self.info = try container.decode(String.self, forKey: .info)
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
@@ -136,8 +128,6 @@ final class Doctor: Employee, User, Codable {
         try container.encode(serviceDuration, forKey: .serviceDuration)
         try container.encode(defaultCabinet, forKey: .defaultCabinet)
         try container.encode(doctorSalary, forKey: .doctorSalary)
-        try container.encode(agentFee, forKey: .agentFee)
-        try container.encode(agentFeePaymentDate, forKey: .agentFeePaymentDate)
         try container.encode(balance, forKey: .balance)
         try container.encode(info, forKey: .info)
         try container.encode(createdAt, forKey: .createdAt)
