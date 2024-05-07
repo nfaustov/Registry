@@ -58,6 +58,10 @@ final class Patient: AccountablePerson {
         balance += increment
     }
 
+    func getTransactions() -> [any MoneyTransaction] {
+        []
+    }
+
     func mergedAppointments(forCheckID checkID: PersistentIdentifier) -> [PatientAppointment] {
         appointments?.filter { $0.check?.id == checkID } ?? []
     }

@@ -76,20 +76,25 @@ final class Doctor: Employee, User, Codable {
         balance += increment
     }
 
-    func appointedServices(from date: Date) -> [MedicalService] {
-        appointedServices?.filter { service in
-            if let serviceDate = service.date {
-                return serviceDate > date
-            } else { return false }
-        } ?? []
-    }
+    func getTransactions(from date: Date) -> [DoctorMoneyTransaction] {
+        var doctorTransactions = [DoctorMoneyTransaction]()
 
-    func performedServices(from date: Date) -> [MedicalService] {
-        performedServices?.filter { service in
-            if let serviceDate = service.date {
-                return serviceDate > date
-            } else { return false }
-        } ?? []
+        if let rate = doctorSalary.rate {
+            let performerTransactions = performedServices(from: date)
+                .map { DoctorMoneyTransaction(medicalService: $0, doctorSalaryRate: rate) }
+            doctorTransactions.append(contentsOf: performerTransactions)
+        }
+
+        let agentTransactions = appointedServices(from: date)
+            .map { DoctorMoneyTransaction(medicalService: $0) }
+        doctorTransactions.append(contentsOf: agentTransactions)
+
+        if let transactions {
+            let paymentTransactions = transactions.map { DoctorMoneyTransaction(payment: $0) }
+            doctorTransactions.append(contentsOf: paymentTransactions)
+        }
+
+        return doctorTransactions
     }
 
     // MARK: - Codable
@@ -132,5 +137,25 @@ final class Doctor: Employee, User, Codable {
         try container.encode(info, forKey: .info)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(accessLevel, forKey: .accessLevel)
+    }
+}
+
+// MARK: - Private extension
+
+private extension Doctor {
+    func appointedServices(from date: Date) -> [MedicalService] {
+        appointedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
+    }
+
+    func performedServices(from date: Date) -> [MedicalService] {
+        performedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
     }
 }

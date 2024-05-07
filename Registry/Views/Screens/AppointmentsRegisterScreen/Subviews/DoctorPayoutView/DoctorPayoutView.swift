@@ -21,6 +21,7 @@ struct DoctorPayoutView: View {
 
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
+    @State private var showLastTransactions: Bool = false
 
     // MARK: -
 
@@ -35,12 +36,22 @@ struct DoctorPayoutView: View {
             Form {
                 Section("Врач") {
                     Text(doctor.fullName)
+
                     LabeledContent("Баланс") {
                         Text("\(Int(doctor.balance)) ₽")
                             .font(.headline)
                             .foregroundStyle(doctor.balance < 0 ? .red : .primary)
                     }
-                    LastChargesView(doctor: doctor)
+
+                    Button("Последние транзакции") {
+                        showLastTransactions = true
+                    }
+                    .sheet(isPresented: $showLastTransactions) {
+                        NavigationStack {
+                            DoctorTransactionsView(doctor: doctor)
+                                .sheetToolbar(title: "Транзакции")
+                        }
+                    }
                 }
 
                 CreatePaymentView(
