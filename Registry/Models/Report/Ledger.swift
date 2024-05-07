@@ -27,6 +27,7 @@ actor Ledger {
         }
 
         let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
+        patient.transactions?.append(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
         record(payment)
@@ -57,6 +58,7 @@ actor Ledger {
         let paymentValue = refund.totalAmount(discountRate: check.discountRate)
         let refundMethod = Payment.Method(method.type, value: paymentValue)
         let payment = Payment(purpose: .refund(patient.initials), methods: [refundMethod], createdBy: user.asAnyUser)
+        patient.transactions?.append(payment)
         check.makeRefund(refund)
         record(payment)
     }

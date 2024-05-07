@@ -128,7 +128,14 @@ private extension DoctorTransactionsView {
             date = payment.date
             description = ""
             value = payment.methods.reduce(0.0) { $0 + $1.value }
-            type = .payout
+
+            if payment.purpose.title == "Выплата" {
+                type = .payout
+            } else if payment.purpose.title == "Пополнение баланса" {
+                type = .refill
+            } else {
+                fatalError()
+            }
         }
     }
 
@@ -136,5 +143,6 @@ private extension DoctorTransactionsView {
         case appointed = "Агентские"
         case performed = "Заработная плата"
         case payout = "Выплата"
+        case refill = "Пополнение"
     }
 }
