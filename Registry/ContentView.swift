@@ -79,3 +79,22 @@ struct ContentView: View {
         .modelContainer(for: Doctor.self, inMemory: true)
         .previewInterfaceOrientation(.landscapeRight)
 }
+
+//private extension ContentView {
+//    func loadData() {
+//        let patients: [Patient] = load("patients.json")
+//        for patient in patients {
+//            modelContext.insert(patient)
+//        }
+//
+//        let doctors: [Doctor] = load("doctors.json")
+//        for doctor in doctors {
+//            modelContext.insert(doctor)
+//        }
+//
+//        let pricelistItems: [PricelistItem] = load("pricelistItems.json")
+//        for pricelistItem in pricelistItems {
+//            modelContext.insert(pricelistItem)
+//        }
+//    }
+//}
