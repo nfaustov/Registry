@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class Payment {
     let date: Date = Date.now
-    var purpose: Payment.Purpose = Payment.Purpose.collection
+    let purpose: Payment.Purpose = Payment.Purpose.collection
     private(set) var methods: [Payment.Method] = [Payment.Method(.cash, value: 0)]
     @Relationship(inverse: \Check.payment)
     var subject: Check?
