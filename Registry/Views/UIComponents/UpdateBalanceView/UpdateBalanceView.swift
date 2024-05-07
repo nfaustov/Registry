@@ -61,12 +61,11 @@ struct UpdateBalanceView: View {
             .sheetToolbar(title: kind.rawValue, confirmationDisabled: paymentMethod.value == 0) {
                 Task {
                     let ledger = Ledger(modelContainer: modelContext.container)
-
-                    paymentMethod.value = kind == .refill ?
-                    abs(paymentMethod.value) :
-                    -abs(paymentMethod.value)
-
-                    await ledger.makeBalancePayment(from: person, method: paymentMethod, createdBy: user)
+                    await ledger.makeBalancePayment(
+                        from: person,
+                        value: kind == .refill ? paymentMethod.value : -paymentMethod.value,
+                        createdBy: user
+                    )
                 }
             }
         }

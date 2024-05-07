@@ -30,6 +30,8 @@ final class Doctor: Employee, User, Codable {
     @Attribute(.externalStorage)
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
+    @Relationship(inverse: \Payment.doctor)
+    var transactions: [Payment]? = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -52,7 +54,8 @@ final class Doctor: Employee, User, Codable {
         balance: Double = 0,
         info: String = "",
         image: Data? = nil,
-        accessLevel: UserAccessLevel = .doctor
+        accessLevel: UserAccessLevel = .doctor,
+        transactions: [Payment]? = []
     ) {
         self.id = id
         self.secondName = secondName
@@ -72,50 +75,27 @@ final class Doctor: Employee, User, Codable {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
+        self.transactions = transactions
     }
 
     func updateBalance(increment: Double) {
         balance += increment
     }
 
-    func updateAgentFee(increment: Double) {
-        agentFee += increment
-
-        if increment < 0 {
-            agentFeePaymentDate = .now
-        }
+    func appointedServices(from date: Date) -> [MedicalService] {
+        appointedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
     }
 
     func performedServices(from date: Date) -> [MedicalService] {
-        performedServices?
-            .filter { service in
-                if let serviceDate = service.date {
-                    return serviceDate > date
-                } else { return false }
-            } ?? []
-    }
-
-    func pieceRateSalary(for services: [MedicalService]) -> Double {
-        switch doctorSalary {
-        case .pieceRate(let rate, let minAmount):
-            let salary = services
-                .reduce(0.0) { partialResult, service in
-                    if service.refund == nil, service.performer == self {
-                        if service.pricelistItem.category == Department.laboratory {
-                            return partialResult + 0
-                        } else if let fixedSalaryAmount = service.pricelistItem.fixedSalary {
-                            return partialResult + fixedSalaryAmount
-                        } else {
-                            return partialResult + service.pricelistItem.price * rate
-                        }
-                    } else {
-                        return partialResult + 0
-                    }
-                }
-
-            return max(minAmount ?? 0, salary)
-        default: return 0
-        }
+        performedServices?.filter { service in
+            if let serviceDate = service.date {
+                return serviceDate > date
+            } else { return false }
+        } ?? []
     }
 
     // MARK: - Codable

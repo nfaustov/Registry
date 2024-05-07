@@ -9,7 +9,4 @@ import Foundation
 
 protocol Employee: AccountablePerson {
     var doctorSalary: Salary { get set }
-    var agentFee: Double { get }
-
-    func updateAgentFee(increment: Double)
 }

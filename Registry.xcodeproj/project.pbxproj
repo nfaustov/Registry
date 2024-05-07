@@ -36,15 +36,14 @@
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
 		8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */; };
+		8B331EF52BE82D5A002298E6 /* DoctorTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
 		8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6142BB55E0900834AE6 /* UserKey.swift */; };
 		8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61B2BB5650500834AE6 /* UserView.swift */; };
 		8B45E61F2BB56BC300834AE6 /* UserDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */; };
-		8B4ECD4B2BC83CEA00A82A2A /* DaySalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */; };
 		8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */; };
-		8B4ECD502BC8511B00A82A2A /* AgentFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */; };
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
@@ -121,6 +120,7 @@
 		8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */; };
 		8BA8C80D2BBC2F6C00F2BCDD /* BillTemplatesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */; };
 		8BA8C8112BBD42B200F2BCDD /* AddProcedurePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */; };
+		8BAC04AC2BE40DD7009CAD42 /* LastChargesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC04AB2BE40DD7009CAD42 /* LastChargesView.swift */; };
 		8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2DD622B97396A00AD4749 /* Refund.swift */; };
 		8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */; };
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
@@ -172,15 +172,14 @@
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
 		8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberEditView.swift; sourceTree = "<group>"; };
+		8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorTransactionsView.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
 		8B45E6142BB55E0900834AE6 /* UserKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKey.swift; sourceTree = "<group>"; };
 		8B45E61B2BB5650500834AE6 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailScreen.swift; sourceTree = "<group>"; };
-		8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySalaryView.swift; sourceTree = "<group>"; };
 		8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
-		8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentFeeView.swift; sourceTree = "<group>"; };
 		8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
@@ -258,6 +257,7 @@
 		8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetToolbarViewModifier.swift; sourceTree = "<group>"; };
 		8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillTemplatesController.swift; sourceTree = "<group>"; };
 		8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProcedurePatientView.swift; sourceTree = "<group>"; };
+		8BAC04AB2BE40DD7009CAD42 /* LastChargesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastChargesView.swift; sourceTree = "<group>"; };
 		8BB2DD622B97396A00AD4749 /* Refund.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refund.swift; sourceTree = "<group>"; };
 		8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientCardScreen.swift; sourceTree = "<group>"; };
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
@@ -616,6 +616,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */,
+				8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1158,8 +1159,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7A3BFF2B8C7C5300A48646 /* DoctorPayoutView.swift */,
-				8B4ECD4A2BC83CEA00A82A2A /* DaySalaryView.swift */,
-				8B4ECD4F2BC8511B00A82A2A /* AgentFeeView.swift */,
+				8BAC04AB2BE40DD7009CAD42 /* LastChargesView.swift */,
 			);
 			path = DoctorPayoutView;
 			sourceTree = "<group>";
@@ -1278,14 +1278,12 @@
 				8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */,
 				8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */,
 				8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */,
-				8B4ECD502BC8511B00A82A2A /* AgentFeeView.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
 				8B8DA96D2BA210D700F6F847 /* ArtmedicsServices.swift in Sources */,
 				8B8DA96F2BA213BD00F6F847 /* MessageController.swift in Sources */,
-				8B4ECD4B2BC83CEA00A82A2A /* DaySalaryView.swift in Sources */,
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
@@ -1363,6 +1361,7 @@
 				8B187E822BD0D30D00611DC2 /* MedicalService.swift in Sources */,
 				8BDCCFDD2B84A0C40086BF4D /* PassportData.swift in Sources */,
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
+				8BAC04AC2BE40DD7009CAD42 /* LastChargesView.swift in Sources */,
 				8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */,
 				8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */,
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
@@ -1389,6 +1388,7 @@
 				8B8DA9652BA1E5E900F6F847 /* MessageServiceClient.swift in Sources */,
 				8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */,
 				8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */,
+				8B331EF52BE82D5A002298E6 /* DoctorTransactionsView.swift in Sources */,
 				8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */,
 				8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */,
 				8B6BAA0D2B8DE508000FF417 /* CreateBillTemplateView.swift in Sources */,

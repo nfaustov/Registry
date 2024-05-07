@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class MedicalService {
-    let pricelistItem: PricelistItem.Snapshot = PricelistItem.Snapshot(id: "", category: .gynecology, title: "", price: 0)
+    let pricelistItem: PricelistItem.Snapshot
     @Relationship(inverse: \Doctor.performedServices)
     var performer: Doctor?
     @Relationship(inverse: \Doctor.appointedServices)
@@ -48,28 +48,25 @@ final class MedicalService {
         agentFee(.cancel)
     }
 
+    var agentFee: Double {
+        pricelistItem.fixedAgentFee ?? pricelistItem.price * 0.1
+    }
+
+    func pieceRateSalary(_ rate: Double) -> Double {
+        pricelistItem.fixedSalary ?? pricelistItem.price * rate
+    }
+
     private func salary(_ action: ChargeAction) {
         if let performer,
            let rate = performer.doctorSalary.rate,
            pricelistItem.category != .laboratory {
-            if let fixedSalary = pricelistItem.fixedSalary {
-                performer.updateBalance(increment: action == .charge ? fixedSalary : -fixedSalary)
-            } else {
-                let salary = pricelistItem.price * rate
-                performer.updateBalance(increment: action == .charge ? salary : -salary)
-            }
+            let salary = pieceRateSalary(rate)
+            performer.updateBalance(increment: action == .charge ? salary : -salary)
         }
     }
 
     private func agentFee(_ action: ChargeAction) {
-        if let agent {
-            if let fixedAgentFee = pricelistItem.fixedAgentFee {
-                agent.updateAgentFee(increment: action == .charge ? fixedAgentFee : -fixedAgentFee)
-            } else {
-                let agentFee = pricelistItem.price * 0.1
-                agent.updateAgentFee(increment: action == .charge ? agentFee : -agentFee)
-            }
-        }
+        if let agent { agent.updateBalance(increment: action == .charge ? agentFee : -agentFee) }
     }
 }
 

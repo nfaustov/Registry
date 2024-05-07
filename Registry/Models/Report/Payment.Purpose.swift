@@ -12,6 +12,7 @@ extension Payment {
         case collection
         case salary(String = "")
         case agentFee(String = "")
+        case doctorPayout(String = "")
         case medicalServices(String = "")
         case refund(String = "")
         case toBalance(String = "")
@@ -25,6 +26,7 @@ extension Payment {
             case .collection: return "Инкассация"
             case .salary: return "Заработная плата"
             case .agentFee: return "Агентские"
+            case .doctorPayout: return "Выплата"
             case .medicalServices: return "Оплата услуг"
             case .refund: return "Возврат"
             case .toBalance: return "Пополнение баланса"
@@ -41,6 +43,7 @@ extension Payment {
                 case .collection: return ""
                 case .salary(let description): return description
                 case .agentFee(let description): return description
+                case .doctorPayout(let description): return description
                 case .medicalServices(let description): return description
                 case .refund(let description): return description
                 case .toBalance(let description): return description
@@ -54,6 +57,7 @@ extension Payment {
                 switch self {
                 case .salary: self = .salary(newValue)
                 case .agentFee: self = .agentFee(newValue)
+                case .doctorPayout: self = .doctorPayout(newValue)
                 case .medicalServices: self = .medicalServices(newValue)
                 case .refund: self = .refund(newValue)
                 case .toBalance: self = .toBalance(newValue)

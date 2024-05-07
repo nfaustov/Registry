@@ -11,8 +11,8 @@ extension PricelistItem {
     struct Snapshot: Codable, Hashable, Identifiable {
         let id: String
         let category: Department
-        var title: String
-        var price: Double
+        let title: String
+        let price: Double
         var fixedSalary: Double?
         var fixedAgentFee: Double?
     }

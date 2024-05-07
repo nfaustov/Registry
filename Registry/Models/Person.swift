@@ -9,6 +9,7 @@ import Foundation
 
 protocol Accountable: AnyObject {
     var balance: Double { get }
+    var transactions: [Payment]? { get set }
 
     func updateBalance(increment: Double)
 }
