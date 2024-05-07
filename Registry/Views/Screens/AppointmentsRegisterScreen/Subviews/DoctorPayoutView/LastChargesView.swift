@@ -33,6 +33,7 @@ struct LastChargesView: View {
                         .foregroundStyle(.secondary)
 
                     let dateChargesByType = Dictionary(grouping: serviceChargesByDate[date] ?? [], by: { $0.type })
+                    chargesView(dateChargesByType, ofType: .refill)
                     chargesView(dateChargesByType, ofType: .performed)
                     chargesView(dateChargesByType, ofType: .appointed)
                 }
@@ -68,9 +69,9 @@ private extension LastChargesView {
     @ViewBuilder func chargesView(_ charges: [ServiceCharge.ServiceChargeType: [ServiceCharge]], ofType type: ServiceCharge.ServiceChargeType) -> some View {
         if let charges = charges[type]  {
             GroupBox(type.rawValue) {
-                ForEach(charges, id: \.self) { serviceCharge in
+                ForEach(charges) { serviceCharge in
                     LabeledContent(serviceCharge.serviceTitle, value: "\(Int(serviceCharge.value))")
-                        .font(.subheadline)
+                        .font(serviceCharge.type == .refill ? .title2 : .subheadline)
                         .foregroundStyle(serviceCharge.refunded ? .red.opacity(0.6) : .primary)
                 }
             }
@@ -103,6 +104,13 @@ private extension LastChargesView {
             .map { ServiceCharge(medicalService: $0, doctor: doctor, type: .appointed) }
         var serviceCharges = performerCharges
         serviceCharges.append(contentsOf: agentCharges)
+
+        if let transactions = doctor.transactions {
+            let lastTransactions = transactions.filter { $0.date > lastPayoutDate }
+            let lastTransactionsCharges = lastTransactions.map { ServiceCharge(payment: $0) }
+            serviceCharges.append(contentsOf: lastTransactionsCharges)
+        }
+
         serviceChargesByDate = Dictionary(grouping: serviceCharges, by: { Calendar.current.startOfDay(for: $0.date) })
 
         let refundedPerformedServices = performedServices.filter { $0.refund != nil }
@@ -116,19 +124,22 @@ private extension LastChargesView {
 
 // MARK: - ServiceCharge
 
-private struct ServiceCharge: Hashable {
+private struct ServiceCharge: Hashable, Identifiable {
     enum ServiceChargeType: String {
         case appointed = "Агент"
         case performed = "Исполнитель"
+        case refill = "Пополнение"
     }
 
+    let id: UUID
     let date: Date
     let type: ServiceChargeType
     let serviceTitle: String
     let value: Double
     let refunded: Bool
 
-    init(medicalService: MedicalService, doctor: Doctor, type: ServiceChargeType) {
+    init(id: UUID = UUID(), medicalService: MedicalService, doctor: Doctor, type: ServiceChargeType) {
+        self.id = id
         date = medicalService.date ?? .now
         self.type = type
         serviceTitle = medicalService.pricelistItem.title
@@ -142,8 +153,18 @@ private struct ServiceCharge: Hashable {
             } else {
                 value = 0
             }
+        default: value = 0
         }
 
         self.refunded = medicalService.refund != nil
+    }
+
+    init(id: UUID = UUID(), payment: Payment) {
+        self.id = id
+        date = payment.date
+        type = .refill
+        serviceTitle = ""
+        value = payment.methods.reduce(0.0) { $0 + $1.value }
+        refunded = false
     }
 }

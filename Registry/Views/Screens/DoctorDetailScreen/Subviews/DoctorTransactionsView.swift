@@ -24,15 +24,15 @@ struct DoctorTransactionsView: View {
         Form {
             ForEach(dates, id: \.self) { date in
                 Section {
-                    List(transactionsByDate[date] ?? [], id: \.self) { transaction in
-                        VStack(alignment: .leading) {
+                    List(transactionsByDate[date] ?? []) { transaction in
+                        VStack(alignment: .leading, spacing: 0) {
                             Text(transaction.type.rawValue)
                                 .font(.headline)
                                 .foregroundStyle(transaction.value < 0 ? .purple : .teal)
                                 .padding()
                             LabeledContent(transaction.description) {
                                 Text(signedValueString(transaction.value))
-                                    .font(.title2)
+                                    .font(transaction.type == .payout || transaction.type == .refill ? .title2 : .headline)
                                     .foregroundStyle(transaction.value < 0 ? .purple : .teal)
                             }
                             .padding([.bottom, .horizontal])
@@ -95,13 +95,15 @@ private extension DoctorTransactionsView {
 // MARK: - Transaction
 
 private extension DoctorTransactionsView {
-    struct Transaction: Hashable {
+    struct Transaction: Hashable, Identifiable {
+        let id: UUID
         let date: Date
         let description: String
         let value: Double
         let type: DoctorTransactionsView.TransactionType
 
-        init(medicalService: MedicalService, doctor: Doctor, type: DoctorTransactionsView.TransactionType) {
+        init(id: UUID = UUID(), medicalService: MedicalService, doctor: Doctor, type: DoctorTransactionsView.TransactionType) {
+            self.id = id
             date = medicalService.date ?? .now
             description = medicalService.pricelistItem.title
 
@@ -124,7 +126,8 @@ private extension DoctorTransactionsView {
             self.type = type
         }
 
-        init(payment: Payment) {
+        init(id: UUID = UUID(), payment: Payment) {
+            self.id = id
             date = payment.date
             description = ""
             value = payment.methods.reduce(0.0) { $0 + $1.value }
