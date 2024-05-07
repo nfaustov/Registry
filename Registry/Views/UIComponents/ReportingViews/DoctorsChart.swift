@@ -28,8 +28,15 @@ struct DoctorsChart: View {
                             Text(doctor.id.uuidString)
                                 .font(.footnote)
                             Text(doctor.fullName)
-                            LabeledContent("Баланс", value: "\(Int(doctor.balance))")
-                                .padding(.top, 4)
+
+                            HStack {
+                                Text("Баланс")
+                                Text("\(Int(doctor.balance))")
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(.top, 6)
+                                
                         }
                         .padding(.leading)
                     }
