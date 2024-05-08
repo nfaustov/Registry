@@ -72,10 +72,12 @@ struct DoctorDetailScreen: View {
             }
 
             Section("Баланс") {
-                LabeledContent("\(Int(doctor.balance)) ₽") {
+                LabeledContent {
                     Button("Пополнить") {
                         coordinator.present(.updateBalance(for: doctor, kind: .refill))
                     }
+                } label: {
+                    CurrencyText(doctor.balance)
                 }
             }
 

@@ -50,7 +50,7 @@ struct UpdateBalanceView: View {
                 Section {
                     Text(person.fullName)
                     LabeledContent("Баланс") {
-                        Text("\(Int(person.balance)) ₽")
+                        CurrencyText(person.balance)
                             .font(.headline)
                             .foregroundStyle(person.balance < 0 ? .red : .primary)
                     }

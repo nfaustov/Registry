@@ -19,7 +19,7 @@ struct DoctorTransactionsView: View {
     // MARK: -
 
     var body: some View {
-        let transactionsByDate = Dictionary(grouping: transactions, by: { $0.date })
+        let transactionsByDate = Dictionary(grouping: transactions, by: { Calendar.current.startOfDay(for: $0.date) })
         let dates = Array(transactionsByDate.keys.sorted(by: >))
 
         Form {
@@ -73,9 +73,11 @@ private extension DoctorTransactionsView {
                         .foregroundStyle(colorStyle(forTransactionOfKind: kind))
                         .padding()
                     ForEach(transactions) { transaction in
-                        LabeledContent(transaction.description ?? "", value: "\(Int(transaction.value))")
-                            .font(.subheadline)
-                            .foregroundStyle(transaction.refunded ? .red.opacity(0.6) : .primary)
+                        LabeledContent(transaction.description ?? "") {
+                            CurrencyText(transaction.value)
+                        }
+                        .font(.subheadline)
+                        .foregroundStyle(transaction.refunded ? .red.opacity(0.6) : .primary)
                     }
                     .padding([.bottom, .horizontal])
                 }
@@ -96,19 +98,5 @@ private extension DoctorTransactionsView {
         case .refill:
                 .blue
         }
-    }
-}
-
-// MARK: - Calculations
-
-private extension DoctorTransactionsView {
-    func signedValueString(_ value: Double) -> String {
-        var signedString = "\(Int(value))"
-
-        if value > 0 {
-            signedString.insert("+", at: signedString.startIndex)
-        }
-
-        return signedString
     }
 }
