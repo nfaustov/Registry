@@ -10,7 +10,7 @@ import Foundation
 struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     let id: UUID
     let date: Date
-    let description: String?
+    let description: String
     let value: Double
     let kind: DoctorMoneyTransaction.Kind
     let refunded: Bool
@@ -36,7 +36,7 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(payment: Payment) {
         id = UUID()
         self.date = payment.date
-        self.description = nil
+        self.description = payment.purpose.descripiton
         self.value = payment.methods.reduce(0.0) { $0 + $1.value }
 
         if value > 0 {

@@ -68,7 +68,13 @@ actor Ledger {
         value: Double,
         createdBy user: User
     ) {
-        let purpose: Payment.Purpose = value > 0 ? .toBalance(person.initials) : .fromBalance(person.initials)
+        var description = person.initials
+
+        if let doctor = person as? Doctor {
+            description = "Врач: \(doctor.initials)"
+        }
+
+        let purpose: Payment.Purpose = value > 0 ? .toBalance(description) : .fromBalance(description)
         let payment = Payment(purpose: purpose, methods: [.init(.cash, value: value)], createdBy: user.asAnyUser)
         person.transactions?.append(payment)
         person.updateBalance(increment: value)

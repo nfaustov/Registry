@@ -11,7 +11,7 @@ protocol MoneyTransaction {
     associatedtype Kind: MoneyTransactionKind
 
     var date: Date { get }
-    var description: String? { get }
+    var description: String { get }
     var value: Double { get }
     var kind: Kind { get }
     var refunded: Bool { get }

@@ -60,28 +60,22 @@ private extension DoctorTransactionsView {
     ) -> some View {
         if let transactions = transactions[kind] {
             VStack(alignment: .leading, spacing: 0) {
-                if kind == .payout || kind == .refill {
-                    ForEach(transactions) { transaction in
-                        LabeledContent(kind.title, value: "\(Int(transaction.value))")
-                            .font(.headline)
-                            .foregroundStyle(colorStyle(forTransactionOfKind: kind))
-                            .padding()
+                Text(kind.title)
+                    .font(.headline)
+                    .foregroundStyle(colorStyle(forTransactionOfKind: kind))
+                    .padding(.bottom)
+                ForEach(transactions) { transaction in
+                    Divider()
+                        .overlay(colorStyle(forTransactionOfKind: kind))
+                        .padding(.vertical, 8)
+
+                    LabeledContent(transaction.description) {
+                        Text("\(Int(transaction.value)) ₽")
                     }
-                } else {
-                    Text(kind.title)
-                        .font(.headline)
-                        .foregroundStyle(colorStyle(forTransactionOfKind: kind))
-                        .padding()
-                    ForEach(transactions) { transaction in
-                        LabeledContent(transaction.description ?? "") {
-                            CurrencyText(transaction.value)
-                        }
-                        .font(.subheadline)
-                        .foregroundStyle(transaction.refunded ? .red.opacity(0.6) : .primary)
-                    }
-                    .padding([.bottom, .horizontal])
+                    .foregroundStyle(transaction.refunded ? .secondary : .primary)
                 }
             }
+            .padding()
             .background(colorStyle(forTransactionOfKind: kind).opacity(0.1))
             .clipShape(.rect(cornerRadius: 8, style: .continuous))
         }

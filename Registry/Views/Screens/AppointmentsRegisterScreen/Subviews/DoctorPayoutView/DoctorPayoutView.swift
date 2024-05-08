@@ -22,6 +22,7 @@ struct DoctorPayoutView: View {
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
     @State private var showLastTransactions: Bool = false
+    @State private var addSinglePatientFee: Bool = false
 
     // MARK: -
 
@@ -54,6 +55,19 @@ struct DoctorPayoutView: View {
                     }
                 }
 
+                if singlePatientFee > 0 {
+                    Section {
+                        Toggle("Один пациент", isOn: $addSinglePatientFee)
+                            .onChange(of: addSinglePatientFee) { _, newValue in
+                                if newValue {
+                                    doctor.updateBalance(increment: singlePatientFee)
+                                } else {
+                                    doctor.updateBalance(increment: -singlePatientFee)
+                                }
+                            }
+                    }
+                }
+
                 CreatePaymentView(
                     account: doctor,
                     paymentMethod: $paymentMethod,
@@ -66,6 +80,12 @@ struct DoctorPayoutView: View {
                 confirmationDisabled: paymentMethod.value == 0 || disabled
             ) {
                 Task {
+                    if addSinglePatientFee {
+                        let purpose: Payment.Purpose = .toBalance("Доплата за прием")
+                        let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
+                        doctor.transactions?.append(payment)
+                    }
+
                     let ledger = Ledger(modelContainer: modelContext.container)
                     await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
                 }
@@ -92,5 +112,13 @@ private extension DoctorPayoutView {
         }
 
         return methods
+    }
+
+    var singlePatientFee: Double {
+        if doctor.secondName == "Окунцова" {
+            return 500
+        } else if doctor.secondName == "Безрукавников" {
+            return 250
+        } else { return 0 }
     }
 }
