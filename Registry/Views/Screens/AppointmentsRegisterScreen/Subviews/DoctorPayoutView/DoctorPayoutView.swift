@@ -28,7 +28,7 @@ struct DoctorPayoutView: View {
     init(doctor: Doctor, disabled: Bool) {
         self.doctor = doctor
         self.disabled = disabled
-        _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance < 0 ? 0 : doctor.balance))
+        _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance < 0 ? 0 : floor(doctor.balance)))
     }
 
     var body: some View {
@@ -38,7 +38,7 @@ struct DoctorPayoutView: View {
                     Text(doctor.fullName)
 
                     LabeledContent("Баланс") {
-                        Text("\(Int(doctor.balance)) ₽")
+                        CurrencyText(doctor.balance)
                             .font(.headline)
                             .foregroundStyle(doctor.balance < 0 ? .red : .primary)
                     }

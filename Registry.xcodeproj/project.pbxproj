@@ -16,6 +16,7 @@
 		8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */; };
 		8B0FE9EB2B56F6CC003F474B /* DoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9EA2B56F6CC003F474B /* DoctorView.swift */; };
 		8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */; };
+		8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */; };
 		8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */; };
 		8B183BA92B86601B00FA1D46 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA82B86601B00FA1D46 /* Ledger.swift */; };
 		8B183BAB2B86605900FA1D46 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BAA2B86605900FA1D46 /* Payment.swift */; };
@@ -154,6 +155,7 @@
 		8B0FE9E72B56F66D003F474B /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
 		8B0FE9EA2B56F6CC003F474B /* DoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorView.swift; sourceTree = "<group>"; };
 		8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerDateView.swift; sourceTree = "<group>"; };
+		8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyText.swift; sourceTree = "<group>"; };
 		8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailView.swift; sourceTree = "<group>"; };
 		8B183BA82B86601B00FA1D46 /* Ledger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ledger.swift; sourceTree = "<group>"; };
 		8B183BAA2B86605900FA1D46 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
@@ -369,6 +371,14 @@
 				8B0FE9EE2B56F81C003F474B /* DatePickerDateView.swift */,
 			);
 			path = DatePicker;
+			sourceTree = "<group>";
+		};
+		8B0FFCD62BEBA14D00A24998 /* CurrencyText */ = {
+			isa = PBXGroup;
+			children = (
+				8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */,
+			);
+			path = CurrencyText;
 			sourceTree = "<group>";
 		};
 		8B183BA22B865D8000FA1D46 /* CashboxScreen */ = {
@@ -1082,6 +1092,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8B0FFCD62BEBA14D00A24998 /* CurrencyText */,
 				8B331F002BEA8550002298E6 /* DoctorTransactionsView */,
 				8B99D81A2BDCCF7E004FA284 /* MoneyFieldSection */,
 				8B1E353D2BC9A80E003B448E /* CreatePaymentView */,
@@ -1328,6 +1339,7 @@
 				8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */,
 				8B7801462B87B8BC0064DBFB /* ScheduleChart.swift in Sources */,
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
+				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
 				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,

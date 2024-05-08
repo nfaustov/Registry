@@ -31,7 +31,7 @@ struct DoctorsChart: View {
 
                             HStack {
                                 Text("Баланс")
-                                Text("\(Int(doctor.balance))")
+                                CurrencyText(doctor.balance)
                                     .fontWeight(.medium)
                                     .foregroundStyle(.secondary)
                             }
