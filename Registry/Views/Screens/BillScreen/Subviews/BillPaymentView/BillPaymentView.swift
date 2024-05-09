@@ -86,15 +86,9 @@ private extension BillPaymentView {
     }
 
     var paymentMethods: [Payment.Method] {
-        var methods = [Payment.Method]()
+        var methods = [paymentMethod]
 
-        if let additionalPaymentMethod {
-            methods.append(additionalPaymentMethod)
-        } else {
-            paymentMethod.value = check.totalPrice
-        }
-
-        methods.append(paymentMethod)
+        if let additionalPaymentMethod { methods.append(additionalPaymentMethod) }
 
         return methods
     }

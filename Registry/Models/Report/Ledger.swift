@@ -21,19 +21,30 @@ actor Ledger {
 
         let paymentValue = methods.reduce(0.0) { $0 + $1.value }
         let paymentBalance = paymentValue - check.totalPrice
+        var purpose: Payment.Purpose = .medicalServices(patient.initials)
 
         if paymentBalance != 0 {
-            makeBalancePayment(from: patient, value: paymentValue, createdBy: user)
+            updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: user)
+            purpose.descripiton.append(" Записано на баланс \(Int(paymentBalance)) ₽")
         }
 
-        let payment = Payment(purpose: .medicalServices(patient.initials), methods: methods, subject: check, createdBy: user.asAnyUser)
+        let payment = Payment(
+            purpose: purpose,
+            methods: methods,
+            subject: check,
+            createdBy: user.asAnyUser
+        )
         patient.transactions?.append(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
         record(payment)
     }
 
-    func makeDoctorPayoutPayment(doctor: Doctor, methods: [Payment.Method], createdBy user: User) {
+    func makeDoctorPayoutPayment(
+        doctor: Doctor,
+        methods: [Payment.Method],
+        createdBy user: User
+    ) {
         guard doctor.doctorSalary.rate != nil else { return }
 
         let paymentValue = methods.reduce(0.0) { $0 + $1.value }
@@ -91,6 +102,16 @@ actor Ledger {
         let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
         record(payment)
     }
+
+    func getReport(forDate date: Date = .now) -> Report? {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let endOfDay = startOfDay.addingTimeInterval(86_400)
+        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay }
+        var descriptor = FetchDescriptor<Report>(predicate: predicate)
+        descriptor.fetchLimit = 1
+
+        return try? modelContext.fetch(descriptor).first
+    }
 }
 
 // MARK: - Private methods
@@ -121,6 +142,12 @@ private extension Ledger {
     func createReportWithPayment(_ payment: Payment) {
         let newReport = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0, payments: [payment])
         modelContext.insert(newReport)
+    }
+
+    func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
+        let balancePayment = Payment(purpose: .toBalance(person.initials), methods: [.init(.cash, value: increment)], createdBy: user.asAnyUser)
+        person.updateBalance(increment: increment)
+        person.transactions?.append(balancePayment)
     }
 }
 

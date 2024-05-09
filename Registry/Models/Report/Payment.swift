@@ -32,7 +32,6 @@ final class Payment {
         self.methods = methods
         self.subject = subject
         self.createdBy = createdBy
-        self.report = report
     }
 
     var totalAmount: Double {
