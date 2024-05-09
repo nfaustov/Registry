@@ -25,7 +25,7 @@ actor Ledger {
 
         if paymentBalance != 0 {
             updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: user)
-            purpose.descripiton.append(" Записано на баланс \(Int(paymentBalance)) ₽")
+            purpose.descripiton.append(" (Записано на баланс \(Int(paymentBalance)) ₽)")
         }
 
         let payment = Payment(
