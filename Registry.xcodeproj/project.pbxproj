@@ -129,6 +129,38 @@
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
 		8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */; };
 		8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
+		8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD172372BECA056002D0BD9 /* RegistryTests.swift */; };
+		8BD1723E2BECA117002D0BD9 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA82B86601B00FA1D46 /* Ledger.swift */; };
+		8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1723F2BECA247002D0BD9 /* MockContainer.swift */; };
+		8BD172412BECA34B002D0BD9 /* DoctorSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFD72B849F6C0086BF4D /* DoctorSchedule.swift */; };
+		8BD172422BECA44D002D0BD9 /* Doctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B96739C2B361BB200FD2E7C /* Doctor.swift */; };
+		8BD172432BECA454002D0BD9 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDA2B849F960086BF4D /* Patient.swift */; };
+		8BD172442BECA637002D0BD9 /* Salary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673A02B361C2300FD2E7C /* Salary.swift */; };
+		8BD172452BECA63A002D0BD9 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B96739E2B361C0900FD2E7C /* Department.swift */; };
+		8BD172462BECA77F002D0BD9 /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE52B84A3EC0086BF4D /* Check.swift */; };
+		8BD172472BECA782002D0BD9 /* Refund.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2DD622B97396A00AD4749 /* Refund.swift */; };
+		8BD172482BECA78E002D0BD9 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BAA2B86605900FA1D46 /* Payment.swift */; };
+		8BD172492BECA791002D0BD9 /* Payment.Purpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BAE2B8661C000FA1D46 /* Payment.Purpose.swift */; };
+		8BD1724A2BECA794002D0BD9 /* Payment.Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BB02B8661E800FA1D46 /* Payment.Method.swift */; };
+		8BD1724B2BECA796002D0BD9 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BAC2B86606400FA1D46 /* Report.swift */; };
+		8BD1724C2BECA7B3002D0BD9 /* MedicalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B187E812BD0D30D00611DC2 /* MedicalService.swift */; };
+		8BD1724D2BECA7C1002D0BD9 /* PricelistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE98B2B5811B8001A9143 /* PricelistItem.swift */; };
+		8BD1724E2BECA7C4002D0BD9 /* PricelistItem.Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B187E832BD0F21E00611DC2 /* PricelistItem.Snapshot.swift */; };
+		8BD1724F2BECA7E2002D0BD9 /* TreatmentPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */; };
+		8BD172502BECA7F3002D0BD9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
+		8BD172512BECA7F6002D0BD9 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
+		8BD172522BECA7F8002D0BD9 /* SuperUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA8602BA36F2E00DE722C /* SuperUser.swift */; };
+		8BD172532BECA805002D0BD9 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AE2B3623F200FD2E7C /* Person.swift */; };
+		8BD172542BECA80E002D0BD9 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
+		8BD172572BECA844002D0BD9 /* PatientAppointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801482B87B9A60064DBFB /* PatientAppointment.swift */; };
+		8BD172582BECA84B002D0BD9 /* PassportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDC2B84A0C40086BF4D /* PassportData.swift */; };
+		8BD172592BECA84E002D0BD9 /* PlaceOfResidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDE2B84A20C0086BF4D /* PlaceOfResidence.swift */; };
+		8BD1725A2BECA855002D0BD9 /* CheckTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B187E852BD0F30200611DC2 /* CheckTemplate.swift */; };
+		8BD1725B2BECA865002D0BD9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B187E7D2BCFAA8000611DC2 /* Note.swift */; };
+		8BD1725D2BECA8AA002D0BD9 /* MoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF92BEA5845002298E6 /* MoneyTransaction.swift */; };
+		8BD1725E2BECA8AC002D0BD9 /* PatientMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFC2BEA5920002298E6 /* PatientMoneyTransaction.swift */; };
+		8BD1725F2BECA8AF002D0BD9 /* DoctorMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFE2BEA5943002298E6 /* DoctorMoneyTransaction.swift */; };
+		8BD172602BECC5DD002D0BD9 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
 		8BD9FCD42BA970830055823D /* IndicatorsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD9FCD32BA970830055823D /* IndicatorsScreen.swift */; };
 		8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFD42B83BBEA0086BF4D /* PatientsScreen.swift */; };
 		8BDCCFD82B849F6C0086BF4D /* DoctorSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFD72B849F6C0086BF4D /* DoctorSchedule.swift */; };
@@ -144,6 +176,16 @@
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8BD172392BECA056002D0BD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B96737A2B36187D00FD2E7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B9673812B36187D00FD2E7C;
+			remoteInfo = Registry;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsListView.swift; sourceTree = "<group>"; };
@@ -269,6 +311,9 @@
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
 		8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsDetailView.swift; sourceTree = "<group>"; };
 		8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
+		8BD172352BECA056002D0BD9 /* RegistryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegistryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BD172372BECA056002D0BD9 /* RegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryTests.swift; sourceTree = "<group>"; };
+		8BD1723F2BECA247002D0BD9 /* MockContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContainer.swift; sourceTree = "<group>"; };
 		8BD9FCD32BA970830055823D /* IndicatorsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorsScreen.swift; sourceTree = "<group>"; };
 		8BDCCFD42B83BBEA0086BF4D /* PatientsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsScreen.swift; sourceTree = "<group>"; };
 		8BDCCFD72B849F6C0086BF4D /* DoctorSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSchedule.swift; sourceTree = "<group>"; };
@@ -291,6 +336,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7D5C7D2B592B3400E46AD8 /* Algorithms in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BD172322BECA056002D0BD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,6 +968,7 @@
 			isa = PBXGroup;
 			children = (
 				8B9673842B36187D00FD2E7C /* Registry */,
+				8BD172362BECA056002D0BD9 /* RegistryTests */,
 				8B9673832B36187D00FD2E7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -924,6 +977,7 @@
 			isa = PBXGroup;
 			children = (
 				8B9673822B36187D00FD2E7C /* Registry.app */,
+				8BD172352BECA056002D0BD9 /* RegistryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1197,6 +1251,15 @@
 			path = DoctorPayoutView;
 			sourceTree = "<group>";
 		};
+		8BD172362BECA056002D0BD9 /* RegistryTests */ = {
+			isa = PBXGroup;
+			children = (
+				8BD172372BECA056002D0BD9 /* RegistryTests.swift */,
+				8BD1723F2BECA247002D0BD9 /* MockContainer.swift */,
+			);
+			path = RegistryTests;
+			sourceTree = "<group>";
+		};
 		8BDCCFD32B83BBD00086BF4D /* PatientsScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -1247,6 +1310,24 @@
 			productReference = 8B9673822B36187D00FD2E7C /* Registry.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8BD172342BECA056002D0BD9 /* RegistryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BD1723D2BECA056002D0BD9 /* Build configuration list for PBXNativeTarget "RegistryTests" */;
+			buildPhases = (
+				8BD172312BECA056002D0BD9 /* Sources */,
+				8BD172322BECA056002D0BD9 /* Frameworks */,
+				8BD172332BECA056002D0BD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BD1723A2BECA056002D0BD9 /* PBXTargetDependency */,
+			);
+			name = RegistryTests;
+			productName = RegistryTests;
+			productReference = 8BD172352BECA056002D0BD9 /* RegistryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1254,11 +1335,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1510;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					8B9673812B36187D00FD2E7C = {
 						CreatedOnToolsVersion = 15.1;
+					};
+					8BD172342BECA056002D0BD9 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 8B9673812B36187D00FD2E7C;
 					};
 				};
 			};
@@ -1280,6 +1365,7 @@
 			projectRoot = "";
 			targets = (
 				8B9673812B36187D00FD2E7C /* Registry */,
+				8BD172342BECA056002D0BD9 /* RegistryTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1294,6 +1380,13 @@
 				8B96738F2B36187E00FD2E7C /* Preview Assets.xcassets in Resources */,
 				8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */,
 				8B96738C2B36187E00FD2E7C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BD172332BECA056002D0BD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,7 +1530,54 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BD172312BECA056002D0BD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BD1723E2BECA117002D0BD9 /* Ledger.swift in Sources */,
+				8BD172422BECA44D002D0BD9 /* Doctor.swift in Sources */,
+				8BD172522BECA7F8002D0BD9 /* SuperUser.swift in Sources */,
+				8BD1724A2BECA794002D0BD9 /* Payment.Method.swift in Sources */,
+				8BD172532BECA805002D0BD9 /* Person.swift in Sources */,
+				8BD172462BECA77F002D0BD9 /* Check.swift in Sources */,
+				8BD1725D2BECA8AA002D0BD9 /* MoneyTransaction.swift in Sources */,
+				8BD1725E2BECA8AC002D0BD9 /* PatientMoneyTransaction.swift in Sources */,
+				8BD172482BECA78E002D0BD9 /* Payment.swift in Sources */,
+				8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */,
+				8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */,
+				8BD172442BECA637002D0BD9 /* Salary.swift in Sources */,
+				8BD172412BECA34B002D0BD9 /* DoctorSchedule.swift in Sources */,
+				8BD1724B2BECA796002D0BD9 /* Report.swift in Sources */,
+				8BD172512BECA7F6002D0BD9 /* AnonymousUser.swift in Sources */,
+				8BD172472BECA782002D0BD9 /* Refund.swift in Sources */,
+				8BD1724E2BECA7C4002D0BD9 /* PricelistItem.Snapshot.swift in Sources */,
+				8BD172572BECA844002D0BD9 /* PatientAppointment.swift in Sources */,
+				8BD1725F2BECA8AF002D0BD9 /* DoctorMoneyTransaction.swift in Sources */,
+				8BD172542BECA80E002D0BD9 /* Employee.swift in Sources */,
+				8BD172592BECA84E002D0BD9 /* PlaceOfResidence.swift in Sources */,
+				8BD172432BECA454002D0BD9 /* Patient.swift in Sources */,
+				8BD1724D2BECA7C1002D0BD9 /* PricelistItem.swift in Sources */,
+				8BD172582BECA84B002D0BD9 /* PassportData.swift in Sources */,
+				8BD1724C2BECA7B3002D0BD9 /* MedicalService.swift in Sources */,
+				8BD172492BECA791002D0BD9 /* Payment.Purpose.swift in Sources */,
+				8BD1725B2BECA865002D0BD9 /* Note.swift in Sources */,
+				8BD172452BECA63A002D0BD9 /* Department.swift in Sources */,
+				8BD1724F2BECA7E2002D0BD9 /* TreatmentPlan.swift in Sources */,
+				8BD1725A2BECA855002D0BD9 /* CheckTemplate.swift in Sources */,
+				8BD172502BECA7F3002D0BD9 /* User.swift in Sources */,
+				8BD172602BECC5DD002D0BD9 /* StatisticsPeriod.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8BD1723A2BECA056002D0BD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B9673812B36187D00FD2E7C /* Registry */;
+			targetProxy = 8BD172392BECA056002D0BD9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8B9673922B36187E00FD2E7C /* Debug */ = {
@@ -1633,6 +1773,52 @@
 			};
 			name = Release;
 		};
+		8BD1723B2BECA056002D0BD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WQ6FU7ZZ8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.RegistryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Registry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Registry";
+			};
+			name = Debug;
+		};
+		8BD1723C2BECA056002D0BD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WQ6FU7ZZ8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.RegistryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Registry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Registry";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1650,6 +1836,15 @@
 			buildConfigurations = (
 				8B9673952B36187E00FD2E7C /* Debug */,
 				8B9673962B36187E00FD2E7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BD1723D2BECA056002D0BD9 /* Build configuration list for PBXNativeTarget "RegistryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BD1723B2BECA056002D0BD9 /* Debug */,
+				8BD1723C2BECA056002D0BD9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
