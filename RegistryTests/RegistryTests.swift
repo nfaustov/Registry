@@ -17,6 +17,7 @@ final class RegistryTests: XCTestCase {
     private var doctor: Doctor!
     private var doctorSchedule: DoctorSchedule!
     private var patient: Patient!
+    private var medicalService: MedicalService!
     
     @MainActor
     override func setUp() {
@@ -62,7 +63,7 @@ final class RegistryTests: XCTestCase {
             title: "Прием кардиолога",
             price: 1500
         )
-        let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, performer: doctor, agent: doctor)
+        medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, performer: doctor, agent: doctor)
         
         check.services.append(medicalService)
         
@@ -140,5 +141,44 @@ final class RegistryTests: XCTestCase {
         XCTAssertEqual(report?.payments?.count, 1)
         XCTAssertEqual(report?.cashBalance, -800)
         XCTAssertEqual(report?.reporting(.expense, of: .card), -400)
+    }
+
+    func testRefundPayment() async {
+        guard let appointment = doctorSchedule.patientAppointments?.first,
+              let check = appointment.check else { return }
+
+        let paymentMethod = Payment.Method(.bank, value: 1300)
+    
+        await ledger.makeMedicalServicePayment(check: check, methods: [paymentMethod], createdBy: SuperUser.boss)
+
+        let refund = Refund(services: [medicalService])
+        let refundMethod = Payment.Method(.cash, value: -1500)
+
+        await ledger.makeRefundPayment(refund, to: check, method: refundMethod, createdBy: SuperUser.boss)
+        let report = await ledger.getReport()
+
+        XCTAssertEqual(doctor.balance, 0)
+        XCTAssertEqual(patient.balance, -200)
+        XCTAssertEqual(report?.payments?.count, 2)
+        XCTAssertEqual(report?.cashBalance, -1500)
+        XCTAssertEqual(report?.reporting(.income, of: .bank), 1300)
+    }
+
+    func testBalancePayment() async {
+        await ledger.makeBalancePayment(from: patient, value: 100, createdBy: SuperUser.boss)
+        let report = await ledger.getReport()
+
+        XCTAssertEqual(report?.payments?.count, 1)
+        XCTAssertEqual(report?.cashBalance, 100)
+        XCTAssertEqual(patient.balance, 100)
+        XCTAssertEqual(patient.transactions?.count, 1)
+    }
+
+    func testSpendingPayment() async {
+        await ledger.makeSpendingPayment(purpose: .building(""), method: .init(.cash, value: 450), createdBy: SuperUser.boss)
+        let report = await ledger.getReport()
+
+        XCTAssertEqual(report?.payments?.count, 1)
+        XCTAssertEqual(report?.cashBalance, -450)
     }
 }
