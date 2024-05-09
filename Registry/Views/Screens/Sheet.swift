@@ -11,7 +11,7 @@ enum Sheet: Identifiable {
     case report(Report)
     case createSpending(in: Report)
     case doctorSelection(date: Date)
-    case doctorPayout(for: Doctor, disabled: Bool)
+    case doctorPayout(for: Doctor, disabled: Bool, isSinglePatient: Bool)
     case doctorFutureSchedules(doctorSchedule: DoctorSchedule)
     case addPatient(for: PatientAppointment)
     case addProcedurePatient(for: DoctorSchedule)

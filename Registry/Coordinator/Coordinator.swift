@@ -83,8 +83,8 @@ extension Coordinator {
             CreateSpendingView(report: report)
         case .doctorSelection(let date):
             DoctorSelectionView(date: date)
-        case .doctorPayout(let doctor, let disabled):
-            DoctorPayoutView(doctor: doctor, disabled: disabled)
+        case .doctorPayout(let doctor, let disabled, let isSinglePatient):
+            DoctorPayoutView(doctor: doctor, disabled: disabled, isSinglePatient: isSinglePatient)
         case .doctorFutureSchedules(let doctorSchedule):
             DoctorFutureSchedulesView(doctorSchedule: doctorSchedule)
         case .addPatient(let appointment):

@@ -75,7 +75,7 @@ struct DoctorScheduleHeaderView: View {
                             if doctor.department == .procedure {
                                 coordinator.present(.updateBalance(for: doctor, kind: .payout))
                             } else {
-                                coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0))
+                                coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0, isSinglePatient: isSinglePatient))
                             }
                         }
                         .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
@@ -109,6 +109,10 @@ struct DoctorScheduleHeaderView: View {
 private extension DoctorScheduleHeaderView {
     var incompletedAppointments: Int {
         doctorSchedule.scheduledPatients.count - doctorSchedule.completedAppointments.count
+    }
+
+    var isSinglePatient: Bool {
+        doctorSchedule.scheduledPatients.count == 1 && doctorSchedule.completedAppointments.count == 1
     }
 
     var duration: String {

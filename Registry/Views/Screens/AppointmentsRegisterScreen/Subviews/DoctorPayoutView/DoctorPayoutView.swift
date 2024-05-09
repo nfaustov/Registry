@@ -16,19 +16,22 @@ struct DoctorPayoutView: View {
 
     private let doctor: Doctor
     private let disabled: Bool
+    private let isSinglePatient: Bool
 
     // MARK: - State
 
+    @State private var balance: Double
     @State private var paymentMethod: Payment.Method
     @State private var additionalPaymentMethod: Payment.Method? = nil
     @State private var showLastTransactions: Bool = false
-    @State private var addSinglePatientFee: Bool = false
 
     // MARK: -
 
-    init(doctor: Doctor, disabled: Bool) {
+    init(doctor: Doctor, disabled: Bool, isSinglePatient: Bool) {
         self.doctor = doctor
         self.disabled = disabled
+        self.isSinglePatient = isSinglePatient
+        _balance = State(initialValue: doctor.balance)
         _paymentMethod = State(initialValue: Payment.Method(.cash, value: doctor.balance < 0 ? 0 : floor(doctor.balance)))
     }
 
@@ -39,9 +42,10 @@ struct DoctorPayoutView: View {
                     Text(doctor.fullName)
 
                     LabeledContent("Баланс") {
-                        CurrencyText(doctor.balance)
+                        CurrencyText(balance)
                             .font(.headline)
                             .foregroundStyle(doctor.balance < 0 ? .red : .primary)
+                            .contentTransition(.numericText())
                     }
 
                     Button("Последние транзакции") {
@@ -55,16 +59,11 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if singlePatientFee > 0 {
+                if isSinglePatient {
                     Section {
-                        Toggle("Один пациент", isOn: $addSinglePatientFee)
-                            .onChange(of: addSinglePatientFee) { _, newValue in
-                                if newValue {
-                                    doctor.updateBalance(increment: singlePatientFee)
-                                } else {
-                                    doctor.updateBalance(increment: -singlePatientFee)
-                                }
-                            }
+                        LabeledContent("Доплата за прием", value: "\(Int(singlePatientFee)) ₽")
+                    } footer: {
+                        Text("Будет зачислена на баланс врача после проведения платежа.")
                     }
                 }
 
@@ -80,7 +79,8 @@ struct DoctorPayoutView: View {
                 confirmationDisabled: paymentMethod.value == 0 || disabled
             ) {
                 Task {
-                    if addSinglePatientFee {
+                    if isSinglePatient {
+                        doctor.updateBalance(increment: singlePatientFee)
                         let purpose: Payment.Purpose = .toBalance("Доплата за прием")
                         let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                         doctor.transactions?.append(payment)
@@ -96,7 +96,7 @@ struct DoctorPayoutView: View {
 }
 
 #Preview {
-    DoctorPayoutView(doctor: ExampleData.doctor, disabled: false)
+    DoctorPayoutView(doctor: ExampleData.doctor, disabled: false, isSinglePatient: false)
 }
 
 // MARK: - Calculations
