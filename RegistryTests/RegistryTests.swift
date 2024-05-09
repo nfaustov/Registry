@@ -111,4 +111,34 @@ final class RegistryTests: XCTestCase {
         XCTAssertEqual(report?.cashBalance, 300)
         XCTAssertEqual(report?.reporting(.income, of: .bank), 1400)
     }
+
+    func testDoctorPayoutPayment() async {
+        doctor.updateBalance(increment: 1200)
+
+        let method = Payment.Method(.cash, value: -800)
+
+        await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: [method], createdBy: SuperUser.boss)
+        let report = await ledger.getReport()
+
+        XCTAssertEqual(doctor.transactions?.count, 1)
+        XCTAssertEqual(doctor.balance, 400)
+        XCTAssertEqual(report?.payments?.count, 1)
+        XCTAssertEqual(report?.cashBalance, -800)
+    }
+
+    func testDoctorPayoutPayment2() async {
+        doctor.updateBalance(increment: 1200)
+
+        let method1 = Payment.Method(.cash, value: -800)
+        let method2 = Payment.Method(.card, value: -400)
+
+        await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: [method1, method2], createdBy: SuperUser.boss)
+        let report = await ledger.getReport()
+
+        XCTAssertEqual(doctor.transactions?.count, 1)
+        XCTAssertEqual(doctor.balance, 0)
+        XCTAssertEqual(report?.payments?.count, 1)
+        XCTAssertEqual(report?.cashBalance, -800)
+        XCTAssertEqual(report?.reporting(.expense, of: .card), -400)
+    }
 }
