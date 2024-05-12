@@ -64,13 +64,11 @@ struct CreateSpendingView: View {
                 }
             }
             .sheetToolbar(
-                title: "Списание средств",
-                confirmationDisabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
+                "Списание средств",
+                disabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
             ) {
-                Task {
-                    let ledger = Ledger(modelContainer: modelContext.container)
-                    await ledger.makeSpendingPayment(purpose: paymentPurpose, method: paymentMethod, createdBy: user)
-                }
+                let ledger = Ledger(modelContainer: modelContext.container)
+                await ledger.makeSpendingPayment(purpose: paymentPurpose, method: paymentMethod, createdBy: user)
             }
         }
         .task {

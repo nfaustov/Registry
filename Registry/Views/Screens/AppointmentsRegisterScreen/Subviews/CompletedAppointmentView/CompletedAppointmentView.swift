@@ -99,20 +99,18 @@ struct CompletedAppointmentView: View {
                 }
             }
             .sheetToolbar(
-                title: "Счет",
+                "Счет",
                 subtitle: appointment.patient?.fullName,
-                confirmationDisabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
-                onConfirm: appointment.check?.refund != nil ? nil : {
-                    Task {
-                        let ledger = Ledger(modelContainer: modelContext.container)
+                disabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
+                task: appointment.check?.refund != nil ? nil : {
+                    let ledger = Ledger(modelContainer: modelContext.container)
 
-                        if let check = appointment.check {
-                            await ledger.makeRefundPayment(createdRefund, to: check, method: paymentMethod, createdBy: user)
-                        }
+                    if let check = appointment.check {
+                        await ledger.makeRefundPayment(createdRefund, to: check, method: paymentMethod, createdBy: user)
+                    }
 
-                        if includeBalance {
-                            await ledger.makeBalancePayment(from: patient, value: -patient.balance, createdBy: user)
-                        }
+                    if includeBalance {
+                        await ledger.makeBalancePayment(from: patient, value: -patient.balance, createdBy: user)
                     }
                 }
             )

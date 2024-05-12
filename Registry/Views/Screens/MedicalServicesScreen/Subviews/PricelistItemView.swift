@@ -131,7 +131,7 @@ struct PricelistItemView: View {
                 }
             }
             .sheetToolbar(
-                title: "Услуга",
+                "Услуга",
                 onConfirm: user.accessLevel != .boss ? nil : { 
                     pricelistItem.title = title
                     pricelistItem.price = price

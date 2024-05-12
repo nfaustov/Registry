@@ -54,7 +54,7 @@ struct DoctorPayoutView: View {
                     .sheet(isPresented: $showLastTransactions) {
                         NavigationStack {
                             DoctorTransactionsView(doctor: doctor)
-                                .sheetToolbar(title: "Транзакции")
+                                .sheetToolbar("Транзакции")
                         }
                     }
                 }
@@ -74,21 +74,16 @@ struct DoctorPayoutView: View {
                 )
                 .paymentKind(.balance)
             }
-            .sheetToolbar(
-                title: "Выплата",
-                confirmationDisabled: paymentMethod.value == 0 || disabled
-            ) {
-                Task {
-                    if isSinglePatient {
-                        doctor.updateBalance(increment: singlePatientFee)
-                        let purpose: Payment.Purpose = .toBalance("Доплата за прием")
-                        let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
-                        doctor.transactions?.append(payment)
-                    }
-
-                    let ledger = Ledger(modelContainer: modelContext.container)
-                    await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
+            .sheetToolbar("Выплата", disabled: paymentMethod.value == 0 || disabled) {
+                if isSinglePatient {
+                    doctor.updateBalance(increment: singlePatientFee)
+                    let purpose: Payment.Purpose = .toBalance("Доплата за прием")
+                    let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
+                    doctor.transactions?.append(payment)
                 }
+
+                let ledger = Ledger(modelContainer: modelContext.container)
+                await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
             }
             .scrollBounceBehavior(.basedOnSize)
         }

@@ -50,7 +50,7 @@ struct CreatePricelistItemView: View {
                     TextField("Себестоимость", value: $costPriceValue, format: .number)
                 }
             }
-            .sheetToolbar(title: "Новая услуга", confirmationDisabled: category == nil || emptyTextDetection) {
+            .sheetToolbar("Новая услуга", disabled: category == nil || emptyTextDetection) {
                 guard let category else { return }
 
                 let priceListItem = PricelistItem(

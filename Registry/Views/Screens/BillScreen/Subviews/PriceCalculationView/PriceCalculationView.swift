@@ -104,7 +104,7 @@ struct PriceCalculationView: View {
                             Form {
                                 MoneyFieldSection(value: $check.discount)
                             }
-                            .sheetToolbar(title: "Сумма скидки")
+                            .sheetToolbar("Сумма скидки")
                         }
                     }
                 }

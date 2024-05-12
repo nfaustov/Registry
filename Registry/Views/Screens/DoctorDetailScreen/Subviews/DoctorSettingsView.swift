@@ -127,7 +127,7 @@ struct DoctorSettingsView: View {
                     isPresented: $isSearchingPricelistItem,
                     placement: .navigationBarDrawer(displayMode: .always)
                 )
-                .sheetToolbar(title: "Выберите услугу")
+                .sheetToolbar("Выберите услугу")
                 .onChange(of: basicService) { _, newValue in
                     doctor.defaultPricelistItem = basicService
                     showPricelist = false

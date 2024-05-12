@@ -120,10 +120,7 @@ struct AddProcedurePatientView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .sheetToolbar(
-                title: "Регистрация пациента",
-                confirmationDisabled: emptyTextDetection || !validPhoneNumber
-            ) {
+            .sheetToolbar("Регистрация пациента", disabled: emptyTextDetection || !validPhoneNumber) {
                 if let selectedPatient {
                     schedule.createPatientAppointment(date: time) { appointment in
                         appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)

@@ -43,7 +43,7 @@ struct DoctorSelectionView: View {
                         dismiss()
                     }
                 }
-                .sheetToolbar(title: "Выберите специалиста")
+                .sheetToolbar("Выберите специалиста")
             }
         }
     }

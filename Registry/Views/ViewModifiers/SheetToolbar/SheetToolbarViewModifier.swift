@@ -8,12 +8,37 @@
 import SwiftUI
 
 struct SheetToolbarViewModifier: ViewModifier {
+    //MARK: - Dependencies
+
     @Environment(\.dismiss) private var dismiss
 
     var title: String
     var subtitle: String? = nil
-    var confirmationDisabled: Bool = false
-    var confirmationAction: (() -> Void)? = nil
+    var disabled: Bool = false
+    var onConfirm: (() -> Void)? = nil
+    var onAsyncConfirm: (() async -> Void)? = nil
+
+    //MARK: - State
+
+    @State private var inProcess: Bool = false
+
+    // MARK: -
+
+    init(_ title: String, subtitle: String? = nil, disabled: Bool = false, onConfirm: (() -> Void)? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.disabled = disabled
+        self.onConfirm = onConfirm
+        onAsyncConfirm = nil
+    }
+
+    init(_ title: String, subtitle: String? = nil, disabled: Bool = false, onAsyncConfirm: (() async -> Void)? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.disabled = disabled
+        self.onAsyncConfirm = onAsyncConfirm
+        onConfirm = nil
+    }
 
     func body(content: Content) -> some View {
         content
@@ -22,18 +47,37 @@ struct SheetToolbarViewModifier: ViewModifier {
                     Button {
                         dismiss()
                     } label: {
-                        Text(confirmationAction == nil ? "Закрыть" : "Отменить")
+                        Text(onConfirm == nil ? "Закрыть" : "Отменить")
                     }
                 }
-                if let onConfirm = confirmationAction {
+
+                if let onConfirm {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button {
+                        Button("Подтвердить") {
                             onConfirm()
                             dismiss()
-                        } label: {
-                            Text("Подтвердить")
                         }
-                        .disabled(confirmationDisabled)
+                        .disabled(disabled)
+                    }
+                } else if let onAsyncConfirm {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button {
+                            inProcess = true
+
+                            Task(priority: .userInitiated) {
+                                await onAsyncConfirm()
+                                inProcess = false
+                                dismiss()
+                            }
+                        } label: {
+                            if inProcess {
+                                CircularProgressView()
+                                    .padding(.horizontal)
+                            } else {
+                                Text("Подтвердить")
+                            }
+                        }
+                        .disabled(disabled)
                     }
                 }
             }
@@ -43,16 +87,30 @@ struct SheetToolbarViewModifier: ViewModifier {
 
 extension View {
     func sheetToolbar(
-        title: String,
+        _ title: String,
         subtitle: String? = nil,
-        confirmationDisabled: Bool = false,
+        disabled: Bool = false,
         onConfirm: (() -> Void)? = nil
     ) -> some View {
         modifier(SheetToolbarViewModifier(
-            title: title,
+            title,
             subtitle: subtitle,
-            confirmationDisabled: confirmationDisabled,
-            confirmationAction: onConfirm
+            disabled: disabled,
+            onConfirm: onConfirm
+        ))
+    }
+
+    func sheetToolbar(
+        _ title: String,
+        subtitle: String? = nil,
+        disabled: Bool = false,
+        task: (() async -> Void)? = nil
+    ) -> some View {
+        modifier(SheetToolbarViewModifier(
+            title,
+            subtitle: subtitle,
+            disabled: disabled,
+            onAsyncConfirm: task
         ))
     }
 }

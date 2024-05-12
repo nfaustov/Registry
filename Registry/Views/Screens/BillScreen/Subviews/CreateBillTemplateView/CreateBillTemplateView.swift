@@ -80,7 +80,7 @@ struct CreateBillTemplateView: View {
                     }
                 }
             }
-            .sheetToolbar(title: "Новый шаблон", confirmationDisabled: templateTitleText.isEmpty) {
+            .sheetToolbar("Новый шаблон", disabled: templateTitleText.isEmpty) {
                 let template = CheckTemplate(title: templateTitleText, services: services, discount: discount)
                 modelContext.insert(template)
             }

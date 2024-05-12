@@ -51,7 +51,7 @@ struct DoctorFutureSchedulesView: View {
                     .scrollBounceBehavior(.basedOnSize)
                 }
             }
-            .sheetToolbar(title: "Расписания врача", subtitle: doctorSchedule.doctor?.initials ?? "")
+            .sheetToolbar("Расписания врача", subtitle: doctorSchedule.doctor?.initials ?? "")
         }
     }
 }

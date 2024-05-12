@@ -58,15 +58,13 @@ struct UpdateBalanceView: View {
 
                 MoneyFieldSection(paymentMethod.type.rawValue, value: $paymentMethod.value)
             }
-            .sheetToolbar(title: kind.rawValue, confirmationDisabled: paymentMethod.value == 0) {
-                Task {
-                    let ledger = Ledger(modelContainer: modelContext.container)
-                    await ledger.makeBalancePayment(
-                        from: person,
-                        value: kind == .refill ? paymentMethod.value : -paymentMethod.value,
-                        createdBy: user
-                    )
-                }
+            .sheetToolbar(kind.rawValue, disabled: paymentMethod.value == 0) {
+                let ledger = Ledger(modelContainer: modelContext.container)
+                await ledger.makeBalancePayment(
+                    from: person,
+                    value: kind == .refill ? paymentMethod.value : -paymentMethod.value,
+                    createdBy: user
+                )
             }
         }
     }

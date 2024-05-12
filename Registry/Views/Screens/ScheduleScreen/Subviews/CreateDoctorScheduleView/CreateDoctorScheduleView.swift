@@ -67,8 +67,8 @@ struct CreateDoctorScheduleView: View {
                 }
             }
             .sheetToolbar(
-                title: doctor.fullName,
-                confirmationDisabled: endingDate.timeIntervalSince(startingDate) < doctor.serviceDuration
+                doctor.fullName,
+                disabled: endingDate.timeIntervalSince(startingDate) < doctor.serviceDuration
             ) {
                 let schedule = DoctorSchedule(
                     doctor: doctor,

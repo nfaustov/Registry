@@ -173,15 +173,15 @@ struct CreateDoctorView: View {
                             isPresented: $isSearching,
                             placement: .navigationBarDrawer(displayMode: .always)
                         )
-                        .sheetToolbar(title: "Выберите услугу")
+                        .sheetToolbar("Выберите услугу")
                         .onChange(of: basicService) {
                             addBasicService = false
                         }
                 }
             }
             .sheetToolbar(
-                title: "Новый специалист",
-                confirmationDisabled: emptyNameText || invalidPhoneNumber
+                "Новый специалист",
+                disabled: emptyNameText || invalidPhoneNumber
             ) {
                 let doctor = Doctor(
                     secondName: secondNameText.trimmingCharacters(in: .whitespaces),

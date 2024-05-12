@@ -464,7 +464,6 @@
 		8B183BA72B86600A00FA1D46 /* Report */ = {
 			isa = PBXGroup;
 			children = (
-				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
 				8B183BAC2B86606400FA1D46 /* Report.swift */,
 				8B183BAA2B86605900FA1D46 /* Payment.swift */,
 				8B183BAE2B8661C000FA1D46 /* Payment.Purpose.swift */,
@@ -1013,6 +1012,7 @@
 		8B9673972B361B1F00FD2E7C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8BE145012BF0933B00991225 /* Ledger */,
 				8B7801472B87B9920064DBFB /* PatientAppointment */,
 				8B96739B2B361BA700FD2E7C /* Doctor */,
 				8BDCCFD62B849F5B0086BF4D /* DoctorSchedule */,
@@ -1285,6 +1285,14 @@
 				8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */,
 			);
 			path = Patient;
+			sourceTree = "<group>";
+		};
+		8BE145012BF0933B00991225 /* Ledger */ = {
+			isa = PBXGroup;
+			children = (
+				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
+			);
+			path = Ledger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

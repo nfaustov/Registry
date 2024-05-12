@@ -44,7 +44,7 @@ struct PatientsList: View {
                     text: $searchText,
                     placement: .navigationBarDrawer(displayMode: .always)
                 )
-                .sheetToolbar(title: "Выберите пациента")
+                .sheetToolbar("Выберите пациента")
             }
         }
     }

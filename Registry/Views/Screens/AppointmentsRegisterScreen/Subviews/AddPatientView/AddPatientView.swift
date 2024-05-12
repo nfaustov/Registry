@@ -157,8 +157,8 @@ struct AddPatientView: View {
             }
             .listStyle(.insetGrouped)
             .sheetToolbar(
-                title: "Регистрация пациента",
-                confirmationDisabled: emptyTextDetection || !validPhoneNumber
+                "Регистрация пациента",
+                disabled: emptyTextDetection || !validPhoneNumber
             ) {
                 replaceAppointmentsIfNeeded()
 

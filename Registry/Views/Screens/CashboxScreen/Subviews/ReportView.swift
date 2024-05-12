@@ -108,7 +108,7 @@ struct ReportView: View {
                 }
             }
             .sheetToolbar(
-                title: "Отчет",
+                "Отчет",
                 subtitle: DateFormat.weekDay.string(from: report.date)
             )
         }
