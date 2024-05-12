@@ -170,6 +170,7 @@
 		8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */; };
 		8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE52B84A3EC0086BF4D /* Check.swift */; };
 		8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
+		8BE145032BF0C92000991225 /* LedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE145022BF0C92000991225 /* LedgerView.swift */; };
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
 		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
 		8BE9D3592BE13EF8006B26FF /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3562BE13EF8006B26FF /* patients.json */; };
@@ -323,6 +324,7 @@
 		8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentPlan.swift; sourceTree = "<group>"; };
 		8BDCCFE52B84A3EC0086BF4D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
 		8BDCCFE92B84A6770086BF4D /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		8BE145022BF0C92000991225 /* LedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerView.swift; sourceTree = "<group>"; };
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
 		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
 		8BE9D3562BE13EF8006B26FF /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 				8B6C68622BBB365000F08486 /* DoctorsChart.swift */,
 				8B6C68642BBB390F00F08486 /* SchedulesChart.swift */,
 				8BA8C80C2BBC2F6C00F2BCDD /* BillTemplatesController.swift */,
+				8BE145022BF0C92000991225 /* LedgerView.swift */,
 			);
 			path = ReportingViews;
 			sourceTree = "<group>";
@@ -1503,6 +1506,7 @@
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,
 				8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */,
+				8BE145032BF0C92000991225 /* LedgerView.swift in Sources */,
 				8B7801492B87B9A60064DBFB /* PatientAppointment.swift in Sources */,
 				8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */,
 				8BDCCFDF2B84A20C0086BF4D /* PlaceOfResidence.swift in Sources */,

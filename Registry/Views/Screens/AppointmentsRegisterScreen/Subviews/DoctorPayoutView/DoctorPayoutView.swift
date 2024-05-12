@@ -59,7 +59,7 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if isSinglePatient {
+                if isSinglePatient, singlePatientFee > 0 {
                     Section {
                         LabeledContent("Доплата за прием", value: "\(Int(singlePatientFee)) ₽")
                     } footer: {

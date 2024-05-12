@@ -11,12 +11,13 @@ struct IndicatorsScreen: View {
     // MARK: -
 
     var body: some View {
-        Form {
-            CashboxReportingView()
-            PatientsChart()
-            DoctorsChart()
-        }
-        .scrollBounceBehavior(.basedOnSize)
+        LedgerView()
+//        Form {
+//            CashboxReportingView()
+//            PatientsChart()
+//            DoctorsChart()
+//        }
+//        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
