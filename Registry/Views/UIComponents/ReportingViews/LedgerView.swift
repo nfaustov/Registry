@@ -39,6 +39,34 @@ struct LedgerView: View {
             }
 
             if let selectedReport {
+                HStack {
+                    GroupBox("Общая информация") {
+                        LabeledContent("Открытие смены", value: "\(Int(selectedReport.startingCash)) ₽")
+                        LabeledContent("Остаток", value: "\(Int(selectedReport.cashBalance)) ₽")
+                        LabeledContent("Пополнения", value: "\(Int(selectedReport.othersIncome())) ₽")
+                        LabeledContent("Инкасация", value: "\(Int(selectedReport.collected)) ₽")
+                    }
+                    .padding(.leading)
+
+                    GroupBox("Поступления") {
+                        LabeledContent("Наличные", value: "\(Int(selectedReport.reporting(.income, of: .cash))) ₽")
+                        LabeledContent("Терминал", value: "\(Int(selectedReport.reporting(.income, of: .bank))) ₽")
+                        LabeledContent("Карта", value: "\(Int(selectedReport.reporting(.income, of: .card))) ₽")
+                        LabeledContent("Всего", value: "\(Int(selectedReport.reporting(.income))) ₽")
+                            .font(.headline)
+                    }
+                    .padding(.horizontal)
+
+                    GroupBox("Списания") {
+                        LabeledContent("Наличные", value: "\(Int(selectedReport.reporting(.expense, of: .cash))) ₽")
+                        LabeledContent("Терминал", value: "\(Int(selectedReport.reporting(.expense, of: .bank))) ₽")
+                        LabeledContent("Карта", value: "\(Int(selectedReport.reporting(.expense, of: .card))) ₽")
+                        LabeledContent("Всего", value: "\(Int(selectedReport.reporting(.expense))) ₽")
+                            .font(.headline)
+                    }
+                    .padding(.trailing)
+                }
+
                 let sortedPayments = selectedReport.payments?.sorted(by: { $0.date > $1.date })
                 Table(sortedPayments ?? [], selection: $selection) {
                     TableColumn("Время") { payment in
