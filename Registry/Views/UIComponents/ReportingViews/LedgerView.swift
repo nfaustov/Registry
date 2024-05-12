@@ -49,10 +49,10 @@ struct LedgerView: View {
                     .padding(.leading)
 
                     GroupBox("Поступления") {
-                        LabeledContent("Наличные", value: "\(Int(selectedReport.reporting(.income, of: .cash))) ₽")
-                        LabeledContent("Терминал", value: "\(Int(selectedReport.reporting(.income, of: .bank))) ₽")
-                        LabeledContent("Карта", value: "\(Int(selectedReport.reporting(.income, of: .card))) ₽")
-                        LabeledContent("Всего", value: "\(Int(selectedReport.reporting(.income))) ₽")
+                        LabeledContent("Наличные", value: "\(Int(selectedReport.billsIncome(of: .cash))) ₽")
+                        LabeledContent("Терминал", value: "\(Int(selectedReport.billsIncome(of: .bank))) ₽")
+                        LabeledContent("Карта", value: "\(Int(selectedReport.billsIncome(of: .card))) ₽")
+                        LabeledContent("Всего", value: "\(Int(selectedReport.billsIncome())) ₽")
                             .font(.headline)
                     }
                     .padding(.horizontal)

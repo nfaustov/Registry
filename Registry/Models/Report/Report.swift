@@ -65,12 +65,18 @@ final class Report {
             .isEmpty
     }
 
-    func billsIncome(of type: PaymentType) -> Double {
-        payments?
+    func billsIncome(of type: PaymentType? = nil) -> Double {
+        let methods = payments?
             .filter { $0.subject != nil }
-            .flatMap { $0.methods }
-            .filter { $0.type == type }
-            .reduce(0.0) { $0 + $1.value } ?? 0
+            .flatMap { $0.methods } ?? []
+
+        if let type {
+            return methods
+                .filter { $0.type == type }
+                .reduce(0.0) { $0 + $1.value }
+        } else {
+            return methods.reduce(0.0) { $0 + $1.value }
+        }
     }
 
     func makePayment(_ payment: Payment) {
