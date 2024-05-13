@@ -39,8 +39,4 @@ final class Refund {
     func totalAmount(discountRate rate: Double) -> Double {
         rate * price - price
     }
-
-    func cancelChargesForServices() {
-        _services?.forEach { $0.cancelCharges() }
-    }
 }

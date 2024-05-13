@@ -125,10 +125,10 @@ private extension ServicesTable {
     func doctorButton(_ doctor: Doctor?, role: WritableKeyPath<MedicalService, Doctor?>, for serviceID: PersistentIdentifier) -> some View {
         Button(doctor?.initials ?? "-") {
             withAnimation {
-                if let service = service(with: serviceID) {
-                    var updatedService = service
-                    updatedService[keyPath: role] = doctor
-                    check.services.replace([service], with: [updatedService])
+                if var service = service(with: serviceID) {
+                    if purpose == .editRoles { service.charge(.cancel, for: role) }
+                    service[keyPath: role] = doctor
+                    if purpose == .editRoles { service.charge(.make, for: role) }
                 }
             }
         }

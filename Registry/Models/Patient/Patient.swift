@@ -70,25 +70,14 @@ final class Patient: AccountablePerson, Codable {
         let checks = appointments?
             .filter { Calendar.current.isDate($0.scheduledTime, inSameDayAs: date) }
             .filter { $0.status != .completed }
-            .compactMap { check(forAppointmentID: $0.id) } ?? []
+            .compactMap { $0.check } ?? []
 
         return Array(checks.uniqued())
-    }
-
-    func check(forAppointmentID appointmentID: UUID) -> Check? {
-        guard let appointment = appointments?.first(where: { $0.id == appointmentID }) else { return nil }
-
-        return appointment.check
     }
 
     func isNewPatient(for period: StatisticsPeriod) -> Bool {
         guard let firstVisit = appointments?.sorted(by: { $0.scheduledTime < $1.scheduledTime }).first else { return false }
         return firstVisit.scheduledTime > period.start()
-    }
-
-    func updateCheck(_ check: Check, forAppointmentID appointmentID: UUID) {
-        guard let appointment = appointments?.first(where: { $0.id == appointmentID }) else { return }
-        appointment.check = check
     }
 
     // MARK: - Codable

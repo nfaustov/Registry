@@ -38,14 +38,12 @@ final class MedicalService {
         self.conclusion = conclusion
     }
 
-    func makeCharges() {
-        salary(.charge)
-        agentFee(.charge)
-    }
-
-    func cancelCharges() {
-        salary(.cancel)
-        agentFee(.cancel)
+    func charge(_ action: ChargeAction, for role: KeyPath<MedicalService, Doctor?>) {
+        switch role {
+        case \.performer: salary(action)
+        case \.agent: agentFee(action)
+        default: ()
+        }
     }
 
     var agentFee: Double {
@@ -61,15 +59,17 @@ final class MedicalService {
            let rate = performer.doctorSalary.rate,
            pricelistItem.category != .laboratory {
             let salary = pieceRateSalary(rate)
-            performer.updateBalance(increment: action == .charge ? salary : -salary)
+            performer.updateBalance(increment: action == .make ? salary : -salary)
         }
     }
 
     private func agentFee(_ action: ChargeAction) {
-        if let agent { agent.updateBalance(increment: action == .charge ? agentFee : -agentFee) }
+        if let agent {
+            agent.updateBalance(increment: action == .make ? agentFee : -agentFee)
+        }
     }
 }
 
 enum ChargeAction {
-    case charge, cancel
+    case make, cancel
 }

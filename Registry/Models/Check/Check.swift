@@ -58,15 +58,25 @@ final class Check {
     }
 
     func makeChargesForServices() {
-        _services?.forEach { $0.makeCharges() }
+        _services?.forEach {
+            $0.charge(.make, for: \.performer)
+            $0.charge(.make, for: \.agent)
+        }
     }
 
     func cancelChargesForServices() {
-        _services?.forEach { $0.cancelCharges() }
+        _services?.forEach {
+            $0.charge(.cancel, for: \.performer)
+            $0.charge(.cancel, for: \.agent)
+        }
     }
 
     func makeRefund(_ refund: Refund) {
         self.refund = refund
-        refund.cancelChargesForServices()
+
+        refund.services.forEach {
+            $0.charge(.cancel, for: \.performer)
+            $0.charge(.cancel, for: \.agent)
+        }
     }
 }

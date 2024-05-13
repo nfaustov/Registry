@@ -16,26 +16,22 @@ struct BillScreen: View {
     @Environment(\.servicesTablePurpose) private var servicesTablePurpose
 
     private let appointment: PatientAppointment
-    private let initialCheck: Check
 
     // MARK: - State
 
     @State private var check: Check
     @State private var isCompleted: Bool = false
     @State private var isPriselistPresented: Bool = false
-    @State private var inProcess: Bool = false
 
     // MARK: -
 
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        if let check = appointment.patient?.check(forAppointmentID: appointment.id) {
+        if let check = appointment.check {
             _check = State(initialValue: check)
-            initialCheck = check
         } else {
             _check = State(initialValue: Check())
-            initialCheck = Check()
         }
     }
 
@@ -79,22 +75,6 @@ struct BillScreen: View {
                 }
                 .padding([.horizontal, .bottom])
                 .frame(maxHeight: 140)
-            } else if servicesTablePurpose == .editRoles {
-                Button {
-                    editRoles()
-                } label: {
-                    if inProcess {
-                        CircularProgressView()
-                            .padding(.horizontal)
-                    } else {
-                        Text("Готово")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 28)
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .padding([.horizontal, .bottom])
             }
         }
         .navigationTitle("Счет")
@@ -112,32 +92,4 @@ struct BillScreen: View {
             .environmentObject(Coordinator())
     }
     .previewInterfaceOrientation(.landscapeRight)
-}
-
-// MARK: - Calculations
-
-private extension BillScreen {
-    func editRoles() {
-        if let patient = appointment.patient {
-            inProcess = true
-
-            Task {
-                patient.updateCheck(check, forAppointmentID: appointment.id)
-
-                initialCheck.cancelChargesForServices()
-                check.makeChargesForServices()
-
-                var reportDescriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-                reportDescriptor.fetchLimit = 1
-
-                if let report = try? modelContext.fetch(reportDescriptor).first,
-                    Calendar.current.isDateInToday(report.date) {
-                    report.updatePayment(for: check)
-                }
-
-                inProcess = false
-                dismiss()
-            }
-        }
-    }
 }

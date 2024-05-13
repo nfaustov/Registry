@@ -60,7 +60,7 @@ struct PriceCalculationView: View {
 
                 HStack {
                     Button {
-                        patient.updateCheck(check, forAppointmentID: appointment.id)
+                        appointment.check = check
                         coordinator.present(
                             .billPayment(
                                 appointment: appointment,
@@ -113,7 +113,7 @@ struct PriceCalculationView: View {
         }
         .onDisappear {
             if !isCompleted {
-                patient.updateCheck(check, forAppointmentID: appointment.id)
+                appointment.check = check
             }
         }
     }

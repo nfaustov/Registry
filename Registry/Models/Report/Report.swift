@@ -121,16 +121,6 @@ final class Report {
         guard reporting(kind) != 0 else { return 0 }
         return reporting(kind, of: type) / reporting(kind)
     }
-
-    func updatePayment(for updatedCheck: Check) {
-        guard let payment = payments?.first(where: { payment in
-            if let subject = payment.subject {
-                return subject.id == updatedCheck.id
-            } else { return false }
-        }) else { return }
-
-        payment.subject = updatedCheck
-    }
 }
 
 // MARK: - Reporting
