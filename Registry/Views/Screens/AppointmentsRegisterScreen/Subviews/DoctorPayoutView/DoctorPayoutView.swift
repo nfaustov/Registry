@@ -75,7 +75,7 @@ struct DoctorPayoutView: View {
                 .paymentKind(.balance)
             }
             .sheetToolbar("Выплата", disabled: paymentMethod.value == 0 || disabled) {
-                if isSinglePatient {
+                if isSinglePatient, singlePatientFee > 0 {
                     doctor.updateBalance(increment: singlePatientFee)
                     let purpose: Payment.Purpose = .toBalance("Доплата за прием")
                     let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
@@ -110,10 +110,10 @@ private extension DoctorPayoutView {
     }
 
     var singlePatientFee: Double {
-        if doctor.secondName == "Окунцова" {
-            return 500
-        } else if doctor.secondName == "Безрукавников" {
-            return 250
-        } else { return 0 }
+        switch doctor.secondName {
+        case "Окунцова": return 500
+        case "Безрукавников": return 250
+        default: return 0
+        }
     }
 }
