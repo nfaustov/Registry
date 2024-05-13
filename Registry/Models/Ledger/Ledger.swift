@@ -53,10 +53,9 @@ actor Ledger {
             methods: methods,
             createdBy: user.asAnyUser
         )
+        doctor.transactions?.append(payment)
         doctor.updateBalance(increment: -abs(paymentValue))
         record(payment)
-        doctor.transactions?.append(payment)
-        try? modelContext.save()
     }
 
     func makeRefundPayment(

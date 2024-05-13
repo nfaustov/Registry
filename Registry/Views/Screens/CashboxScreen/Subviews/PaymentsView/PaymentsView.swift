@@ -85,9 +85,9 @@ struct PaymentsView: View {
 private extension PaymentsView {
     func paymentRow(_ payment: Payment) -> some View {
         HStack(spacing: 16) {
-            Image(systemName: payment.totalAmount > 0 ? "arrow.left" : "arrow.right")
+            Image(systemName: payment.totalAmount >= 0 ? "arrow.left" : "arrow.right")
                 .padding()
-                .background(payment.totalAmount > 0 ? .blue.opacity(0.1) : payment.purpose == .collection ? .purple.opacity(0.1) : .red.opacity(0.1))
+                .background(payment.totalAmount >= 0 ? .blue.opacity(0.1) : payment.purpose == .collection ? .purple.opacity(0.1) : .red.opacity(0.1))
                 .cornerRadius(12)
 
             VStack(alignment: .leading) {
@@ -100,7 +100,7 @@ private extension PaymentsView {
             Spacer()
 
             Text("\(Int(payment.totalAmount)) ₽")
-                .foregroundColor(payment.totalAmount > 0 ? .primary : payment.purpose == .collection ? .purple : .red)
+                .foregroundColor(payment.totalAmount >= 0 ? .primary : payment.purpose == .collection ? .purple : .red)
         }
     }
 }
