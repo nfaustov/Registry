@@ -40,6 +40,8 @@ final class MessageServiceClient: MessageService {
     }
 }
 
+// MARK: - ArtmedicsServices
+
 private struct MessageServiceKey: ServiceKey {
     static var currentValue: MessageService = MessageServiceClient()
 }

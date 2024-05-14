@@ -52,6 +52,9 @@
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
 		8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */; };
 		8B5EEC112BF35FB0006FB7CD /* CreateNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */; };
+		8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC162BF3E143006FB7CD /* VersionController.swift */; };
+		8B5EEC1A2BF3E194006FB7CD /* VersionControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */; };
+		8B5EEC1C2BF3E1F4006FB7CD /* VersionControlServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
 		8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */; };
@@ -236,6 +239,9 @@
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
 		8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteView.swift; sourceTree = "<group>"; };
+		8B5EEC162BF3E143006FB7CD /* VersionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionController.swift; sourceTree = "<group>"; };
+		8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlService.swift; sourceTree = "<group>"; };
+		8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlServiceClient.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
 		8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculationView.swift; sourceTree = "<group>"; };
@@ -639,6 +645,16 @@
 			path = CreateNoteView;
 			sourceTree = "<group>";
 		};
+		8B5EEC182BF3E15F006FB7CD /* VersionControlService */ = {
+			isa = PBXGroup;
+			children = (
+				8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */,
+				8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */,
+				8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */,
+			);
+			path = VersionControlService;
+			sourceTree = "<group>";
+		};
 		8B69A13F2B8D125E00458F33 /* BillScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,6 +969,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8DA96B2BA210C400F6F847 /* ArtmedicsServices */,
+				8B5EEC182BF3E15F006FB7CD /* VersionControlService */,
 				8B8DA96A2BA210B000F6F847 /* MessageService */,
 			);
 			path = Services;
@@ -1128,6 +1145,7 @@
 			children = (
 				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
+				8B5EEC162BF3E143006FB7CD /* VersionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1213,7 +1231,6 @@
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
 				8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */,
-				8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1439,6 +1456,7 @@
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
+				8B5EEC1C2BF3E1F4006FB7CD /* VersionControlServiceClient.swift in Sources */,
 				8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */,
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B0FA0602BC538C80077D4D9 /* NumPadView.swift in Sources */,
@@ -1480,6 +1498,7 @@
 				8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
+				8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,
 				8B187E862BD0F30200611DC2 /* CheckTemplate.swift in Sources */,
@@ -1509,6 +1528,7 @@
 				8B8DA9602BA1CF6500F6F847 /* LoginScreen.swift in Sources */,
 				8B45E61F2BB56BC300834AE6 /* UserDetailScreen.swift in Sources */,
 				8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */,
+				8B5EEC1A2BF3E194006FB7CD /* VersionControlService.swift in Sources */,
 				8B6BAA0A2B8DD880000FF417 /* BillPaymentView.swift in Sources */,
 				8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */,
 				8B80FECE2BC257F800BB76E0 /* PDFCreator.swift in Sources */,

@@ -11,13 +11,13 @@ import SwiftData
 struct LoginScreen: View {
     // MARK: - Dependencies
 
+    @StateObject private var versionController = VersionController()
+
     @Query private var doctors: [Doctor]
 
     @AppStorage("lastUser") private var lastUserID: String = ""
 
     var logIn: (User) -> Void
-
-    let version = AppVersion(0, 8, 1)
 
     // MARK: - State
 
@@ -38,7 +38,7 @@ struct LoginScreen: View {
                     }
                 }
 
-            Text(version.description)
+            Text(versionController.currentVersion?.description ?? versionController.errorMessage ?? "")
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .font(.footnote)
@@ -101,6 +101,10 @@ struct LoginScreen: View {
             .frame(width: 400)
             .frame(maxHeight: .infinity)
             .padding()
+        }
+        .onAppear {
+//            versionController.updateVersion(.patch)
+            versionController.getCurrentVersion()
         }
     }
 }
