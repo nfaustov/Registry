@@ -14,6 +14,10 @@ struct AppointmentView: View {
 
     @Bindable var appointment: PatientAppointment
 
+    // MARK: - State
+
+    @State private var showNote: Bool = false
+
     // MARK: -
 
     var body: some View {
@@ -50,7 +54,25 @@ struct AppointmentView: View {
                         }
                     }
                 } else {
-                    if appointment.status == .notified {
+                    if let note = appointment.note {
+                        Image(systemName: "note.text")
+                            .font(.headline)
+                            .foregroundStyle(showNote ? .gray.opacity(0.4) : .indigo)
+                            .padding(4)
+                            .background()
+                            .clipShape(.rect(cornerRadius: 6, style: .continuous))
+                            .shadow(color: .gray.opacity(showNote ? 0 : 1), radius: 1.5, y: 1)
+                            .padding(.horizontal, 4)
+                            .onTapGesture {
+                                showNote = true
+                            }
+                            .popover(isPresented: $showNote) {
+                                Text(note.text)
+                                    .padding()
+                            }
+                    }
+
+                    if appointment.status != .notified {
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle")
                             Text("SMS")
