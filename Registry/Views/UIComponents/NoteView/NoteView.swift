@@ -14,7 +14,8 @@ struct NoteView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let appointment: PatientAppointment
+    let appointment: PatientAppointment?
+    let schedule: DoctorSchedule?
 
     // MARK: - State
 
@@ -26,6 +27,7 @@ struct NoteView: View {
 
     init(for appointment: PatientAppointment) {
         self.appointment = appointment
+        schedule = nil
 
         if let note = appointment.note {
             _navigationTitle = State(initialValue: "Заметка")
@@ -33,14 +35,35 @@ struct NoteView: View {
             _charactersCount = State(initialValue: note.text.count)
         }
     }
+
+    init(for schedule: DoctorSchedule) {
+        self.schedule = schedule
+        appointment = nil
+
+        if let note = schedule.note {
+            _navigationTitle = State(initialValue: "Заметка")
+            _noteText = State(initialValue: note.text)
+            _charactersCount = State(initialValue: note.text.count)
+        }
+    }
+
     var body: some View {
         NavigationStack {
             Form {
-                Section("Прием пациента") {
-                    LabeledContent(
-                        appointment.patient?.fullName ?? "",
-                        value: DateFormat.dateTime.string(from: appointment.scheduledTime)
-                    )
+                if let appointment {
+                    Section("Прием пациента") {
+                        LabeledContent(
+                            appointment.patient?.fullName ?? "",
+                            value: DateFormat.dateTime.string(from: appointment.scheduledTime)
+                        )
+                    }
+                } else if let schedule {
+                    Section("Расписание врача") {
+                        LabeledContent(
+                            schedule.doctor?.initials ?? "",
+                            value: DateFormat.dateTime.string(from: schedule.starting)
+                        )
+                    }
                 }
 
                 Section {
@@ -61,7 +84,7 @@ struct NoteView: View {
                     }
                 }
 
-                if let note = appointment.note {
+                if let note {
                     Section {
                         Button("Удалить", role: .destructive) {
                             modelContext.delete(note)
@@ -70,12 +93,23 @@ struct NoteView: View {
                     }
                 }
             }
-            .sheetToolbar(navigationTitle, disabled: noteText.isEmpty) {
-                if let note = appointment.note {
+            .sheetToolbar(navigationTitle, disabled: noteText.isEmpty || !hasChanges) {
+                if let note {
                     note.updateText(noteText)
                 } else {
-                    let note = Note(text: noteText, createdBy: user)
-                    appointment.note = note
+                    if let appointment {
+                        let patientInitials = appointment.patient?.initials ?? ""
+                        let scheduledTime = DateFormat.dateTime.string(from: appointment.scheduledTime)
+                        let title = "Прием пациента: \(patientInitials) \(scheduledTime)"
+                        let note = Note(title: title, text: noteText, createdBy: user)
+                        appointment.note = note
+                    } else if let schedule {
+                        let doctorInitials = schedule.doctor?.initials ?? ""
+                        let scheduleStarting = DateFormat.dateTime.string(from: schedule.starting)
+                        let title = "Врач: \(doctorInitials) \(scheduleStarting)"
+                        let note = Note(title: title, text: noteText, createdBy: user)
+                        schedule.note = note
+                    }
                 }
 
                 dismiss()
@@ -86,4 +120,20 @@ struct NoteView: View {
 
 #Preview {
     NoteView(for: ExampleData.appointment)
+}
+
+// MARK: - Calculations
+
+private extension NoteView {
+    var note: Note? {
+        if let appointment {
+            return appointment.note
+        } else if let schedule {
+            return schedule.note
+        } else { return nil }
+    }
+
+    var hasChanges: Bool {
+        note?.text != noteText
+    }
 }

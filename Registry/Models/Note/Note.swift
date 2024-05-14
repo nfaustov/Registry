@@ -20,17 +20,8 @@ final class Note {
 
     static let charactersMax = 120
 
-    init(text: String, createdBy: User) {
-        if let doctorSchedule {
-            let doctorInitials = doctorSchedule.doctor?.initials ?? ""
-            let scheduleStarting = DateFormat.dateTime.string(from: doctorSchedule.starting)
-            title = "Врач: \(doctorInitials) \(scheduleStarting)"
-        } else if let patientAppointment {
-            let patientInitials = patientAppointment.patient?.initials ?? ""
-            let scheduledTime = DateFormat.dateTime.string(from: patientAppointment.scheduledTime)
-            title = "Прием пациента: \(patientInitials) \(scheduledTime)"
-        }
-
+    init(title: String, text: String, createdBy: User) {
+        self.title = title
         self.text = text
         createdAt = .now
         self.createdBy = createdBy.asAnyUser
