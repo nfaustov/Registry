@@ -15,32 +15,42 @@ struct PatientsScreen: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query(initialDescriptor) private var patients: [Patient]
-
     // MARK: - State
 
-    @State private var selection: Patient.ID?
+    @State private var selection: UUID?
     @State private var searchText: String = ""
+    @State private var patients: [Patient] = []
 
     // MARK: -
 
     var body: some View {
-        if let searchedPatients = try? modelContext.fetch(searchDescriptor) {
-            Table(searchText.isEmpty ? patients : searchedPatients, selection: $selection) {
-                TableColumn("Фамилия", value: \.secondName)
-                TableColumn("Имя", value: \.firstName)
-                TableColumn("Отчество", value: \.patronymicName)
-                TableColumn("Номер телефона", value: \.phoneNumber)
-            }
-            .searchable(text: $searchText)
-            .onChange(of: selection) { _, newValue in
-                if let selection = newValue,
-                   let patient = patients.first(where: { $0.id == selection }) {
-                    coordinator.push(.patientCard(patient))
+        Table(patients, selection: $selection) {
+            TableColumn("Фамилия", value: \.secondName)
+            TableColumn("Имя", value: \.firstName)
+            TableColumn("Отчество", value: \.patronymicName)
+            TableColumn("Номер телефона", value: \.phoneNumber)
+        }
+        .searchable(text: $searchText)
+        .onChange(of: searchText) { _, newValue in
+            withAnimation {
+                if newValue.isEmpty {
+                    patients = getLastPatients()
+                } else {
+                    patients = getSearchedPatients()
                 }
             }
-            .onAppear {
-                selection = nil
+        }
+        .onChange(of: selection) { _, newValue in
+            if let selection = newValue,
+               let patient = patients.first(where: { $0.id == selection }) {
+                coordinator.push(.patientCard(patient))
+            }
+        }
+        .task {
+            selection = nil
+
+            if searchText.isEmpty {
+                patients = getLastPatients()
             }
         }
     }
@@ -58,15 +68,17 @@ struct PatientsScreen: View {
 // MARK: - Calculations
 
 private extension PatientsScreen {
-    static var initialDescriptor: FetchDescriptor<Patient> {
+    func getLastPatients() -> [Patient] {
         var descriptor = FetchDescriptor<Patient>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         descriptor.fetchLimit = 100
         descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
 
-        return descriptor
+        if let patients = try? modelContext.fetch(descriptor) {
+            return patients
+        } else { return [] }
     }
 
-    var searchDescriptor: FetchDescriptor<Patient> {
+    func getSearchedPatients() -> [Patient] {
         let patientsPredicate = #Predicate<Patient> { patient in
             searchText.isEmpty ? false :
             patient.secondName.localizedStandardContains(searchText) ||
@@ -76,6 +88,8 @@ private extension PatientsScreen {
         var descriptor = FetchDescriptor(predicate: patientsPredicate)
         descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
 
-        return descriptor
+        if let patients = try? modelContext.fetch(descriptor) {
+            return patients
+        } else { return [] }
     }
 }
