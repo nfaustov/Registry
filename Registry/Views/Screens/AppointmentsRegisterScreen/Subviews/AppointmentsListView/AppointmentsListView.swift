@@ -58,7 +58,7 @@ struct AppointmentsListView: View {
                         }
                     }
                     .sheet(isPresented: $showNote) {
-                        NoteView(for: appointment)
+                        CreateNoteView(for: appointment)
                     }
                     .alert(
                         "Не удалось отправить SMS",

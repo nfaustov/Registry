@@ -22,7 +22,7 @@ struct AppointmentsRegisterScreen: View {
     var body: some View {
         HStack {
             SchedulesListView(schedules: daySchedules)
-                .frame(width: isPhoneUserInterfaceIdiom ? 240 : 360)
+                .frame(width: 360)
 
             Divider()
 
@@ -37,7 +37,7 @@ struct AppointmentsRegisterScreen: View {
                         }
                     })
                     .padding()
-                    .frame(maxWidth: .infinity, maxHeight: isPhoneUserInterfaceIdiom ? 132 : 182, alignment: .leading)
+                    .frame(maxWidth: .infinity, maxHeight: 182, alignment: .leading)
 
                     Divider()
 
@@ -77,9 +77,5 @@ private extension AppointmentsRegisterScreen {
         guard let schedules = try? modelContext.fetch(descriptor) else { return [] }
 
         return schedules
-    }
-
-    var isPhoneUserInterfaceIdiom: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
     }
 }

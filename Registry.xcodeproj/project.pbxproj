@@ -51,7 +51,7 @@
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
 		8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */; };
-		8B5EEC112BF35FB0006FB7CD /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC102BF35FB0006FB7CD /* NoteView.swift */; };
+		8B5EEC112BF35FB0006FB7CD /* CreateNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
 		8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */; };
@@ -235,7 +235,7 @@
 		8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
 		8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
-		8B5EEC102BF35FB0006FB7CD /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteView.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
 		8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculationView.swift; sourceTree = "<group>"; };
@@ -631,12 +631,12 @@
 			path = CircularProgressView;
 			sourceTree = "<group>";
 		};
-		8B5EEC0F2BF35F9D006FB7CD /* NoteView */ = {
+		8B5EEC0F2BF35F9D006FB7CD /* CreateNoteView */ = {
 			isa = PBXGroup;
 			children = (
-				8B5EEC102BF35FB0006FB7CD /* NoteView.swift */,
+				8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */,
 			);
-			path = NoteView;
+			path = CreateNoteView;
 			sourceTree = "<group>";
 		};
 		8B69A13F2B8D125E00458F33 /* BillScreen */ = {
@@ -1161,7 +1161,7 @@
 		8BA53D932B494CC5006BE983 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				8B5EEC0F2BF35F9D006FB7CD /* NoteView */,
+				8B5EEC0F2BF35F9D006FB7CD /* CreateNoteView */,
 				8B0FFCD62BEBA14D00A24998 /* CurrencyText */,
 				8B331F002BEA8550002298E6 /* DoctorTransactionsView */,
 				8B99D81A2BDCCF7E004FA284 /* MoneyFieldSection */,
@@ -1434,7 +1434,7 @@
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
 				8B8DA96D2BA210D700F6F847 /* ArtmedicsServices.swift in Sources */,
-				8B5EEC112BF35FB0006FB7CD /* NoteView.swift in Sources */,
+				8B5EEC112BF35FB0006FB7CD /* CreateNoteView.swift in Sources */,
 				8B8DA96F2BA213BD00F6F847 /* MessageController.swift in Sources */,
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,

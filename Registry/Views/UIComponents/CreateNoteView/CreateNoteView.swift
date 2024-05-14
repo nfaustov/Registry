@@ -1,5 +1,5 @@
 //
-//  NoteView.swift
+//  CreateNoteView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 14.05.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoteView: View {
+struct CreateNoteView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
@@ -87,6 +87,14 @@ struct NoteView: View {
                 if let note {
                     Section {
                         Button("Удалить", role: .destructive) {
+                            withAnimation {
+                                if let appointment {
+                                    appointment.note = nil
+                                } else if let schedule {
+                                    schedule.note = nil
+                                }
+                            }
+
                             modelContext.delete(note)
                             dismiss()
                         }
@@ -119,12 +127,12 @@ struct NoteView: View {
 }
 
 #Preview {
-    NoteView(for: ExampleData.appointment)
+    CreateNoteView(for: ExampleData.appointment)
 }
 
 // MARK: - Calculations
 
-private extension NoteView {
+private extension CreateNoteView {
     var note: Note? {
         if let appointment {
             return appointment.note

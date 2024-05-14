@@ -58,10 +58,9 @@ struct AppointmentView: View {
                         Image(systemName: "note.text")
                             .font(.headline)
                             .foregroundStyle(showNote ? .gray.opacity(0.4) : .indigo)
-                            .padding(4)
-                            .background()
-                            .clipShape(.rect(cornerRadius: 6, style: .continuous))
-                            .shadow(color: .gray.opacity(showNote ? 0 : 1), radius: 1.5, y: 1)
+                            .padding(8)
+                            .background(.indigo.opacity(0.1))
+                            .clipShape(.rect(cornerRadius: 8, style: .continuous))
                             .padding(.horizontal, 4)
                             .onTapGesture {
                                 showNote = true
