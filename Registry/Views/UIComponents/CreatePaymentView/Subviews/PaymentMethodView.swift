@@ -34,7 +34,7 @@ struct PaymentMethodView: View {
                             if let billTotalPrice = paymentKind.billTotalPrice {
                                 paymentMethod.value = billTotalPrice - account.balance
                             } else {
-                                paymentMethod.value = account.balance
+                                paymentMethod.value = floor(account.balance)
                             }
                         }
                     } label: {
@@ -46,7 +46,7 @@ struct PaymentMethodView: View {
                 if let billTotalPrice = paymentKind.billTotalPrice {
                     self.additionalPaymentMethod?.value = billTotalPrice - account.balance - newValue
                 } else {
-                    self.additionalPaymentMethod?.value = account.balance - newValue
+                    self.additionalPaymentMethod?.value = floor(account.balance) - newValue
                 }
             }
         } else {
@@ -83,7 +83,7 @@ struct PaymentMethodView: View {
             } else {
                 Button("Добавить способ оплаты") {
                     withAnimation {
-                        paymentMethod = Payment.Method(.cash, value: account.balance)
+                        paymentMethod = Payment.Method(.cash, value: floor(account.balance))
                         additionalPaymentMethod = Payment.Method(.card, value: 0)
                     }
                 }
