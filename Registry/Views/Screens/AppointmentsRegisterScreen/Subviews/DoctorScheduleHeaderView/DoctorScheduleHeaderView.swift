@@ -15,39 +15,33 @@ struct DoctorScheduleHeaderView: View {
     let doctorSchedule: DoctorSchedule
     let deleteSchedule: () -> Void
 
+    // MARK: - State
+
+    @State private var showNote: Bool = false
+
     // MARK: -
 
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
+        HStack(alignment: .bottom, spacing: 0) {
             if let doctor = doctorSchedule.doctor {
                 PersonImageView(person: doctor)
-                    .frame(width: isPhoneUserInterfaceIdiom ? 80 : 120, height: isPhoneUserInterfaceIdiom ? 100 : 150, alignment: .top)
+                    .frame(width: 120, height: 150, alignment: .top)
                     .clipped()
                     .cornerRadius(12)
 
                 VStack(alignment: .leading) {
-                    Text(isPhoneUserInterfaceIdiom ? doctor.initials : doctor.fullName)
+                    Text(doctor.fullName)
                         .font(.title3).bold()
                     Text(doctor.department.specialization)
                         .padding(.bottom, 4)
 
-                    if !isPhoneUserInterfaceIdiom {
-                        Spacer()
-                    }
+                    Spacer()
 
-                    if isPhoneUserInterfaceIdiom {
-                        HStack(spacing: 20) {
-                            Label("  \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
-                            Label(duration, systemImage: "timer")
-                        }
+                    Label(" \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
                         .padding(.bottom, 4)
-                    } else {
-                        Label(" \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
-                            .padding(.bottom, 4)
 
-                        Label(duration, systemImage: "timer")
-                            .padding(.bottom, 4)
-                    }
+                    Label(duration, systemImage: "timer")
+                        .padding(.bottom, 4)
 
                     HStack {
                         if !doctorSchedule.completedAppointments.isEmpty {
@@ -69,31 +63,11 @@ struct DoctorScheduleHeaderView: View {
 
                 Spacer()
 
-                Menu {
-                    Section {
-                        Button("Выплата") {
-                            if doctor.department == .procedure {
-                                coordinator.present(.updateBalance(for: doctor, kind: .payout))
-                            } else {
-                                coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0, isSinglePatient: isSinglePatient))
-                            }
-                        }
-                        .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
-
-                        if doctor.department != .procedure {
-                            Button("Расписания врача") {
-                                coordinator.present(.doctorFutureSchedules(doctorSchedule: doctorSchedule))
-                            }
-                        }
+                controlsStackView
+                    .padding(.horizontal)
+                    .sheet(isPresented: $showNote) {
+                        CreateNoteView(for: doctorSchedule)
                     }
-
-                    Button("Удалить расписание", role: .destructive) {
-                        deleteSchedule()
-                    }
-                    .disabled(doctorSchedule.scheduledPatients.count > 0)
-                } label: {
-                    Label("Действия", systemImage: "ellipsis.circle")
-                }
             }
         }
     }
@@ -102,6 +76,7 @@ struct DoctorScheduleHeaderView: View {
 #Preview {
     DoctorScheduleHeaderView(doctorSchedule: ExampleData.doctorSchedule, deleteSchedule: { })
         .frame(height: 150)
+        .environmentObject(Coordinator())
 }
 
 // MARK: - Calculations
@@ -128,8 +103,79 @@ private extension DoctorScheduleHeaderView {
 
         return result
     }
+}
 
-    var isPhoneUserInterfaceIdiom: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
+// MARK: - Subviews
+
+private extension DoctorScheduleHeaderView {
+    var controlsStackView: some View {
+        HStack(alignment: .bottom, spacing: 0) {
+            if let doctor = doctorSchedule.doctor {
+                Button {
+                    if doctor.department == .procedure {
+                        coordinator.present(.updateBalance(for: doctor, kind: .payout))
+                    } else {
+                        coordinator.present(.doctorPayout(for: doctor, disabled: incompletedAppointments > 0, isSinglePatient: isSinglePatient))
+                    }
+                } label: {
+                    buttonImage("rublesign.circle")
+                }
+                .buttonStyle(DoctorScheduleButton(color: .purple))
+                .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
+
+                if doctor.department != .procedure {
+                    Button {
+                        coordinator.present(.doctorFutureSchedules(doctorSchedule: doctorSchedule))
+                    } label: {
+                        buttonImage("calendar")
+                    }
+                    .buttonStyle(DoctorScheduleButton(color: .cyan))
+                }
+
+                Button {
+                    showNote = true
+                } label: {
+                    buttonImage(doctorSchedule.note == nil ? "note.text.badge.plus" : "note.text")
+                }
+                .buttonStyle(DoctorScheduleButton(color: .indigo))
+
+                Button {
+                    deleteSchedule()
+                } label: {
+                    buttonImage("trash")
+                }
+                .buttonStyle(DoctorScheduleButton(color: .red))
+                .disabled(doctorSchedule.scheduledPatients.count > 0)
+            }
+        }
+    }
+
+    func buttonImage(_ systemName: String) -> some View {
+        Image(systemName: systemName)
+            .font(.title2)
+    }
+}
+
+struct DoctorScheduleButton: ButtonStyle {
+    // MARK: - Dependencies
+
+    @Environment(\.isEnabled) private var isEnabled
+
+    let color: Color
+
+    // MARK: -
+
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .frame(width: 52, height: 52)
+                .foregroundStyle(color.opacity(configuration.isPressed ? 0.5 : 0.1))
+                .padding(.horizontal, 12)
+            configuration.label
+                .scaleEffect(configuration.isPressed ? 1.12 : 1)
+                .foregroundStyle(color)
+        }
+        .saturation(isEnabled ? 1 : 0)
+        .opacity(isEnabled ? 1 : 0.4)
     }
 }

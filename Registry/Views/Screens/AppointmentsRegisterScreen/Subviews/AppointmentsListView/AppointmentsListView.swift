@@ -18,6 +18,10 @@ struct AppointmentsListView: View {
 
     @Bindable var schedule: DoctorSchedule
 
+    // MARK: - State
+
+    @State private var showNote: Bool = false
+
     // MARK: -
 
     var body: some View {
@@ -35,6 +39,7 @@ struct AppointmentsListView: View {
                     .buttonStyle(.bordered)
                 }
             }
+
             ForEach(scheduleAppointments) { appointment in
                 AppointmentView(appointment: appointment)
                     .swipeActions(edge: .trailing) {
@@ -52,6 +57,9 @@ struct AppointmentsListView: View {
                             menuView(for: appointment)
                         }
                     }
+                    .sheet(isPresented: $showNote) {
+                        CreateNoteView(for: appointment)
+                    }
                     .alert(
                         "Не удалось отправить SMS",
                         isPresented: $messageController.showErrorMessage,
@@ -59,7 +67,6 @@ struct AppointmentsListView: View {
                     ) { _ in 
                         Button("Ok") { messageController.showErrorMessage = false }
                     } message: { Text($0) }
-                    
             }
         }
         .listStyle(.plain)
@@ -115,6 +122,15 @@ private extension AppointmentsListView {
                     coordinator.push(.patientCard(patient))
                 } label: {
                     Label("Карта пациента", systemImage: "info.circle")
+                }
+
+                Button {
+                    showNote = true
+                } label: {
+                    Label(
+                        appointment.note == nil ? "Добавить заметку" : "Редактировать заметку",
+                        systemImage: appointment.note == nil ? "note.text.badge.plus" : "note.text"
+                    )
                 }
             }
 
