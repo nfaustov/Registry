@@ -17,6 +17,8 @@ struct LoginScreen: View {
 
     var logIn: (User) -> Void
 
+    let version = AppVersion(0, 8, 1)
+
     // MARK: - State
 
     @State private var animate: Bool = false
@@ -35,6 +37,13 @@ struct LoginScreen: View {
                         animate.toggle()
                     }
                 }
+
+            Text(version.description)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding()
 
             VStack {
                 Form {

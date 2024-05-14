@@ -50,6 +50,7 @@
 		8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */; };
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
+		8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
 		8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */; };
@@ -232,6 +233,7 @@
 		8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
+		8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
 		8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculationView.swift; sourceTree = "<group>"; };
@@ -1200,6 +1202,7 @@
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
 				8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */,
+				8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1462,6 +1465,7 @@
 				8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */,
 				8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */,
 				8B80FECC2BC256C100BB76E0 /* ContractBodyController.swift in Sources */,
+				8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
