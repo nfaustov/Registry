@@ -29,8 +29,8 @@ struct AppointmentsRegisterScreen: View {
             VStack(alignment: .leading, spacing: 0) {
                 if let doctorSchedule = scheduleController.selectedSchedule {
                     DoctorScheduleHeaderView(doctorSchedule: doctorSchedule, deleteSchedule: {
+                        scheduleController.selectedSchedule = daySchedules.first(where: { $0 != doctorSchedule })
                         modelContext.delete(doctorSchedule)
-                        scheduleController.selectedSchedule = daySchedules.first
 
                         if scheduleController.selectedSchedule == nil {
                             coordinator.pop()
