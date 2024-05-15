@@ -86,7 +86,7 @@ private extension VisitsDetailView {
                             LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
                         }
                     } label: {
-                        LabeledContent("Возврат", value: "\(Int(-refund.totalAmount(discountRate: check.discountRate))) ₽")
+                        LabeledContent("Возврат", value: "\(Int(-refund.totalAmount)) ₽")
                             .font(.headline)
                             .foregroundStyle(.red)
                     }

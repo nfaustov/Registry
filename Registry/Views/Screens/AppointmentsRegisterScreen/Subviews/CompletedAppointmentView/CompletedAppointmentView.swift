@@ -47,12 +47,10 @@ struct CompletedAppointmentView: View {
                         HStack {
                             if editMode { toggle(service: service).padding(.trailing) }
 
-                            Group {
-                                Text(service.pricelistItem.title)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Text("\(Int(service.pricelistItem.price))")
-                                    .frame(width: 60)
-                            }
+                            LabeledContent(
+                                service.pricelistItem.title,
+                                value: "\(Int(service.pricelistItem.price))"
+                            )
                             .foregroundStyle(serviceItemForegroudColor(service))
                         }
                     }
@@ -62,25 +60,28 @@ struct CompletedAppointmentView: View {
                     }
                 }
 
-                Section {
-                    Text("Цена: \(Int(appointment.check?.price ?? 0)) ₽")
-                        .font(.subheadline)
+                Section("Итог") {
+                    LabeledContent("Цена", value: "\(Int(appointment.check?.price ?? 0)) ₽")
 
                     if let discount = appointment.check?.discount, discount != 0 {
-                        Text("Скидка: \(Int(discount)) ₽")
-                            .font(.subheadline)
+                        LabeledContent("Скидка", value: "\(Int(discount)) ₽")
                     }
+                }
 
-                    Text("Оплачено: \(Int(appointment.check?.totalPrice ?? 0)) ₽")
-                        .font(.headline)
-                } header: {
-                    Text("Итог")
+                Section("Оплата") {
+                    if let payment = appointment.check?.payment {
+                        ForEach(payment.methods, id: \.self) { method in
+                            LabeledContent(method.type.rawValue, value: "\(Int(method.value)) ₽")
+                        }
+                        LabeledContent("Всего", value: "\(Int(payment.totalAmount)) ₽")
+                            .font(.headline)
+                    }
                 }
 
                 if let refund = appointment.check?.refund {
-                    Text("Возврат: \(Int(refund.totalAmount(discountRate: appointment.check?.discountRate ?? 0))) ₽")
+                    LabeledContent("Возврат", value: "\(Int(refund.totalAmount)) ₽")
                         .font(.headline)
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                 } else {
                     refundSection
 
@@ -128,9 +129,10 @@ private extension CompletedAppointmentView {
     var refundSection: some View {
         Section {
             if !createdRefund.services.isEmpty {
-                Text("Возврат: \(Int(createdRefund.totalAmount(discountRate: appointment.check?.discountRate ?? 0))) ₽")
+                let refundTotalAmount = (appointment.check?.discountRate ?? 0) * createdRefund.price - createdRefund.price
+                LabeledContent("Возврат", value: "\(Int(refundTotalAmount)) ₽")
                     .font(.headline)
-                    .foregroundColor(.red)
+                    .foregroundStyle(.red)
 
                 Picker("Способ оплаты", selection: $paymentMethod.type) {
                     ForEach(PaymentType.allCases, id: \.self) { type in

@@ -31,12 +31,13 @@ final class Refund {
             .reduce(0.0, +)
     }
 
+    var totalAmount: Double {
+        guard let check else { return 0 }
+        return check.discountRate * price - price
+    }
+
     init(services: [MedicalService]? = []) {
         self.date = .now
         self._services = services
-    }
-
-    func totalAmount(discountRate rate: Double) -> Double {
-        rate * price - price
     }
 }

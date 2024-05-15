@@ -66,11 +66,11 @@ actor Ledger {
     ) {
         guard let patient = check.appointments?.first?.patient else { return }
 
-        let paymentValue = refund.totalAmount(discountRate: check.discountRate)
+        check.makeRefund(refund)
+        let paymentValue = refund.totalAmount
         let refundMethod = Payment.Method(method.type, value: paymentValue)
         let payment = Payment(purpose: .refund(patient.initials), methods: [refundMethod], createdBy: user.asAnyUser)
         patient.transactions?.append(payment)
-        check.makeRefund(refund)
         record(payment)
     }
 
