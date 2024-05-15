@@ -71,7 +71,7 @@ struct AppointmentView: View {
                             }
                     }
 
-                    if appointment.status != .notified {
+                    if appointment.status == .notified {
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle")
                             Text("SMS")
