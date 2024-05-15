@@ -84,6 +84,7 @@
 		8B80FED12BC25A1800BB76E0 /* PDFDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */; };
 		8B80FED42BC25D1B00BB76E0 /* ContractScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */; };
 		8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */; };
+		8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A6E102BF4A4F70026674D /* DebugScreen.swift */; };
 		8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */; };
 		8B8AE9872B57FA46001A9143 /* CreateDoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */; };
 		8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */; };
@@ -270,6 +271,7 @@
 		8B80FED02BC25A1800BB76E0 /* PDFDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentView.swift; sourceTree = "<group>"; };
 		8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractScreen.swift; sourceTree = "<group>"; };
 		8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		8B8A6E102BF4A4F70026674D /* DebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugScreen.swift; sourceTree = "<group>"; };
 		8B8AE9822B57F9F9001A9143 /* DoctorDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorDetailScreen.swift; sourceTree = "<group>"; };
 		8B8AE9862B57FA46001A9143 /* CreateDoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoctorView.swift; sourceTree = "<group>"; };
 		8B8AE9882B57FAA3001A9143 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
@@ -875,6 +877,14 @@
 			path = ActivityView;
 			sourceTree = "<group>";
 		};
+		8B8A6E0F2BF4A4E60026674D /* DebugScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8B8A6E102BF4A4F70026674D /* DebugScreen.swift */,
+			);
+			path = DebugScreen;
+			sourceTree = "<group>";
+		};
 		8B8AE9812B57F7D2001A9143 /* DoctorDetailScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -1103,6 +1113,7 @@
 		8B9673A22B361CA300FD2E7C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				8B8A6E0F2BF4A4E60026674D /* DebugScreen */,
 				8B9673A82B361F6700FD2E7C /* Screen.swift */,
 				8B9673AA2B361F8D00FD2E7C /* Route.swift */,
 				8B9673AC2B361FD200FD2E7C /* Sheet.swift */,
@@ -1476,6 +1487,7 @@
 				8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */,
 				8B7801462B87B8BC0064DBFB /* ScheduleChart.swift in Sources */,
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
+				8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */,
 				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,

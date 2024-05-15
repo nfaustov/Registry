@@ -56,6 +56,8 @@ extension Coordinator {
             IndicatorsScreen()
         case .userDetail:
             UserDetailScreen()
+        case .debug:
+            DebugScreen()
         }
     }
 
