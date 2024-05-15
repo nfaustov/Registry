@@ -107,7 +107,7 @@ private extension ScheduleScreen {
         let startOfDay = Calendar.current.startOfDay(for: scheduleController.date)
         let endOfDay = Calendar.current.startOfDay(for: scheduleController.date.addingTimeInterval(86_400))
         let schedulesPredicate = #Predicate<DoctorSchedule> { $0.starting > startOfDay && $0.ending < endOfDay }
-        let descriptor = FetchDescriptor(predicate: schedulesPredicate, sortBy: [SortDescriptor(\.starting, order: .forward)])
+        let descriptor = FetchDescriptor(predicate: schedulesPredicate, sortBy: [SortDescriptor(\.starting, order: .forward), SortDescriptor(\.ending, order: .forward)])
 
         guard let schedules = try? modelContext.fetch(descriptor) else { return [] }
 
