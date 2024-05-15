@@ -73,8 +73,10 @@ struct CompletedAppointmentView: View {
                         ForEach(payment.methods, id: \.self) { method in
                             LabeledContent(method.type.rawValue, value: "\(Int(method.value)) ₽")
                         }
-                        LabeledContent("Всего", value: "\(Int(payment.totalAmount)) ₽")
-                            .font(.headline)
+                        if payment.methods.count > 1 {
+                            LabeledContent("Всего", value: "\(Int(payment.totalAmount)) ₽")
+                                .font(.headline)
+                        }
                     }
                 }
 

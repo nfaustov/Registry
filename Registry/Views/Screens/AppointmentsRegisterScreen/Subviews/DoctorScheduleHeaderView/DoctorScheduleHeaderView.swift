@@ -166,7 +166,7 @@ struct DoctorScheduleButton: ButtonStyle {
                 .foregroundStyle(color.opacity(configuration.isPressed ? 0.5 : 0.1))
                 .padding(.horizontal, 12)
             configuration.label
-                .scaleEffect(configuration.isPressed ? 1.12 : 1)
+                .scaleEffect(configuration.isPressed ? 1.2 : 1)
                 .foregroundStyle(color)
         }
         .saturation(isEnabled ? 1 : 0)
