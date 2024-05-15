@@ -18,10 +18,6 @@ struct AppointmentsListView: View {
 
     @Bindable var schedule: DoctorSchedule
 
-    // MARK: - State
-
-    @State private var showNote: Bool = false
-
     // MARK: -
 
     var body: some View {
@@ -56,9 +52,6 @@ struct AppointmentsListView: View {
                         if !isExpiredForUpdating {
                             menuView(for: appointment)
                         }
-                    }
-                    .sheet(isPresented: $showNote) {
-                        CreateNoteView(for: appointment)
                     }
                     .alert(
                         "Не удалось отправить SMS",
@@ -125,13 +118,14 @@ private extension AppointmentsListView {
                 }
 
                 Button {
-                    showNote = true
+                    coordinator.present(.createNote(for: .patientAppointment(appointment)))
                 } label: {
                     Label(
                         appointment.note == nil ? "Добавить заметку" : "Редактировать заметку",
                         systemImage: appointment.note == nil ? "note.text.badge.plus" : "note.text"
                     )
                 }
+                .disabled(appointment.scheduledTime < Calendar.current.startOfDay(for: .now))
             }
 
             if appointment.status == .registered {

@@ -14,8 +14,8 @@ struct CreateNoteView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let appointment: PatientAppointment?
-    let schedule: DoctorSchedule?
+    let note: Note?
+    let kind: NoteKind
 
     // MARK: - State
 
@@ -25,22 +25,17 @@ struct CreateNoteView: View {
 
     // MARK: -
 
-    init(for appointment: PatientAppointment) {
-        self.appointment = appointment
-        schedule = nil
+    init(for kind: NoteKind) {
+        self.kind = kind
 
-        if let note = appointment.note {
-            _navigationTitle = State(initialValue: "Заметка")
-            _noteText = State(initialValue: note.text)
-            _charactersCount = State(initialValue: note.text.count)
+        switch kind {
+        case .doctorSchedule(let schedule):
+            note = schedule.note
+        case .patientAppointment(let appointment):
+            note = appointment.note
         }
-    }
 
-    init(for schedule: DoctorSchedule) {
-        self.schedule = schedule
-        appointment = nil
-
-        if let note = schedule.note {
+        if let note {
             _navigationTitle = State(initialValue: "Заметка")
             _noteText = State(initialValue: note.text)
             _charactersCount = State(initialValue: note.text.count)
@@ -50,14 +45,15 @@ struct CreateNoteView: View {
     var body: some View {
         NavigationStack {
             Form {
-                if let appointment {
+                switch kind {
+                case .patientAppointment(let appointment):
                     Section("Прием пациента") {
                         LabeledContent(
                             appointment.patient?.fullName ?? "",
                             value: DateFormat.dateTime.string(from: appointment.scheduledTime)
                         )
                     }
-                } else if let schedule {
+                case .doctorSchedule(let schedule):
                     Section("Расписание врача") {
                         LabeledContent(
                             schedule.doctor?.initials ?? "",
@@ -87,14 +83,6 @@ struct CreateNoteView: View {
                 if let note {
                     Section {
                         Button("Удалить", role: .destructive) {
-                            withAnimation {
-                                if let appointment {
-                                    appointment.note = nil
-                                } else if let schedule {
-                                    schedule.note = nil
-                                }
-                            }
-
                             modelContext.delete(note)
                             dismiss()
                         }
@@ -105,13 +93,14 @@ struct CreateNoteView: View {
                 if let note {
                     note.updateText(noteText)
                 } else {
-                    if let appointment {
+                    switch kind {
+                    case .patientAppointment(let appointment):
                         let patientInitials = appointment.patient?.initials ?? ""
                         let scheduledTime = DateFormat.dateTime.string(from: appointment.scheduledTime)
                         let title = "Прием пациента: \(patientInitials) \(scheduledTime)"
                         let note = Note(title: title, text: noteText, createdBy: user)
                         appointment.note = note
-                    } else if let schedule {
+                    case .doctorSchedule(let schedule):
                         let doctorInitials = schedule.doctor?.initials ?? ""
                         let scheduleStarting = DateFormat.dateTime.string(from: schedule.starting)
                         let title = "Врач: \(doctorInitials) \(scheduleStarting)"
@@ -127,21 +116,20 @@ struct CreateNoteView: View {
 }
 
 #Preview {
-    CreateNoteView(for: ExampleData.appointment)
+    CreateNoteView(for: .patientAppointment(ExampleData.appointment))
 }
 
 // MARK: - Calculations
 
 private extension CreateNoteView {
-    var note: Note? {
-        if let appointment {
-            return appointment.note
-        } else if let schedule {
-            return schedule.note
-        } else { return nil }
-    }
-
     var hasChanges: Bool {
         note?.text != noteText
     }
+}
+
+// MARK: - NoteKind
+
+enum NoteKind {
+    case patientAppointment(PatientAppointment)
+    case doctorSchedule(DoctorSchedule)
 }

@@ -105,6 +105,8 @@ extension Coordinator {
             UpdateBalanceView(person: person, kind: kind)
         case .billPayment(let appointment, let isPaid):
             BillPaymentView(appointment: appointment, isPaid: isPaid)
+        case .createNote(let kind):
+            CreateNoteView(for: kind)
         }
     }
 }

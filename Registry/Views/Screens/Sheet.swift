@@ -21,6 +21,7 @@ enum Sheet: Identifiable {
     case createPricelistItem
     case updateBalance(for: AccountablePerson, kind: UpdateBalanceKind)
     case billPayment(appointment: PatientAppointment, isPaid: Binding<Bool>)
+    case createNote(for: NoteKind)
 
     var id: UUID {
         UUID()

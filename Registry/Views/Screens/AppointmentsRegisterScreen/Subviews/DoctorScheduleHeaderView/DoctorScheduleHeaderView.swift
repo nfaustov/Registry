@@ -15,10 +15,6 @@ struct DoctorScheduleHeaderView: View {
     let doctorSchedule: DoctorSchedule
     let deleteSchedule: () -> Void
 
-    // MARK: - State
-
-    @State private var showNote: Bool = false
-
     // MARK: -
 
     var body: some View {
@@ -65,9 +61,6 @@ struct DoctorScheduleHeaderView: View {
 
                 controlsStackView
                     .padding(.horizontal)
-                    .sheet(isPresented: $showNote) {
-                        CreateNoteView(for: doctorSchedule)
-                    }
             }
         }
     }
@@ -133,11 +126,12 @@ private extension DoctorScheduleHeaderView {
                 }
 
                 Button {
-                    showNote = true
+                    coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
                 } label: {
                     buttonImage(doctorSchedule.note == nil ? "note.text.badge.plus" : "note.text")
                 }
                 .buttonStyle(DoctorScheduleButton(color: .indigo))
+                .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
 
                 Button {
                     deleteSchedule()
