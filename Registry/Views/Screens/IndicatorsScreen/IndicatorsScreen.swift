@@ -12,12 +12,6 @@ struct IndicatorsScreen: View {
 
     var body: some View {
         LedgerView()
-//        Form {
-//            CashboxReportingView()
-//            PatientsChart()
-//            DoctorsChart()
-//        }
-//        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
