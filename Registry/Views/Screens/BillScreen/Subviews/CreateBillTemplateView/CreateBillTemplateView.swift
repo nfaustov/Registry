@@ -67,6 +67,7 @@ struct CreateBillTemplateView: View {
                     if discountType == .rate {
                         LabeledContent("\(Int(discountRate * 100))%") {
                             Slider(value: $discountRate, in: 0...0.5, step: 0.01)
+                                .padding(.leading)
                                 .onChange(of: discountRate) { _, newValue in
                                     discount = price * newValue
                                 }

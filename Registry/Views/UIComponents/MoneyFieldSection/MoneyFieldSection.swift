@@ -42,7 +42,9 @@ struct MoneyFieldSection<Footer: View>: View {
                 }
             }
         } header: {
-            Text(titleKey)
+            if !titleKey.isEmpty {
+                Text(titleKey)
+            }
         } footer: {
             footer()
         }
@@ -63,7 +65,9 @@ private extension MoneyFieldSection {
                         .padding()
                         .listRowBackground(Rectangle().foregroundStyle(.thickMaterial))
                 } header: {
-                    Text(titleKey)
+                    if !titleKey.isEmpty {
+                        Text(titleKey)
+                    }
                 } footer: {
                     footer()
                         .font(.footnote)
