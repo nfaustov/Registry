@@ -24,4 +24,17 @@ final class CheckTemplate {
         self.services = services
         self.discount = discount
     }
+
+    func getCopy() -> [MedicalService] {
+        var servicesCopy: [MedicalService] = []
+
+        guard let services else { return [] }
+
+        for service in services {
+            let medicalService = MedicalService(pricelistItem: service.pricelistItem, performer: service.performer, agent: service.agent)
+            servicesCopy.append(medicalService)
+        }
+
+        return servicesCopy
+    }
 }

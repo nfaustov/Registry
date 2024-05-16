@@ -45,8 +45,10 @@ struct ServicesTableControls: View {
                 Menu {
                     ForEach(checkTemplates) { template in
                         Button(template.title) {
+                            let templateServices = template.getCopy()
+
                             withAnimation {
-                                check.services.append(contentsOf: template.services ?? [])
+                                check.services.append(contentsOf: templateServices)
                                 check.discount += template.discount
                             }
                         }
