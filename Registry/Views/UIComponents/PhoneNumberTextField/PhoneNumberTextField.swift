@@ -12,27 +12,30 @@ struct PhoneNumberTextField: View {
 
     @Binding var text: String
 
+    // MARK: - State
+
+    @State private var showKeyboard: Bool = false
+    @State private var initialPhoneNumber: String?
+
     // MARK: -
 
     var body: some View {
-        TextField("", text: $text)
-            .keyboardType(.phonePad)
-            .onChange(of: text) { _, newValue in
-                if newValue.count < 2 {
-                    text = "+7"
-                }
-
-                text = formatter(phoneNumber: text)
+        Button {
+            showKeyboard = true
+        } label: {
+            Text(text)
+        }
+        .tint(.primary)
+        .popover(isPresented: $showKeyboard) {
+            popoverContent
+        }
+        .onAppear {
+            if text.isEmpty {
+                text = "+7"
+            } else {
+                initialPhoneNumber = text
             }
-            .onSubmit {
-                guard text.count == 18 else {
-                    text = "+7"
-                    return
-                }
-            }
-            .onAppear {
-                if text.isEmpty { text = "+7" }
-            }
+        }
     }
 
     private func formatter(phoneNumber: String) -> String {
@@ -56,4 +59,47 @@ struct PhoneNumberTextField: View {
 
 #Preview {
     PhoneNumberTextField(text: .constant(""))
+}
+
+// MARK: - Subviews
+
+private extension PhoneNumberTextField {
+    var popoverContent: some View {
+        VStack {
+            Form {
+                VStack {
+                    LabeledContent(text) {
+                        Image(systemName: "phone")
+                    }
+                    .font(.title2)
+                    Divider()
+                }
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .frame(height: 112)
+
+            NumPadView(text: $text)
+                .frame(width: 330, height: 360)
+                .padding()
+                .onChange(of: text) { _, newValue in
+                    if newValue.count < 2 {
+                        text = "+7"
+                    }
+
+                    text = formatter(phoneNumber: text)
+                }
+                .onDisappear {
+                    guard text.count == 18 else {
+                        if let initialPhoneNumber {
+                            text = initialPhoneNumber
+                        } else {
+                            text = "+7"
+                        }
+
+                        return
+                    }
+                }
+        }
+    }
 }
