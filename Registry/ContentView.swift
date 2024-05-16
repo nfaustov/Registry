@@ -69,10 +69,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-//            .task {
-//                let ledger = Ledger(modelContainer: modelContext.container)
-//                await ledger.makeSpendingPayment(purpose: .collection, method: .init(.cash, value: 999.5), createdBy: SuperUser.boss)
-//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }
