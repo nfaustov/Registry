@@ -34,16 +34,16 @@ struct PriceCalculationView: View {
                     Text(check.discount > 0 ? "Промежуточный итог:" : "Итог:")
                         .font(.headline)
                     Spacer()
-                    Text("\(Int(check.price)) ₽")
+                    CurrencyText(check.price)
                         .font(.title3)
                 }
 
                 if patient.balance != 0 {
                     HStack {
-                        Text(isCompleted ? "Баланс:" : patient.balance > 0 ? "С баланса:" : "Долг:")
+                        Text(patient.balance > 0 ? "С баланса:" : "Долг:")
                             .font(.headline)
                         Spacer()
-                        Text(isCompleted ? "\(Int(patient.balance)) ₽" : "\(-Int(patient.balance)) ₽")
+                        CurrencyText(isCompleted ? patient.balance : -patient.balance)
                             .font(.title3)
                     }
                 }
@@ -53,7 +53,7 @@ struct PriceCalculationView: View {
                         Text("Скидка (\(discountPercent)%):")
                             .font(.headline)
                         Spacer()
-                        Text("\(-Int(check.discount)) ₽")
+                        CurrencyText(-check.discount)
                             .font(.title3)
                     }
                 }
@@ -68,7 +68,7 @@ struct PriceCalculationView: View {
                             )
                         )
                     } label: {
-                        Text("₽ \(Int(isCompleted ? check.totalPrice + patient.balance : check.totalPrice - patient.balance))")
+                        CurrencyText(check.totalPrice - patient.balance)
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 28)

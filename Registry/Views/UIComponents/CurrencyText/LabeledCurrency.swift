@@ -23,23 +23,13 @@ struct LabeledCurrency: View {
     }
 
     var body: some View {
-        LabeledContent(titleKey, value: valueString)
+        LabeledContent(titleKey) {
+            CurrencyText(value, unit: unit)
+        }
     }
 }
 
 #Preview {
     LabeledCurrency("Оплата", value: 313.00)
         .padding()
-}
-
-// MARK: - Calculations
-
-private extension LabeledCurrency {
-    var valueString: String {
-        if value > floor(value) {
-            return "\(value.formatted(.currency(code: unit ? "RUB" : "")))"
-        } else {
-            return "\(Int(value))".appending(unit ? " ₽" : "")
-        }
-    }
 }

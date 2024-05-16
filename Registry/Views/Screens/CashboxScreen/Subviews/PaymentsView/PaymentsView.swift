@@ -99,7 +99,7 @@ private extension PaymentsView {
 
             Spacer()
 
-            Text("\(Int(payment.totalAmount)) ₽")
+            CurrencyText(payment.totalAmount)
                 .foregroundColor(payment.totalAmount >= 0 ? .primary : payment.purpose == .collection ? .purple : .red)
         }
     }

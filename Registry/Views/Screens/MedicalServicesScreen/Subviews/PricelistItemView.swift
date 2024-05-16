@@ -45,19 +45,11 @@ struct PricelistItemView: View {
                 Section {
                     if user.accessLevel == .boss {
                         TextField("Наименование", text: $title)
-                        LabeledContent {
-                            TextField("Цена:", value: $price, format: .number)
-                        } label: {
-                            Text("Цена:")
-                        }
-                        LabeledContent {
-                            TextField("Себестоимость:", value: $costPrice, format: .number)
-                        } label: {
-                            Text("Себестоимость:")
-                        }
+                        LabeledCurrency("Цена", value: price)
+                        LabeledCurrency("Себестоимость", value: costPrice)
                     } else {
                         Text(pricelistItem.title)
-                        LabeledContent("Цена", value: "\(Int(pricelistItem.price)) ₽")
+                        LabeledCurrency("Цена", value: pricelistItem.price)
                     }
                 }
 
@@ -88,12 +80,8 @@ struct PricelistItemView: View {
                                 Button("Зафиксировать агентские врача") { fixedDoctorAgentFee = true }
                             }
                         } else {
-                            if let fixedSalary {
-                                Text("\(Int(fixedSalary)) ₽")
-                            }
-                            if let fixedAgentFee {
-                                Text("\(Int(fixedAgentFee)) ₽")
-                            }
+                            if let fixedSalary { CurrencyText(fixedSalary) }
+                            if let fixedAgentFee { CurrencyText(fixedAgentFee) }
                         }
                     } header: {
                         Text("Фиксированная премия врача")
@@ -127,7 +115,7 @@ struct PricelistItemView: View {
                 }
 
                 if !pricelistItem.treatmentPlans.isEmpty {
-                    LabeledContent("Цена по лечебному плану", value: "\(Int(pricelistItem.treatmentPlanPrice)) ₽")
+                    LabeledCurrency("Цена по лечебному плану", value: pricelistItem.treatmentPlanPrice)
                 }
             }
             .sheetToolbar(

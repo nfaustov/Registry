@@ -71,7 +71,7 @@ struct PricelistView: View {
                             Divider()
                                 .padding(.vertical, 4)
 
-                            Text(Int(item.price), format: .currency(code: ""))
+                            CurrencyText(item.price, unit: false)
                                 .frame(width: size == .regular ? 60 : 44, alignment: .leading)
                         }
                         .font(size == .regular ? .body : .footnote)

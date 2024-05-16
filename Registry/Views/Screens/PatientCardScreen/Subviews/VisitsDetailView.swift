@@ -65,16 +65,16 @@ private extension VisitsDetailView {
                 if !check.services.isEmpty {
                     DisclosureGroup {
                         ForEach(check.services) { service in
-                            LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
+                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
                         }
 
                         if check.discount > 0 {
-                            LabeledContent("Скидка", value: "\(Int(-check.discount)) ₽")
+                            LabeledCurrency("Скидка", value: -check.discount)
                                 .foregroundStyle(.blue)
                                 .fontWeight(.light)
                         }
                     } label: {
-                        LabeledContent("Счет", value: "\(Int(check.totalPrice)) ₽")
+                        LabeledCurrency("Счет", value: check.totalPrice)
                             .font(.headline)
                             .foregroundStyle(.blue)
                     }
@@ -83,10 +83,10 @@ private extension VisitsDetailView {
                 if let refund = check.refund {
                     DisclosureGroup {
                         ForEach(refund.services) { service in
-                            LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽")
+                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
                         }
                     } label: {
-                        LabeledContent("Возврат", value: "\(Int(-refund.totalAmount)) ₽")
+                        LabeledCurrency("Возврат", value: -refund.totalAmount)
                             .font(.headline)
                             .foregroundStyle(.red)
                     }

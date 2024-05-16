@@ -47,11 +47,8 @@ struct CompletedAppointmentView: View {
                         HStack {
                             if editMode { toggle(service: service).padding(.trailing) }
 
-                            LabeledContent(
-                                service.pricelistItem.title,
-                                value: "\(Int(service.pricelistItem.price))"
-                            )
-                            .foregroundStyle(serviceItemForegroudColor(service))
+                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price, unit: false)
+                                .foregroundStyle(serviceItemForegroudColor(service))
                         }
                     }
                 } header: {
@@ -61,27 +58,27 @@ struct CompletedAppointmentView: View {
                 }
 
                 Section("Итог") {
-                    LabeledContent("Цена", value: "\(Int(appointment.check?.price ?? 0)) ₽")
+                    LabeledCurrency("Цена", value: appointment.check?.price ?? 0)
 
                     if let discount = appointment.check?.discount, discount != 0 {
-                        LabeledContent("Скидка", value: "\(Int(discount)) ₽")
+                        LabeledCurrency("Скидка", value: discount)
                     }
                 }
 
                 Section("Оплата") {
                     if let payment = appointment.check?.payment {
                         ForEach(payment.methods, id: \.self) { method in
-                            LabeledContent(method.type.rawValue, value: "\(Int(method.value)) ₽")
+                            LabeledCurrency(method.type.rawValue, value: method.value)
                         }
                         if payment.methods.count > 1 {
-                            LabeledContent("Всего", value: "\(Int(payment.totalAmount)) ₽")
+                            LabeledCurrency("Всего", value: payment.totalAmount)
                                 .font(.headline)
                         }
                     }
                 }
 
                 if let refund = appointment.check?.refund {
-                    LabeledContent("Возврат", value: "\(Int(refund.totalAmount)) ₽")
+                    LabeledCurrency("Возврат", value: refund.totalAmount)
                         .font(.headline)
                         .foregroundStyle(.red)
                 } else {
@@ -128,7 +125,7 @@ private extension CompletedAppointmentView {
         Section {
             if !createdRefund.services.isEmpty {
                 let refundTotalAmount = (appointment.check?.discountRate ?? 0) * createdRefund.price - createdRefund.price
-                LabeledContent("Возврат", value: "\(Int(refundTotalAmount)) ₽")
+                LabeledCurrency("Возврат", value: refundTotalAmount)
                     .font(.headline)
                     .foregroundStyle(.red)
 

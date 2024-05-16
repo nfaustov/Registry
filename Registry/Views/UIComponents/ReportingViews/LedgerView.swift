@@ -41,27 +41,27 @@ struct LedgerView: View {
             if let selectedReport {
                 HStack {
                     GroupBox("Общая информация") {
-                        LabeledContent("Открытие смены", value: "\(Int(selectedReport.startingCash)) ₽")
-                        LabeledContent("Остаток", value: "\(Int(selectedReport.cashBalance)) ₽")
-                        LabeledContent("Пополнения", value: "\(Int(selectedReport.othersIncome())) ₽")
-                        LabeledContent("Инкасация", value: "\(Int(selectedReport.collected)) ₽")
+                        LabeledCurrency("Открытие смены", value: selectedReport.startingCash)
+                        LabeledCurrency("Остаток", value: selectedReport.cashBalance)
+                        LabeledCurrency("Пополнения", value: selectedReport.othersIncome())
+                        LabeledCurrency("Инкасация", value: selectedReport.collected)
                     }
                     .padding(.leading)
 
                     GroupBox("Поступления") {
-                        LabeledContent("Наличные", value: "\(Int(selectedReport.billsIncome(of: .cash))) ₽")
-                        LabeledContent("Терминал", value: "\(Int(selectedReport.billsIncome(of: .bank))) ₽")
-                        LabeledContent("Карта", value: "\(Int(selectedReport.billsIncome(of: .card))) ₽")
-                        LabeledContent("Всего", value: "\(Int(selectedReport.billsIncome())) ₽")
+                        LabeledCurrency("Наличные", value: selectedReport.billsIncome(of: .cash))
+                        LabeledCurrency("Терминал", value: selectedReport.billsIncome(of: .bank))
+                        LabeledCurrency("Карта", value: selectedReport.billsIncome(of: .card))
+                        LabeledCurrency("Всего", value: selectedReport.billsIncome())
                             .font(.headline)
                     }
                     .padding(.horizontal)
 
                     GroupBox("Списания") {
-                        LabeledContent("Наличные", value: "\(Int(selectedReport.reporting(.expense, of: .cash))) ₽")
-                        LabeledContent("Терминал", value: "\(Int(selectedReport.reporting(.expense, of: .bank))) ₽")
-                        LabeledContent("Карта", value: "\(Int(selectedReport.reporting(.expense, of: .card))) ₽")
-                        LabeledContent("Всего", value: "\(Int(selectedReport.reporting(.expense))) ₽")
+                        LabeledCurrency("Наличные", value: selectedReport.reporting(.expense, of: .cash))
+                        LabeledCurrency("Терминал", value: selectedReport.reporting(.expense, of: .bank))
+                        LabeledCurrency("Карта", value: selectedReport.reporting(.expense, of: .card))
+                        LabeledCurrency("Всего", value: selectedReport.reporting(.expense))
                             .font(.headline)
                     }
                     .padding(.trailing)
@@ -91,18 +91,18 @@ struct LedgerView: View {
                                 if let subject = payment.subject {
                                     Section("Счет") {
                                         ForEach(subject.services) { service in
-                                            LabeledContent(service.pricelistItem.title, value: "\(Int(service.pricelistItem.price)) ₽" )
+                                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
                                         }
-                                        LabeledContent("Ощий счет", value: "\(Int(subject.totalPrice)) ₽")
+                                        LabeledCurrency("Общий счет", value: subject.totalPrice)
                                             .font(.headline)
                                     }
                                 }
 
                                 Section("Оплата") {
                                     ForEach(payment.methods, id: \.self) { method in
-                                        LabeledContent(method.type.rawValue, value: "\(Int(method.value)) ₽")
+                                        LabeledCurrency(method.type.rawValue, value: method.value)
                                     }
-                                    LabeledContent("Всего", value: "\(Int(payment.totalAmount)) ₽")
+                                    LabeledCurrency("Всего", value: payment.totalAmount)
                                         .font(.headline)
                                 }
 

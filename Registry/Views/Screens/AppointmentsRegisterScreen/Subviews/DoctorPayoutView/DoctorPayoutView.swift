@@ -61,7 +61,7 @@ struct DoctorPayoutView: View {
 
                 if isSinglePatient, singlePatientFee > 0 {
                     Section {
-                        LabeledContent("Доплата за прием", value: "\(Int(singlePatientFee)) ₽")
+                        LabeledCurrency("Доплата за прием", value: singlePatientFee)
                     } footer: {
                         Text("Будет зачислена на баланс врача после проведения платежа.")
                     }

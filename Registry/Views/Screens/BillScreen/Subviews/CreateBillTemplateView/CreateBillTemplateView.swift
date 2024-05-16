@@ -56,8 +56,8 @@ struct CreateBillTemplateView: View {
                         .map{ $0.pricelistItem.price }
                         .reduce(0, +)
 
-                    LabeledContent("Цена", value: "\(Int(price)) ₽")
-                    Picker(discountType.rawValue, selection: $discountType) {
+                    LabeledCurrency("Цена", value: price)
+                    Picker("Скидка", selection: $discountType) {
                         ForEach(DiscountType.allCases, id: \.self) { type in
                             Text(type.rawValue)
                                 .tag(type.rawValue)
@@ -65,18 +65,17 @@ struct CreateBillTemplateView: View {
                     }
 
                     if discountType == .rate {
-                        LabeledContent("Скидка \(Int(discountRate * 100))%") {
+                        LabeledContent("\(Int(discountRate * 100))%") {
                             Slider(value: $discountRate, in: 0...0.5, step: 0.01)
                                 .onChange(of: discountRate) { _, newValue in
                                     discount = price * newValue
                                 }
                         }
-                        LabeledContent("Итог", value: "\(Int(price - price * discountRate))")
+                        LabeledCurrency("Итог", value: price - price * discountRate)
                     } else if discountType == .amount {
-                        LabeledContent("Скидка") {
-                            TextField("Сумма скидки", value: $discount, format: .number)
+                        MoneyFieldSection(value: $discount) {
+                            LabeledCurrency("Итог", value: price - discount)
                         }
-                        LabeledContent("Итог", value: "\(Int(price - discount))")
                     }
                 }
             }

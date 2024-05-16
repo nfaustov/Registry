@@ -38,7 +38,7 @@ struct CashboxScreen: View {
                             .disabled(user.accessLevel < .registrar)
                         } label: {
                             HStack {
-                                Text("\(Int(cashBalance)) ₽")
+                                CurrencyText(cashBalance)
                                     .fontWeight(.medium)
                                 if isLoading {
                                     CircularProgressView()

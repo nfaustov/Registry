@@ -42,10 +42,8 @@ struct BillPaymentView: View {
             Form {
                 Section("Пациент") {
                     Text(patient.fullName)
-                    LabeledContent("К оплате") {
-                        Text("\(Int(check.totalPrice - patient.balance)) ₽")
+                    LabeledCurrency("К оплате", value: check.totalPrice - patient.balance)
                             .font(.headline)
-                    }
                 }
 
                 CreatePaymentView(

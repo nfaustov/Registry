@@ -36,7 +36,7 @@ struct ServicesTable: View {
                         .lineLimit(4)
                 }.width(600)
                 TableColumn("Стоимость", value: \.pricelistItem.price) { service in
-                    Text("\(Int(service.pricelistItem.price)) ₽")
+                    CurrencyText(service.pricelistItem.price)
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
                 }.width(120)

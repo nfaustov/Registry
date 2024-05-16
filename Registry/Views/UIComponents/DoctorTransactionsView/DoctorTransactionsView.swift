@@ -69,10 +69,8 @@ private extension DoctorTransactionsView {
                         .overlay(colorStyle(forTransactionOfKind: kind))
                         .padding(.vertical, 8)
 
-                    LabeledContent(transaction.description) {
-                        Text("\(Int(transaction.value)) ₽")
-                    }
-                    .foregroundStyle(transaction.refunded ? .secondary : .primary)
+                    LabeledCurrency(transaction.description, value: transaction.value)
+                        .foregroundStyle(transaction.refunded ? .secondary : .primary)
                 }
             }
             .padding()

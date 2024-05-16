@@ -46,7 +46,7 @@ struct PaymentDetailView: View {
 
                 Spacer()
 
-                Text("\(Int(payment.totalAmount)) ₽")
+                CurrencyText(payment.totalAmount)
                     .font(.title2)
                     .fontWeight(.medium)
             }
