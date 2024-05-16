@@ -59,17 +59,24 @@ actor Ledger {
     }
 
     func makeRefundPayment(
-        _ refund: Refund,
-        to check: Check,
+        refund: Refund,
         method: Payment.Method,
+        includeBalance: Bool,
         createdBy user: User
     ) {
-        guard let patient = check.appointments?.first?.patient else { return }
+        guard let patient = refund.check?.appointments?.first?.patient else { return }
 
-        check.makeRefund(refund)
-        let paymentValue = refund.totalAmount
+        var purpose: Payment.Purpose = .refund(patient.initials)
+
+        if includeBalance {
+            purpose.descripiton.append(" (Записано на баланс \(Int(-patient.balance)) ₽)")
+            updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: user.asAnyUser)
+        }
+
+        let paymentValue = refund.totalAmount - patient.balance
         let refundMethod = Payment.Method(method.type, value: paymentValue)
-        let payment = Payment(purpose: .refund(patient.initials), methods: [refundMethod], createdBy: user.asAnyUser)
+        let payment = Payment(purpose: purpose, methods: [refundMethod], createdBy: user.asAnyUser)
+
         patient.transactions?.append(payment)
         record(payment)
     }

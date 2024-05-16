@@ -106,14 +106,10 @@ struct CompletedAppointmentView: View {
                 subtitle: appointment.patient?.fullName,
                 disabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
                 task: appointment.check?.refund != nil ? nil : {
-                    let ledger = Ledger(modelContainer: modelContext.container)
-
                     if let check = appointment.check {
-                        await ledger.makeRefundPayment(createdRefund, to: check, method: paymentMethod, createdBy: user)
-                    }
-
-                    if includeBalance {
-                        await ledger.makeBalancePayment(from: patient, value: -patient.balance, createdBy: user)
+                        check.makeRefund(createdRefund)
+                        let ledger = Ledger(modelContainer: modelContext.container)
+                        await ledger.makeRefundPayment(refund: createdRefund, method: paymentMethod, includeBalance: includeBalance, createdBy: user)
                     }
                 }
             )
@@ -136,7 +132,12 @@ private extension CompletedAppointmentView {
                     .font(.headline)
                     .foregroundStyle(.red)
 
-                Picker("Способ оплаты", selection: $paymentMethod.type) {
+                if includeBalance {
+                    LabeledCurrency("Выплата", value: refundTotalAmount - patient.balance)
+                        .font(.headline)
+                }
+
+                Picker("Способ возврата", selection: $paymentMethod.type) {
                     ForEach(PaymentType.allCases, id: \.self) { type in
                         Text(type.rawValue)
                     }
@@ -158,27 +159,9 @@ private extension CompletedAppointmentView {
     var balancePaymentSection: some View {
         Section {
             if patient.balance != 0 {
-                HStack {
-                    if patient.balance > 0 {
-                        Text("Мы должны пациенту: \(Int(patient.balance)) ₽")
-                    } else if patient.balance < 0 {
-                        Text("Пациент должен нам: \(Int(-patient.balance)) ₽")
-                    }
-
-                    Spacer()
-
-                    Toggle("", isOn: $includeBalance.animation())
-                        .disabled(patient.balance < 0)
-                }
-                .font(.subheadline)
-
-                if includeBalance {
-                    Picker("Способ оплаты по балансу", selection: $balancePaymentMethod.type) {
-                        ForEach(PaymentType.allCases, id: \.self) { type in
-                            Text(type.rawValue)
-                        }
-                    }
-                }
+                LabeledCurrency("Баланс пациента", value: patient.balance)
+                Toggle("Включить в платеж", isOn: $includeBalance.animation())
+                    .disabled(patient.balance < 0)
             }
         }
     }
