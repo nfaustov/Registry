@@ -81,12 +81,26 @@ struct ContractBodyController {
         """
     }
 
-    var patientDetails: String {
-        """
-        \(patient.fullName)
+    var passportDetails: String {
+        if patient.passport.isValid {
+        return """
         Дата рождения: \(DateFormat.date.string(from: patient.passport.birthday))
         Серия и номер паспорта: \(patient.passport.seriesNumber)
         Выдан: \(patient.passport.authority) \(DateFormat.date.string(from: patient.passport.issueDate))
+        """
+        } else {
+            return """
+        
+        
+        
+        """
+        }
+    }
+
+    var patientDetails: String {
+        """
+        \(patient.fullName)
+        \(passportDetails)
 
 
 

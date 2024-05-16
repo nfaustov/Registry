@@ -28,6 +28,13 @@ extension Patient {
             self.issueDate = issueDate
             self.authority = authority
         }
+
+        var isValid: Bool {
+            !seriesNumber.isEmpty &&
+            birthday != Date(timeIntervalSinceReferenceDate: 0) &&
+            issueDate != Date(timeIntervalSinceReferenceDate: 0) &&
+            !authority.isEmpty
+        }
     }
 }
 
