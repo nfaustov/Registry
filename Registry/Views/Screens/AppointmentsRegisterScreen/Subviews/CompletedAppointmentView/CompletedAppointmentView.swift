@@ -89,12 +89,13 @@ struct CompletedAppointmentView: View {
                     }
                 }
 
-                if Calendar.current.isDateInToday(appointment.scheduledTime), appointment.check?.refund == nil {
+                if appointment.check?.refund == nil {
                     Section {
                         Button("Редактировать роли") {
                             dismiss()
                             coordinator.push(.bill(for: appointment, purpose: .editRoles))
                         }
+                        .disabled(editMode)
                     }
                 }
             }
