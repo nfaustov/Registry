@@ -56,6 +56,7 @@
 		8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC162BF3E143006FB7CD /* VersionController.swift */; };
 		8B5EEC1A2BF3E194006FB7CD /* VersionControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */; };
 		8B5EEC1C2BF3E1F4006FB7CD /* VersionControlServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */; };
+		8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
 		8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */; };
@@ -243,6 +244,7 @@
 		8B5EEC162BF3E143006FB7CD /* VersionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionController.swift; sourceTree = "<group>"; };
 		8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlService.swift; sourceTree = "<group>"; };
 		8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlServiceClient.swift; sourceTree = "<group>"; };
+		8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorVacationView.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
 		8B6BAA062B8DD508000FF417 /* PriceCalculationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculationView.swift; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */,
+				8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1549,6 +1552,7 @@
 				8B8A6E142BF4A82D0026674D /* PatientDebugView.swift in Sources */,
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
 				8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */,
+				8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */,
 				8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */,
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,

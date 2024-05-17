@@ -28,6 +28,7 @@ final class Doctor: Accountable, User, Codable {
     @Attribute(.externalStorage)
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
+    var vacationSchedule: [DateInterval] = []
     @Relationship(inverse: \Payment.doctor)
     private(set) var transactions: [Payment]? = []
 
@@ -51,6 +52,7 @@ final class Doctor: Accountable, User, Codable {
         info: String = "",
         image: Data? = nil,
         accessLevel: UserAccessLevel = .doctor,
+        vacationSchedule: [DateInterval] = [],
         transactions: [Payment]? = []
     ) {
         self.id = id
@@ -69,6 +71,7 @@ final class Doctor: Accountable, User, Codable {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
+        self.vacationSchedule = vacationSchedule
         self.transactions = transactions
     }
 
