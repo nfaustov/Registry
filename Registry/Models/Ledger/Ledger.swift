@@ -34,7 +34,7 @@ actor Ledger {
             subject: check,
             createdBy: user.asAnyUser
         )
-        patient.transactions?.append(payment)
+        patient.assignTransaction(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
         record(payment)
@@ -53,7 +53,7 @@ actor Ledger {
             methods: methods,
             createdBy: user.asAnyUser
         )
-        doctor.transactions?.append(payment)
+        doctor.assignTransaction(payment)
         doctor.updateBalance(increment: -abs(paymentValue))
         record(payment)
     }
@@ -77,7 +77,7 @@ actor Ledger {
         let refundMethod = Payment.Method(method.type, value: paymentValue)
         let payment = Payment(purpose: purpose, methods: [refundMethod], createdBy: user.asAnyUser)
 
-        patient.transactions?.append(payment)
+        patient.assignTransaction(payment)
         record(payment)
     }
 
@@ -94,7 +94,7 @@ actor Ledger {
 
         let purpose: Payment.Purpose = value > 0 ? .toBalance(description) : .fromBalance(description)
         let payment = Payment(purpose: purpose, methods: [.init(.cash, value: value)], createdBy: user.asAnyUser)
-        person.transactions?.append(payment)
+        person.assignTransaction(payment)
         person.updateBalance(increment: value)
         record(payment)
     }
@@ -154,7 +154,7 @@ private extension Ledger {
     func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
         let balancePayment = Payment(purpose: .toBalance(person.initials), methods: [.init(.cash, value: increment)], createdBy: user.asAnyUser)
         person.updateBalance(increment: increment)
-        person.transactions?.append(balancePayment)
+        person.assignTransaction(balancePayment)
     }
 }
 

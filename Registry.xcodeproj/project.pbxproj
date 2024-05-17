@@ -158,7 +158,6 @@
 		8BD172512BECA7F6002D0BD9 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
 		8BD172522BECA7F8002D0BD9 /* SuperUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EA8602BA36F2E00DE722C /* SuperUser.swift */; };
 		8BD172532BECA805002D0BD9 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AE2B3623F200FD2E7C /* Person.swift */; };
-		8BD172542BECA80E002D0BD9 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
 		8BD172572BECA844002D0BD9 /* PatientAppointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801482B87B9A60064DBFB /* PatientAppointment.swift */; };
 		8BD172582BECA84B002D0BD9 /* PassportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDC2B84A0C40086BF4D /* PassportData.swift */; };
 		8BD172592BECA84E002D0BD9 /* PlaceOfResidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDE2B84A20C0086BF4D /* PlaceOfResidence.swift */; };
@@ -176,7 +175,6 @@
 		8BDCCFDF2B84A20C0086BF4D /* PlaceOfResidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFDE2B84A20C0086BF4D /* PlaceOfResidence.swift */; };
 		8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */; };
 		8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE52B84A3EC0086BF4D /* Check.swift */; };
-		8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE92B84A6770086BF4D /* Employee.swift */; };
 		8BE145032BF0C92000991225 /* LedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE145022BF0C92000991225 /* LedgerView.swift */; };
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
 		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
@@ -337,7 +335,6 @@
 		8BDCCFDE2B84A20C0086BF4D /* PlaceOfResidence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceOfResidence.swift; sourceTree = "<group>"; };
 		8BDCCFE02B84A2540086BF4D /* TreatmentPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentPlan.swift; sourceTree = "<group>"; };
 		8BDCCFE52B84A3EC0086BF4D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
-		8BDCCFE92B84A6770086BF4D /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
 		8BE145022BF0C92000991225 /* LedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerView.swift; sourceTree = "<group>"; };
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
 		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
@@ -1073,7 +1070,6 @@
 				8B96739E2B361C0900FD2E7C /* Department.swift */,
 				8B9673A02B361C2300FD2E7C /* Salary.swift */,
 				8B9673AE2B3623F200FD2E7C /* Person.swift */,
-				8BDCCFE92B84A6770086BF4D /* Employee.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1529,7 +1525,6 @@
 				8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */,
 				8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */,
 				8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */,
-				8BDCCFEA2B84A6770086BF4D /* Employee.swift in Sources */,
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
 				8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */,
 				8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */,
@@ -1617,7 +1612,6 @@
 				8BD1724E2BECA7C4002D0BD9 /* PricelistItem.Snapshot.swift in Sources */,
 				8BD172572BECA844002D0BD9 /* PatientAppointment.swift in Sources */,
 				8BD1725F2BECA8AF002D0BD9 /* DoctorMoneyTransaction.swift in Sources */,
-				8BD172542BECA80E002D0BD9 /* Employee.swift in Sources */,
 				8BD172592BECA84E002D0BD9 /* PlaceOfResidence.swift in Sources */,
 				8BD172432BECA454002D0BD9 /* Patient.swift in Sources */,
 				8BD1724D2BECA7C1002D0BD9 /* PricelistItem.swift in Sources */,

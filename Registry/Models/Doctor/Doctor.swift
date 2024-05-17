@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Doctor: Employee, User, Codable {
+final class Doctor: Accountable, User, Codable {
     let id: UUID = UUID()
     var secondName: String = ""
     var firstName: String = ""
@@ -29,7 +29,7 @@ final class Doctor: Employee, User, Codable {
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
     @Relationship(inverse: \Payment.doctor)
-    var transactions: [Payment]? = []
+    private(set) var transactions: [Payment]? = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -74,6 +74,10 @@ final class Doctor: Employee, User, Codable {
 
     func updateBalance(increment: Double) {
         balance += increment
+    }
+
+    func assignTransaction(_ transaction: Payment) {
+        transactions?.append(transaction)
     }
 
     func getTransactions(from date: Date) -> [DoctorMoneyTransaction] {
