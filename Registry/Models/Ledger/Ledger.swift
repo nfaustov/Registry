@@ -117,6 +117,18 @@ actor Ledger {
 
         return try? modelContext.fetch(descriptor).first
     }
+
+    func createReport() -> Report {
+        if let todayReport {
+            return todayReport
+        } else {
+            let report = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0)
+            modelContext.insert(report)
+            try? modelContext.save()
+
+            return report
+        }
+    }
 }
 
 // MARK: - Private methods

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import Charts
 
 struct CashboxScreen: View {
     // MARK: - Dependencies
@@ -21,7 +20,6 @@ struct CashboxScreen: View {
 
     @State private var cashBalance: Double = .zero
     @State private var todayReport: Report?
-    @State private var lastReport: Report?
     @State private var isLoading: Bool = true
 
     // MARK: -
@@ -57,17 +55,12 @@ struct CashboxScreen: View {
                         .tint(.primary)
                     } else {
                         Button("Открыть смену") {
-                            if lastReport != nil {
-                                let newReport = Report(date: .now, startingCash: cashBalance, payments: [])
-                                modelContext.insert(newReport)
-                                todayReport = newReport
-                            } else {
-                                let firstReport = Report(date: .now, startingCash: 0, payments: [])
-                                modelContext.insert(firstReport)
-                                todayReport = firstReport
+                            Task {
+                                let ledger = Ledger(modelContainer: modelContext.container)
+                                todayReport = await ledger.createReport()
                             }
                         }
-                        .disabled(user.accessLevel < .registrar)
+                        .disabled(user.accessLevel < .registrar || isLoading)
                     }
                 }
             }
@@ -86,7 +79,9 @@ struct CashboxScreen: View {
                         isLoading = true
 
                         Task {
-                            cashBalance = todayReport.cashBalance
+                            let ledger = Ledger(modelContainer: modelContext.container)
+                            let todayReport = await ledger.getReport()
+                            cashBalance = todayReport?.cashBalance ?? 0
                             isLoading = false
                         }
                     }
@@ -97,6 +92,12 @@ struct CashboxScreen: View {
                     if isLoading {
                         CircularProgressView()
                             .scaleEffect(1.2)
+                    } else {
+                        ContentUnavailableView(
+                            "Нет данных",
+                            systemImage: "tray.fill",
+                            description: Text("Сегодня не было создано ни одного платежа")
+                        )
                     }
                 }
                 .padding(.horizontal)
@@ -105,16 +106,9 @@ struct CashboxScreen: View {
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)
         .task {
-            var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-            descriptor.fetchLimit = 1
-            lastReport = try? modelContext.fetch(descriptor).first
-
-            if let lastReport, Calendar.current.isDateInToday(lastReport.date) {
-                todayReport = lastReport
-            }
-
-            cashBalance = lastReport?.cashBalance ?? 0
-
+            let ledger = Ledger(modelContainer: modelContext.container)
+            todayReport = await ledger.getReport()
+            cashBalance = todayReport?.cashBalance ?? 0
             isLoading = false
         }
     }
