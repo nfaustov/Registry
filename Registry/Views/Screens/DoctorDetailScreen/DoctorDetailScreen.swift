@@ -94,6 +94,12 @@ struct DoctorDetailScreen: View {
             }
 
             Section {
+                Button("Отпуск") {
+                    currentDetail = .vacationSchedule
+                }
+            }
+
+            Section {
                 Button("Информация") {
                     currentDetail = .doctorInfo
                 }
