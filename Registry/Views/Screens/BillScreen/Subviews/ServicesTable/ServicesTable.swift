@@ -94,10 +94,13 @@ struct ServicesTable: View {
 
             if purpose == .createAndPay {
                 if predictionsEnabled, !predictions.isEmpty {
-                    predictionsView
+                    PredictionsView(predictions: predictions) {
+                        addToCheck(pricelistItem: $0)
+                    }
+                    .padding(.vertical, 8)
                 }
 
-                ServicesTableControls(check: check, isPricelistPresented: $editMode, predictions: $predictionsEnabled)
+                ServicesTableControls(check: check, isPricelistPresented: $editMode, predictions: $predictionsEnabled.animation())
                     .padding()
                     .background(.regularMaterial)
             }
@@ -124,26 +127,6 @@ private extension ServicesTable {
 
             return true
         } isTargeted: { isTargeted = $0 }
-    }
-
-    var predictionsView: some View {
-        VStack {
-            ForEach(predictions) { item in
-                Button {
-                    addToCheck(pricelistItem: item)
-                } label: {
-                    LabeledCurrency(item.title, value: item.price)
-                        .font(.footnote)
-                        .foregroundStyle(.purple)
-                        .padding(12)
-                        .background(.purple.opacity(0.2))
-                        .clipShape(.rect(cornerRadius: 12, style: .continuous))
-                        .padding(.horizontal)
-                }
-            }
-        }
-        .padding(.top)
-        .background(.regularMaterial)
     }
 
     func menu(of kind: WritableKeyPath<MedicalService, Doctor?>, for serviceID: PersistentIdentifier) -> some View {
@@ -175,24 +158,22 @@ private extension ServicesTable {
         check.services.first(where: { $0.id == id })
     }
 
-    func getPredictions(with identifiers: [String]) throws -> [PricelistItem.Snapshot] {
-        let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        if let items = try? modelContext.fetch(descriptor) {
-            return items.map { $0.snapshot }
-        } else { return [] }
-    }
-
     func addToCheck(pricelistItem: PricelistItem.Snapshot) {
         let medicalService = MedicalService(
             pricelistItem: pricelistItem,
             performer: pricelistItem.category == .laboratory ? nil : doctor,
             agent: pricelistItem.category == .laboratory ? (doctor.department == .procedure ? nil : doctor) : nil
         )
-        withAnimation {
-            check.services.insert(medicalService, at: 0)
-        }
+        check.services.insert(medicalService, at: 0)
+    }
+
+    func getPredictedPricelistItems(with identifiers: [String]) throws -> [PricelistItem.Snapshot] {
+        let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
+        let descriptor = FetchDescriptor(predicate: predicate)
+
+        if let items = try? modelContext.fetch(descriptor) {
+            return items.map { $0.snapshot }
+        } else { return [] }
     }
 
     func makePredictions(items: [PricelistItem.Snapshot]) {
@@ -202,33 +183,9 @@ private extension ServicesTable {
             var dict: [String: Double] = [:]
             items.forEach { dict[$0.id] = 0 }
             let prediction = try model.prediction(items: dict, k: 5, restrict_: nil, exclude: nil)
-            predictions = try getPredictions(with: prediction.recommendations)
+            predictions = try getPredictedPricelistItems(with: prediction.recommendations)
         } catch {
             errorMessage = error.localizedDescription
         }
-    }
-}
-
-// MARK: - Purpose
-
-enum ServicesTablePurpose {
-    case createAndPay
-    case editRoles
-}
-
-private struct ServicesTablePurposeKey: EnvironmentKey {
-    static var defaultValue: ServicesTablePurpose = .createAndPay
-}
-
-extension EnvironmentValues {
-    var servicesTablePurpose: ServicesTablePurpose {
-        get { self[ServicesTablePurposeKey.self] }
-        set { self[ServicesTablePurposeKey.self] = newValue }
-    }
-}
-
-extension View {
-    func servicesTablePurpose(_ purpose: ServicesTablePurpose) -> some View {
-        environment(\.servicesTablePurpose, purpose)
     }
 }

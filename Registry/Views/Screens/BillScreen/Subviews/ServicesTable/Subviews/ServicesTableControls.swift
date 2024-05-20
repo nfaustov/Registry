@@ -67,7 +67,7 @@ struct ServicesTableControls: View {
                 Label("Рекомендации", systemImage: "list.bullet.below.rectangle")
             }
             .toggleStyle(.button)
-            .tint(.purple)
+            .tint(.indigo)
 
             Spacer()
 

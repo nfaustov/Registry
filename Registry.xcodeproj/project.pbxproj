@@ -65,6 +65,8 @@
 		8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */; };
 		8B6C68632BBB365000F08486 /* DoctorsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C68622BBB365000F08486 /* DoctorsChart.swift */; };
 		8B6FBC022BFBB6A70086204E /* PricelistItemRecommender.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */; };
+		8B6FBC042BFBC2260086204E /* ServicesTablePurpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FBC032BFBC2260086204E /* ServicesTablePurpose.swift */; };
+		8B6FBC082BFBC91C0086204E /* PredictionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FBC072BFBC91C0086204E /* PredictionsView.swift */; };
 		8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */; };
 		8B7491E22BBADE410016FDE9 /* DoctorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */; };
 		8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */; };
@@ -255,6 +257,8 @@
 		8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedAppointmentView.swift; sourceTree = "<group>"; };
 		8B6C68622BBB365000F08486 /* DoctorsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsChart.swift; sourceTree = "<group>"; };
 		8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = PricelistItemRecommender.mlmodel; sourceTree = "<group>"; };
+		8B6FBC032BFBC2260086204E /* ServicesTablePurpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTablePurpose.swift; sourceTree = "<group>"; };
+		8B6FBC072BFBC91C0086204E /* PredictionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionsView.swift; sourceTree = "<group>"; };
 		8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditView.swift; sourceTree = "<group>"; };
 		8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSettingsView.swift; sourceTree = "<group>"; };
 		8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleScreen.swift; sourceTree = "<group>"; };
@@ -579,7 +583,6 @@
 		8B29E04A2B6A430D0003A647 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */,
 				8BE9D3572BE13EF8006B26FF /* doctors.json */,
 				8BE9D3562BE13EF8006B26FF /* patients.json */,
 				8BE9D3552BE13EF8006B26FF /* pricelistItems.json */,
@@ -688,7 +691,7 @@
 			isa = PBXGroup;
 			children = (
 				8B6BAA012B8DD193000FF417 /* ServicesTable.swift */,
-				8B1E35432BC9B626003B448E /* ServicesTableControls.swift */,
+				8B6FBC062BFBC9070086204E /* Subviews */,
 			);
 			path = ServicesTable;
 			sourceTree = "<group>";
@@ -723,6 +726,24 @@
 				8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */,
 			);
 			path = CompletedAppointmentView;
+			sourceTree = "<group>";
+		};
+		8B6FBC052BFBC32B0086204E /* MLModels */ = {
+			isa = PBXGroup;
+			children = (
+				8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */,
+			);
+			path = MLModels;
+			sourceTree = "<group>";
+		};
+		8B6FBC062BFBC9070086204E /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8B1E35432BC9B626003B448E /* ServicesTableControls.swift */,
+				8B6FBC032BFBC2260086204E /* ServicesTablePurpose.swift */,
+				8B6FBC072BFBC91C0086204E /* PredictionsView.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		8B7491DD2BBA942E0016FDE9 /* EditViews */ = {
@@ -1244,6 +1265,7 @@
 		8BA53D962B494DBD006BE983 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8B6FBC052BFBC32B0086204E /* MLModels */,
 				8B80FEC72BC2566C00BB76E0 /* PDFCreator */,
 				8B45E6122BB55DE400834AE6 /* Environment */,
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
@@ -1533,6 +1555,7 @@
 				8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,
+				8B6FBC042BFBC2260086204E /* ServicesTablePurpose.swift in Sources */,
 				8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */,
 				8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */,
 				8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */,
@@ -1556,6 +1579,7 @@
 				8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */,
 				8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */,
 				8B187E822BD0D30D00611DC2 /* MedicalService.swift in Sources */,
+				8B6FBC082BFBC91C0086204E /* PredictionsView.swift in Sources */,
 				8BDCCFDD2B84A0C40086BF4D /* PassportData.swift in Sources */,
 				8B8A6E142BF4A82D0026674D /* PatientDebugView.swift in Sources */,
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
