@@ -23,7 +23,7 @@ final class Patient: AccountablePerson, Codable {
     @Attribute(.externalStorage)
     var image: Data?
     @Relationship(inverse: \Payment.patient)
-    var transactions: [Payment]? = []
+    private(set) var transactions: [Payment]? = []
 
     var appointments: [PatientAppointment]?
 
@@ -56,6 +56,10 @@ final class Patient: AccountablePerson, Codable {
 
     func updateBalance(increment: Double) {
         balance += increment
+    }
+
+    func assignTransaction(_ transaction: Payment) {
+        transactions?.append(transaction)
     }
 
     func getTransactions() -> [any MoneyTransaction] {

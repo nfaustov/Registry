@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Doctor: Employee, User, Codable {
+final class Doctor: Accountable, User, Codable {
     let id: UUID = UUID()
     var secondName: String = ""
     var firstName: String = ""
@@ -28,8 +28,9 @@ final class Doctor: Employee, User, Codable {
     @Attribute(.externalStorage)
     var image: Data?
     var accessLevel: UserAccessLevel = UserAccessLevel.doctor
+    var vacationSchedule: [DateInterval] = []
     @Relationship(inverse: \Payment.doctor)
-    var transactions: [Payment]? = []
+    private(set) var transactions: [Payment]? = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -51,6 +52,7 @@ final class Doctor: Employee, User, Codable {
         info: String = "",
         image: Data? = nil,
         accessLevel: UserAccessLevel = .doctor,
+        vacationSchedule: [DateInterval] = [],
         transactions: [Payment]? = []
     ) {
         self.id = id
@@ -69,11 +71,16 @@ final class Doctor: Employee, User, Codable {
         self.createdAt = .now
         self.image = image
         self.accessLevel = accessLevel
+        self.vacationSchedule = vacationSchedule
         self.transactions = transactions
     }
 
     func updateBalance(increment: Double) {
         balance += increment
+    }
+
+    func assignTransaction(_ transaction: Payment) {
+        transactions?.append(transaction)
     }
 
     func getTransactions(from date: Date) -> [DoctorMoneyTransaction] {
@@ -95,6 +102,12 @@ final class Doctor: Employee, User, Codable {
         }
 
         return doctorTransactions
+    }
+
+    func isInVacation(for date: Date) -> Bool {
+        vacationSchedule
+            .map { $0.contains(date) }
+            .reduce(false) { $0 || $1 }
     }
 
     // MARK: - Codable

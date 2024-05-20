@@ -57,7 +57,7 @@ struct BillScreen: View {
                     .background()
                     .cornerRadius(16)
                     .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-                    .padding([.horizontal, .bottom])
+                    .padding(.horizontal)
             }
 
             if servicesTablePurpose == .createAndPay {

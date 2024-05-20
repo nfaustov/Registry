@@ -79,7 +79,7 @@ struct DoctorPayoutView: View {
                     doctor.updateBalance(increment: singlePatientFee)
                     let purpose: Payment.Purpose = .toBalance("Доплата за прием")
                     let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
-                    doctor.transactions?.append(payment)
+                    doctor.assignTransaction(payment)
                 }
 
                 let ledger = Ledger(modelContainer: modelContext.container)

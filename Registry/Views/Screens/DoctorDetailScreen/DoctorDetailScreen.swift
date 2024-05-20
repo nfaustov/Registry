@@ -94,6 +94,12 @@ struct DoctorDetailScreen: View {
             }
 
             Section {
+                Button("Отпуск") {
+                    currentDetail = .vacationSchedule
+                }
+            }
+
+            Section {
                 Button("Информация") {
                     currentDetail = .doctorInfo
                 }
@@ -121,6 +127,7 @@ private extension DoctorDetailScreen {
         case birthDate
         case transactions
         case doctorSettings
+        case vacationSchedule
         case doctorInfo
 
         var title: String {
@@ -137,6 +144,8 @@ private extension DoctorDetailScreen {
                 return "Транзакции"
             case .doctorSettings:
                 return "Настройки расписания"
+            case .vacationSchedule:
+                return "График отпусков"
             case .doctorInfo:
                 return "Информация о враче"
             }
@@ -192,6 +201,8 @@ private extension DoctorDetailScreen {
             DoctorTransactionsView(doctor: doctor)
         case .doctorSettings:
             DoctorSettingsView(doctor: doctor)
+        case .vacationSchedule:
+            DoctorVacationView(doctor: doctor)
         case .doctorInfo:
             Form {
                 Section {
