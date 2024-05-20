@@ -30,6 +30,7 @@ struct AddProcedurePatientView: View {
     @State private var patronymicNameText = ""
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
+    @FocusState private var isFocused: Bool
 
     // MARK: -
 
@@ -78,10 +79,13 @@ struct AddProcedurePatientView: View {
                     } else {
                         TextField("Фамилия", text: $secondNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                         TextField("Имя", text: $firstNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                         TextField("Отчество", text: $patronymicNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                     }
                 } header: {
                     Text("Ф.И.О.")
@@ -91,7 +95,7 @@ struct AddProcedurePatientView: View {
                     if let selectedPatient {
                         Text(selectedPatient.phoneNumber)
                     } else {
-                        PhoneNumberTextField(text: $phoneNumberText)
+                        PhoneNumberTextField(text: $phoneNumberText, focus: { isFocused = false })
                             .onChange(of: phoneNumberText) {
                                 if phoneNumberText.count == 18, let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
                                     selectedPatient = patient

@@ -11,6 +11,7 @@ struct PhoneNumberTextField: View {
     // MARK: - Dependencies
 
     @Binding var text: String
+    var focus: (() -> Void)? = nil
 
     // MARK: - State
 
@@ -22,6 +23,7 @@ struct PhoneNumberTextField: View {
     var body: some View {
         Button {
             showKeyboard = true
+            focus?()
         } label: {
             Text(text)
         }

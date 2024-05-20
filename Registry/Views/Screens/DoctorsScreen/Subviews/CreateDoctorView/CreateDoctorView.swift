@@ -35,6 +35,7 @@ struct CreateDoctorView: View {
     @State private var salaryRate: Double = 0.4
     @State private var isSearching: Bool = false
     @State private var userLevel: UserAccessLevel = .doctor
+    @FocusState private var isFocused: Bool
 
     // MARK: -
 
@@ -59,14 +60,17 @@ struct CreateDoctorView: View {
 
                 Section {
                     TextField("Фамилия", text: $secondNameText)
+                        .focused($isFocused)
                     TextField("Имя", text: $firstNameText)
+                        .focused($isFocused)
                     TextField("Отчество", text: $patronymicNameText)
+                        .focused($isFocused)
                 } header: {
                     Text("Ф.И.О.")
                 }
 
                 Section {
-                    PhoneNumberTextField(text: $phoneNumberText)
+                    PhoneNumberTextField(text: $phoneNumberText, focus: { isFocused = false })
                 } header: {
                     Text("Номер телефона")
                 }

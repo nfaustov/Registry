@@ -31,6 +31,7 @@ struct AddPatientView: View {
     @State private var duration: TimeInterval
     @State private var selection: Check?
     @State private var smsNotification: Bool = false
+    @FocusState private var isFocused: Bool
 
     // MARK: -
 
@@ -66,10 +67,13 @@ struct AddPatientView: View {
                     } else {
                         TextField("Фамилия", text: $secondNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                         TextField("Имя", text: $firstNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                         TextField("Отчество", text: $patronymicNameText)
                             .autocorrectionDisabled()
+                            .focused($isFocused)
                     }
                 } header: {
                     Text("Ф.И.О.")
@@ -79,7 +83,7 @@ struct AddPatientView: View {
                     if let selectedPatient {
                         Text(selectedPatient.phoneNumber)
                     } else {
-                        PhoneNumberTextField(text: $phoneNumberText)
+                        PhoneNumberTextField(text: $phoneNumberText, focus: { isFocused = false })
                             .onChange(of: phoneNumberText) {
                                 if phoneNumberText.count == 18, let patient = patients.first(where: { $0.phoneNumber == phoneNumberText }) {
                                     selectedPatient = patient
