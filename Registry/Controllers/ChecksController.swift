@@ -10,7 +10,7 @@ import SwiftData
 
 @ModelActor
 actor ChecksController {
-    func loadCorrelationsJSON() throws -> Data {
+    func getCorrelationsJSON() throws -> Data {
         let encoder = JSONEncoder()
         return try encoder.encode(pricelistItemsCorrelations)
     }

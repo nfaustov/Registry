@@ -18,6 +18,8 @@ struct ContentView: View {
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
+    @State private var showActivity: Bool = false
+    @State private var json: Data? = nil
 
     // MARK: -
 
@@ -69,6 +71,19 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
+//            .task {
+//                let ledger = Ledger(modelContainer: modelContext.container)
+//                let report = await ledger.getReport()
+//                report?.startingCash = 7270
+//                let controller = ChecksController(modelContainer: modelContext.container)
+//                json = try? await controller.getCorrelationsJSON()
+//                showActivity = true
+//            }
+//            .sheet(isPresented: $showActivity) {
+//                if let json {
+//                    ActivityView(items: [json])
+//                }
+//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }
