@@ -32,7 +32,7 @@
 		8B1E353F2BC9A822003B448E /* CreatePaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */; };
 		8B1E35442BC9B626003B448E /* ServicesTableControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E35432BC9B626003B448E /* ServicesTableControls.swift */; };
 		8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E35452BC9C80D003B448E /* PricelistSideSheetView.swift */; };
-		8B1EE9432BF6547B009AF600 /* PricelistDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1EE9422BF6547B009AF600 /* PricelistDebugView.swift */; };
+		8B1EE9432BF6547B009AF600 /* ChecksDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1EE9422BF6547B009AF600 /* ChecksDataLoader.swift */; };
 		8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */; };
 		8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* PersonImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
@@ -221,7 +221,7 @@
 		8B1E353E2BC9A822003B448E /* CreatePaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentView.swift; sourceTree = "<group>"; };
 		8B1E35432BC9B626003B448E /* ServicesTableControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTableControls.swift; sourceTree = "<group>"; };
 		8B1E35452BC9C80D003B448E /* PricelistSideSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistSideSheetView.swift; sourceTree = "<group>"; };
-		8B1EE9422BF6547B009AF600 /* PricelistDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistDebugView.swift; sourceTree = "<group>"; };
+		8B1EE9422BF6547B009AF600 /* ChecksDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksDataLoader.swift; sourceTree = "<group>"; };
 		8B285F402B4DB8D600C29E20 /* MinusBoxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusBoxToggleStyle.swift; sourceTree = "<group>"; };
 		8B285F432B4DC81800C29E20 /* PersonImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
@@ -885,7 +885,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */,
-				8B1EE9422BF6547B009AF600 /* PricelistDebugView.swift */,
+				8B1EE9422BF6547B009AF600 /* ChecksDataLoader.swift */,
 			);
 			path = DebugViews;
 			sourceTree = "<group>";
@@ -1394,7 +1394,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					8B9673812B36187D00FD2E7C = {
 						CreatedOnToolsVersion = 15.1;
@@ -1510,7 +1510,7 @@
 				8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */,
 				8B7AC6632BBE99EE004653FA /* UpdateBalanceView.swift in Sources */,
 				8B8DA9632BA1E5AC00F6F847 /* MessageService.swift in Sources */,
-				8B1EE9432BF6547B009AF600 /* PricelistDebugView.swift in Sources */,
+				8B1EE9432BF6547B009AF600 /* ChecksDataLoader.swift in Sources */,
 				8B96739D2B361BB200FD2E7C /* Doctor.swift in Sources */,
 				8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */,
 				8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */,
@@ -1651,6 +1651,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1714,6 +1715,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

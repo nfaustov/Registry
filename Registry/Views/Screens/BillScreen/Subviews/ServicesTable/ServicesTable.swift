@@ -25,7 +25,7 @@ struct ServicesTable: View {
     @State private var sortOrder = [KeyPathComparator(\MedicalService.performer?.secondName)]
     @State private var selection: Set<PersistentIdentifier> = []
     @State private var isTargeted: Bool = false
-    @State private var predictions: [PricelistItem.Snapshot] = [ExampleData.pricelistItem.snapshot, ExampleData.pricelistItem.snapshot]
+    @State private var predictions: [PricelistItem.Snapshot] = []
     @State private var predictionsEnabled: Bool = true
 
     // MARK: -
@@ -83,7 +83,7 @@ struct ServicesTable: View {
             }
 
             if purpose == .createAndPay {
-                if predictionsEnabled {
+                if predictionsEnabled, !predictions.isEmpty {
                     predictionsView
                 }
 
@@ -126,7 +126,7 @@ private extension ServicesTable {
                         .font(.footnote)
                         .foregroundStyle(.purple)
                         .padding(12)
-                        .background(.purple.opacity(0.1))
+                        .background(.purple.opacity(0.2))
                         .clipShape(.rect(cornerRadius: 12, style: .continuous))
                         .padding(.horizontal)
                 }
