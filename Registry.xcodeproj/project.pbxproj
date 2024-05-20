@@ -181,6 +181,7 @@
 		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
 		8BE9D3592BE13EF8006B26FF /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3562BE13EF8006B26FF /* patients.json */; };
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
+		8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 /* End PBXBuildFile section */
 
@@ -342,6 +343,7 @@
 		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
 		8BE9D3562BE13EF8006B26FF /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
 		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
+		8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksController.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1158,6 +1160,7 @@
 				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
 				8B5EEC162BF3E143006FB7CD /* VersionController.swift */,
+				8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1501,6 +1504,7 @@
 				8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */,
 				8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */,
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
+				8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */,
 				8B187E7E2BCFAA8000611DC2 /* Note.swift in Sources */,
 				8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */,
 				8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */,
