@@ -15,6 +15,7 @@ struct ServicesTableControls: View {
 
     @Bindable var check: Check
     @Binding var isPricelistPresented: Bool
+    @Binding var predictions: Bool
 
     @Query private var checkTemplates: [CheckTemplate]
 
@@ -62,6 +63,12 @@ struct ServicesTableControls: View {
             }
             .disabled(isPricelistPresented || (check.services.isEmpty && checkTemplates.isEmpty))
 
+            Toggle(isOn: $predictions) {
+                Label("Рекомендации", systemImage: "list.bullet.below.rectangle")
+            }
+            .toggleStyle(.button)
+            .tint(.purple)
+
             Spacer()
 
             Button {
@@ -81,6 +88,7 @@ struct ServicesTableControls: View {
 #Preview {
     ServicesTableControls(
         check: Check(services: []),
-        isPricelistPresented: .constant(false)
+        isPricelistPresented: .constant(false),
+        predictions: .constant(true)
     )
 }

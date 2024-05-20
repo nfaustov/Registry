@@ -25,6 +25,8 @@ struct ServicesTable: View {
     @State private var sortOrder = [KeyPathComparator(\MedicalService.performer?.secondName)]
     @State private var selection: Set<PersistentIdentifier> = []
     @State private var isTargeted: Bool = false
+    @State private var predictions: [PricelistItem.Snapshot] = [ExampleData.pricelistItem.snapshot, ExampleData.pricelistItem.snapshot]
+    @State private var predictionsEnabled: Bool = true
 
     // MARK: -
 
@@ -76,10 +78,18 @@ struct ServicesTable: View {
             .onChange(of: sortOrder) { _, newValue in
                 check.services.sort(using: newValue)
             }
+            .onChange(of: check.services) { _, newValue in
+                // calculate predictions
+            }
 
             if purpose == .createAndPay {
-                ServicesTableControls(check: check, isPricelistPresented: $editMode)
+                if predictionsEnabled {
+                    predictionsView
+                }
+
+                ServicesTableControls(check: check, isPricelistPresented: $editMode, predictions: $predictionsEnabled)
                     .padding()
+                    .background(.regularMaterial)
             }
         }
     }
@@ -99,18 +109,31 @@ private extension ServicesTable {
         }
         .dropDestination(for: PricelistItem.self) { droppedItems, location in
             for item in droppedItems {
-                let medicalService = MedicalService(
-                    pricelistItem: item.snapshot,
-                    performer: item.category == .laboratory ? nil : doctor,
-                    agent: item.category == .laboratory ? (doctor.department == .procedure ? nil : doctor) : nil
-                )
-                withAnimation {
-                    check.services.insert(medicalService, at: 0)
-                }
+                addToCheck(pricelistItem: item.snapshot)
             }
 
             return true
         } isTargeted: { isTargeted = $0 }
+    }
+
+    var predictionsView: some View {
+        VStack {
+            ForEach(predictions) { item in
+                Button {
+                    addToCheck(pricelistItem: item)
+                } label: {
+                    LabeledCurrency(item.title, value: item.price)
+                        .font(.footnote)
+                        .foregroundStyle(.purple)
+                        .padding(12)
+                        .background(.purple.opacity(0.1))
+                        .clipShape(.rect(cornerRadius: 12, style: .continuous))
+                        .padding(.horizontal)
+                }
+            }
+        }
+        .padding(.top)
+        .background(.regularMaterial)
     }
 
     func menu(of kind: WritableKeyPath<MedicalService, Doctor?>, for serviceID: PersistentIdentifier) -> some View {
@@ -140,6 +163,17 @@ private extension ServicesTable {
 private extension ServicesTable {
     func service(with id: PersistentIdentifier) -> MedicalService? {
         check.services.first(where: { $0.id == id })
+    }
+
+    func addToCheck(pricelistItem: PricelistItem.Snapshot) {
+        let medicalService = MedicalService(
+            pricelistItem: pricelistItem,
+            performer: pricelistItem.category == .laboratory ? nil : doctor,
+            agent: pricelistItem.category == .laboratory ? (doctor.department == .procedure ? nil : doctor) : nil
+        )
+        withAnimation {
+            check.services.insert(medicalService, at: 0)
+        }
     }
 }
 
