@@ -19,11 +19,7 @@ struct DoctorView: View {
         if presentation == .gridItem {
             ZStack(alignment: .bottomLeading) {
                 PersonImageView(person: doctor)
-                    .frame(
-                        width: isPhoneUserInterfaceIdiom ? 140 : 200,
-                        height: isPhoneUserInterfaceIdiom ? 175 : 250,
-                        alignment: .top
-                    )
+                    .frame(width: 200, height: 250, alignment: .top)
                     .overlay {
                         if doctor.image != nil {
                             let gradient = Gradient(colors: [.black.opacity(0.8), .clear])
@@ -33,27 +29,20 @@ struct DoctorView: View {
 
                 VStack(alignment: .leading) {
                     Text(doctor.initials)
-                        .font(isPhoneUserInterfaceIdiom ? .subheadline : .headline)
+                        .font(.headline)
                     Text(doctor.department.specialization)
-                        .font(isPhoneUserInterfaceIdiom ? .caption : .subheadline)
+                        .font(.subheadline)
                 }
                 .foregroundColor(.white)
-                .padding(isPhoneUserInterfaceIdiom ? 8 : 12)
+                .padding(12)
             }
-            .frame(
-                width: isPhoneUserInterfaceIdiom ? 140 : 200,
-                height: isPhoneUserInterfaceIdiom ? 175 : 250
-            )
-            .cornerRadius(isPhoneUserInterfaceIdiom ? 8 : 16)
+            .frame(width: 200, height: 250)
+            .cornerRadius(16)
             .padding()
         } else if presentation == .listRow {
             HStack {
                 PersonImageView(person: doctor)
-                    .frame(
-                        width: isPhoneUserInterfaceIdiom ? 52 : 64,
-                        height: isPhoneUserInterfaceIdiom ? 52 : 64,
-                        alignment: .top
-                    )
+                    .frame(width: 64, height: 64, alignment: .top)
                     .clipShape(Circle())
 
                 VStack(alignment: .leading) {
@@ -70,14 +59,6 @@ struct DoctorView: View {
 
 #Preview {
     DoctorView(doctor: ExampleData.doctor, presentation: .gridItem)
-}
-
-// MARK: - Calculations
-
-private extension DoctorView {
-    var isPhoneUserInterfaceIdiom: Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
-    }
 }
 
 // MARK: - Presentation

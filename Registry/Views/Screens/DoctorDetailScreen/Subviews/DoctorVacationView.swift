@@ -27,7 +27,7 @@ struct DoctorVacationView: View {
                     ForEach(plannedVacations, id: \.self) { vacation in
                         HStack {
                             LabeledContent(
-                                "\(DateFormat.dateTime.string(from: vacation.start)) - \(DateFormat.dateTime.string(from: vacation.end))",
+                                "\(DateFormat.date.string(from: vacation.start)) - \(DateFormat.date.string(from: vacation.end))",
                                 value: "\(Int(round(vacation.duration / 86_400))) дней"
                             )
 

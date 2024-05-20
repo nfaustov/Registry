@@ -104,6 +104,12 @@ final class Doctor: Accountable, User, Codable {
         return doctorTransactions
     }
 
+    func isInVacation(for date: Date) -> Bool {
+        vacationSchedule
+            .map { $0.contains(date) }
+            .reduce(false) { $0 || $1 }
+    }
+
     // MARK: - Codable
 
     private enum CodingKeys: String, CodingKey {

@@ -30,9 +30,16 @@ struct DoctorSelectionView: View {
                 Button {
                     selectedDoctor = doctor
                 } label: {
-                    DoctorView(doctor: doctor, presentation: .listRow)
+                    HStack {
+                        DoctorView(doctor: doctor, presentation: .listRow)
+                        if let currentVacation = doctor.vacationSchedule.filter({ $0.contains(date) }).first {
+                            Spacer()
+                            Text("В отпуске до \(DateFormat.date.string(from: currentVacation.end))")
+                                .foregroundStyle(.purple)
+                        }
+                    }
                 }
-                .disabled(alreadyHasTodaySchedule(doctor))
+                .disabled(alreadyHasTodaySchedule(doctor) || doctor.isInVacation(for: date))
             }
             .listStyle(.inset)
             .searchable(
@@ -56,6 +63,7 @@ struct DoctorSelectionView: View {
                 if let searchedDoctors = try? modelContext.fetch(descriptor) {
                     doctors = searchedDoctors
                         .sorted(by: { $0.schedules?.count ?? 0 > $1.schedules?.count ?? 0 })
+                        .sorted(by: { !$0.isInVacation(for: date) && $1.isInVacation(for: date) })
                         .sorted(by: { !alreadyHasTodaySchedule($0) && alreadyHasTodaySchedule($1) })
                 }
             }
