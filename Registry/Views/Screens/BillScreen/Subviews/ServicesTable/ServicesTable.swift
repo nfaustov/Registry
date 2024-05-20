@@ -7,11 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import CoreML
 
 struct ServicesTable: View {
     // MARK: - Dependencies
 
     @Environment(\.servicesTablePurpose) private var purpose
+    @Environment(\.modelContext) private var modelContext
 
     @Query private var doctors: [Doctor]
 
@@ -27,6 +29,7 @@ struct ServicesTable: View {
     @State private var isTargeted: Bool = false
     @State private var predictions: [PricelistItem.Snapshot] = []
     @State private var predictionsEnabled: Bool = true
+    @State private var errorMessage: String?
 
     // MARK: -
 
@@ -79,7 +82,14 @@ struct ServicesTable: View {
                 check.services.sort(using: newValue)
             }
             .onChange(of: check.services) { _, newValue in
-                // calculate predictions
+                let snapshots = check.services.map { $0.pricelistItem }
+                makePredictions(items: snapshots)
+            }
+            .onAppear {
+                if !check.services.isEmpty {
+                    let snapshots = check.services.map { $0.pricelistItem }
+                    makePredictions(items: snapshots)
+                }
             }
 
             if purpose == .createAndPay {
@@ -165,6 +175,15 @@ private extension ServicesTable {
         check.services.first(where: { $0.id == id })
     }
 
+    func getPredictions(with identifiers: [String]) throws -> [PricelistItem.Snapshot] {
+        let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
+        let descriptor = FetchDescriptor(predicate: predicate)
+
+        if let items = try? modelContext.fetch(descriptor) {
+            return items.map { $0.snapshot }
+        } else { return [] }
+    }
+
     func addToCheck(pricelistItem: PricelistItem.Snapshot) {
         let medicalService = MedicalService(
             pricelistItem: pricelistItem,
@@ -173,6 +192,19 @@ private extension ServicesTable {
         )
         withAnimation {
             check.services.insert(medicalService, at: 0)
+        }
+    }
+
+    func makePredictions(items: [PricelistItem.Snapshot]) {
+        do {
+            let config = MLModelConfiguration()
+            let model = try PricelistItemRecommender(configuration: config)
+            var dict: [String: Double] = [:]
+            items.forEach { dict[$0.id] = 0 }
+            let prediction = try model.prediction(items: dict, k: 5, restrict_: nil, exclude: nil)
+            predictions = try getPredictions(with: prediction.recommendations)
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }

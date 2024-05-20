@@ -64,6 +64,7 @@
 		8B6BAA0D2B8DE508000FF417 /* CreateBillTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA0C2B8DE508000FF417 /* CreateBillTemplateView.swift */; };
 		8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */; };
 		8B6C68632BBB365000F08486 /* DoctorsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C68622BBB365000F08486 /* DoctorsChart.swift */; };
+		8B6FBC022BFBB6A70086204E /* PricelistItemRecommender.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */; };
 		8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */; };
 		8B7491E22BBADE410016FDE9 /* DoctorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */; };
 		8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */; };
@@ -253,6 +254,7 @@
 		8B6BAA0C2B8DE508000FF417 /* CreateBillTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBillTemplateView.swift; sourceTree = "<group>"; };
 		8B6BAA0F2B8DE9B4000FF417 /* CompletedAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedAppointmentView.swift; sourceTree = "<group>"; };
 		8B6C68622BBB365000F08486 /* DoctorsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsChart.swift; sourceTree = "<group>"; };
+		8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = PricelistItemRecommender.mlmodel; sourceTree = "<group>"; };
 		8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditView.swift; sourceTree = "<group>"; };
 		8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSettingsView.swift; sourceTree = "<group>"; };
 		8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleScreen.swift; sourceTree = "<group>"; };
@@ -577,6 +579,7 @@
 		8B29E04A2B6A430D0003A647 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8B6FBC012BFBB6A70086204E /* PricelistItemRecommender.mlmodel */,
 				8BE9D3572BE13EF8006B26FF /* doctors.json */,
 				8BE9D3562BE13EF8006B26FF /* patients.json */,
 				8BE9D3552BE13EF8006B26FF /* pricelistItems.json */,
@@ -1497,6 +1500,7 @@
 				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
+				8B6FBC022BFBB6A70086204E /* PricelistItemRecommender.mlmodel in Sources */,
 				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,
 				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
