@@ -123,6 +123,8 @@
 		8B9673AB2B361F8D00FD2E7C /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AA2B361F8D00FD2E7C /* Route.swift */; };
 		8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AC2B361FD200FD2E7C /* Sheet.swift */; };
 		8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9673AE2B3623F200FD2E7C /* Person.swift */; };
+		8B997A582BFC8DF800DB50CB /* UpdateBalanceKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B997A572BFC8DF800DB50CB /* UpdateBalanceKind.swift */; };
+		8B997A592BFC8E2D00DB50CB /* UpdateBalanceKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B997A572BFC8DF800DB50CB /* UpdateBalanceKind.swift */; };
 		8B99D81C2BDCCFF1004FA284 /* MoneyFieldSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B99D81B2BDCCFF1004FA284 /* MoneyFieldSection.swift */; };
 		8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */; };
 		8BA0AAE92B5FA3C400E9FD7E /* MedicalServicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */; };
@@ -316,6 +318,7 @@
 		8B9673AA2B361F8D00FD2E7C /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		8B9673AC2B361FD200FD2E7C /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		8B9673AE2B3623F200FD2E7C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		8B997A572BFC8DF800DB50CB /* UpdateBalanceKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBalanceKind.swift; sourceTree = "<group>"; };
 		8B99D81B2BDCCFF1004FA284 /* MoneyFieldSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyFieldSection.swift; sourceTree = "<group>"; };
 		8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		8BA0AAE82B5FA3C400E9FD7E /* MedicalServicesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalServicesScreen.swift; sourceTree = "<group>"; };
@@ -837,6 +840,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7AC6622BBE99EE004653FA /* UpdateBalanceView.swift */,
+				8B997A572BFC8DF800DB50CB /* UpdateBalanceKind.swift */,
 			);
 			path = UpdateBalanceView;
 			sourceTree = "<group>";
@@ -1606,6 +1610,7 @@
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8BD9FCD42BA970830055823D /* IndicatorsScreen.swift in Sources */,
 				8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */,
+				8B997A582BFC8DF800DB50CB /* UpdateBalanceKind.swift in Sources */,
 				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
 				8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */,
 				8B8DA9652BA1E5E900F6F847 /* MessageServiceClient.swift in Sources */,
@@ -1630,6 +1635,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BD1723E2BECA117002D0BD9 /* Ledger.swift in Sources */,
+				8B997A592BFC8E2D00DB50CB /* UpdateBalanceKind.swift in Sources */,
 				8BD172422BECA44D002D0BD9 /* Doctor.swift in Sources */,
 				8BD172522BECA7F8002D0BD9 /* SuperUser.swift in Sources */,
 				8BD1724A2BECA794002D0BD9 /* Payment.Method.swift in Sources */,

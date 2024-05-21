@@ -60,11 +60,7 @@ struct UpdateBalanceView: View {
             }
             .sheetToolbar(kind.rawValue, disabled: paymentMethod.value == 0) {
                 let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeBalancePayment(
-                    from: person,
-                    value: kind == .refill ? paymentMethod.value : -paymentMethod.value,
-                    createdBy: user
-                )
+                await ledger.makeBalancePayment(kind, from: person, method: paymentMethod, createdBy: user)
             }
         }
     }
@@ -72,11 +68,4 @@ struct UpdateBalanceView: View {
 
 #Preview {
     UpdateBalanceView(person: ExampleData.doctor, kind: .payout)
-}
-
-// MARK: - UpdateBalanceKind
-
-enum UpdateBalanceKind: String {
-    case refill = "Пополнение"
-    case payout = "Выплата"
 }

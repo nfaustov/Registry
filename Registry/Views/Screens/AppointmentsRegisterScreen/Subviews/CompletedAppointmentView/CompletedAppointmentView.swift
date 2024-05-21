@@ -24,8 +24,7 @@ struct CompletedAppointmentView: View {
 
     @State private var editMode: Bool = false
     @State private var includeBalance: Bool
-    @State private var paymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
-    @State private var balancePaymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
+    @State private var paymentType: PaymentType = .cash
     @State private var createdRefund: Refund = Refund()
 
     // MARK: -
@@ -107,7 +106,7 @@ struct CompletedAppointmentView: View {
                     if let check = appointment.check {
                         check.makeRefund(createdRefund)
                         let ledger = Ledger(modelContainer: modelContext.container)
-                        await ledger.makeRefundPayment(refund: createdRefund, method: paymentMethod, includeBalance: includeBalance, createdBy: user)
+                        await ledger.makeRefundPayment(refund: createdRefund, paymentType: paymentType, includeBalance: includeBalance, createdBy: user)
                     }
                 }
             )
@@ -135,7 +134,7 @@ private extension CompletedAppointmentView {
                         .font(.headline)
                 }
 
-                Picker("Способ возврата", selection: $paymentMethod.type) {
+                Picker("Способ возврата", selection: $paymentType) {
                     ForEach(PaymentType.allCases, id: \.self) { type in
                         Text(type.rawValue)
                     }

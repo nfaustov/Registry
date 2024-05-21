@@ -96,7 +96,7 @@ struct CashboxScreen: View {
                         ContentUnavailableView(
                             "Нет данных",
                             systemImage: "tray.fill",
-                            description: Text("Сегодня не было создано ни одного платежа")
+                            description: Text("Сегодня еще не было создано ни одного платежа")
                         )
                     }
                 }
