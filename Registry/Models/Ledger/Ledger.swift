@@ -45,34 +45,39 @@ actor Ledger {
     ) {
         guard doctor.doctorSalary.rate != nil else { return }
 
-        let paymentValue = methods.reduce(0.0) { $0 + $1.value }
+        let paymentMethods = methods.map {
+            Payment.Method($0.type, value: -abs($0.value))
+        }
+
+        let paymentValue = paymentMethods.reduce(0.0) { $0 + $1.value }
         let payment = Payment(
             purpose: .doctorPayout("Врач: \(doctor.initials)"),
-            methods: methods,
+            methods: paymentMethods,
             createdBy: user.asAnyUser
         )
-        doctor.assignTransaction(payment)
-        doctor.updateBalance(increment: -abs(paymentValue))
+        
+        doctor.updateBalance(increment: paymentValue)
         record(payment)
+        doctor.assignTransaction(payment)
     }
 
     func makeRefundPayment(
         refund: Refund,
-        method: Payment.Method,
+        paymentType: PaymentType,
         includeBalance: Bool,
         createdBy user: User
     ) {
         guard let patient = refund.check?.appointments?.first?.patient else { return }
 
         var purpose: Payment.Purpose = .refund(patient.initials)
+        let paymentValue = refund.totalAmount - patient.balance
 
-        if includeBalance {
+        if includeBalance, patient.balance != 0 {
             purpose.descripiton.append(" (Записано на баланс \(Int(-patient.balance)) ₽)")
             updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: user.asAnyUser)
         }
 
-        let paymentValue = refund.totalAmount - patient.balance
-        let refundMethod = Payment.Method(method.type, value: paymentValue)
+        let refundMethod = Payment.Method(paymentType, value: paymentValue)
         let payment = Payment(purpose: purpose, methods: [refundMethod], createdBy: user.asAnyUser)
 
         patient.assignTransaction(payment)
@@ -80,8 +85,9 @@ actor Ledger {
     }
 
     func makeBalancePayment(
+        _ kind: UpdateBalanceKind,
         from person: AccountablePerson,
-        value: Double,
+        method: Payment.Method,
         createdBy user: User
     ) {
         var description = person.initials
@@ -90,10 +96,16 @@ actor Ledger {
             description = "Врач: \(doctor.initials)"
         }
 
-        let purpose: Payment.Purpose = value > 0 ? .toBalance(description) : .fromBalance(description)
-        let payment = Payment(purpose: purpose, methods: [.init(.cash, value: value)], createdBy: user.asAnyUser)
+        var paymentMethod = method
+
+        if kind == .payout {
+            paymentMethod.value = -abs(method.value)
+        }
+
+        let purpose: Payment.Purpose = paymentMethod.value > 0 ? .toBalance(description) : .fromBalance(description)
+        let payment = Payment(purpose: purpose, methods: [paymentMethod], createdBy: user.asAnyUser)
         person.assignTransaction(payment)
-        person.updateBalance(increment: value)
+        person.updateBalance(increment: paymentMethod.value)
         record(payment)
     }
 
@@ -116,6 +128,18 @@ actor Ledger {
         descriptor.fetchLimit = 1
 
         return try? modelContext.fetch(descriptor).first
+    }
+
+    func createReport() -> Report {
+        if let todayReport {
+            return todayReport
+        } else {
+            let report = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0)
+            modelContext.insert(report)
+            try? modelContext.save()
+
+            return report
+        }
     }
 }
 

@@ -82,13 +82,22 @@ struct ServicesTable: View {
                 check.services.sort(using: newValue)
             }
             .onChange(of: check.services) { _, newValue in
-                let snapshots = check.services.map { $0.pricelistItem }
-                makePredictions(items: snapshots)
+                if newValue.isEmpty {
+                    predictions = []
+                } else {
+                    let snapshots = newValue.map { $0.pricelistItem }
+                    withAnimation {
+                        makePredictions(items: snapshots)
+                    }
+                }
             }
             .onAppear {
                 if !check.services.isEmpty {
                     let snapshots = check.services.map { $0.pricelistItem }
-                    makePredictions(items: snapshots)
+                    withAnimation {
+                        makePredictions(items: snapshots)
+                    }
+                    
                 }
             }
 

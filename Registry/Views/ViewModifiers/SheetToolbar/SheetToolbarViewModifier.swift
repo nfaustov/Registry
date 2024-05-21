@@ -64,7 +64,7 @@ struct SheetToolbarViewModifier: ViewModifier {
                         Button {
                             inProcess = true
 
-                            Task(priority: .userInitiated) {
+                            Task(priority: .high) {
                                 await onAsyncConfirm()
                                 inProcess = false
                                 dismiss()
