@@ -16,6 +16,7 @@ struct CompletedAppointmentView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var coordinator: Coordinator
+    @EnvironmentObject private var paymentsController: PaymentsController
 
     private let appointment: PatientAppointment
     private let patient: Patient
@@ -105,8 +106,11 @@ struct CompletedAppointmentView: View {
                 task: appointment.check?.refund != nil ? nil : {
                     if let check = appointment.check {
                         check.makeRefund(createdRefund)
-                        let ledger = Ledger(modelContainer: modelContext.container)
-                        await ledger.makeRefundPayment(refund: createdRefund, paymentType: paymentType, includeBalance: includeBalance, createdBy: user)
+                        await paymentsController.make(
+                            .refund(createdRefund, paymentType: paymentType, includeBalance: includeBalance),
+                            user: user,
+                            modelContainer: modelContext.container
+                        )
                     }
                 }
             )

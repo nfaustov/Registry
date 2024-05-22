@@ -12,6 +12,7 @@ import SwiftData
 struct RegistryApp: App {
     @StateObject private var coordinator = Coordinator()
     @StateObject private var scheduleController = ScheduleController()
+    @StateObject private var paymentsController = PaymentsController()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([DoctorSchedule.self])
@@ -29,6 +30,7 @@ struct RegistryApp: App {
             ContentView()
                 .environmentObject(coordinator)
                 .environmentObject(scheduleController)
+                .environmentObject(paymentsController)
         }
         .modelContainer(sharedModelContainer)
     }

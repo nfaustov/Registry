@@ -10,113 +10,65 @@ import SwiftData
 
 @ModelActor
 actor Ledger {
-    func makeMedicalServicePayment(
-        check: Check,
-        methods: [Payment.Method],
-        createdBy user: User
-    ) {
-        guard let patient = check.appointments?.first?.patient else { return }
+    func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
+        switch sample {
+        case .medicalService:
+            medicalServicePayment(payment)
+        case .doctorPayout(let doctor, _):
+            doctorPayoutPayment(payment, for: doctor)
+        case .refund(let refund, _, let includeBalance):
+            refundPayment(payment, refund: refund, includeBalance: includeBalance)
+        case .balance(_, let person, _):
+            balancePayment(payment, for: person)
+        case .spending:
+            spendingPayment(payment)
+        }
+    }
 
-        let paymentValue = methods.reduce(0.0) { $0 + $1.value }
+    func medicalServicePayment(_ payment: Payment) {
+        guard let check = payment.subject,
+              let patient = check.appointments?.first?.patient else { return }
+
+        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         let paymentBalance = paymentValue - check.totalPrice
-        var purpose: Payment.Purpose = .medicalServices(patient.initials)
 
         if paymentBalance != 0 {
-            updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: user)
-            purpose.descripiton.append(" (Записано на баланс \(Int(paymentBalance)) ₽)")
+            updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: payment.createdBy)
         }
 
-        let payment = Payment(
-            purpose: purpose,
-            methods: methods,
-            subject: check,
-            createdBy: user.asAnyUser
-        )
         patient.assignTransaction(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
         record(payment)
     }
 
-    func makeDoctorPayoutPayment(
-        doctor: Doctor,
-        methods: [Payment.Method],
-        createdBy user: User
-    ) {
-        guard doctor.doctorSalary.rate != nil else { return }
-
-        let paymentMethods = methods.map {
-            Payment.Method($0.type, value: -abs($0.value))
-        }
-
-        let paymentValue = paymentMethods.reduce(0.0) { $0 + $1.value }
-        let payment = Payment(
-            purpose: .doctorPayout("Врач: \(doctor.initials)"),
-            methods: paymentMethods,
-            createdBy: user.asAnyUser
-        )
-        
+    func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
+        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
+        doctor.assignTransaction(payment)
         doctor.updateBalance(increment: paymentValue)
         record(payment)
-        doctor.assignTransaction(payment)
     }
 
-    func makeRefundPayment(
-        refund: Refund,
-        paymentType: PaymentType,
-        includeBalance: Bool,
-        createdBy user: User
-    ) {
+    func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) {
         guard let patient = refund.check?.appointments?.first?.patient else { return }
 
-        var purpose: Payment.Purpose = .refund(patient.initials)
-        let paymentValue = refund.totalAmount - patient.balance
-
         if includeBalance, patient.balance != 0 {
-            purpose.descripiton.append(" (Записано на баланс \(Int(-patient.balance)) ₽)")
-            updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: user.asAnyUser)
+            updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: payment.createdBy)
         }
-
-        let refundMethod = Payment.Method(paymentType, value: paymentValue)
-        let payment = Payment(purpose: purpose, methods: [refundMethod], createdBy: user.asAnyUser)
 
         patient.assignTransaction(payment)
         record(payment)
     }
 
-    func makeBalancePayment(
-        _ kind: UpdateBalanceKind,
-        from person: AccountablePerson,
-        method: Payment.Method,
-        createdBy user: User
-    ) {
-        var description = person.initials
+    func balancePayment(_ payment: Payment, for person: AccountablePerson) {
+        guard let paymentMethod = payment.methods.first else { return }
 
-        if let doctor = person as? Doctor {
-            description = "Врач: \(doctor.initials)"
-        }
-
-        var paymentMethod = method
-
-        if kind == .payout {
-            paymentMethod.value = -abs(method.value)
-        }
-
-        let purpose: Payment.Purpose = paymentMethod.value > 0 ? .toBalance(description) : .fromBalance(description)
-        let payment = Payment(purpose: purpose, methods: [paymentMethod], createdBy: user.asAnyUser)
         person.assignTransaction(payment)
         person.updateBalance(increment: paymentMethod.value)
         record(payment)
     }
 
-    func makeSpendingPayment(
-        purpose: Payment.Purpose,
-        method: Payment.Method,
-        createdBy user: User
-    ) {
-        var method = method
-        method.value = -abs(method.value)
-        let payment = Payment(purpose: purpose, methods: [method], createdBy: user.asAnyUser)
+    func spendingPayment(_ payment: Payment) {
         record(payment)
     }
 

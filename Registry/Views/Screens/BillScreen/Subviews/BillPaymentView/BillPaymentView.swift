@@ -14,6 +14,8 @@ struct BillPaymentView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
+    @EnvironmentObject private var paymentsController: PaymentsController
+
     private let check: Check
     private let patient: Patient
     @Binding private var isPaid: Bool
@@ -57,8 +59,11 @@ struct BillPaymentView: View {
                 "Оплата счёта",
                 disabled: check.totalPrice - patient.balance == 0 ? false : undefinedPaymentValues
             ) {
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeMedicalServicePayment(check: check, methods: paymentMethods, createdBy: user)
+                await paymentsController.make(
+                    .medicalService(check: check, methods: paymentMethods),
+                    user: user,
+                    modelContainer: modelContext.container
+                )
 
                 isPaid = true
             }

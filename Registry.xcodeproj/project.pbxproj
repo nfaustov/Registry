@@ -188,6 +188,7 @@
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
 		8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
+		8BF557092BFDEB7300402037 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF557082BFDEB7300402037 /* PaymentsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -354,6 +355,7 @@
 		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
 		8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksController.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		8BF557082BFDEB7300402037 /* PaymentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1189,6 +1191,7 @@
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
 				8B5EEC162BF3E143006FB7CD /* VersionController.swift */,
 				8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */,
+				8BF557082BFDEB7300402037 /* PaymentsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1524,6 +1527,7 @@
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */,
 				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
+				8BF557092BFDEB7300402037 /* PaymentsController.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
 				8B6FBC022BFBB6A70086204E /* PricelistItemRecommender.mlmodel in Sources */,

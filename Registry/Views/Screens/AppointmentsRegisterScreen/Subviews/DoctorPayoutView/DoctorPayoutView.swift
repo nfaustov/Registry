@@ -14,6 +14,8 @@ struct DoctorPayoutView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
+    @EnvironmentObject private var paymentsController: PaymentsController
+
     private let doctor: Doctor
     private let disabled: Bool
     private let isSinglePatient: Bool
@@ -82,8 +84,11 @@ struct DoctorPayoutView: View {
                     doctor.assignTransaction(payment)
                 }
 
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
+                await paymentsController.make(
+                    .doctorPayout(doctor, methods: paymentMethods),
+                    user: user,
+                    modelContainer: modelContext.container
+                )
             }
             .scrollBounceBehavior(.basedOnSize)
         }

@@ -14,6 +14,8 @@ struct UpdateBalanceView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
+    @EnvironmentObject private var paymentsController: PaymentsController
+
     private let person: AccountablePerson
     private let kind: UpdateBalanceKind
 
@@ -59,8 +61,11 @@ struct UpdateBalanceView: View {
                 MoneyFieldSection(paymentMethod.type.rawValue, value: $paymentMethod.value)
             }
             .sheetToolbar(kind.rawValue, disabled: paymentMethod.value == 0) {
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeBalancePayment(kind, from: person, method: paymentMethod, createdBy: user)
+                await paymentsController.make(
+                    .balance(kind, person: person, method: paymentMethod),
+                    user: user,
+                    modelContainer: modelContext.container
+                )
             }
         }
     }

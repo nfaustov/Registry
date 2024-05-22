@@ -13,6 +13,8 @@ struct CreateSpendingView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
+    @EnvironmentObject private var paymentsController: PaymentsController
+
     let report: Report
 
     // MARK: - State
@@ -67,8 +69,11 @@ struct CreateSpendingView: View {
                 "Списание средств",
                 disabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
             ) {
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeSpendingPayment(purpose: paymentPurpose, method: paymentMethod, createdBy: user)
+                await paymentsController.make(
+                    .spending(purpose: paymentPurpose, method: paymentMethod),
+                    user: user,
+                    modelContainer: modelContext.container
+                )
             }
         }
         .task {
