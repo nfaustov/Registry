@@ -16,7 +16,6 @@ struct CompletedAppointmentView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var coordinator: Coordinator
-    @EnvironmentObject private var paymentsController: PaymentsController
 
     private let appointment: PatientAppointment
     private let patient: Patient
@@ -105,11 +104,15 @@ struct CompletedAppointmentView: View {
                 disabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
                 task: appointment.check?.refund != nil ? nil : {
                     if let check = appointment.check {
+                        let ledger = Ledger(modelContainer: modelContext.container)
+
+                        guard let report = await ledger.getReport() else { return }
+
+                        let paymentsController = PaymentsController(report: report)
                         check.makeRefund(createdRefund)
-                        await paymentsController.make(
+                        paymentsController.makePayment(
                             .refund(createdRefund, paymentType: paymentType, includeBalance: includeBalance),
-                            user: user,
-                            modelContainer: modelContext.container
+                            createdBy: user
                         )
                     }
                 }

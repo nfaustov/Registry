@@ -10,7 +10,9 @@ import SwiftUI
 struct PaymentsView: View {
     // MARK: - Dependencies
 
-    let report: Report
+    @Environment(\.modelContext) private var modelContext
+
+    @Bindable var report: Report
 
     // MARK: - State
 

@@ -10,7 +10,9 @@ import SwiftUI
 struct PaymentDetailView: View {
     // MARK: - Dependencies
 
-    @Bindable var payment: Payment
+    @Environment(\.modelContext) private var modelContext
+
+    var payment: Payment
 
     var onDelete: () -> Void
 

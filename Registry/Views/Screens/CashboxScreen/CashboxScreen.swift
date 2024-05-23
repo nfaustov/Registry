@@ -18,7 +18,6 @@ struct CashboxScreen: View {
 
     // MARK: - State
 
-    @State private var cashBalance: Double = .zero
     @State private var todayReport: Report?
     @State private var isLoading: Bool = true
 
@@ -36,7 +35,7 @@ struct CashboxScreen: View {
                             .disabled(user.accessLevel < .registrar)
                         } label: {
                             HStack {
-                                CurrencyText(cashBalance)
+                                CurrencyText(todayReport.cashBalance)
                                     .fontWeight(.medium)
                                 if isLoading {
                                     CircularProgressView()
@@ -57,7 +56,8 @@ struct CashboxScreen: View {
                         Button("Открыть смену") {
                             Task {
                                 let ledger = Ledger(modelContainer: modelContext.container)
-                                todayReport = await ledger.createReport()
+                                await ledger.createReport()
+                                todayReport = await ledger.getReport()
                             }
                         }
                         .disabled(user.accessLevel < .registrar || isLoading)
@@ -76,13 +76,9 @@ struct CashboxScreen: View {
                     .edgesIgnoringSafeArea([.all])
                     .disabled(user.accessLevel < .registrar)
                     .onChange(of: todayReport.payments) {
-                        isLoading = true
-
                         Task {
                             let ledger = Ledger(modelContainer: modelContext.container)
-                            let todayReport = await ledger.getReport()
-                            cashBalance = todayReport?.cashBalance ?? 0
-                            isLoading = false
+                            self.todayReport = await ledger.getReport()
                         }
                     }
             } else {
@@ -108,7 +104,6 @@ struct CashboxScreen: View {
         .task {
             let ledger = Ledger(modelContainer: modelContext.container)
             todayReport = await ledger.getReport()
-            cashBalance = todayReport?.cashBalance ?? 0
             isLoading = false
         }
     }

@@ -1,25 +1,11 @@
 //
-//  PaymentsController.swift
+//  PaymentFactory.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 22.05.2024.
 //
 
 import Foundation
-import SwiftData
-
-final class PaymentsController: ObservableObject {
-    @Published var proceedingPayments: [Payment] = []
-
-    func make(_ sample: PaymentFactory.Sample, user: User, modelContainer: ModelContainer) async {
-        let factory = PaymentFactory(producer: user)
-        let payment = factory.make(from: sample)
-        proceedingPayments.append(payment)
-
-        let ledger = Ledger(modelContainer: modelContainer)
-        await ledger.proceedPayment(payment, as: sample)
-    }
-}
 
 struct PaymentFactory {
     let producer: User

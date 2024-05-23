@@ -10,68 +10,6 @@ import SwiftData
 
 @ModelActor
 actor Ledger {
-    func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
-        switch sample {
-        case .medicalService:
-            medicalServicePayment(payment)
-        case .doctorPayout(let doctor, _):
-            doctorPayoutPayment(payment, for: doctor)
-        case .refund(let refund, _, let includeBalance):
-            refundPayment(payment, refund: refund, includeBalance: includeBalance)
-        case .balance(_, let person, _):
-            balancePayment(payment, for: person)
-        case .spending:
-            spendingPayment(payment)
-        }
-    }
-
-    func medicalServicePayment(_ payment: Payment) {
-        guard let check = payment.subject,
-              let patient = check.appointments?.first?.patient else { return }
-
-        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
-        let paymentBalance = paymentValue - check.totalPrice
-
-        if paymentBalance != 0 {
-            updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: payment.createdBy)
-        }
-
-        patient.assignTransaction(payment)
-        check.makeChargesForServices()
-        check.appointments?.forEach { $0.status = .completed }
-        record(payment)
-    }
-
-    func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
-        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
-        doctor.assignTransaction(payment)
-        doctor.updateBalance(increment: paymentValue)
-        record(payment)
-    }
-
-    func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) {
-        guard let patient = refund.check?.appointments?.first?.patient else { return }
-
-        if includeBalance, patient.balance != 0 {
-            updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: payment.createdBy)
-        }
-
-        patient.assignTransaction(payment)
-        record(payment)
-    }
-
-    func balancePayment(_ payment: Payment, for person: AccountablePerson) {
-        guard let paymentMethod = payment.methods.first else { return }
-
-        person.assignTransaction(payment)
-        person.updateBalance(increment: paymentMethod.value)
-        record(payment)
-    }
-
-    func spendingPayment(_ payment: Payment) {
-        record(payment)
-    }
-
     func getReport(forDate date: Date = .now) -> Report? {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
@@ -82,16 +20,13 @@ actor Ledger {
         return try? modelContext.fetch(descriptor).first
     }
 
-    func createReport() -> Report {
-        if let todayReport {
-            return todayReport
-        } else {
-            let report = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0)
-            modelContext.insert(report)
-            try? modelContext.save()
+    func createReport(with payment: Payment? = nil) {
+        let report = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0)
 
-            return report
-        }
+        if let payment { report.makePayment(payment) }
+
+        modelContext.insert(report)
+        try? modelContext.save()
     }
 }
 
@@ -114,21 +49,10 @@ private extension Ledger {
         if let todayReport {
             todayReport.makePayment(payment)
         } else {
-            createReportWithPayment(payment)
+            createReport(with: payment)
         }
 
         try? modelContext.save()
-    }
-
-    func createReportWithPayment(_ payment: Payment) {
-        let newReport = Report(date: .now, startingCash: lastReport?.cashBalance ?? 0, payments: [payment])
-        modelContext.insert(newReport)
-    }
-
-    func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
-        let balancePayment = Payment(purpose: .toBalance(person.initials), methods: [.init(.cash, value: increment)], createdBy: user.asAnyUser)
-        person.updateBalance(increment: increment)
-        person.assignTransaction(balancePayment)
     }
 }
 
