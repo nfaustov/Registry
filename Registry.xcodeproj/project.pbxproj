@@ -51,6 +51,7 @@
 		8B4A0D4B2BFF8CA700B4F9AE /* Report+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D4A2BFF8CA700B4F9AE /* Report+Payments.swift */; };
 		8B4A0D502BFFBC7A00B4F9AE /* PaymentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5570D2BFE455800402037 /* PaymentFactory.swift */; };
 		8B4A0D522BFFBC9B00B4F9AE /* Ledger+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */; };
+		8B4A0D532BFFC87300B4F9AE /* Ledger+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */; };
 		8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */; };
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
@@ -1658,6 +1659,7 @@
 				8BD1725E2BECA8AC002D0BD9 /* PatientMoneyTransaction.swift in Sources */,
 				8BD172482BECA78E002D0BD9 /* Payment.swift in Sources */,
 				8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */,
+				8B4A0D532BFFC87300B4F9AE /* Ledger+Payments.swift in Sources */,
 				8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */,
 				8BD172442BECA637002D0BD9 /* Salary.swift in Sources */,
 				8BD172412BECA34B002D0BD9 /* DoctorSchedule.swift in Sources */,
