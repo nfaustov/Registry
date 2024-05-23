@@ -16,18 +16,14 @@ struct CashboxScreen: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    // MARK: - State
-
-    @State private var cashBalance: Double = .zero
-    @State private var todayReport: Report?
-    @State private var isLoading: Bool = true
+    @Query(todayReportDescriptor) private var reports: [Report]
 
     // MARK: -
 
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             Form {
-                if let todayReport {
+                if let todayReport = reports.first {
                     Section {
                         LabeledContent {
                             Button("Списание") {
@@ -36,31 +32,25 @@ struct CashboxScreen: View {
                             .disabled(user.accessLevel < .registrar)
                         } label: {
                             HStack {
-                                CurrencyText(cashBalance)
+                                CurrencyText(todayReport.cashBalance)
                                     .fontWeight(.medium)
-                                if isLoading {
-                                    CircularProgressView()
-                                        .padding(.horizontal)
-                                }
                             }
                         }
                     }
                 }
 
                 Section {
-                    if let todayReport {
+                    if let todayReport = reports.first {
                         Button("Отчет") {
                             coordinator.present(.report(todayReport))
                         }
                         .tint(.primary)
                     } else {
                         Button("Открыть смену") {
-                            Task {
-                                let ledger = Ledger(modelContainer: modelContext.container)
-                                todayReport = await ledger.createReport()
-                            }
+                            let ledger = Ledger(modelContext: modelContext)
+                            ledger.createReport()
                         }
-                        .disabled(user.accessLevel < .registrar || isLoading)
+                        .disabled(user.accessLevel < .registrar)
                     }
                 }
             }
@@ -70,47 +60,26 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            if let todayReport {
+            if let todayReport = reports.first {
                 PaymentsView(report: todayReport)
                     .padding()
                     .edgesIgnoringSafeArea([.all])
                     .disabled(user.accessLevel < .registrar)
-                    .onChange(of: todayReport.payments) {
-                        isLoading = true
-
-                        Task {
-                            let ledger = Ledger(modelContainer: modelContext.container)
-                            let todayReport = await ledger.getReport()
-                            cashBalance = todayReport?.cashBalance ?? 0
-                            isLoading = false
-                        }
-                    }
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .foregroundStyle(.white)
-                    if isLoading {
-                        CircularProgressView()
-                            .scaleEffect(1.2)
-                    } else {
-                        ContentUnavailableView(
-                            "Нет данных",
-                            systemImage: "tray.fill",
-                            description: Text("Сегодня еще не было создано ни одного платежа")
-                        )
-                    }
+                    ContentUnavailableView(
+                        "Нет данных",
+                        systemImage: "tray.fill",
+                        description: Text("Сегодня еще не было создано ни одного платежа")
+                    )
                 }
                 .padding(.horizontal)
             }
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.large)
-        .task {
-            let ledger = Ledger(modelContainer: modelContext.container)
-            todayReport = await ledger.getReport()
-            cashBalance = todayReport?.cashBalance ?? 0
-            isLoading = false
-        }
     }
 }
 
@@ -118,4 +87,18 @@ struct CashboxScreen: View {
     CashboxScreen()
         .environmentObject(Coordinator())
         .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Calculations
+
+private extension CashboxScreen {
+    static var todayReportDescriptor: FetchDescriptor<Report> {
+        let startOfDay = Calendar.current.startOfDay(for: .now)
+        let endOfDay = startOfDay.addingTimeInterval(86_400)
+        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay }
+        var descriptor = FetchDescriptor<Report>(predicate: predicate)
+        descriptor.fetchLimit = 1
+
+        return descriptor
+    }
 }

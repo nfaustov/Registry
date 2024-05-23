@@ -81,9 +81,11 @@ struct DoctorPayoutView: View {
                     let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                     doctor.assignTransaction(payment)
                 }
-
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeDoctorPayoutPayment(doctor: doctor, methods: paymentMethods, createdBy: user)
+                let ledger = Ledger(modelContext: modelContext)
+                ledger.makePayment(
+                    .doctorPayout(doctor, methods: paymentMethods),
+                    createdBy: user
+                )
             }
             .scrollBounceBehavior(.basedOnSize)
         }

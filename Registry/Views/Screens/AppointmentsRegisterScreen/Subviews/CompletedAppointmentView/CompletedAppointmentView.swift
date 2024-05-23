@@ -102,11 +102,14 @@ struct CompletedAppointmentView: View {
                 "Счет",
                 subtitle: appointment.patient?.fullName,
                 disabled: appointment.check?.refund != nil || (appointment.check?.refund == nil && createdRefund.services.isEmpty) || editMode,
-                task: appointment.check?.refund != nil ? nil : {
+                onConfirm: appointment.check?.refund != nil ? nil : {
                     if let check = appointment.check {
+                        let ledger = Ledger(modelContext: modelContext)
                         check.makeRefund(createdRefund)
-                        let ledger = Ledger(modelContainer: modelContext.container)
-                        await ledger.makeRefundPayment(refund: createdRefund, paymentType: paymentType, includeBalance: includeBalance, createdBy: user)
+                        ledger.makePayment(
+                            .refund(createdRefund, paymentType: paymentType, includeBalance: includeBalance),
+                            createdBy: user
+                        )
                     }
                 }
             )

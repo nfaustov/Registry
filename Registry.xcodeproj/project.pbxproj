@@ -48,6 +48,10 @@
 		8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6142BB55E0900834AE6 /* UserKey.swift */; };
 		8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61B2BB5650500834AE6 /* UserView.swift */; };
 		8B45E61F2BB56BC300834AE6 /* UserDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */; };
+		8B4A0D4B2BFF8CA700B4F9AE /* Report+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D4A2BFF8CA700B4F9AE /* Report+Payments.swift */; };
+		8B4A0D502BFFBC7A00B4F9AE /* PaymentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5570D2BFE455800402037 /* PaymentFactory.swift */; };
+		8B4A0D522BFFBC9B00B4F9AE /* Ledger+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */; };
+		8B4A0D532BFFC87300B4F9AE /* Ledger+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */; };
 		8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */; };
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
@@ -188,6 +192,7 @@
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
 		8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
+		8BF5570E2BFE455800402037 /* PaymentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5570D2BFE455800402037 /* PaymentFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -242,6 +247,8 @@
 		8B45E6142BB55E0900834AE6 /* UserKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKey.swift; sourceTree = "<group>"; };
 		8B45E61B2BB5650500834AE6 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailScreen.swift; sourceTree = "<group>"; };
+		8B4A0D4A2BFF8CA700B4F9AE /* Report+Payments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+Payments.swift"; sourceTree = "<group>"; };
+		8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ledger+Payments.swift"; sourceTree = "<group>"; };
 		8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
@@ -354,6 +361,7 @@
 		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
 		8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksController.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		8BF5570D2BFE455800402037 /* PaymentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -492,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				8B183BAC2B86606400FA1D46 /* Report.swift */,
+				8B4A0D4A2BFF8CA700B4F9AE /* Report+Payments.swift */,
 				8B183BAA2B86605900FA1D46 /* Payment.swift */,
 				8B183BAE2B8661C000FA1D46 /* Payment.Purpose.swift */,
 				8B183BB02B8661E800FA1D46 /* Payment.Method.swift */,
@@ -1087,7 +1096,6 @@
 		8B9673972B361B1F00FD2E7C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8BE145012BF0933B00991225 /* Ledger */,
 				8B7801472B87B9920064DBFB /* PatientAppointment */,
 				8B96739B2B361BA700FD2E7C /* Doctor */,
 				8BDCCFD62B849F5B0086BF4D /* DoctorSchedule */,
@@ -1185,6 +1193,7 @@
 		8B9FA36F2B8CFAD200FF3C0B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8BE145012BF0933B00991225 /* Ledger */,
 				8B9FA3702B8CFAF200FF3C0B /* ScheduleController.swift */,
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
 				8B5EEC162BF3E143006FB7CD /* VersionController.swift */,
@@ -1370,6 +1379,8 @@
 			isa = PBXGroup;
 			children = (
 				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
+				8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */,
+				8BF5570D2BFE455800402037 /* PaymentFactory.swift */,
 			);
 			path = Ledger;
 			sourceTree = "<group>";
@@ -1579,6 +1590,7 @@
 				8B5EEC1A2BF3E194006FB7CD /* VersionControlService.swift in Sources */,
 				8B6BAA0A2B8DD880000FF417 /* BillPaymentView.swift in Sources */,
 				8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */,
+				8BF5570E2BFE455800402037 /* PaymentFactory.swift in Sources */,
 				8B80FECE2BC257F800BB76E0 /* PDFCreator.swift in Sources */,
 				8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */,
 				8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */,
@@ -1602,6 +1614,8 @@
 				8BA53DA22B494EBF006BE983 /* SideSheetView.swift in Sources */,
 				8B7491E22BBADE410016FDE9 /* DoctorSettingsView.swift in Sources */,
 				8B183BB62B867A3100FA1D46 /* PaymentsView.swift in Sources */,
+				8B4A0D522BFFBC9B00B4F9AE /* Ledger+Payments.swift in Sources */,
+				8B4A0D4B2BFF8CA700B4F9AE /* Report+Payments.swift in Sources */,
 				8B8AE98C2B5811B8001A9143 /* PricelistItem.swift in Sources */,
 				8B183BA92B86601B00FA1D46 /* Ledger.swift in Sources */,
 				8BDCCFD82B849F6C0086BF4D /* DoctorSchedule.swift in Sources */,
@@ -1645,6 +1659,7 @@
 				8BD1725E2BECA8AC002D0BD9 /* PatientMoneyTransaction.swift in Sources */,
 				8BD172482BECA78E002D0BD9 /* Payment.swift in Sources */,
 				8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */,
+				8B4A0D532BFFC87300B4F9AE /* Ledger+Payments.swift in Sources */,
 				8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */,
 				8BD172442BECA637002D0BD9 /* Salary.swift in Sources */,
 				8BD172412BECA34B002D0BD9 /* DoctorSchedule.swift in Sources */,
@@ -1657,6 +1672,7 @@
 				8BD172592BECA84E002D0BD9 /* PlaceOfResidence.swift in Sources */,
 				8BD172432BECA454002D0BD9 /* Patient.swift in Sources */,
 				8BD1724D2BECA7C1002D0BD9 /* PricelistItem.swift in Sources */,
+				8B4A0D502BFFBC7A00B4F9AE /* PaymentFactory.swift in Sources */,
 				8BD172582BECA84B002D0BD9 /* PassportData.swift in Sources */,
 				8BD1724C2BECA7B3002D0BD9 /* MedicalService.swift in Sources */,
 				8BD172492BECA791002D0BD9 /* Payment.Purpose.swift in Sources */,

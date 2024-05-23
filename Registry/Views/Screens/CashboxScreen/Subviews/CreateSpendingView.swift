@@ -67,8 +67,11 @@ struct CreateSpendingView: View {
                 "Списание средств",
                 disabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
             ) {
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeSpendingPayment(purpose: paymentPurpose, method: paymentMethod, createdBy: user)
+                let ledger = Ledger(modelContext: modelContext)
+                ledger.makePayment(
+                    .spending(purpose: paymentPurpose, method: paymentMethod),
+                    createdBy: user
+                )
             }
         }
         .task {

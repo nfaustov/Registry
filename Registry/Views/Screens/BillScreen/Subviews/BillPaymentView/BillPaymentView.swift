@@ -57,8 +57,11 @@ struct BillPaymentView: View {
                 "Оплата счёта",
                 disabled: check.totalPrice - patient.balance == 0 ? false : undefinedPaymentValues
             ) {
-                let ledger = Ledger(modelContainer: modelContext.container)
-                await ledger.makeMedicalServicePayment(check: check, methods: paymentMethods, createdBy: user)
+                let ledger = Ledger(modelContext: modelContext)
+                ledger.makePayment(
+                    .medicalService(check: check, methods: paymentMethods),
+                    createdBy: user
+                )
 
                 isPaid = true
             }
