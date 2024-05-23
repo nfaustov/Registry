@@ -8,8 +8,20 @@
 import Foundation
 import SwiftData
 
-@ModelActor
-actor Ledger {
+@MainActor
+final class Ledger {
+    let modelContext: ModelContext
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+    }
+
+    private var lastReport: Report? {
+        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+        descriptor.fetchLimit = 1
+        return try? modelContext.fetch(descriptor).first
+    }
+
     func getReport(forDate date: Date = .now) -> Report? {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
@@ -26,33 +38,6 @@ actor Ledger {
         if let payment { report.makePayment(payment) }
 
         modelContext.insert(report)
-        try? modelContext.save()
-    }
-}
-
-// MARK: - Private methods
-
-private extension Ledger {
-    var lastReport: Report? {
-        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-        descriptor.fetchLimit = 1
-        return try? modelContext.fetch(descriptor).first
-    }
-
-    var todayReport: Report? {
-        guard let lastReport,
-                Calendar.current.isDateInToday(lastReport.date) else { return nil }
-        return lastReport
-    }
-
-    func record(_ payment: Payment) {
-        if let todayReport {
-            todayReport.makePayment(payment)
-        } else {
-            createReport(with: payment)
-        }
-
-        try? modelContext.save()
     }
 }
 

@@ -116,7 +116,7 @@ struct LedgerView: View {
                 }
             }
         }
-        .task {
+        .onAppear {
             getReport(forDate: date)
         }
     }
@@ -145,14 +145,11 @@ private extension LedgerView {
 // MARK: - Calculations
 
 private extension LedgerView {
-    func getReport(forDate date: Date) {
+    @MainActor func getReport(forDate date: Date) {
         isLoading = true
-
-        Task {
-            let ledger = Ledger(modelContainer: modelContext.container)
-            selectedReport = await ledger.getReport(forDate: date)
-            isLoading = false
-        }
+        let ledger = Ledger(modelContext: modelContext)
+        selectedReport = ledger.getReport(forDate: date)
+        isLoading = false
     }
 
     func payment(withID id: PersistentIdentifier) -> Payment? {

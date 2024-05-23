@@ -1,31 +1,21 @@
 //
-//  PaymentsController.swift
+//  Ledger+Payments.swift
 //  Registry
 //
-//  Created by Николай Фаустов on 22.05.2024.
+//  Created by Николай Фаустов on 23.05.2024.
 //
 
 import Foundation
-import SwiftData
 
-@MainActor
-final class PaymentsController {
-    let report: Report
-
-    init(report: Report) {
-        self.report = report
-    }
-
+extension Ledger {
     func makePayment(_ sample: PaymentFactory.Sample, createdBy user: User) {
         let factory = PaymentFactory(producer: user)
         let payment = factory.make(from: sample)
 
         proceedPayment(payment, as: sample)
     }
-}
 
-private extension PaymentsController {
-    func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
+    private func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
         switch sample {
         case .medicalService:
             medicalServicePayment(payment)
@@ -40,7 +30,7 @@ private extension PaymentsController {
         }
     }
 
-    func medicalServicePayment(_ payment: Payment) {
+    private func medicalServicePayment(_ payment: Payment) {
         guard let check = payment.subject,
               let patient = check.appointments?.first?.patient else { return }
 
@@ -54,17 +44,17 @@ private extension PaymentsController {
         patient.assignTransaction(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
-        report.makePayment(payment)
+        record(payment)
     }
 
-    func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
+    private func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
         let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         doctor.assignTransaction(payment)
         doctor.updateBalance(increment: paymentValue)
-        report.makePayment(payment)
+        record(payment)
     }
 
-    func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) {
+    private func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) {
         guard let patient = refund.check?.appointments?.first?.patient else { return }
 
         if includeBalance, patient.balance != 0 {
@@ -72,22 +62,30 @@ private extension PaymentsController {
         }
 
         patient.assignTransaction(payment)
-        report.makePayment(payment)
+        record(payment)
     }
 
-    func balancePayment(_ payment: Payment, for person: AccountablePerson) {
+    private func balancePayment(_ payment: Payment, for person: AccountablePerson) {
         guard let paymentMethod = payment.methods.first else { return }
 
         person.assignTransaction(payment)
         person.updateBalance(increment: paymentMethod.value)
-        report.makePayment(payment)
+        record(payment)
     }
 
-    func spendingPayment(_ payment: Payment) {
-        report.makePayment(payment)
+    private func spendingPayment(_ payment: Payment) {
+        record(payment)
     }
 
-    func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
+    private func record(_ payment: Payment) {
+        if let todayReport = getReport() {
+            todayReport.makePayment(payment)
+        } else {
+            createReport(with: payment)
+        }
+    }
+
+    private func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
         let balancePayment = Payment(purpose: .toBalance(person.initials), methods: [.init(.cash, value: increment)], createdBy: user.asAnyUser)
         person.updateBalance(increment: increment)
         person.assignTransaction(balancePayment)

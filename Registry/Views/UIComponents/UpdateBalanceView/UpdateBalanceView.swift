@@ -59,8 +59,8 @@ struct UpdateBalanceView: View {
                 MoneyFieldSection(paymentMethod.type.rawValue, value: $paymentMethod.value)
             }
             .sheetToolbar(kind.rawValue, disabled: paymentMethod.value == 0) {
-                let paymentsController = PaymentsController(modelContainer: modelContext.container)
-                await paymentsController.makePayment(
+                let ledger = Ledger(modelContext: modelContext)
+                ledger.makePayment(
                     .balance(kind, person: person, method: paymentMethod),
                     createdBy: user
                 )

@@ -16,7 +16,6 @@ struct SheetToolbarViewModifier: ViewModifier {
     var subtitle: String? = nil
     var disabled: Bool = false
     var onConfirm: (() -> Void)? = nil
-    var onAsyncConfirm: (() async -> Void)? = nil
 
     //MARK: - State
 
@@ -29,15 +28,6 @@ struct SheetToolbarViewModifier: ViewModifier {
         self.subtitle = subtitle
         self.disabled = disabled
         self.onConfirm = onConfirm
-        onAsyncConfirm = nil
-    }
-
-    init(_ title: String, subtitle: String? = nil, disabled: Bool = false, onAsyncConfirm: (() async -> Void)? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-        self.disabled = disabled
-        self.onAsyncConfirm = onAsyncConfirm
-        onConfirm = nil
     }
 
     func body(content: Content) -> some View {
@@ -53,22 +43,10 @@ struct SheetToolbarViewModifier: ViewModifier {
 
                 if let onConfirm {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Подтвердить") {
-                            onConfirm()
-                            dismiss()
-                        }
-                        .disabled(disabled)
-                    }
-                } else if let onAsyncConfirm {
-                    ToolbarItem(placement: .confirmationAction) {
                         Button {
                             inProcess = true
-
-                            Task(priority: .high) {
-                                await onAsyncConfirm()
-                                inProcess = false
-                                dismiss()
-                            }
+                            onConfirm()
+                            dismiss()
                         } label: {
                             if inProcess {
                                 CircularProgressView()
@@ -97,20 +75,6 @@ extension View {
             subtitle: subtitle,
             disabled: disabled,
             onConfirm: onConfirm
-        ))
-    }
-
-    func sheetToolbar(
-        _ title: String,
-        subtitle: String? = nil,
-        disabled: Bool = false,
-        task: (() async -> Void)? = nil
-    ) -> some View {
-        modifier(SheetToolbarViewModifier(
-            title,
-            subtitle: subtitle,
-            disabled: disabled,
-            onAsyncConfirm: task
         ))
     }
 }

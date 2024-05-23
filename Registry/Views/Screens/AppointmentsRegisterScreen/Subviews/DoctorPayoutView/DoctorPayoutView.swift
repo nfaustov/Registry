@@ -81,12 +81,8 @@ struct DoctorPayoutView: View {
                     let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                     doctor.assignTransaction(payment)
                 }
-                let ledger = Ledger(modelContainer: modelContext.container)
-
-                guard let report = await ledger.getReport() else { return }
-
-                let paymentsController = PaymentsController(report: report)
-                paymentsController.makePayment(
+                let ledger = Ledger(modelContext: modelContext)
+                ledger.makePayment(
                     .doctorPayout(doctor, methods: paymentMethods),
                     createdBy: user
                 )
