@@ -59,7 +59,7 @@ struct DoctorPayoutView: View {
                     }
                 }
 
-                if isSinglePatient, singlePatientFee > 0 {
+                if isSinglePatient, singlePatientFee > 0, !alreadyHasSinglePatientFeeForToday {
                     Section {
                         LabeledCurrency("Доплата за прием", value: singlePatientFee)
                     } footer: {
@@ -75,7 +75,7 @@ struct DoctorPayoutView: View {
                 .paymentKind(.balance)
             }
             .sheetToolbar("Выплата", disabled: paymentMethod.value == 0 || disabled) {
-                if isSinglePatient, singlePatientFee > 0 {
+                if isSinglePatient, singlePatientFee > 0, !alreadyHasSinglePatientFeeForToday {
                     doctor.updateBalance(increment: singlePatientFee)
                     let purpose: Payment.Purpose = .toBalance("Доплата за прием")
                     let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
@@ -113,5 +113,13 @@ private extension DoctorPayoutView {
         case "Безрукавников": return 250
         default: return 0
         }
+    }
+
+    var alreadyHasSinglePatientFeeForToday: Bool {
+        guard let doctorTransactions = doctor.transactions else { return false }
+
+        return doctorTransactions.contains(where: {
+            $0.purpose == .toBalance("Доплата за прием") && Calendar.current.isDateInToday($0.date)
+        })
     }
 }
