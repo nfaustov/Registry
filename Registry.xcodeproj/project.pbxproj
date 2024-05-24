@@ -146,6 +146,7 @@
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
 		8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */; };
 		8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
+		8BC3A78E2C0035250055CA27 /* AddTreatmentPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3A78D2C0035250055CA27 /* AddTreatmentPlanView.swift */; };
 		8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD172372BECA056002D0BD9 /* RegistryTests.swift */; };
 		8BD1723E2BECA117002D0BD9 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA82B86601B00FA1D46 /* Ledger.swift */; };
 		8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1723F2BECA247002D0BD9 /* MockContainer.swift */; };
@@ -343,6 +344,7 @@
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
 		8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsDetailView.swift; sourceTree = "<group>"; };
 		8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
+		8BC3A78D2C0035250055CA27 /* AddTreatmentPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTreatmentPlanView.swift; sourceTree = "<group>"; };
 		8BD172352BECA056002D0BD9 /* RegistryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegistryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BD172372BECA056002D0BD9 /* RegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryTests.swift; sourceTree = "<group>"; };
 		8BD1723F2BECA247002D0BD9 /* MockContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContainer.swift; sourceTree = "<group>"; };
@@ -1327,6 +1329,7 @@
 				8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */,
 				8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */,
 				8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */,
+				8BC3A78D2C0035250055CA27 /* AddTreatmentPlanView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1601,6 +1604,7 @@
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
 				8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */,
 				8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */,
+				8BC3A78E2C0035250055CA27 /* AddTreatmentPlanView.swift in Sources */,
 				8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */,
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,

@@ -54,6 +54,11 @@ final class Patient: AccountablePerson, Codable {
         self.transactions = transactions
     }
 
+    func activateTreatmentPlan(ofKind kind: TreatmentPlan.Kind) {
+        guard treatmentPlan == nil else { return }
+        treatmentPlan = TreatmentPlan(kind: kind)
+    }
+
     func updateBalance(increment: Double) {
         balance += increment
     }

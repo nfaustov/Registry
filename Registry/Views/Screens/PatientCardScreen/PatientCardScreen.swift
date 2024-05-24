@@ -55,22 +55,6 @@ struct PatientCardScreen: View {
                     .tint(.primary)
             }
 
-            if let treatmentPlan = patient.treatmentPlan {
-                Section {
-                    HStack {
-                        Text(treatmentPlan.kind.rawValue)
-                        Spacer()
-                        Group {
-                            Text("Истекает")
-                            DateText(treatmentPlan.expirationDate, format: .date)
-                        }
-                        .foregroundStyle(.secondary)
-                    }
-                } header: {
-                    Text("Лечебный план")
-                }
-            }
-
             Section("Баланс") {
                 LabeledContent {
                     Button("Пополнить") {
@@ -79,6 +63,25 @@ struct PatientCardScreen: View {
                 } label: {
                     CurrencyText(patient.balance)
                 }
+            }
+
+            Section {
+                if let treatmentPlan = patient.treatmentPlan {
+                    LabeledContent {
+                        Text("до")
+                        DateText(treatmentPlan.expirationDate, format: .date)
+                    } label: {
+                        Text(treatmentPlan.kind.rawValue)
+                    }
+                    .colorInvert()
+                    .listRowBackground(Color.appBlack)
+                } else {
+                    Button("Активировать") {
+                        currentDetail = .treatmentPlan
+                    }
+                }
+            } header: {
+                Text("Лечебный план")
             }
 
             if user.accessLevel == .boss {
@@ -109,8 +112,9 @@ private extension PatientCardScreen {
     enum DetailScreen {
         case name
         case phoneNumber
-        case visits
         case passport
+        case treatmentPlan
+        case visits
 
         var title: String {
             switch self {
@@ -118,10 +122,12 @@ private extension PatientCardScreen {
                 return "ФИО"
             case .phoneNumber:
                 return "Номер телефона"
-            case .visits:
-                return "Последние визиты"
             case .passport:
                 return "Паспортные данные"
+            case .treatmentPlan:
+                return "Активировать лечебный план"
+            case .visits:
+                return "Последние визиты"
             }
         }
     }
@@ -144,10 +150,12 @@ private extension PatientCardScreen {
             PhoneNumberEditView(
                 person: Binding(get: { patient }, set: { patient.phoneNumber = $0.phoneNumber })
             )
-        case .visits:
-            VisitsDetailView(patient: patient)
         case .passport:
             PassportDetailView(patient: patient)
+        case .treatmentPlan:
+            AddTreatmentPlanView(patient: patient)
+        case .visits:
+            VisitsDetailView(patient: patient)
         }
     }
 

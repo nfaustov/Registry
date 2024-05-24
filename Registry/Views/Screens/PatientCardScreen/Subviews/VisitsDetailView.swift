@@ -54,6 +54,11 @@ private extension VisitsDetailView {
             .sorted(by: >)
         } else { return [] }
     }
+
+    func uniqueDoctors(from check: Check) -> [Doctor] {
+        let doctors = check.services.compactMap { $0.performer }
+        return Array(doctors.uniqued())
+    }
 }
 
 // MARK: - Subviews
@@ -103,21 +108,20 @@ private extension VisitsDetailView {
                         }
                     }
 
-                    HStack {
-                        let doctors = check.services.compactMap { $0.performer }
-                        let uniqueDoctors = Array(doctors.uniqued())
+                    let uniqueDoctors = uniqueDoctors(from: check)
 
-                        if uniqueDoctors.count > 0 {
+                    if uniqueDoctors.count > 0 {
+                        HStack {
                             Text(uniqueDoctors.count > 1 ? "Специалисты:" : "Специалист:")
                                 .font(.headline)
-                        }
 
-                        ForEach(uniqueDoctors) { doctor in
-                            Text(doctor.initials)
-                                .foregroundStyle(.white)
-                                .padding(4)
-                                .background(.teal)
-                                .clipShape(.rect(cornerRadius: 4, style: .continuous))
+                            ForEach(uniqueDoctors) { doctor in
+                                Text(doctor.initials)
+                                    .foregroundStyle(.white)
+                                    .padding(4)
+                                    .background(.teal)
+                                    .clipShape(.rect(cornerRadius: 4, style: .continuous))
+                            }
                         }
                     }
                 }
