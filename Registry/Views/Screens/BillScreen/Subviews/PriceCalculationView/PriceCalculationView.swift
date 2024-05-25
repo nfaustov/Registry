@@ -61,12 +61,16 @@ struct PriceCalculationView: View {
                 HStack {
                     Button {
                         appointment.check = check
-                        coordinator.present(
-                            .billPayment(
-                                appointment: appointment,
-                                isPaid: $isCompleted
+
+                        if let patient = appointment.patient {
+                            coordinator.present(
+                                .billPayment(
+                                    patient: patient,
+                                    check: check,
+                                    isPaid: $isCompleted
+                                )
                             )
-                        )
+                        }
                     } label: {
                         CurrencyText(check.totalPrice - patient.balance)
                             .font(.headline)

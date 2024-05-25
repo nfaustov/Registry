@@ -25,14 +25,11 @@ struct BillPaymentView: View {
 
     // MARK: -
 
-    init(appointment: PatientAppointment, isPaid: Binding<Bool>) {
-        _isPaid = isPaid
-
-        guard let patient = appointment.patient,
-              let check = appointment.check else { fatalError() }
-
+    init(patient: Patient, check: Check, isPaid: Binding<Bool>) {
         self.patient = patient
         self.check = check
+        _isPaid = isPaid
+
         let paymentAmount = check.totalPrice - patient.balance
         _paymentMethod = State(initialValue: Payment.Method(.cash, value: paymentAmount))
     }
@@ -59,7 +56,7 @@ struct BillPaymentView: View {
             ) {
                 let ledger = Ledger(modelContext: modelContext)
                 ledger.makePayment(
-                    .medicalService(check: check, methods: paymentMethods),
+                    .medicalService(patient: patient, check: check, methods: paymentMethods),
                     createdBy: user
                 )
 
@@ -71,7 +68,8 @@ struct BillPaymentView: View {
 
 #Preview {
     BillPaymentView(
-        appointment: ExampleData.appointment,
+        patient: ExampleData.patient,
+        check: ExampleData.check,
         isPaid: .constant(false)
     )
 }

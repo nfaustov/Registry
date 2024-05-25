@@ -103,8 +103,8 @@ extension Coordinator {
             CreatePricelistItemView()
         case .updateBalance(let person, let kind):
             UpdateBalanceView(person: person, kind: kind)
-        case .billPayment(let appointment, let isPaid):
-            BillPaymentView(appointment: appointment, isPaid: isPaid)
+        case .billPayment(let patient, let check, let isPaid):
+            BillPaymentView(patient: patient, check: check, isPaid: isPaid)
         case .createNote(let kind):
             CreateNoteView(for: kind)
         }

@@ -24,7 +24,7 @@ struct AddTreatmentPlanView: View {
     // MARK: - State
 
     @State private var agent: Doctor?
-    @State private var appointment: PatientAppointment?
+    @State private var check: Check?
     @State private var isPaid: Bool = false
 
     // MARK: -
@@ -58,20 +58,22 @@ struct AddTreatmentPlanView: View {
                     ForEach(TreatmentPlan.Kind.allCases, id: \.self) { kind in
                         if let pricelistItem = pricelistItem(forTreatmentPlanOfKind: kind) {
                             Button {
-                                appointment = appointment(with: pricelistItem)
-                                coordinator.present(.billPayment(appointment: appointment!, isPaid: $isPaid))
+                                let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, agent: agent)
+                                check = Check(services: [medicalService])
+                                coordinator.present(.billPayment(patient: patient, check: check!, isPaid: $isPaid))
                             } label: {
                                 LabeledCurrency(kind.rawValue, value: pricelistItem.price)
                             }
                             .buttonStyle(.plain)
                             .onChange(of: isPaid) { _, newValue in
                                 if newValue {
-                                    appointment?.registerPatient(patient, duration: 0, registrar: user.asAnyUser)
-                                    patient.activateTreatmentPlan(ofKind: kind)
-                                    appointment?.status = .completed
-                                } else {
-                                    patient.appointments?.removeAll(where: { $0.id == appointment?.id })
-                                    appointment = nil
+                                    if let check {
+                                        let appointment = PatientAppointment(scheduledTime: .now, duration: 0)
+                                        appointment.registerPatient(patient, duration: 0, registrar: user.asAnyUser)
+                                        appointment.check = check
+                                        appointment.status = .completed
+                                        patient.activateTreatmentPlan(ofKind: kind)
+                                    }
                                 }
                             }
                         }
@@ -95,14 +97,5 @@ private extension AddTreatmentPlanView {
         let descriptor = FetchDescriptor(predicate: predicate)
 
         return try? modelContext.fetch(descriptor).first
-    }
-
-    func appointment(with pricelistItem: PricelistItem) -> PatientAppointment {
-        let patientAppointment = PatientAppointment(scheduledTime: .now, duration: 0)
-        let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, agent: agent)
-        let check = Check(services: [medicalService])
-        patientAppointment.check = check
-
-        return patientAppointment
     }
 }
