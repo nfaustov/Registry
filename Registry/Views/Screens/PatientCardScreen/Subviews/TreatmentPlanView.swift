@@ -12,8 +12,9 @@ struct TreatmentPlanView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.user) private var user
+
+    @StateObject private var messageController = MessageController()
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -79,6 +80,10 @@ struct TreatmentPlanView: View {
                                             withAnimation {
                                                 patient.activateTreatmentPlan(ofKind: kind)
                                             }
+
+//                                            Task {
+//                                                await messageController.send(.treatmentPlanActivation(patient))
+//                                            }
                                         } else {
                                             modelContext.delete(check)
                                         }

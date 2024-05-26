@@ -10,13 +10,17 @@ import Foundation
 enum Message {
     case appointmentConfirmation(PatientAppointment)
     case appointmentReminder(PatientAppointment)
+    case treatmentPlanActivation(Patient)
 
     var text: String? {
         switch self {
         case .appointmentConfirmation(let patientAppointment):
-            text(for: patientAppointment)
+            return text(for: patientAppointment)
         case .appointmentReminder(let patientAppointment):
-            text(for: patientAppointment)
+            return text(for: patientAppointment)
+        case .treatmentPlanActivation(let patient):
+            guard let treatmentPlan = patient.treatmentPlan else { return nil }
+            return text(for: treatmentPlan)
         }
     }
 
@@ -34,6 +38,8 @@ enum Message {
             patientAppointment.patient?.phoneNumber
         case .appointmentReminder(let patientAppointment):
             patientAppointment.patient?.phoneNumber
+        case .treatmentPlanActivation(let patient):
+            patient.phoneNumber
         }
     }
 }
@@ -51,6 +57,14 @@ private extension Message {
             return "Вы записаны \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс artmedics.ru wa.me/79912170440"
         case .appointmentReminder:
             return "Ожидаем Вас \(date) в \(time) на прием к врачу \(doctor.initials) Клиника АртМедикс artmedics.ru wa.me/79912170440"
+        default: return nil
         }
+    }
+
+    func text(for treatmentPlan: TreatmentPlan) -> String {
+        let treatmentPlanTitle = treatmentPlan.kind.rawValue.uppercased()
+        let expirationDateString = DateFormat.date.string(from: treatmentPlan.expirationDate)
+
+        return "Благодарим Вас за покупку! Лечебный план \(treatmentPlanTitle) теперь активен. Срок окончания действия \(expirationDateString)"
     }
 }
