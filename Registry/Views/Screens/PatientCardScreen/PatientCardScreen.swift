@@ -66,25 +66,28 @@ struct PatientCardScreen: View {
             }
 
             Section {
-                if let treatmentPlan = patient.treatmentPlan {
-                    LabeledContent {
-                        Text("до")
-                        DateText(treatmentPlan.expirationDate, format: .date)
-                    } label: {
-                        Text(treatmentPlan.kind.rawValue)
-                    }
-                    .colorInvert()
-                    .listRowBackground(Color.appBlack)
-                } else {
-                    Button("Активировать") {
-                        currentDetail = .treatmentPlan
+                Button {
+                    currentDetail = .treatmentPlan
+                } label: {
+                    if let treatmentPlan = patient.treatmentPlan {
+                        LabeledContent {
+                            Text("до")
+                            DateText(treatmentPlan.expirationDate, format: .date)
+                        } label: {
+                            Text(treatmentPlan.kind.rawValue)
+                        }
+                        .tint(.primary)
+                        .colorInvert()
+                    } else {
+                        Text("Активировать")
                     }
                 }
+                .listRowBackground(patient.treatmentPlan != nil ? Color.appBlack : Color(.secondarySystemGroupedBackground))
             } header: {
                 Text("Лечебный план")
             }
 
-            if user.accessLevel == .boss {
+            if user.accessLevel == .boss, patient.balance == 0, patient.treatmentPlan == nil {
                 Section {
                     Button("Удалить", role: .destructive) {
                         dismiss()
@@ -153,7 +156,7 @@ private extension PatientCardScreen {
         case .passport:
             PassportDetailView(patient: patient)
         case .treatmentPlan:
-            AddTreatmentPlanView(patient: patient)
+            TreatmentPlanView(patient: patient)
         case .visits:
             VisitsDetailView(patient: patient)
         }

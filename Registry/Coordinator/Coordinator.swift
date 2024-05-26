@@ -8,16 +8,27 @@
 import SwiftUI
 
 final class Coordinator: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var sheet: Sheet? = nil
     @Published private(set) var user: User?
+
+    @Published var path = NavigationPath()
+    @Published var sheet: Sheet? = nil {
+        didSet {
+            if sheet == nil {
+                onSheetDisappear?()
+                onSheetDisappear = nil
+            }
+        }
+    }
+
+    private var onSheetDisappear: (() -> Void)? = nil
 
     func push(_ route: Route) {
         path.append(route)
     }
 
-    func present(_ sheet: Sheet) {
+    func present(_ sheet: Sheet, onDisappear: (() -> Void)? = nil) {
         self.sheet = sheet
+        onSheetDisappear = onDisappear
     }
 
     func pop() {

@@ -1,5 +1,5 @@
 //
-//  AddTreatmentPlanView.swift
+//  TreatmentPlanView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 24.05.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddTreatmentPlanView: View {
+struct TreatmentPlanView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -24,7 +24,6 @@ struct AddTreatmentPlanView: View {
     // MARK: - State
 
     @State private var agent: Doctor?
-    @State private var check: Check?
     @State private var isPaid: Bool = false
 
     // MARK: -
@@ -36,6 +35,12 @@ struct AddTreatmentPlanView: View {
                     LabeledContent(treatmentPlan.kind.rawValue) {
                         Text("активен до")
                         DateText(treatmentPlan.expirationDate, format: .date)
+                    }
+                }
+
+                Section {
+                    Button("Удалить", role: .destructive) {
+                        patient.treatmentPlan = nil
                     }
                 }
             } else {
@@ -59,23 +64,30 @@ struct AddTreatmentPlanView: View {
                         if let pricelistItem = pricelistItem(forTreatmentPlanOfKind: kind) {
                             Button {
                                 let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, agent: agent)
-                                check = Check(services: [medicalService])
-                                coordinator.present(.billPayment(patient: patient, check: check!, isPaid: $isPaid))
+                                let check = Check(services: [medicalService])
+                                modelContext.insert(check)
+
+                                coordinator.present(
+                                    .billPayment(patient: patient, check: check, isPaid: $isPaid),
+                                    onDisappear: {
+                                        if isPaid {
+                                            let appointment = PatientAppointment(scheduledTime: .now, duration: 0)
+                                            appointment.registerPatient(patient, duration: 0, registrar: user.asAnyUser)
+                                            appointment.check = check
+                                            appointment.status = .completed
+
+                                            withAnimation {
+                                                patient.activateTreatmentPlan(ofKind: kind)
+                                            }
+                                        } else {
+                                            modelContext.delete(check)
+                                        }
+                                    }
+                                )
                             } label: {
                                 LabeledCurrency(kind.rawValue, value: pricelistItem.price)
                             }
-                            .buttonStyle(.plain)
-                            .onChange(of: isPaid) { _, newValue in
-                                if newValue {
-                                    if let check {
-                                        let appointment = PatientAppointment(scheduledTime: .now, duration: 0)
-                                        appointment.registerPatient(patient, duration: 0, registrar: user.asAnyUser)
-                                        appointment.check = check
-                                        appointment.status = .completed
-                                        patient.activateTreatmentPlan(ofKind: kind)
-                                    }
-                                }
-                            }
+                            .tint(.primary)
                         }
                     }
                 }
@@ -85,16 +97,17 @@ struct AddTreatmentPlanView: View {
 }
 
 #Preview {
-    AddTreatmentPlanView(patient: ExampleData.patient)
+    TreatmentPlanView(patient: ExampleData.patient)
 }
 
 // MARK: - Claculations
 
-private extension AddTreatmentPlanView {
+private extension TreatmentPlanView {
     func pricelistItem(forTreatmentPlanOfKind kind: TreatmentPlan.Kind) -> PricelistItem? {
         let id = kind.id
         let predicate = #Predicate<PricelistItem> { $0.id == id }
-        let descriptor = FetchDescriptor(predicate: predicate)
+        var descriptor = FetchDescriptor(predicate: predicate)
+        descriptor.fetchLimit = 1
 
         return try? modelContext.fetch(descriptor).first
     }
