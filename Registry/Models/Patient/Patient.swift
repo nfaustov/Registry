@@ -61,7 +61,8 @@ final class Patient: AccountablePerson, Codable {
             .filter {
                 $0.date > treatmentPlan.startingDate && $0.date < treatmentPlan.expirationDate
             }
-            .compactMap { $0.subject } ?? []
+            .compactMap { $0.subject }
+            .filter { $0.refund == nil } ?? []
     }
 
     func activateTreatmentPlan(ofKind kind: TreatmentPlan.Kind) {
