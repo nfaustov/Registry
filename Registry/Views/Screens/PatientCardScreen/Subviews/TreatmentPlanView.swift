@@ -39,6 +39,24 @@ struct TreatmentPlanView: View {
                     }
                 }
 
+                let treatmentPlanChecks = patient.treatmentPlanChecks
+
+                if !treatmentPlanChecks.isEmpty {
+                    Section("Приобретенная выгода") {
+                        let totalChecksAmount = treatmentPlanChecks.reduce(0.0) { $0 + $1.price }
+                        let servicesBasePrice = treatmentPlanChecks
+                            .flatMap { $0.services }
+                            .reduce(0.0) { $0 + $1.pricelistItem.price }
+                        let item = pricelistItem(forTreatmentPlanOfKind: treatmentPlan.kind)
+                        let benefit = servicesBasePrice + (item?.price ?? 0) - totalChecksAmount
+
+                        LabeledCurrency("Оплаты по лечебному плану", value: totalChecksAmount + (item?.price ?? 0))
+                        LabeledCurrency("Обычная цена", value: servicesBasePrice)
+                        LabeledCurrency("Выгода", value: benefit)
+                            .font(.headline)
+                    }
+                }
+
                 Section {
                     Button("Удалить", role: .destructive) {
                         patient.treatmentPlan = nil
