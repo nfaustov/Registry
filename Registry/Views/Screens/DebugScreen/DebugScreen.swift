@@ -10,8 +10,7 @@ import SwiftUI
 struct DebugScreen: View {
 
     var body: some View {
-//        ChecksDataLoader()
-        ChecksDebugScreen()
+        PatientDebugView()
     }
 }
 

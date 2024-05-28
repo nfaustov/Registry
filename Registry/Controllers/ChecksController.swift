@@ -10,19 +10,6 @@ import SwiftData
 
 @ModelActor
 actor ChecksController {
-    func getCorrelationsJSON() throws -> Data {
-        let encoder = JSONEncoder()
-        return try encoder.encode(pricelistItemsCorrelations)
-    }
-}
-
-private extension ChecksController {
-    struct PricelistItemsCorrelation: Codable, Hashable {
-        let item: PricelistItem.Snapshot
-        let correlatedItem: PricelistItem.Snapshot
-        var usage: Int
-    }
-
     var pricelistItemsCorrelations: [PricelistItemsCorrelation] {
         var temp: [PricelistItemsCorrelation] = []
 
@@ -32,19 +19,21 @@ private extension ChecksController {
                 for index in items.indices {
                     var correlatedItems = items
                     let itemKey = correlatedItems.remove(at: index)
-                    let localCorrelations = correlatedItems.map { PricelistItemsCorrelation(item: itemKey, correlatedItem: $0, usage: 0) }
+                    let localCorrelations = correlatedItems.map { PricelistItemsCorrelation(itemID: itemKey.id, correlatedItemID: $0.id, usage: 0) }
                     temp.append(contentsOf: localCorrelations)
                 }
             }
         }
 
         let correlations = Dictionary(grouping: temp, by: { $0 })
-            .filter { $1.count > 10 }
-            .map { PricelistItemsCorrelation(item: $0.item, correlatedItem: $0.correlatedItem, usage: $1.count) }
+            .filter { $1.count > 5 }
+            .map { PricelistItemsCorrelation(itemID: $0.itemID, correlatedItemID: $0.correlatedItemID, usage: $1.count) }
 
         return correlations
     }
+}
 
+private extension ChecksController {
     var checks: [Check] {
         let descriptor = FetchDescriptor<Check>()
 
@@ -52,4 +41,10 @@ private extension ChecksController {
             return fetchedChecks
         } else { return [] }
     }
+}
+
+struct PricelistItemsCorrelation: Codable, Hashable {
+    let itemID: String
+    let correlatedItemID: String
+    var usage: Int
 }
