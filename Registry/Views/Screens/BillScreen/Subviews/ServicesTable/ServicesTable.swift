@@ -29,6 +29,7 @@ struct ServicesTable: View {
     @State private var isTargeted: Bool = false
     @State private var predictions: [PricelistItem.Snapshot] = []
     @State private var predictionsEnabled: Bool = true
+    @State private var correlations: [PricelistItemsCorrelation] = []
     @State private var errorMessage: String?
 
     // MARK: -
@@ -87,17 +88,19 @@ struct ServicesTable: View {
                 } else {
                     let snapshots = newValue.map { $0.pricelistItem }
                     withAnimation {
-                        makePredictions(items: snapshots)
+                        makePredictions(basedOn: snapshots)
                     }
                 }
             }
-            .onAppear {
+            .task {
+                let checksController = ChecksController(modelContainer: modelContext.container)
+                correlations = await checksController.pricelistItemsCorrelations
+
                 if !check.services.isEmpty {
                     let snapshots = check.services.map { $0.pricelistItem }
                     withAnimation {
-                        makePredictions(items: snapshots)
+                        makePredictions(basedOn: snapshots)
                     }
-                    
                 }
             }
 
@@ -185,14 +188,19 @@ private extension ServicesTable {
         } else { return [] }
     }
 
-    func makePredictions(items: [PricelistItem.Snapshot]) {
+    func makePredictions(basedOn items: [PricelistItem.Snapshot]) {
+        let itemsIDs = items.map { $0.id }
+        var predictionsIDs = correlations
+            .filter { itemsIDs.contains($0.itemID) }
+            .sorted(by: { $0.usage > $1.usage })
+            .map { $0.correlatedItemID }
+
+        if predictionsIDs.count > 5 {
+            predictionsIDs = predictionsIDs.dropLast(predictionsIDs.count - 5)
+        }
+
         do {
-            let config = MLModelConfiguration()
-            let model = try PricelistItemRecommender(configuration: config)
-            var dict: [String: Double] = [:]
-            items.forEach { dict[$0.id] = 0 }
-            let prediction = try model.prediction(items: dict, k: 5, restrict_: nil, exclude: nil)
-            predictions = try getPredictedPricelistItems(with: prediction.recommendations)
+            predictions = try getPredictedPricelistItems(with: predictionsIDs)
         } catch {
             errorMessage = error.localizedDescription
         }
