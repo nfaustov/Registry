@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B0132992C03849A00547A13 /* ChecksDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0132982C03849A00547A13 /* ChecksDebugScreen.swift */; };
 		8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */; };
 		8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */; };
 		8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */; };
@@ -146,6 +147,7 @@
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
 		8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */; };
 		8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
+		8BC3A78E2C0035250055CA27 /* TreatmentPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3A78D2C0035250055CA27 /* TreatmentPlanView.swift */; };
 		8BD172382BECA056002D0BD9 /* RegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD172372BECA056002D0BD9 /* RegistryTests.swift */; };
 		8BD1723E2BECA117002D0BD9 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA82B86601B00FA1D46 /* Ledger.swift */; };
 		8BD172402BECA247002D0BD9 /* MockContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1723F2BECA247002D0BD9 /* MockContainer.swift */; };
@@ -206,6 +208,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B0132982C03849A00547A13 /* ChecksDebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksDebugScreen.swift; sourceTree = "<group>"; };
 		8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsListView.swift; sourceTree = "<group>"; };
 		8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPatientView.swift; sourceTree = "<group>"; };
 		8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsList.swift; sourceTree = "<group>"; };
@@ -343,6 +346,7 @@
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
 		8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsDetailView.swift; sourceTree = "<group>"; };
 		8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
+		8BC3A78D2C0035250055CA27 /* TreatmentPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentPlanView.swift; sourceTree = "<group>"; };
 		8BD172352BECA056002D0BD9 /* RegistryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegistryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BD172372BECA056002D0BD9 /* RegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryTests.swift; sourceTree = "<group>"; };
 		8BD1723F2BECA247002D0BD9 /* MockContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContainer.swift; sourceTree = "<group>"; };
@@ -923,6 +927,7 @@
 			children = (
 				8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */,
 				8B1EE9422BF6547B009AF600 /* ChecksDataLoader.swift */,
+				8B0132982C03849A00547A13 /* ChecksDebugScreen.swift */,
 			);
 			path = DebugViews;
 			sourceTree = "<group>";
@@ -1327,6 +1332,7 @@
 				8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */,
 				8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */,
 				8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */,
+				8BC3A78D2C0035250055CA27 /* TreatmentPlanView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1601,6 +1607,7 @@
 				8B8AE9912B584BFC001A9143 /* PricelistView.swift in Sources */,
 				8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */,
 				8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */,
+				8BC3A78E2C0035250055CA27 /* TreatmentPlanView.swift in Sources */,
 				8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */,
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,
@@ -1608,6 +1615,7 @@
 				8BE145032BF0C92000991225 /* LedgerView.swift in Sources */,
 				8B7801492B87B9A60064DBFB /* PatientAppointment.swift in Sources */,
 				8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */,
+				8B0132992C03849A00547A13 /* ChecksDebugScreen.swift in Sources */,
 				8BDCCFDF2B84A20C0086BF4D /* PlaceOfResidence.swift in Sources */,
 				8B80FED12BC25A1800BB76E0 /* PDFDocumentView.swift in Sources */,
 				8B0FE9EB2B56F6CC003F474B /* DoctorView.swift in Sources */,

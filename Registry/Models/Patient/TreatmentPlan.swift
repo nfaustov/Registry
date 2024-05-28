@@ -15,13 +15,25 @@ struct TreatmentPlan: Codable, Hashable {
     init(kind: Kind, startingDate: Date = .now) {
         self.kind = kind
         self.startingDate = startingDate
-        self.expirationDate = Calendar.current.date(byAdding: .year, value: 1, to: startingDate)!
+
+        let yearLaterDate = Calendar.current.date(byAdding: .year, value: 1, to: startingDate)!
+        let endOfyearLaterDate = Calendar.current.startOfDay(for: yearLaterDate.addingTimeInterval(86_400)).addingTimeInterval(-1)
+        self.expirationDate = endOfyearLaterDate
     }
 }
 
 extension TreatmentPlan {
-    enum Kind: String, Codable {
+    enum Kind: String, Codable, Identifiable, CaseIterable {
         case basic = "Базовый"
-        case pregnancy = "Беременность" 
+        case pregnancy = "Беременность"
+
+        var id: String {
+            switch self {
+            case .basic:
+                "ТРИТ-БАЗ"
+            case .pregnancy:
+                "ТРИТ-БЕРЕМ"
+            }
+        }
     }
 }

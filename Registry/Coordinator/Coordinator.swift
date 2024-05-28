@@ -8,16 +8,27 @@
 import SwiftUI
 
 final class Coordinator: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var sheet: Sheet? = nil
     @Published private(set) var user: User?
+
+    @Published var path = NavigationPath()
+    @Published var sheet: Sheet? = nil {
+        didSet {
+            if sheet == nil {
+                onSheetDisappear?()
+                onSheetDisappear = nil
+            }
+        }
+    }
+
+    private var onSheetDisappear: (() -> Void)? = nil
 
     func push(_ route: Route) {
         path.append(route)
     }
 
-    func present(_ sheet: Sheet) {
+    func present(_ sheet: Sheet, onDisappear: (() -> Void)? = nil) {
         self.sheet = sheet
+        onSheetDisappear = onDisappear
     }
 
     func pop() {
@@ -103,8 +114,8 @@ extension Coordinator {
             CreatePricelistItemView()
         case .updateBalance(let person, let kind):
             UpdateBalanceView(person: person, kind: kind)
-        case .billPayment(let appointment, let isPaid):
-            BillPaymentView(appointment: appointment, isPaid: isPaid)
+        case .billPayment(let patient, let check, let isPaid):
+            BillPaymentView(patient: patient, check: check, isPaid: isPaid)
         case .createNote(let kind):
             CreateNoteView(for: kind)
         }

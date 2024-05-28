@@ -17,8 +17,8 @@ extension Ledger {
 
     private func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
         switch sample {
-        case .medicalService:
-            medicalServicePayment(payment)
+        case .medicalService(let patient, _, _):
+            medicalServicePayment(payment, patient: patient)
         case .doctorPayout(let doctor, _):
             doctorPayoutPayment(payment, for: doctor)
         case .refund(let refund, _, let includeBalance):
@@ -30,9 +30,8 @@ extension Ledger {
         }
     }
 
-    private func medicalServicePayment(_ payment: Payment) {
-        guard let check = payment.subject,
-              let patient = check.appointments?.first?.patient else { return }
+    private func medicalServicePayment(_ payment: Payment, patient: Patient) {
+        guard let check = payment.subject else { return }
 
         let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         let paymentBalance = paymentValue - check.totalPrice

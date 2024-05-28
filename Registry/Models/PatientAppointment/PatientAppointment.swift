@@ -20,7 +20,7 @@ final class PatientAppointment {
     var note: Note? = nil
     private(set) var registrationDate: Date? = nil
     private(set) var registrar: AnyUser? = nil
-    @Relationship(inverse: \Check.appointments)
+    @Relationship(deleteRule: .cascade, inverse: \Check.appointments)
     var check: Check? = nil
 
     var schedule: DoctorSchedule?

@@ -14,7 +14,7 @@ struct AddPatientView: View {
     @Environment(\.user) private var user
     @Environment(\.modelContext) private var modelContext
 
-    @StateObject var messageController = MessageController()
+    @StateObject private var messageController = MessageController()
 
     @Query private var patients: [Patient]
 

@@ -54,6 +54,22 @@ final class Patient: AccountablePerson, Codable {
         self.transactions = transactions
     }
 
+    var treatmentPlanChecks: [Check] {
+        guard let treatmentPlan else { return [] }
+
+        return transactions?
+            .filter {
+                $0.date > treatmentPlan.startingDate && $0.date < treatmentPlan.expirationDate
+            }
+            .compactMap { $0.subject }
+            .filter { $0.refund == nil } ?? []
+    }
+
+    func activateTreatmentPlan(ofKind kind: TreatmentPlan.Kind) {
+        guard treatmentPlan == nil else { return }
+        treatmentPlan = TreatmentPlan(kind: kind)
+    }
+
     func updateBalance(increment: Double) {
         balance += increment
     }
