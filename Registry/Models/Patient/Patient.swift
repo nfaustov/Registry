@@ -18,7 +18,8 @@ final class Patient: AccountablePerson, Codable {
     private(set) var balance: Double = Double.zero
     var passport: PassportData = PassportData()
     var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
-    var treatmentPlan: TreatmentPlan?
+    @Relationship(deleteRule: .cascade, inverse: \TreatmentPlan.patient)
+    private(set) var treatmentPlans: [TreatmentPlan]?
     let createdAt: Date = Date.now
     @Attribute(.externalStorage)
     var image: Data?
@@ -36,7 +37,7 @@ final class Patient: AccountablePerson, Codable {
         balance: Double = 0,
         passport: PassportData = PassportData(),
         placeOfResidence: PlaceOfResidence = PlaceOfResidence(),
-        treatmentPlan: TreatmentPlan? = nil,
+        treatmentPlans: [TreatmentPlan]? = [],
         image: Data? = nil,
         transactions: [Payment]? = []
     ) {
@@ -48,26 +49,37 @@ final class Patient: AccountablePerson, Codable {
         self.balance = balance
         self.passport = passport
         self.placeOfResidence = placeOfResidence
-        self.treatmentPlan = treatmentPlan
+        self.treatmentPlans = treatmentPlans
         self.createdAt = .now
         self.image = image
         self.transactions = transactions
     }
 
+    var currentTreatmentPlan: TreatmentPlan? {
+        treatmentPlans?.first(where: { $0.expirationDate < .now })
+    }
+
     var treatmentPlanChecks: [Check] {
-        guard let treatmentPlan else { return [] }
+        guard let currentTreatmentPlan else { return [] }
 
         return transactions?
             .filter {
-                $0.date > treatmentPlan.startingDate && $0.date < treatmentPlan.expirationDate
+                $0.date > currentTreatmentPlan.startingDate && $0.date < currentTreatmentPlan.expirationDate
             }
             .compactMap { $0.subject }
             .filter { $0.refund == nil } ?? []
     }
 
     func activateTreatmentPlan(ofKind kind: TreatmentPlan.Kind) {
-        guard treatmentPlan == nil else { return }
-        treatmentPlan = TreatmentPlan(kind: kind)
+        guard currentTreatmentPlan == nil else { return }
+
+        let newTreatmentPlan = TreatmentPlan(kind: kind)
+        treatmentPlans?.append(newTreatmentPlan)
+    }
+
+    func deactivateTreatmentPlan() {
+        guard let currentTreatmentPlan else { return }
+        treatmentPlans?.removeAll(where: { $0.id == currentTreatmentPlan.id })
     }
 
     func updateBalance(increment: Double) {
@@ -103,7 +115,7 @@ final class Patient: AccountablePerson, Codable {
     // MARK: - Codable
 
     private enum CodingKeys: String, CodingKey {
-        case id, secondName, firstName, patronymicName, phoneNumber, balance, passport, placeOfResidence, treatmentPlan, createdAt, transactions
+        case id, secondName, firstName, patronymicName, phoneNumber, balance, passport, placeOfResidence, treatmentPlans, createdAt, transactions
     }
 
     required init(from decoder: any Decoder) throws {
@@ -116,7 +128,6 @@ final class Patient: AccountablePerson, Codable {
         self.balance = try container.decode(Double.self, forKey: .balance)
         self.passport = try container.decode(PassportData.self, forKey: .passport)
         self.placeOfResidence = try container.decode(PlaceOfResidence.self, forKey: .placeOfResidence)
-        self.treatmentPlan = try container.decodeIfPresent(TreatmentPlan.self, forKey: .treatmentPlan)
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
     }
 
@@ -130,7 +141,6 @@ final class Patient: AccountablePerson, Codable {
         try container.encode(balance, forKey: .balance)
         try container.encode(passport, forKey: .passport)
         try container.encode(placeOfResidence, forKey: .placeOfResidence)
-        try container.encode(treatmentPlan, forKey: .treatmentPlan)
         try container.encode(createdAt, forKey: .createdAt)
     }
 }

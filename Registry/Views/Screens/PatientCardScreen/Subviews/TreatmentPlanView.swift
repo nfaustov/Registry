@@ -31,7 +31,7 @@ struct TreatmentPlanView: View {
 
     var body: some View {
         Form {
-            if let treatmentPlan = patient.treatmentPlan {
+            if let treatmentPlan = patient.currentTreatmentPlan {
                 Section("Текущий лечебный план") {
                     LabeledContent(treatmentPlan.kind.rawValue) {
                         Text("активен до")
@@ -59,7 +59,7 @@ struct TreatmentPlanView: View {
 
                 Section {
                     Button("Удалить", role: .destructive) {
-                        patient.treatmentPlan = nil
+                        patient.deactivateTreatmentPlan()
                     }
                 }
             } else {

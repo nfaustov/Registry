@@ -64,7 +64,7 @@ struct ServicesTableControls: View {
             .disabled(isPricelistPresented || (check.services.isEmpty && checkTemplates.isEmpty))
 
             Toggle(isOn: $predictions) {
-                Label("Рекомендации", systemImage: "list.bullet.below.rectangle")
+                Label("Предложения", systemImage: "sparkles")
             }
             .toggleStyle(.button)
             .tint(.indigo)

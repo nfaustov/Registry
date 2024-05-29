@@ -69,7 +69,7 @@ struct PatientCardScreen: View {
                 Button {
                     currentDetail = .treatmentPlan
                 } label: {
-                    if let treatmentPlan = patient.treatmentPlan {
+                    if let treatmentPlan = patient.currentTreatmentPlan {
                         LabeledContent {
                             Text("до")
                             DateText(treatmentPlan.expirationDate, format: .date)
@@ -82,12 +82,12 @@ struct PatientCardScreen: View {
                         Text("Активировать")
                     }
                 }
-                .listRowBackground(patient.treatmentPlan != nil ? Color.appBlack : Color(.secondarySystemGroupedBackground))
+                .listRowBackground(patient.currentTreatmentPlan != nil ? Color.appBlack : Color(.secondarySystemGroupedBackground))
             } header: {
                 Text("Лечебный план")
             }
 
-            if user.accessLevel == .boss, patient.balance == 0, patient.treatmentPlan == nil {
+            if user.accessLevel == .boss, patient.balance == 0, patient.currentTreatmentPlan == nil {
                 Section {
                     Button("Удалить", role: .destructive) {
                         dismiss()

@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import SwiftData
 
-struct TreatmentPlan: Codable, Hashable {
+@Model
+final class TreatmentPlan {
     let kind: Kind
     let startingDate: Date
     let expirationDate: Date
+
+    var patient: Patient?
 
     init(kind: Kind, startingDate: Date = .now) {
         self.kind = kind

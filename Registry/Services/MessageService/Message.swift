@@ -19,7 +19,7 @@ enum Message {
         case .appointmentReminder(let patientAppointment):
             return text(for: patientAppointment)
         case .treatmentPlanActivation(let patient):
-            guard let treatmentPlan = patient.treatmentPlan else { return nil }
+            guard let treatmentPlan = patient.currentTreatmentPlan else { return nil }
             return text(for: treatmentPlan)
         }
     }
