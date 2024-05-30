@@ -26,8 +26,14 @@ struct TreatmentPlanView: View {
 
     @State private var agent: Doctor?
     @State private var isPaid: Bool = false
+    @State private var treatmentPlanChecks: [Check]
 
     // MARK: -
+
+    init(patient: Patient) {
+        self.patient = patient
+        _treatmentPlanChecks = State(initialValue: patient.treatmentPlanChecks)
+    }
 
     var body: some View {
         Form {
@@ -39,27 +45,26 @@ struct TreatmentPlanView: View {
                     }
                 }
 
-                let treatmentPlanChecks = patient.treatmentPlanChecks
-
-                if !treatmentPlanChecks.isEmpty {
+                if !patient.treatmentPlanChecks.isEmpty {
                     Section("Приобретенная выгода") {
-                        let totalChecksAmount = treatmentPlanChecks.reduce(0.0) { $0 + $1.price }
-                        let servicesBasePrice = treatmentPlanChecks
-                            .flatMap { $0.services }
-                            .reduce(0.0) { $0 + $1.pricelistItem.price }
-                        let item = pricelistItem(forTreatmentPlanOfKind: treatmentPlan.kind)
-                        let benefit = servicesBasePrice + (item?.price ?? 0) - totalChecksAmount
-
-                        LabeledCurrency("Оплаты по лечебному плану", value: totalChecksAmount + (item?.price ?? 0))
-                        LabeledCurrency("Обычная цена", value: servicesBasePrice)
+                        LabeledCurrency("Оплаты по лечебному плану", value: totalChecksPrice)
+                        LabeledCurrency("Обычная цена", value: treatmentPlanServicesBasePrice)
                         LabeledCurrency("Выгода", value: benefit)
                             .font(.headline)
                     }
                 }
 
-                Section {
-                    Button("Удалить", role: .destructive) {
-                        patient.deactivateTreatmentPlan()
+                if let item = pricelistItem(forTreatmentPlanOfKind: treatmentPlan.kind), item.price > benefit, user.accessLevel == .boss {
+                    Section {
+                        Button("Возврат", role: .destructive) {
+                            let paymentValue = item.price - benefit
+                            let ledger = Ledger(modelContext: modelContext)
+                            ledger.makePayment(
+                                .balance(.refill, person: patient, method: .init(.cash, value: paymentValue)),
+                                createdBy: user
+                            )
+                            patient.deactivateTreatmentPlan()
+                        }
                     }
                 }
             } else {
@@ -126,6 +131,20 @@ struct TreatmentPlanView: View {
 // MARK: - Claculations
 
 private extension TreatmentPlanView {
+    var totalChecksPrice: Double {
+        treatmentPlanChecks.reduce(0.0) { $0 + $1.price }
+    }
+
+    var treatmentPlanServicesBasePrice: Double {
+        treatmentPlanChecks
+            .flatMap { $0.services }
+            .reduce(0.0) { $0 + $1.pricelistItem.price }
+    }
+
+    var benefit: Double {
+        treatmentPlanServicesBasePrice - totalChecksPrice
+    }
+
     func pricelistItem(forTreatmentPlanOfKind kind: TreatmentPlan.Kind) -> PricelistItem? {
         let id = kind.id
         let predicate = #Predicate<PricelistItem> { $0.id == id }
