@@ -65,10 +65,9 @@ extension Ledger {
     }
 
     private func balancePayment(_ payment: Payment, for person: AccountablePerson) {
-        guard let paymentMethod = payment.methods.first else { return }
-
+        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         person.assignTransaction(payment)
-        person.updateBalance(increment: paymentMethod.value)
+        person.updateBalance(increment: paymentValue)
         record(payment)
     }
 
