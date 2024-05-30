@@ -25,6 +25,7 @@ struct PricelistItemView: View {
     @State private var fixedAgentFee: Double?
     @State private var fixedDoctorsSalary: Bool
     @State private var fixedDoctorAgentFee: Bool
+    @State private var editMode: Bool = false
 
     // MARK: -
 
@@ -45,8 +46,21 @@ struct PricelistItemView: View {
                 Section {
                     if user.accessLevel == .boss {
                         TextField("Наименование", text: $title)
-                        LabeledCurrency("Цена", value: price)
-                        LabeledCurrency("Себестоимость", value: costPrice)
+
+                        if editMode {
+                            MoneyFieldSection(value: $price)
+                            MoneyFieldSection(value: $costPrice)
+                        } else {
+                            LabeledCurrency("Цена", value: price)
+                            LabeledCurrency("Себестоимость", value: costPrice)
+                        }
+
+                        Button(editMode ? "Готово" : "Редактировать") {
+                            withAnimation {
+                                editMode.toggle()
+                            }
+                            
+                        }
                     } else {
                         Text(pricelistItem.title)
                         LabeledCurrency("Цена", value: pricelistItem.price)
