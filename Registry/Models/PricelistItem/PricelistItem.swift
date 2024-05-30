@@ -90,7 +90,8 @@ final class PricelistItem: Codable {
         if treatmentPlans.isEmpty {
             return price
         } else {
-            return costPrice + 20
+            let estimatedPrice = costPrice + 50
+            return estimatedPrice >= price ? price : estimatedPrice
         }
     }
 }
