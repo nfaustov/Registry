@@ -33,7 +33,15 @@ struct AppointmentView: View {
 
             if let patient = appointment.patient {
                 VStack(alignment: .leading) {
-                    Text(patient.fullName)
+                    HStack {
+                        Text(patient.fullName)
+
+                        if patient.currentTreatmentPlan != nil {
+                            Image(systemName: "cross.case.circle")
+                                .foregroundStyle(.orange)
+                        }
+                    }
+
                     Text(patient.phoneNumber)
                 }
                 .foregroundColor(appointment.status == .completed ? .secondary : .primary)

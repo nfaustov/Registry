@@ -44,9 +44,16 @@ struct BillScreen: View {
                             .foregroundStyle(patient.balance < 0 ? .red : .primary)
                     }
                 } label: {
-                    Text(patient.fullName)
-                        .font(.title3)
-                        .padding(.horizontal)
+                    HStack {
+                        Text(patient.fullName)
+                            .font(.title3)
+                            .padding(.horizontal)
+
+                        if patient.currentTreatmentPlan != nil {
+                            Image(systemName: "cross.case.circle")
+                                .foregroundStyle(.orange)
+                        }
+                    }
                 }
                 .padding()
             }

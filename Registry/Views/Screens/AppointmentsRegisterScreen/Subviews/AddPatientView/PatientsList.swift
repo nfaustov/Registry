@@ -32,10 +32,17 @@ struct PatientsList: View {
                         selectedPatient = patient
                         dismiss()
                     } label: {
-                        HStack {
-                            Text(patient.fullName)
-                            Spacer()
+                        LabeledContent {
                             Text(patient.phoneNumber)
+                        } label: {
+                            HStack {
+                                if patient.currentTreatmentPlan != nil {
+                                    Image(systemName: "cross.case.circle")
+                                        .foregroundStyle(.orange)
+                                }
+
+                                Text(patient.fullName)
+                            }
                         }
                     }
                 }

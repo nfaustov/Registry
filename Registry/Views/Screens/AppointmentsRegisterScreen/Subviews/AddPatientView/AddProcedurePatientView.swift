@@ -91,6 +91,20 @@ struct AddProcedurePatientView: View {
                     Text("Ф.И.О.")
                 }
 
+                if let selectedPatient, let treatmentPlan = selectedPatient.currentTreatmentPlan {
+                    Section("Лечебный план") {
+                        LabeledContent {
+                            Text("до")
+                            DateText(treatmentPlan.expirationDate, format: .date)
+                        } label: {
+                            Text(treatmentPlan.kind.rawValue)
+                        }
+                        .tint(.primary)
+                        .colorInvert()
+                        .listRowBackground(Color(.appBlack))
+                    }
+                }
+
                 Section {
                     if let selectedPatient {
                         Text(selectedPatient.phoneNumber)
