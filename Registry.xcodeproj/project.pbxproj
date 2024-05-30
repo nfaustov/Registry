@@ -54,6 +54,7 @@
 		8B4A0D532BFFC87300B4F9AE /* Ledger+Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */; };
 		8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */; };
 		8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */; };
+		8B56E3502C08C5A100504CFE /* PricelistItemsDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B56E34F2C08C5A100504CFE /* PricelistItemsDebugScreen.swift */; };
 		8B5B49C32BA4C60B006867EF /* PatientsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B49C22BA4C60B006867EF /* PatientsChart.swift */; };
 		8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */; };
 		8B5EEC112BF35FB0006FB7CD /* CreateNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */; };
@@ -251,6 +252,7 @@
 		8B4A0D512BFFBC9B00B4F9AE /* Ledger+Payments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ledger+Payments.swift"; sourceTree = "<group>"; };
 		8B4ECD4D2BC8506500A82A2A /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		8B4ECD512BC85C9400A82A2A /* PaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodView.swift; sourceTree = "<group>"; };
+		8B56E34F2C08C5A100504CFE /* PricelistItemsDebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemsDebugScreen.swift; sourceTree = "<group>"; };
 		8B5B49C22BA4C60B006867EF /* PatientsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsChart.swift; sourceTree = "<group>"; };
 		8B5EEC0D2BF35A4C006FB7CD /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		8B5EEC102BF35FB0006FB7CD /* CreateNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteView.swift; sourceTree = "<group>"; };
@@ -915,6 +917,7 @@
 			children = (
 				8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */,
 				8B0132982C03849A00547A13 /* ChecksDebugScreen.swift */,
+				8B56E34F2C08C5A100504CFE /* PricelistItemsDebugScreen.swift */,
 			);
 			path = DebugViews;
 			sourceTree = "<group>";
@@ -1570,6 +1573,7 @@
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
 				8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */,
 				8BDCCFDB2B849F960086BF4D /* Patient.swift in Sources */,
+				8B56E3502C08C5A100504CFE /* PricelistItemsDebugScreen.swift in Sources */,
 				8B285F412B4DB8D600C29E20 /* MinusBoxToggleStyle.swift in Sources */,
 				8B183BB12B8661E800FA1D46 /* Payment.Method.swift in Sources */,
 				8B9673A72B361F4300FD2E7C /* Coordinator.swift in Sources */,
