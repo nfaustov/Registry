@@ -45,26 +45,12 @@ struct TreatmentPlanView: View {
                     }
                 }
 
-                if !patient.treatmentPlanChecks.isEmpty {
+                if !treatmentPlanChecks.isEmpty {
                     Section("Приобретенная выгода") {
                         LabeledCurrency("Оплаты по лечебному плану", value: totalChecksPrice)
                         LabeledCurrency("Обычная цена", value: treatmentPlanServicesBasePrice)
                         LabeledCurrency("Выгода", value: benefit)
                             .font(.headline)
-                    }
-                }
-
-                if let item = pricelistItem(forTreatmentPlanOfKind: treatmentPlan.kind), item.price > benefit, user.accessLevel == .boss {
-                    Section {
-                        Button("Возврат", role: .destructive) {
-                            let paymentValue = item.price - benefit
-                            let ledger = Ledger(modelContext: modelContext)
-                            ledger.makePayment(
-                                .balance(.refill, person: patient, method: .init(.cash, value: paymentValue)),
-                                createdBy: user
-                            )
-                            patient.deactivateTreatmentPlan()
-                        }
                     }
                 }
             } else {

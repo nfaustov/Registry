@@ -56,7 +56,7 @@ final class Patient: AccountablePerson, Codable {
     }
 
     var currentTreatmentPlan: TreatmentPlan? {
-        treatmentPlans?.first(where: { $0.expirationDate < .now })
+        treatmentPlans?.first(where: { $0.expirationDate > .now })
     }
 
     var treatmentPlanChecks: [Check] {

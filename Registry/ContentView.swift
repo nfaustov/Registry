@@ -69,15 +69,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-//            .task {
-//                loadData()
-//                let basicTreatmentPlanPricelistItem = PricelistItem(id: "ТРИТ-БАЗ", category: .therapy, title: "Годовое обслуживание по лечебному плану БАЗОВЫЙ", price: 6900, costPrice: 6300, fixedAgentFee: 600)
-//                basicTreatmentPlanPricelistItem.archived = true
-//                modelContext.insert(basicTreatmentPlanPricelistItem)
-//                let pregnancyTreatmentPlanPricelistItem = PricelistItem(id: "ТРИТ-БЕРЕМ", category: .therapy, title: "Годовое обслуживание по лечебному плану БЕРЕМЕННОСТЬ", price: 12900, costPrice: 11700, fixedAgentFee: 1200)
-//                pregnancyTreatmentPlanPricelistItem.archived = true
-//                modelContext.insert(pregnancyTreatmentPlanPricelistItem)
-//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }
@@ -107,5 +98,12 @@ struct ContentView: View {
 //        for pricelistItem in pricelistItems {
 //            modelContext.insert(pricelistItem)
 //        }
+//
+//        let basicTreatmentPlanPricelistItem = PricelistItem(id: "ТРИТ-БАЗ", category: .therapy, title: "Годовое обслуживание по лечебному плану БАЗОВЫЙ", price: 6900, costPrice: 6300, fixedAgentFee: 600)
+//        basicTreatmentPlanPricelistItem.archived = true
+//        modelContext.insert(basicTreatmentPlanPricelistItem)
+//        let pregnancyTreatmentPlanPricelistItem = PricelistItem(id: "ТРИТ-БЕРЕМ", category: .therapy, title: "Годовое обслуживание по лечебному плану БЕРЕМЕННОСТЬ", price: 12900, costPrice: 11700, fixedAgentFee: 1200)
+//        pregnancyTreatmentPlanPricelistItem.archived = true
+//        modelContext.insert(pregnancyTreatmentPlanPricelistItem)
 //    }
 //}
