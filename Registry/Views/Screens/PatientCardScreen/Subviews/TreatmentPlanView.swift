@@ -73,19 +73,14 @@ struct TreatmentPlanView: View {
                     ForEach(TreatmentPlan.Kind.allCases, id: \.self) { kind in
                         if let pricelistItem = pricelistItem(forTreatmentPlanOfKind: kind) {
                             Button {
-                                let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, agent: agent)
-                                let check = Check(services: [medicalService])
-                                modelContext.insert(check)
+                                let appointment = createAppointment(with: pricelistItem)
+
+                                guard let check = appointment.check else { return }
 
                                 coordinator.present(
                                     .billPayment(patient: patient, check: check, isPaid: $isPaid),
                                     onDisappear: {
                                         if isPaid {
-                                            let appointment = PatientAppointment(scheduledTime: .now, duration: 0)
-                                            appointment.registerPatient(patient, duration: 0, registrar: user.asAnyUser)
-                                            appointment.check = check
-                                            appointment.status = .completed
-
                                             withAnimation {
                                                 patient.activateTreatmentPlan(ofKind: kind)
                                             }
@@ -94,7 +89,7 @@ struct TreatmentPlanView: View {
 //                                                await messageController.send(.treatmentPlanActivation(patient))
 //                                            }
                                         } else {
-                                            modelContext.delete(check)
+                                            modelContext.delete(appointment)
                                         }
                                     }
                                 )
@@ -138,5 +133,19 @@ private extension TreatmentPlanView {
         descriptor.fetchLimit = 1
 
         return try? modelContext.fetch(descriptor).first
+    }
+
+    func createAppointment(with pricelistItem: PricelistItem) -> PatientAppointment {
+        let medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, agent: agent)
+        let check = Check(services: [medicalService])
+        let appointment = PatientAppointment(scheduledTime: .now, duration: 0)
+        appointment.registerPatient(
+            patient,
+            duration: 0,
+            registrar: user.asAnyUser,
+            mergedCheck: check
+        )
+
+        return appointment
     }
 }

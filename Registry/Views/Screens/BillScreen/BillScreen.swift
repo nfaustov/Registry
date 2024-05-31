@@ -12,28 +12,16 @@ struct BillScreen: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.servicesTablePurpose) private var servicesTablePurpose
 
-    private let appointment: PatientAppointment
+    let appointment: PatientAppointment
 
     // MARK: - State
 
-    @State private var check: Check
     @State private var isCompleted: Bool = false
     @State private var isPriselistPresented: Bool = false
 
     // MARK: -
-
-    init(appointment: PatientAppointment) {
-        self.appointment = appointment
-
-        if let check = appointment.check {
-            _check = State(initialValue: check)
-        } else {
-            _check = State(initialValue: Check())
-        }
-    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -58,30 +46,27 @@ struct BillScreen: View {
                 .padding()
             }
 
-            if let doctor = appointment.schedule?.doctor {
-                ServicesTable(doctor: doctor, check: check, editMode: $isPriselistPresented)
-                    .servicesTablePurpose(servicesTablePurpose)
-                    .background()
-                    .cornerRadius(16)
-                    .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-                    .padding(.horizontal)
-            }
-
-            if servicesTablePurpose == .createAndPay {
-                HStack(alignment: .bottom) {
-                    PriceCalculationView(
-                        appointment: appointment,
-                        check: check,
-                        isCompleted: $isCompleted
-                    )
-                    .onChange(of: isCompleted) { _, newValue in
-                        if newValue {
-                            dismiss()
-                        }
-                    }
+            if let check = appointment.check {
+                if let doctor = appointment.schedule?.doctor {
+                    ServicesTable(doctor: doctor, check: check, editMode: $isPriselistPresented)
+                        .servicesTablePurpose(servicesTablePurpose)
+                        .background()
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+                        .padding(.horizontal)
                 }
-                .padding([.horizontal, .bottom])
-                .frame(maxHeight: 140)
+
+                if servicesTablePurpose == .createAndPay, let patient = appointment.patient {
+                    HStack(alignment: .bottom) {
+                        PriceCalculationView(
+                            patient: patient,
+                            check: check
+                        )
+                        .disabled(paymentDisabled)
+                    }
+                    .padding([.horizontal, .bottom])
+                    .frame(maxHeight: 140)
+                }
             }
         }
         .navigationTitle("Счет")
@@ -99,4 +84,16 @@ struct BillScreen: View {
             .environmentObject(Coordinator())
     }
     .previewInterfaceOrientation(.landscapeRight)
+}
+
+// MARK: - Calculations
+
+private extension BillScreen {
+    var paymentDisabled: Bool {
+        guard let check = appointment.check else { return false }
+
+        let isToday = Calendar.current.isDate(appointment.scheduledTime, inSameDayAs: .now)
+
+        return !isToday || check.services.isEmpty
+    }
 }

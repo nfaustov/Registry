@@ -11,18 +11,19 @@ struct PriceCalculationView: View {
     // MARK: - Dependencies
 
     @Environment(\.user) private var user
+    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    let appointment: PatientAppointment
+    let patient: Patient
     @Bindable var check: Check
-    @Binding var isCompleted: Bool
 
     // MARK: - State
 
     @State private var addDiscount: Bool = false
     @State private var payBill: Bool = false
     @State private var showDiscountSheet: Bool = false
+    @State var isPaid: Bool = false
 
     // MARK: -
 
@@ -43,7 +44,7 @@ struct PriceCalculationView: View {
                         Text(patient.balance > 0 ? "С баланса:" : "Долг:")
                             .font(.headline)
                         Spacer()
-                        CurrencyText(isCompleted ? patient.balance : -patient.balance)
+                        CurrencyText(-patient.balance)
                             .font(.title3)
                     }
                 }
@@ -60,17 +61,14 @@ struct PriceCalculationView: View {
 
                 HStack {
                     Button {
-                        appointment.check = check
-
-                        if let patient = appointment.patient {
-                            coordinator.present(
-                                .billPayment(
-                                    patient: patient,
-                                    check: check,
-                                    isPaid: $isCompleted
-                                )
-                            )
-                        }
+                        coordinator.present(
+                            .billPayment(
+                                patient: patient,
+                                check: check,
+                                isPaid: $isPaid
+                            ),
+                            onDisappear: { if isPaid { dismiss() } }
+                        )
                     } label: {
                         CurrencyText(check.totalPrice - patient.balance)
                             .font(.headline)
@@ -78,7 +76,6 @@ struct PriceCalculationView: View {
                             .frame(height: 28)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(!Calendar.current.isDate(appointment.scheduledTime, inSameDayAs: .now))
 
                     Button {
                         addDiscount = true
@@ -115,19 +112,13 @@ struct PriceCalculationView: View {
             }
             .frame(width: 500)
         }
-        .onDisappear {
-            if !isCompleted {
-                appointment.check = check
-            }
-        }
     }
 }
 
 #Preview {
     PriceCalculationView(
-        appointment: ExampleData.appointment,
-        check: Check(services: []),
-        isCompleted: .constant(false)
+        patient: ExampleData.patient,
+        check: Check(services: [])
     )
     .environmentObject(Coordinator())
 }
@@ -146,11 +137,6 @@ private extension PriceCalculationView {
 // MARK: - Calculations
 
 private extension PriceCalculationView {
-    var patient: Patient {
-        guard let patient = appointment.patient else { fatalError() }
-        return patient
-    }
-
     var discountPercent: Int {
         Int(check.discountRate * 100)
     }

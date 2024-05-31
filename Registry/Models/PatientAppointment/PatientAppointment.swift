@@ -63,8 +63,8 @@ final class PatientAppointment {
         self.duration = duration
         status = .registered
 
-        if let check = mergedCheck {
-            self.check = check
+        if let mergedCheck {
+            check = mergedCheck
         } else {
             if let doctor = schedule?.doctor, let pricelistItem = doctor.defaultPricelistItem {
                 let service = MedicalService(
