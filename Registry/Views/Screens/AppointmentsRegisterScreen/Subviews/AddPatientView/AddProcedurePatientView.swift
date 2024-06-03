@@ -93,16 +93,18 @@ struct AddProcedurePatientView: View {
 
                 if let selectedPatient, let treatmentPlan = selectedPatient.currentTreatmentPlan {
                     Section("Лечебный план") {
-                        LabeledContent {
-                            Text("до")
-                            DateText(treatmentPlan.expirationDate, format: .date)
-                        } label: {
+                        if treatmentPlan.kind.isPregnancyAI {
                             Text(treatmentPlan.kind.rawValue)
+                                .colorInvert()
+                        } else {
+                            LabeledContent(treatmentPlan.kind.rawValue) {
+                                Text("до")
+                                DateText(treatmentPlan.expirationDate, format: .date)
+                            }
+                            .colorInvert()
                         }
-                        .tint(.primary)
-                        .colorInvert()
-                        .listRowBackground(Color(.appBlack))
                     }
+                    .listRowBackground(Color(.appBlack))
                 }
 
                 Section {

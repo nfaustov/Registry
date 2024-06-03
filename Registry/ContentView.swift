@@ -13,6 +13,8 @@ struct ContentView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @Query private var pricelistItems: [PricelistItem]
+
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
@@ -69,6 +71,19 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
+//            .task {
+//                for pricelistItem in pricelistItems {
+//                    if pricelistItem.treatmentPlans.contains(.pregnancy) {
+//                        pricelistItem.treatmentPlans.append(contentsOf: TreatmentPlan.Kind.pregnancyAICases)
+//                    }
+//                    if pricelistItem.category == .obstetrics {
+//                        let pregnancyAICasesIDs = TreatmentPlan.Kind.pregnancyAICases.map { $0.id }
+//                        if pregnancyAICasesIDs.contains(pricelistItem.id) {
+//                            pricelistItem.archived = true
+//                        }
+//                    }
+//                }
+//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }

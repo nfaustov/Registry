@@ -70,14 +70,20 @@ struct PatientCardScreen: View {
                     currentDetail = .treatmentPlan
                 } label: {
                     if let treatmentPlan = patient.currentTreatmentPlan {
-                        LabeledContent {
-                            Text("до")
-                            DateText(treatmentPlan.expirationDate, format: .date)
-                        } label: {
+                        if treatmentPlan.kind.isPregnancyAI {
                             Text(treatmentPlan.kind.rawValue)
+                                .tint(.primary)
+                                .colorInvert()
+                        } else {
+                            LabeledContent {
+                                Text("до")
+                                DateText(treatmentPlan.expirationDate, format: .date)
+                            } label: {
+                                Text(treatmentPlan.kind.rawValue)
+                            }
+                            .tint(.primary)
+                            .colorInvert()
                         }
-                        .tint(.primary)
-                        .colorInvert()
                     } else {
                         Text("Активировать")
                     }

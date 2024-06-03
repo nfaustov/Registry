@@ -39,16 +39,24 @@ struct TreatmentPlanView: View {
         Form {
             if let treatmentPlan = patient.currentTreatmentPlan {
                 Section("Текущий лечебный план") {
-                    LabeledContent(treatmentPlan.kind.rawValue) {
-                        Text("активен до")
-                        DateText(treatmentPlan.expirationDate, format: .date)
+                    if treatmentPlan.kind.isPregnancyAI {
+                        Text(treatmentPlan.kind.rawValue)
+                    } else {
+                        LabeledContent(treatmentPlan.kind.rawValue) {
+                            Text("активен до")
+                            DateText(treatmentPlan.expirationDate, format: .date)
+                        }
                     }
                 }
 
-                if !treatmentPlanChecks.isEmpty {
-                    Section("Приобретенная выгода") {
-                        LabeledCurrency("Оплаты по лечебному плану", value: totalChecksPrice)
-                        LabeledCurrency("Обычная цена", value: treatmentPlanServicesBasePrice)
+                if treatmentPlan.kind.isPregnancyAI {
+                    Button("Завершить", role: .destructive) {
+                        treatmentPlan.complete()
+                    }
+                } else if !treatmentPlanChecks.isEmpty {
+                    Section {
+                        LabeledCurrency("Оплаты в рамках лечебного плана", value: totalChecksPrice)
+                        LabeledCurrency("Цена без лечебного плана", value: treatmentPlanServicesBasePrice)
                         LabeledCurrency("Выгода", value: benefit)
                             .font(.headline)
                     }
@@ -69,35 +77,14 @@ struct TreatmentPlanView: View {
                     }
                 }
 
-                Section {
-                    ForEach(TreatmentPlan.Kind.allCases, id: \.self) { kind in
-                        if let pricelistItem = pricelistItem(forTreatmentPlanOfKind: kind) {
-                            Button {
-                                let appointment = createAppointment(with: pricelistItem)
-
-                                guard let check = appointment.check else { return }
-
-                                coordinator.present(
-                                    .billPayment(patient: patient, check: check, isPaid: $isPaid),
-                                    onDisappear: {
-                                        if isPaid {
-                                            withAnimation {
-                                                patient.activateTreatmentPlan(ofKind: kind)
-                                            }
-
-//                                            Task {
-//                                                await messageController.send(.treatmentPlanActivation(patient))
-//                                            }
-                                        } else {
-                                            modelContext.delete(appointment)
-                                        }
-                                    }
-                                )
-                            } label: {
-                                LabeledCurrency(kind.rawValue, value: pricelistItem.price)
-                            }
-                            .tint(.primary)
-                        }
+                Section("Лечебные планы") {
+                    ForEach(TreatmentPlan.Kind.allCases.filter { !$0.isPregnancyAI }, id: \.self) { kind in
+                        treatmentPlanButton(treatmentPlanOfKind: kind)
+                    }
+                }
+                Section("Ведение беременности") {
+                    ForEach(TreatmentPlan.Kind.pregnancyAICases, id: \.self) { kind in
+                        treatmentPlanButton(treatmentPlanOfKind: kind)
                     }
                 }
             }
@@ -107,6 +94,42 @@ struct TreatmentPlanView: View {
 
 #Preview {
     TreatmentPlanView(patient: ExampleData.patient)
+}
+
+// MARK: - Subviews
+
+private extension TreatmentPlanView {
+    @ViewBuilder func treatmentPlanButton(treatmentPlanOfKind kind: TreatmentPlan.Kind) -> some View {
+        if let pricelistItem = pricelistItem(forTreatmentPlanOfKind: kind) {
+            Button {
+                let appointment = createAppointment(with: pricelistItem)
+
+                guard let check = appointment.check else { return }
+
+                coordinator.present(
+                    .billPayment(patient: patient, check: check, isPaid: $isPaid),
+                    onDisappear: {
+                        if isPaid {
+                            withAnimation {
+                                patient.activateTreatmentPlan(ofKind: kind)
+                            }
+
+//                            if !TreatmentPlan.Kind.oldCases.contains(kind) {
+//                                Task {
+//                                    await messageController.send(.treatmentPlanActivation(patient))
+//                                }
+//                            }
+                        } else {
+                            modelContext.delete(appointment)
+                        }
+                    }
+                )
+            } label: {
+                LabeledCurrency(kind.rawValue, value: pricelistItem.price)
+            }
+            .tint(.primary)
+        }
+    }
 }
 
 // MARK: - Claculations

@@ -88,8 +88,12 @@ final class PricelistItem: Codable {
 
     func treatmentPlanPrice(_ treatmentPlan: TreatmentPlan.Kind) -> Double? {
         if treatmentPlans.contains(treatmentPlan) {
-            let estimatedPrice = costPrice + 50
-            return estimatedPrice >= price ? price : estimatedPrice
+            if treatmentPlan.isPregnancyAI {
+                return 0
+            } else {
+                let estimatedPrice = costPrice + 50
+                return estimatedPrice >= price ? price : estimatedPrice
+            }
         } else { return nil }
     }
 }
