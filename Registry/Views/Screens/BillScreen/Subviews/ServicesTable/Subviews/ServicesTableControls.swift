@@ -66,6 +66,7 @@ struct ServicesTableControls: View {
             Toggle(isOn: $predictions) {
                 Label("Предложения", systemImage: "sparkles")
             }
+            .padding(.horizontal)
             .toggleStyle(.button)
             .tint(.indigo)
 

@@ -122,14 +122,13 @@ struct PricelistItemView: View {
                 }
 
                 Section {
-                    toggleTreatmentPlan(.pregnancy)
-                    toggleTreatmentPlan(.basic)
+                    ForEach(TreatmentPlan.Kind.allCases) { plan in
+                        toggleTreatmentPlan(plan)
+                        LabeledCurrency("Цена по лечебному плану", value: pricelistItem.treatmentPlanPrice(plan) ?? 0)
+                            .font(.headline)
+                    }
                 } header: {
                     Text("Лечебные планы")
-                }
-
-                if !pricelistItem.treatmentPlans.isEmpty {
-                    LabeledCurrency("Цена по лечебному плану", value: pricelistItem.treatmentPlanPrice)
                 }
             }
             .sheetToolbar(

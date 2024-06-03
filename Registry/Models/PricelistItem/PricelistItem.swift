@@ -86,12 +86,10 @@ final class PricelistItem: Codable {
         try container.encode(treatmentPlans, forKey: .treatmentPlans)
     }
 
-    var treatmentPlanPrice: Double {
-        if treatmentPlans.isEmpty {
-            return price
-        } else {
+    func treatmentPlanPrice(_ treatmentPlan: TreatmentPlan.Kind) -> Double? {
+        if treatmentPlans.contains(treatmentPlan) {
             let estimatedPrice = costPrice + 50
             return estimatedPrice >= price ? price : estimatedPrice
-        }
+        } else { return nil }
     }
 }

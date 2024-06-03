@@ -11,6 +11,7 @@ import SwiftData
 @Model
 final class MedicalService {
     let pricelistItem: PricelistItem.Snapshot
+    let treatmentPlanPrice: Double?
     @Relationship(inverse: \Doctor.performedServices)
     var performer: Doctor?
     @Relationship(inverse: \Doctor.appointedServices)
@@ -28,11 +29,13 @@ final class MedicalService {
 
     init(
         pricelistItem: PricelistItem.Snapshot,
+        treatmentPlanPrice: Double? = nil,
         performer: Doctor? = nil,
         agent: Doctor? = nil,
         conclusion: Data? = nil
     ) {
         self.pricelistItem = pricelistItem
+        self.treatmentPlanPrice = treatmentPlanPrice
         self.performer = performer
         self.agent = agent
         self.conclusion = conclusion

@@ -10,8 +10,9 @@ import SwiftUI
 struct PredictionsView: View {
     // MARK: - Dependencies
 
-    let predictions: [PricelistItem.Snapshot]
-    var addToCheckAction: (PricelistItem.Snapshot) -> Void
+    let predictions: [PricelistItem]
+    var treatmentPlan: TreatmentPlan.Kind?
+    var addToCheckAction: (PricelistItem) -> Void
 
     var body: some View {
         VStack {
@@ -21,7 +22,11 @@ struct PredictionsView: View {
                         addToCheckAction(item)
                     }
                 } label: {
-                    LabeledCurrency(item.title, value: item.price)
+                    if let treatmentPlan {
+                        LabeledCurrency(item.title, value: item.treatmentPlanPrice(treatmentPlan) ?? item.price)
+                    } else {
+                        LabeledCurrency(item.title, value: item.price)
+                    }
                 }
                 .buttonStyle(PredictionButton())
             }
@@ -30,7 +35,7 @@ struct PredictionsView: View {
 }
 
 #Preview {
-    PredictionsView(predictions: [ExampleData.pricelistItem.snapshot], addToCheckAction: { item in })
+    PredictionsView(predictions: [ExampleData.pricelistItem], treatmentPlan: .basic, addToCheckAction: { item in })
 }
 
 struct PredictionButton: ButtonStyle {

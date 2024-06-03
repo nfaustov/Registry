@@ -26,7 +26,7 @@ struct ServicesTable: View {
     @State private var sortOrder = [KeyPathComparator(\MedicalService.performer?.secondName)]
     @State private var selection: Set<PersistentIdentifier> = []
     @State private var isTargeted: Bool = false
-    @State private var predictions: [PricelistItem.Snapshot] = []
+    @State private var predictions: [PricelistItem] = []
     @State private var predictionsEnabled: Bool = true
     @State private var correlations: [PricelistItemsCorrelation] = []
     @State private var errorMessage: String?
@@ -36,12 +36,12 @@ struct ServicesTable: View {
     var body: some View {
         VStack(spacing: 0) {
             Table(check.services, selection: $selection, sortOrder: $sortOrder) {
-                TableColumn("Услуга", value: \.pricelistItem.title) { service in
+                TableColumn("Услуга") { service in
                     Text(service.pricelistItem.title)
                         .lineLimit(4)
                 }.width(600)
-                TableColumn("Стоимость", value: \.pricelistItem.price) { service in
-                    CurrencyText(service.pricelistItem.price)
+                TableColumn("Стоимость") { service in
+                    CurrencyText(service.treatmentPlanPrice ?? service.pricelistItem.price)
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
                 }.width(120)
@@ -62,7 +62,9 @@ struct ServicesTable: View {
                             menu(of: \.performer, for: id)
                         }
 
-                        menu(of: \.agent, for: id)
+                        if patient.currentTreatmentPlan == nil {
+                            menu(of: \.agent, for: id)
+                        }
                     }
 
                     if purpose == .createAndPay {
@@ -82,30 +84,25 @@ struct ServicesTable: View {
                 check.services.sort(using: newValue)
             }
             .onChange(of: check.services) { _, newValue in
-                if newValue.isEmpty {
-                    predictions = []
-                } else {
-                    let snapshots = newValue.map { $0.pricelistItem }
-                    withAnimation {
-                        makePredictions(basedOn: snapshots)
-                    }
+                withAnimation {
+                    makePredictions(basedOn: newValue)
                 }
             }
             .task {
                 let checksController = ChecksController(modelContainer: modelContext.container)
                 correlations = await checksController.pricelistItemsCorrelations
 
-                if !check.services.isEmpty {
-                    let snapshots = check.services.map { $0.pricelistItem }
-                    withAnimation {
-                        makePredictions(basedOn: snapshots)
-                    }
+                withAnimation {
+                    makePredictions(basedOn: check.services)
                 }
             }
 
             if purpose == .createAndPay {
                 if predictionsEnabled, !predictions.isEmpty {
-                    PredictionsView(predictions: predictions) {
+                    PredictionsView(
+                        predictions: predictions,
+                        treatmentPlan: patient.currentTreatmentPlan?.kind
+                    ) {
                         addToCheck(pricelistItem: $0)
                     }
                     .padding(.vertical, 8)
@@ -133,7 +130,9 @@ private extension ServicesTable {
         }
         .dropDestination(for: PricelistItem.self) { droppedItems, location in
             for item in droppedItems {
-                addToCheck(pricelistItem: item.snapshot)
+                withAnimation {
+                    addToCheck(pricelistItem: item)
+                }
             }
 
             return true
@@ -165,30 +164,50 @@ private extension ServicesTable {
 // MARK: - Calculations
 
 private extension ServicesTable {
+    var patient: Patient {
+        guard let patient = check.appointments?.first?.patient else { fatalError() }
+        return patient
+    }
+
     func service(with id: PersistentIdentifier) -> MedicalService? {
         check.services.first(where: { $0.id == id })
     }
 
-    func addToCheck(pricelistItem: PricelistItem.Snapshot) {
+    func addToCheck(pricelistItem: PricelistItem) {
+        var agent: Doctor? = nil
+
+        if pricelistItem.category == .laboratory, 
+            doctor.department != .procedure,
+            patient.currentTreatmentPlan == nil {
+            agent = doctor
+        }
+
+        var treatmentPlanPrice: Double? = nil
+
+        if let treatmentPlan = patient.currentTreatmentPlan {
+            treatmentPlanPrice = pricelistItem.treatmentPlanPrice(treatmentPlan.kind)
+        }
+
         let medicalService = MedicalService(
-            pricelistItem: pricelistItem,
+            pricelistItem: pricelistItem.snapshot,
+            treatmentPlanPrice: treatmentPlanPrice,
             performer: pricelistItem.category == .laboratory ? nil : doctor,
-            agent: pricelistItem.category == .laboratory ? (doctor.department == .procedure ? nil : doctor) : nil
+            agent: agent
         )
         check.services.insert(medicalService, at: 0)
     }
 
-    func getPredictedPricelistItems(with identifiers: [String]) throws -> [PricelistItem.Snapshot] {
+    func getPredictedPricelistItems(with identifiers: [String]) throws -> [PricelistItem] {
         let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
         let descriptor = FetchDescriptor(predicate: predicate)
 
         if let items = try? modelContext.fetch(descriptor) {
-            return items.map { $0.snapshot }
+            return items
         } else { return [] }
     }
 
-    func makePredictions(basedOn items: [PricelistItem.Snapshot]) {
-        let itemsIDs = items.map { $0.id }
+    func makePredictions(basedOn services: [MedicalService]) {
+        let itemsIDs = services.map { $0.pricelistItem.id }
         var predictionsIDs = correlations
             .filter { itemsIDs.contains($0.itemID) }
             .sorted(by: { $0.usage > $1.usage })

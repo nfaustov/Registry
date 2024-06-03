@@ -33,9 +33,7 @@ final class Check {
     }
 
     var price: Double {
-        services
-            .map { $0.pricelistItem.price }
-            .reduce(0.0, +)
+        services.reduce(0.0) { $0 + ($1.treatmentPlanPrice ?? $1.pricelistItem.price) }
     }
 
     var totalPrice: Double {
