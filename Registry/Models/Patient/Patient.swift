@@ -90,8 +90,12 @@ final class Patient: AccountablePerson, Codable {
         transactions?.append(transaction)
     }
 
-    func getTransactions() -> [any MoneyTransaction] {
-        []
+    func getTransactions(from date: Date) -> [PatientMoneyTransaction] {
+        if let transactions {
+            return transactions
+                .filter { $0.date > date }
+                .map { PatientMoneyTransaction(payment: $0) }
+        } else { return [] }
     }
 
     func mergedAppointments(forCheckID checkID: PersistentIdentifier) -> [PatientAppointment] {

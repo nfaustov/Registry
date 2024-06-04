@@ -15,14 +15,14 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     let kind: PatientMoneyTransaction.Kind
     let refunded: Bool
 
-    init(date: Date, description: String, value: Double, kind: PatientMoneyTransaction.Kind, refunded: Bool) {
-        id = UUID()
-        self.date = date
-        self.description = description
-        self.value = value
-        self.kind = kind
-        self.refunded = refunded
-    }
+//    init(date: Date, description: String, value: Double, kind: PatientMoneyTransaction.Kind, refunded: Bool) {
+//        id = UUID()
+//        self.date = date
+//        self.description = description
+//        self.value = value
+//        self.kind = kind
+//        self.refunded = refunded
+//    }
 
     init(payment: Payment) {
         id = UUID()
@@ -30,13 +30,23 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
         description = payment.purpose.descripiton
         value = payment.methods.reduce(0.0) { $0 + $1.value }
 
-        if value > 0 {
+        switch payment.purpose {
+        case .medicalServices:
+            kind = .servicePayment
+            refunded = false
+        case .refund:
+            kind = .refund
+            refunded = true
+        case .toBalance:
             kind = .toBalance
-        } else {
+            refunded = false
+        case .fromBalance:
             kind = .fromBalance
+            refunded = false
+        default:
+            kind = .servicePayment
+            refunded = false
         }
-
-        refunded = false
     }
 }
 
