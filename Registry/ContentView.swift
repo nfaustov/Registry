@@ -71,19 +71,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-//            .task {
-//                for pricelistItem in pricelistItems {
-//                    if pricelistItem.treatmentPlans.contains(.pregnancy) {
-//                        pricelistItem.treatmentPlans.append(contentsOf: TreatmentPlan.Kind.pregnancyAICases)
-//                    }
-//                    if pricelistItem.category == .obstetrics {
-//                        let pregnancyAICasesIDs = TreatmentPlan.Kind.pregnancyAICases.map { $0.id }
-//                        if pregnancyAICasesIDs.contains(pricelistItem.id) {
-//                            pricelistItem.archived = true
-//                        }
-//                    }
-//                }
-//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }
@@ -120,5 +107,17 @@ struct ContentView: View {
 //        let pregnancyTreatmentPlanPricelistItem = PricelistItem(id: "ТРИТ-БЕРЕМ", category: .therapy, title: "Годовое обслуживание по лечебному плану БЕРЕМЕННОСТЬ", price: 12900, costPrice: 11700, fixedAgentFee: 1200)
 //        pregnancyTreatmentPlanPricelistItem.archived = true
 //        modelContext.insert(pregnancyTreatmentPlanPricelistItem)
+//
+//        for pricelistItem in pricelistItems {
+//            if pricelistItem.treatmentPlans.contains(.pregnancy) {
+//                pricelistItem.treatmentPlans.append(contentsOf: TreatmentPlan.Kind.pregnancyAICases)
+//            }
+//            if pricelistItem.category == .obstetrics {
+//                let pregnancyAICasesIDs = TreatmentPlan.Kind.pregnancyAICases.map { $0.id }
+//                if pregnancyAICasesIDs.contains(pricelistItem.id) {
+//                    pricelistItem.archived = true
+//                }
+//            }
+//        }
 //    }
 //}

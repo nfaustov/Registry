@@ -66,7 +66,7 @@ final class PricelistItem: Codable {
             self.treatmentPlans = treatmentPlans
         } else {
             if self.category == .laboratory {
-                self.treatmentPlans = [.pregnancy, .basic]
+                self.treatmentPlans = TreatmentPlan.Kind.allCases
             } else {
                 self.treatmentPlans = []
             }
