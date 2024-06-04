@@ -13,8 +13,6 @@ struct ContentView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    @Query private var pricelistItems: [PricelistItem]
-
     @EnvironmentObject private var coordinator: Coordinator
 
     // MARK: - State
