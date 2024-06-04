@@ -84,6 +84,7 @@ struct PriceCalculationView: View {
                             .frame(width: 80, height: 28)
                     }
                     .buttonStyle(.bordered)
+                    .disabled(patient.currentTreatmentPlan != nil)
                     .confirmationDialog("Скидка", isPresented: $addDiscount) {
                         discountButton(3)
                         discountButton(5)

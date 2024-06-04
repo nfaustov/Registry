@@ -41,10 +41,20 @@ struct ServicesTable: View {
                         .lineLimit(4)
                 }.width(600)
                 TableColumn("Стоимость") { service in
-                    CurrencyText(service.treatmentPlanPrice ?? service.pricelistItem.price)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
-                }.width(120)
+                    HStack {
+                        if let treatmentPlanPrice = service.treatmentPlanPrice {
+                            CurrencyText(service.pricelistItem.price)
+                                .strikethrough()
+                            CurrencyText(treatmentPlanPrice)
+                                .fontWeight(.medium)
+                                .foregroundColor(.primary)
+                        } else {
+                            CurrencyText(service.pricelistItem.price)
+                                .fontWeight(.medium)
+                                .foregroundColor(.primary)
+                        }
+                    }
+                }.width(140)
                 TableColumn("Исполнитель") { service in
                     Text(service.performer?.initials ?? "-")
                         .foregroundColor(.secondary)
@@ -197,7 +207,7 @@ private extension ServicesTable {
         check.services.insert(medicalService, at: 0)
     }
 
-    func getPredictedPricelistItems(with identifiers: [String]) throws -> [PricelistItem] {
+    func getPricelistItems(with identifiers: [String]) -> [PricelistItem] {
         let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
         let descriptor = FetchDescriptor(predicate: predicate)
 
@@ -217,10 +227,6 @@ private extension ServicesTable {
             predictionsIDs = predictionsIDs.dropLast(predictionsIDs.count - 5)
         }
 
-        do {
-            predictions = try getPredictedPricelistItems(with: predictionsIDs)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
+        predictions = getPricelistItems(with: predictionsIDs)
     }
 }

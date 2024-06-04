@@ -70,7 +70,7 @@ private extension VisitsDetailView {
                 if !check.services.isEmpty {
                     DisclosureGroup {
                         ForEach(check.services) { service in
-                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
+                            LabeledCurrency(service.pricelistItem.title, value: service.treatmentPlanPrice ?? service.pricelistItem.price)
                         }
 
                         if check.discount > 0 {

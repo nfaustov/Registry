@@ -46,7 +46,7 @@ struct CompletedAppointmentView: View {
                         HStack {
                             if editMode { toggle(service: service).padding(.trailing) }
 
-                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price, unit: false)
+                            LabeledCurrency(service.pricelistItem.title, value: service.treatmentPlanPrice ?? service.pricelistItem.price, unit: false)
                                 .foregroundStyle(serviceItemForegroudColor(service))
                         }
                     }
