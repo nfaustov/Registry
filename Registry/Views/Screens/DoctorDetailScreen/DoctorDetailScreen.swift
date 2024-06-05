@@ -71,19 +71,16 @@ struct DoctorDetailScreen: View {
                 Text("Дата рождения")
             }
 
-            Section("Баланс") {
-                LabeledContent {
-                    Button("Пополнить") {
-                        coordinator.present(.updateBalance(for: doctor, kind: .refill))
-                    }
-                } label: {
-                    CurrencyText(doctor.balance)
-                }
-            }
-
             Section {
-                Button("Транзакции") {
+                Button {
                     currentDetail = .transactions
+                } label: {
+                    LabeledContent {
+                        CurrencyText(doctor.balance)
+                    } label: {
+                        Label("Баланс", systemImage: "briefcase")
+                            .tint(.primary)
+                    }
                 }
             }
 

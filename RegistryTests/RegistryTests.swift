@@ -83,7 +83,7 @@ final class RegistryTests: XCTestCase {
         
         let method = Payment.Method(.cash, value: 1550)
         
-        ledger.makePayment(.medicalService(check: check, methods: [method]), createdBy: SuperUser.boss)
+        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
         
         XCTAssertEqual(appointment.status, .completed)
@@ -102,7 +102,7 @@ final class RegistryTests: XCTestCase {
         let method1 = Payment.Method(.bank, value: 1400)
         let method2 = Payment.Method(.cash, value: 300)
 
-        ledger.makePayment(.medicalService(check: check, methods: [method1, method2]), createdBy: SuperUser.boss)
+        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method1, method2]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(appointment.status, .completed)
@@ -153,7 +153,7 @@ final class RegistryTests: XCTestCase {
 
         let paymentMethod = Payment.Method(.bank, value: 1300)
 
-        ledger.makePayment(.medicalService(check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
+        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
 
         let refund = Refund(services: [medicalService])
         check.makeRefund(refund)
@@ -174,7 +174,7 @@ final class RegistryTests: XCTestCase {
 
         let paymentMethod = Payment.Method(.bank, value: 1300)
 
-        ledger.makePayment(.medicalService(check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
+        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
 
         let refund = Refund(services: [medicalService])
         check.makeRefund(refund)

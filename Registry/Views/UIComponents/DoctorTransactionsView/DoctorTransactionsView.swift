@@ -23,6 +23,8 @@ struct DoctorTransactionsView: View {
         let dates = Array(transactionsByDate.keys.sorted(by: >))
 
         Form {
+            BalanceView(person: doctor)
+
             ForEach(dates, id: \.self) { date in
                 Section {
                     let dateTransactionsOfKind = Dictionary(
@@ -75,7 +77,7 @@ private extension DoctorTransactionsView {
             }
             .padding()
             .background(colorStyle(forTransactionOfKind: kind).opacity(0.1))
-            .clipShape(.rect(cornerRadius: 8, style: .continuous))
+            .clipShape(.rect(cornerRadius: 4, style: .continuous))
         }
     }
 

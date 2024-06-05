@@ -8,13 +8,44 @@
 import SwiftUI
 
 struct BalanceView: View {
+    // MARK: - Dependencies
+
+    @EnvironmentObject private var coordinator: Coordinator
+
+    let person: AccountablePerson
+
+    // MARK: -
+
     var body: some View {
-        Section {
-            
+        HStack {
+            Text("Баланс: \(Int(person.balance)) ₽")
+                .foregroundStyle(person.balance < 0 ? .red : .primary)
+                .font(.headline)
+
+            Spacer()
+
+            Button {
+                coordinator.present(.updateBalance(for: person, kind: .refill))
+            } label: {
+                Text("Пополнить")
+                    .fontWeight(.medium)
+                    .frame(width: 120)
+            }
+            .buttonStyle(.borderedProminent)
+
+            Button {
+                coordinator.present(.updateBalance(for: person, kind: .payout))
+            } label: {
+                Text("Списать")
+                    .fontWeight(.medium)
+                    .frame(width: 120)
+            }
+            .buttonStyle(.borderedProminent)
         }
     }
 }
 
 #Preview {
-    BalanceView()
+    BalanceView(person: ExampleData.patient)
+        .environmentObject(Coordinator())
 }

@@ -15,15 +15,6 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     let kind: PatientMoneyTransaction.Kind
     let refunded: Bool
 
-//    init(date: Date, description: String, value: Double, kind: PatientMoneyTransaction.Kind, refunded: Bool) {
-//        id = UUID()
-//        self.date = date
-//        self.description = description
-//        self.value = value
-//        self.kind = kind
-//        self.refunded = refunded
-//    }
-
     init(payment: Payment) {
         id = UUID()
         date = payment.date
