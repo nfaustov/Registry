@@ -21,6 +21,7 @@ final class PricelistItem: Codable {
     var treatmentPlans: [TreatmentPlan.Kind] = []
 
     var doctors: [Doctor]?
+    var promotions: [Promotion]?
 
     init(
         id: String,

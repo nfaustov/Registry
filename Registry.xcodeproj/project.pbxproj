@@ -110,6 +110,7 @@
 		8B8DA9692BA20F1C00F6F847 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8DA9682BA20F1C00F6F847 /* Message.swift */; };
 		8B8DA96D2BA210D700F6F847 /* ArtmedicsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8DA96C2BA210D700F6F847 /* ArtmedicsServices.swift */; };
 		8B8DA96F2BA213BD00F6F847 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8DA96E2BA213BD00F6F847 /* MessageController.swift */; };
+		8B8E63FA2C10B8EE001993E1 /* Promotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E63F92C10B8EE001993E1 /* Promotion.swift */; };
 		8B92B56A2B8797C8004E0675 /* CashboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B5692B8797C8004E0675 /* CashboxScreen.swift */; };
 		8B92B56E2B87AB1F004E0675 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56D2B87AB1F004E0675 /* ReportView.swift */; };
 		8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92B56F2B87AC80004E0675 /* CreateSpendingView.swift */; };
@@ -308,6 +309,7 @@
 		8B8DA9682BA20F1C00F6F847 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8B8DA96C2BA210D700F6F847 /* ArtmedicsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtmedicsServices.swift; sourceTree = "<group>"; };
 		8B8DA96E2BA213BD00F6F847 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
+		8B8E63F92C10B8EE001993E1 /* Promotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promotion.swift; sourceTree = "<group>"; };
 		8B92B5692B8797C8004E0675 /* CashboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashboxScreen.swift; sourceTree = "<group>"; };
 		8B92B56D2B87AB1F004E0675 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		8B92B56F2B87AC80004E0675 /* CreateSpendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSpendingView.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 			children = (
 				8BDCCFE52B84A3EC0086BF4D /* Check.swift */,
 				8BB2DD622B97396A00AD4749 /* Refund.swift */,
+				8B8E63F92C10B8EE001993E1 /* Promotion.swift */,
 			);
 			path = Check;
 			sourceTree = "<group>";
@@ -1606,6 +1609,7 @@
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,
 				8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */,
 				8BE145032BF0C92000991225 /* LedgerView.swift in Sources */,
+				8B8E63FA2C10B8EE001993E1 /* Promotion.swift in Sources */,
 				8B7801492B87B9A60064DBFB /* PatientAppointment.swift in Sources */,
 				8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */,
 				8B0132992C03849A00547A13 /* ChecksDebugScreen.swift in Sources */,

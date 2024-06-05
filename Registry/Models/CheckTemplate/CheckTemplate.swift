@@ -17,7 +17,7 @@ final class CheckTemplate {
 
     init(
         title: String,
-        services: [MedicalService]? = nil,
+        services: [MedicalService]? = [],
         discount: Double = .zero
     ) {
         self.title = title

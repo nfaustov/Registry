@@ -18,6 +18,8 @@ struct ServicesTableControls: View {
     @Binding var predictions: Bool
 
     @Query private var checkTemplates: [CheckTemplate]
+    @Query(filter: #Predicate<Promotion> { $0.expirationDate > now }) 
+    private var promotions: [Promotion]
 
     // MARK: -
 
@@ -36,28 +38,48 @@ struct ServicesTableControls: View {
                     .disabled(check.services.isEmpty)
                 }
 
-                Button {
-                    coordinator.present(.createBillTemplate(services: check.services))
-                } label: {
-                    Label("Создать шаблон", systemImage: "note.text.badge.plus")
-                }
-                .disabled(check.services.isEmpty)
+                Section {
+                    Button {
+                        coordinator.present(.createBillTemplate(services: check.services))
+                    } label: {
+                        Label("Создать шаблон", systemImage: "note.text.badge.plus")
+                    }
+                    .disabled(check.services.isEmpty)
 
-                Menu {
-                    ForEach(checkTemplates) { template in
-                        Button(template.title) {
-                            let templateServices = template.getCopy()
+                    Menu {
+                        ForEach(checkTemplates) { template in
+                            Button(template.title) {
+                                let templateServices = template.getCopy()
 
-                            withAnimation {
-                                check.services.append(contentsOf: templateServices)
-                                check.discount += template.discount
+                                withAnimation {
+                                    check.services.append(contentsOf: templateServices)
+                                    check.discount += template.discount
+                                }
                             }
                         }
+                    } label: {
+                        Label("Использовать шаблон", systemImage: "note.text")
                     }
-                } label: {
-                    Label("Использовать шаблон", systemImage: "note.text")
+                    .disabled(checkTemplates.isEmpty)
                 }
-                .disabled(checkTemplates.isEmpty)
+
+                Section {
+                    Menu {
+                        ForEach(promotions) { promotion in
+                            let discount = discount(for: check.services, by: promotion)
+                            if discount > 0 {
+                                Button(promotion.title) {
+                                    withAnimation {
+                                        check.discount += discount
+                                    }
+                                }
+                            }
+                        }
+                    } label: {
+                        Label("Промоакции", systemImage: "giftcard")
+                    }
+                    .disabled(promotions.isEmpty)
+                }
             } label: {
                 Label("Действия", systemImage: "ellipsis.circle")
             }
@@ -92,4 +114,22 @@ struct ServicesTableControls: View {
         isPricelistPresented: .constant(false),
         predictions: .constant(true)
     )
+}
+
+// MARK: - Calculations
+
+private extension ServicesTableControls {
+    static let now = Date.now
+
+    func discount(for services: [MedicalService], by promotion: Promotion) -> Double {
+        var discount = Double.zero
+
+        for service in services {
+            if promotion.pricelistItems.contains(where: { $0.id == service.pricelistItem.id }) {
+                discount += promotion.discount(for: service.pricelistItem.id)
+            }
+        }
+
+        return discount
+    }
 }
