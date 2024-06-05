@@ -48,20 +48,25 @@ struct PatientCardScreen: View {
                 }
             }
 
-            Button {
-                currentDetail = .visits
-            } label: {
-                Label("Визиты", systemImage: "figure.walk.arrival")
-                    .tint(.primary)
+            Section {
+                Button {
+                    currentDetail = .visits
+                } label: {
+                    Label("Визиты", systemImage: "figure.walk.arrival")
+                        .tint(.primary)
+                }
             }
 
-            Section("Баланс") {
-                LabeledContent {
-                    Button("Пополнить") {
-                        coordinator.present(.updateBalance(for: patient, kind: .refill))
-                    }
+            Section {
+                Button {
+                    currentDetail = .transactions
                 } label: {
-                    CurrencyText(patient.balance)
+                    LabeledContent {
+                        CurrencyText(patient.balance)
+                    } label: {
+                        Label("Баланс", systemImage: "briefcase")
+                            .tint(.primary)
+                    }
                 }
             }
 
@@ -124,6 +129,7 @@ private extension PatientCardScreen {
         case passport
         case treatmentPlan
         case visits
+        case transactions
 
         var title: String {
             switch self {
@@ -137,6 +143,8 @@ private extension PatientCardScreen {
                 return "Активировать лечебный план"
             case .visits:
                 return "Последние визиты"
+            case .transactions:
+                return "Транзакции"
             }
         }
     }
@@ -165,6 +173,8 @@ private extension PatientCardScreen {
             TreatmentPlanView(patient: patient)
         case .visits:
             VisitsDetailView(patient: patient)
+        case .transactions:
+            PatientTransactionsView(patient: patient)
         }
     }
 

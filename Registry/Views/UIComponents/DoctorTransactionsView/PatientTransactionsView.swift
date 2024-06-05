@@ -1,20 +1,20 @@
 //
-//  DoctorTransactionsView.swift
+//  PatientTransactionsView.swift
 //  Registry
 //
-//  Created by Николай Фаустов on 06.05.2024.
+//  Created by Николай Фаустов on 04.06.2024.
 //
 
 import SwiftUI
 
-struct DoctorTransactionsView: View {
+struct PatientTransactionsView: View {
     // MARK: - Dependencies
 
-    let doctor: Doctor
+    let patient: Patient
 
     // MARK: - State
 
-    @State private var transactions: [DoctorMoneyTransaction] = []
+    @State private var transactions: [PatientMoneyTransaction] = []
 
     // MARK: -
 
@@ -23,7 +23,7 @@ struct DoctorTransactionsView: View {
         let dates = Array(transactionsByDate.keys.sorted(by: >))
 
         Form {
-            BalanceView(person: doctor)
+            BalanceView(person: patient)
 
             ForEach(dates, id: \.self) { date in
                 Section {
@@ -32,10 +32,10 @@ struct DoctorTransactionsView: View {
                         by: { $0.kind }
                     )
 
-                    transactionView(dateTransactionsOfKind, ofKind: .payout)
-                    transactionView(dateTransactionsOfKind, ofKind: .refill)
-                    transactionView(dateTransactionsOfKind, ofKind: .performerFee)
-                    transactionView(dateTransactionsOfKind, ofKind: .agentFee)
+                    transactionView(dateTransactionsOfKind, ofKind: .servicePayment)
+                    transactionView(dateTransactionsOfKind, ofKind: .refund)
+                    transactionView(dateTransactionsOfKind, ofKind: .toBalance)
+                    transactionView(dateTransactionsOfKind, ofKind: .fromBalance)
                 } header: {
                     DateText(date, format: .date)
                         .font(.headline)
@@ -44,21 +44,21 @@ struct DoctorTransactionsView: View {
             }
         }
         .onAppear {
-            transactions = doctor.getTransactions(from: .distantPast)
+            transactions = patient.getTransactions(from: .distantPast)
         }
     }
 }
 
 #Preview {
-    DoctorTransactionsView(doctor: ExampleData.doctor)
+    PatientTransactionsView(patient: ExampleData.patient)
 }
 
 // MARK: - Subviews
 
-private extension DoctorTransactionsView {
+private extension PatientTransactionsView {
     @ViewBuilder func transactionView(
-        _ transactions: [DoctorMoneyTransaction.Kind: [DoctorMoneyTransaction]],
-        ofKind kind: DoctorMoneyTransaction.Kind
+        _ transactions: [PatientMoneyTransaction.Kind: [PatientMoneyTransaction]],
+        ofKind kind: PatientMoneyTransaction.Kind
     ) -> some View {
         if let transactions = transactions[kind] {
             VStack(alignment: .leading, spacing: 0) {
@@ -81,16 +81,16 @@ private extension DoctorTransactionsView {
         }
     }
 
-    func colorStyle(forTransactionOfKind kind: DoctorMoneyTransaction.Kind) -> Color {
+    func colorStyle(forTransactionOfKind kind: PatientMoneyTransaction.Kind) -> Color {
         switch kind {
-        case .agentFee:
+        case .servicePayment:
                 .mint
-        case .performerFee:
-                .cyan
-        case .payout:
-                .purple
-        case .refill:
+        case .refund:
+                .pink
+        case .toBalance:
                 .blue
+        case .fromBalance:
+                .purple
         }
     }
 }
