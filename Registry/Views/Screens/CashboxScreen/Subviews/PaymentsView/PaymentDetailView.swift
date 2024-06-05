@@ -64,18 +64,21 @@ struct PaymentDetailView: View {
                 Spacer()
 
                 VStack(alignment: .trailing) {
-                    if !Payment.Purpose.userSelectableCases.contains(where: { payment.purpose.title == $0.title }),
-                       payment.methods.count == 1,
-                       let method = payment.methods.first {
-                        Menu {
-                            ForEach(PaymentType.allCases, id: \.self) { type in
-                                Button(type.rawValue) {
-                                    payment.updateMethodType(on: type)
+                    if !Payment.Purpose.userSelectableCases.contains(where: { payment.purpose.title == $0.title }) {
+                        ForEach(payment.methods, id: \.self) { method in
+                            Menu {
+                                ForEach(PaymentType.allCases, id: \.self) { type in
+                                    if !payment.methods.contains(where: { $0.type == type }) {
+                                        Button(type.rawValue) {
+                                            payment.updateMethod(withType: method.type, on: type)
+                                        }
+                                    }
                                 }
+                            } label: {
+                                let text = Text(payment.methods.count > 1 ? " (\(Int(method.value)))" : "")
+                                Text("\(method.type.rawValue)\(text)")
+                                    .font(.subheadline)
                             }
-                        } label: {
-                            Text(method.type.rawValue)
-                                .font(.subheadline)
                         }
                     } else {
                         ForEach(payment.methods, id: \.self) { method in

@@ -38,11 +38,11 @@ final class Payment {
         methods.reduce(0.0) { $0 + $1.value }
     }
 
-    func updateMethodType(on type: PaymentType) {
-        guard methods.count == 1,
-              var method = methods.first else { return }
+    func updateMethod(withType type: PaymentType, on newType: PaymentType) {
+        guard let updateMethodIndex = methods.firstIndex(where: { $0.type == type }) else { return }
 
-        method.type = type
-        methods = [method]
+        var updatedMethod = methods.remove(at: updateMethodIndex)
+        updatedMethod.type = newType
+        methods.insert(updatedMethod, at: updateMethodIndex)
     }
 }
