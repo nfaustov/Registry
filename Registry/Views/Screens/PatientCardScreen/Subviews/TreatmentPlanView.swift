@@ -114,11 +114,11 @@ private extension TreatmentPlanView {
                                 patient.activateTreatmentPlan(ofKind: kind)
                             }
 
-//                            if !TreatmentPlan.Kind.oldCases.contains(kind) {
-//                                Task {
-//                                    await messageController.send(.treatmentPlanActivation(patient))
-//                                }
-//                            }
+                            if !TreatmentPlan.Kind.pregnancyAICases.contains(kind) {
+                                Task {
+                                    await messageController.send(.treatmentPlanActivation(patient))
+                                }
+                            }
                         } else {
                             modelContext.delete(appointment)
                         }
