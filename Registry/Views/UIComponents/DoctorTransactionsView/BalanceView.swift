@@ -28,7 +28,6 @@ struct BalanceView: View {
                 coordinator.present(.updateBalance(for: person, kind: .refill))
             } label: {
                 Text("Пополнить")
-                    .fontWeight(.medium)
                     .frame(width: 120)
             }
             .buttonStyle(.borderedProminent)
@@ -37,7 +36,6 @@ struct BalanceView: View {
                 coordinator.present(.updateBalance(for: person, kind: .payout))
             } label: {
                 Text("Списать")
-                    .fontWeight(.medium)
                     .frame(width: 120)
             }
             .buttonStyle(.borderedProminent)
