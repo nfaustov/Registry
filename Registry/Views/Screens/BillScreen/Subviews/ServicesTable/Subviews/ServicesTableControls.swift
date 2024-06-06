@@ -17,6 +17,8 @@ struct ServicesTableControls: View {
     @Binding var isPricelistPresented: Bool
     @Binding var predictions: Bool
 
+    static let now = Date.now
+
     @Query private var checkTemplates: [CheckTemplate]
     @Query(filter: #Predicate<Promotion> { $0.expirationDate > now }) 
     private var promotions: [Promotion]
@@ -30,7 +32,6 @@ struct ServicesTableControls: View {
                     Button(role: .destructive) {
                         withAnimation {
                             check.services = []
-                            check.discount = 0
                         }
                     } label: {
                         Label("Очистить", systemImage: "trash")
@@ -66,13 +67,19 @@ struct ServicesTableControls: View {
                 Section {
                     Menu {
                         ForEach(promotions) { promotion in
-                            let discount = discount(for: check.services, by: promotion)
-                            if discount > 0 {
-                                Button(promotion.title) {
+                            if check.promotionDiscount(promotion) > 0 {
+                                Button {
                                     withAnimation {
-                                        check.discount += discount
+                                        check.applyPromotion(promotion)
+                                    }
+                                } label: {
+                                    if check.promotion == promotion {
+                                        Label(promotion.title, systemImage: "checkmark.circle")
+                                    } else {
+                                        Text(promotion.title)
                                     }
                                 }
+                                .disabled(check.promotion == promotion)
                             }
                         }
                     } label: {
@@ -114,22 +121,4 @@ struct ServicesTableControls: View {
         isPricelistPresented: .constant(false),
         predictions: .constant(true)
     )
-}
-
-// MARK: - Calculations
-
-private extension ServicesTableControls {
-    static let now = Date.now
-
-    func discount(for services: [MedicalService], by promotion: Promotion) -> Double {
-        var discount = Double.zero
-
-        for service in services {
-            if promotion.pricelistItems.contains(where: { $0.id == service.pricelistItem.id }) {
-                discount += promotion.discount(for: service.pricelistItem.id)
-            }
-        }
-
-        return discount
-    }
 }

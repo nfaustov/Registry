@@ -13,11 +13,15 @@ final class Promotion {
     let title: String
     let discountRate: Double
     @Relationship(inverse: \PricelistItem.promotions)
-    let _pricelistItems: [PricelistItem]?
+    private(set) var _pricelistItems: [PricelistItem]?
     var expirationDate: Date
 
+    var checks: [Check]?
+
     var pricelistItems: [PricelistItem] {
-        _pricelistItems ?? []
+        get {
+            _pricelistItems ?? []
+        }
     }
 
     init(
@@ -34,7 +38,12 @@ final class Promotion {
 
     func discount(for pricelistItemID: String) -> Double {
         if let pricelistItem = pricelistItems.first(where: { $0.id == pricelistItemID }) {
-            return pricelistItem.price * discountRate
+            let discount = pricelistItem.price * discountRate
+            return discount.rounded()
         } else { return 0 }
+    }
+
+    func addPricelistItems(_ pricelistItems: [PricelistItem]) {
+        _pricelistItems?.append(contentsOf: pricelistItems)
     }
 }

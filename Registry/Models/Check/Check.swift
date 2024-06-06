@@ -15,6 +15,8 @@ final class Check {
     var discount: Double = 0
     @Relationship(deleteRule: .cascade, inverse: \Refund.check)
     private(set) var refund: Refund? = nil
+    @Relationship(inverse: \Promotion.checks)
+    private(set) var promotion: Promotion? = nil
 
     var appointments: [PatientAppointment]?
     var payment: Payment?
@@ -48,11 +50,13 @@ final class Check {
     init(
         services: [MedicalService]? = [],
         discount: Double = 0,
-        refund: Refund? = nil
+        refund: Refund? = nil,
+        promotion: Promotion? = nil
     ) {
         self._services = services
         self.discount = discount
         self.refund = refund
+        self.promotion = promotion
     }
 
     func makeChargesForServices() {
@@ -76,5 +80,22 @@ final class Check {
             $0.charge(.cancel, for: \.performer)
             $0.charge(.cancel, for: \.agent)
         }
+    }
+
+    func promotionDiscount(_ promotion: Promotion) -> Double {
+        var discount = Double.zero
+
+        for service in services {
+            if promotion.pricelistItems.contains(where: { $0.id == service.pricelistItem.id }) {
+                discount += promotion.discount(for: service.pricelistItem.id)
+            }
+        }
+
+        return discount
+    }
+
+    func applyPromotion(_ promotion: Promotion) {
+        self.promotion = promotion
+        self.discount = promotionDiscount(promotion)
     }
 }
