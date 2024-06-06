@@ -75,6 +75,7 @@ struct ContentView: View {
 //                let laboratoryItems = pricelistItems.filter { $0.category == .laboratory }
 //                let promotion = Promotion(
 //                    title: "INSTA30",
+//                    terms: "Скидка 30% на все анализы крови",
 //                    discountRate: 0.3,
 //                    expirationDate: .now.addingTimeInterval(86_400)
 //                )

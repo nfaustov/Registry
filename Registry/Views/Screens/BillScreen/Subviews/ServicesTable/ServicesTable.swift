@@ -44,7 +44,7 @@ struct ServicesTable: View {
                     if let treatmentPlanPrice = service.treatmentPlanPrice {
                         strikethroughDiscountView(service: service, discountPrice: treatmentPlanPrice)
                     } else if let promotion = check.promotion {
-                        let discount = promotion.discount(for: service.pricelistItem.id)
+                        let discount = service.pricelistItem.price * promotion.discountRate
                         let discountPrice = service.pricelistItem.price - discount
                         strikethroughDiscountView(service: service, discountPrice: discountPrice)
                     } else {

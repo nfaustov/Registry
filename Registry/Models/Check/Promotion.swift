@@ -11,6 +11,7 @@ import SwiftData
 @Model
 final class Promotion {
     let title: String
+    let terms: String
     let discountRate: Double
     @Relationship(inverse: \PricelistItem.promotions)
     private(set) var _pricelistItems: [PricelistItem]?
@@ -26,21 +27,16 @@ final class Promotion {
 
     init(
         title: String,
+        terms: String,
         discountRate: Double,
         pricelistItems: [PricelistItem]? = [],
         expirationDate: Date
     ) {
         self.title = title
+        self.terms = terms
         self.discountRate = discountRate
         self._pricelistItems = pricelistItems
         self.expirationDate = expirationDate
-    }
-
-    func discount(for pricelistItemID: String) -> Double {
-        if let pricelistItem = pricelistItems.first(where: { $0.id == pricelistItemID }) {
-            let discount = pricelistItem.price * discountRate
-            return discount.rounded()
-        } else { return 0 }
     }
 
     func addPricelistItems(_ pricelistItems: [PricelistItem]) {

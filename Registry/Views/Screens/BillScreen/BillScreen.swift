@@ -65,8 +65,14 @@ struct BillScreen: View {
                         .disabled(paymentDisabled)
 
                         if let promotion = check.promotion {
-                            
-                        }
+                            GroupBox {
+                                Text(promotion.terms)
+                                    .lineLimit(2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            } label: {
+                                LabeledContent("Промоакция", value: promotion.title)
+                            }
+                            .padding(.leading)                        }
                     }
                     .padding([.horizontal, .bottom])
                     .frame(maxHeight: 140)

@@ -30,6 +30,7 @@ final class Check {
 
             if newValue.isEmpty {
                 discount = 0
+                promotion = nil
             }
         }
     }
@@ -82,16 +83,26 @@ final class Check {
         }
     }
 
+    var promotedServices: [MedicalService] {
+        guard let promotion else { return [] }
+
+        let promotionPricelistItemsIDs = promotion.pricelistItems.map { $0.id }
+
+        return services.filter { service in
+            promotionPricelistItemsIDs.contains(service.pricelistItem.id)
+        }
+    }
+
     func promotionDiscount(_ promotion: Promotion) -> Double {
         var discount = Double.zero
 
         for service in services {
             if promotion.pricelistItems.contains(where: { $0.id == service.pricelistItem.id }) {
-                discount += promotion.discount(for: service.pricelistItem.id)
+                discount += service.pricelistItem.price * promotion.discountRate
             }
         }
 
-        return discount
+        return discount.rounded()
     }
 
     func applyPromotion(_ promotion: Promotion) {
