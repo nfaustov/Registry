@@ -63,6 +63,10 @@ struct BillScreen: View {
                             check: check
                         )
                         .disabled(paymentDisabled)
+
+                        if let promotion = check.promotion {
+                            
+                        }
                     }
                     .padding([.horizontal, .bottom])
                     .frame(maxHeight: 140)

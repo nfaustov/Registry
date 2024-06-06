@@ -85,7 +85,7 @@ struct ServicesTableControls: View {
                     } label: {
                         Label("Промоакции", systemImage: "giftcard")
                     }
-                    .disabled(promotions.isEmpty)
+                    .disabled(check.services.contains(where: { $0.treatmentPlanPrice != nil }))
                 }
             } label: {
                 Label("Действия", systemImage: "ellipsis.circle")

@@ -41,18 +41,16 @@ struct ServicesTable: View {
                         .lineLimit(4)
                 }.width(600)
                 TableColumn("Стоимость") { service in
-                    HStack {
-                        if let treatmentPlanPrice = service.treatmentPlanPrice {
-                            CurrencyText(service.pricelistItem.price)
-                                .strikethrough()
-                            CurrencyText(treatmentPlanPrice)
-                                .fontWeight(.medium)
-                                .foregroundColor(.primary)
-                        } else {
-                            CurrencyText(service.pricelistItem.price)
-                                .fontWeight(.medium)
-                                .foregroundColor(.primary)
-                        }
+                    if let treatmentPlanPrice = service.treatmentPlanPrice {
+                        strikethroughDiscountView(service: service, discountPrice: treatmentPlanPrice)
+                    } else if let promotion = check.promotion {
+                        let discount = promotion.discount(for: service.pricelistItem.id)
+                        let discountPrice = service.pricelistItem.price - discount
+                        strikethroughDiscountView(service: service, discountPrice: discountPrice)
+                    } else {
+                        CurrencyText(service.pricelistItem.price)
+                            .fontWeight(.medium)
+                            .foregroundColor(.primary)
                     }
                 }.width(140)
                 TableColumn("Исполнитель") { service in
@@ -167,6 +165,16 @@ private extension ServicesTable {
                     if purpose == .editRoles { service.charge(.make, for: role) }
                 }
             }
+        }
+    }
+
+    func strikethroughDiscountView(service: MedicalService, discountPrice: Double) -> some View {
+        HStack {
+            CurrencyText(service.pricelistItem.price)
+                .strikethrough()
+            CurrencyText(discountPrice)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
         }
     }
 }
