@@ -69,19 +69,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-//            .task {
-//                let descriptor = FetchDescriptor<PricelistItem>()
-//                guard let pricelistItems = try? modelContext.fetch(descriptor) else { return }
-//                let laboratoryItems = pricelistItems.filter { $0.category == .laboratory }
-//                let promotion = Promotion(
-//                    title: "INSTA30",
-//                    terms: "Скидка 30% на все анализы крови",
-//                    discountRate: 0.3,
-//                    expirationDate: .now.addingTimeInterval(86_400)
-//                )
-//                modelContext.insert(promotion)
-//                promotion.addPricelistItems(laboratoryItems)
-//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }

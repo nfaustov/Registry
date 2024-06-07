@@ -15,7 +15,7 @@ final class Promotion {
     let discountRate: Double
     @Relationship(inverse: \PricelistItem.promotions)
     private(set) var _pricelistItems: [PricelistItem]?
-    var expirationDate: Date
+    private(set) var expirationDate: Date
 
     var checks: [Check]?
 
