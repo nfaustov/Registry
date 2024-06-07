@@ -111,9 +111,14 @@ final class Patient: AccountablePerson, Codable {
         return Array(checks.uniqued())
     }
 
-    func isNewPatient(for period: StatisticsPeriod) -> Bool {
-        guard let firstVisit = appointments?.sorted(by: { $0.scheduledTime < $1.scheduledTime }).first else { return false }
-        return firstVisit.scheduledTime > period.start()
+    func isNewPatient(for date: Date, period: StatisticsPeriod) -> Bool {
+        guard let firstVisit = appointments?
+            .filter({ $0.check?.payment != nil })
+            .sorted(by: { $0.scheduledTime < $1.scheduledTime })
+            .first else { return false }
+
+        return firstVisit.scheduledTime > period.start(for: date) && 
+        firstVisit.scheduledTime < period.end(for: date)
     }
 
     // MARK: - Codable

@@ -40,7 +40,7 @@ struct ReportingView<Content: View>: View {
                 }
                 .pickerStyle(.menu)
                 .tint(.secondary)
-                .frame(width: 100)
+                .frame(width: 100, alignment: .trailing)
             }
 
             content()

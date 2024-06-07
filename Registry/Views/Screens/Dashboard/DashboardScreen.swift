@@ -11,8 +11,14 @@ struct DashboardScreen: View {
     var body: some View {
         HStack {
             VStack(spacing: 4) {
+                PatientsReportingView()
                 PricelistItemsReportingView()
             }
+            .padding(8)
+            VStack {
+                
+            }
+            .frame(width: 700)
         }
         .background(Color(.secondarySystemBackground))
     }

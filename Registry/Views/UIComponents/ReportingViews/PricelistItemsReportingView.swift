@@ -21,10 +21,11 @@ struct PricelistItemsReportingView: View {
 
     var body: some View {
         ReportingView("Услуги", for: $date, selectedPeriod: $selectedPeriod) {
-            List(Array(pricelistItemsUsage), id: \.self) { usage in
+            List(pricelistItemsUsage, id: \.self) { usage in
                 LabeledContent(usage.item.title, value: "\(usage.count)")
             }
             .listStyle(.plain)
+            .scrollBounceBehavior(.basedOnSize)
         }
     }
 }
