@@ -27,7 +27,7 @@ struct ReportView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                if report.hasBillIncome {
+                if report.billsIncome() != 0 {
                     Section("Доход") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let billIncome = report.billsIncome(of: type)
@@ -38,7 +38,7 @@ struct ReportView: View {
                     }
                 }
 
-                if report.hasOtherIncome {
+                if report.othersIncome() != 0 {
                     Section("Пополнения") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let othersIncome = report.othersIncome(of: type)
@@ -49,7 +49,7 @@ struct ReportView: View {
                     }
                 }
 
-                if report.hasExpense {
+                if report.reporting(.expense) != 0 {
                     Section("Списания") {
                         ForEach(PaymentType.allCases, id: \.self) { type in
                             let expense = report.reporting(.expense, of: type)

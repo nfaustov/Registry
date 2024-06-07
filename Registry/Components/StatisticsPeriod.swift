@@ -7,25 +7,46 @@
 
 import Foundation
 
-public enum StatisticsPeriod: String, CaseIterable, Identifiable {
+enum StatisticsPeriod: String, CaseIterable, Identifiable {
     case day = "День"
+    case week = "Неделя"
     case month = "Месяц"
+    case year = "Год"
 
-    public func start(for date: Date? = nil) -> Date {
+    func start(for date: Date? = nil) -> Date {
+        dateInterval(for: date ?? .now).start
+    }
+
+    func end(for date: Date? = nil) -> Date {
+        dateInterval(for: date ?? .now).end
+    }
+
+    private func dateInterval(for date: Date) -> DateInterval {
+        var interval: DateInterval? = DateInterval(start: .distantPast, end: .distantFuture)
+
         switch self {
         case .day:
-            return Calendar.current.startOfDay(for: date ?? .now)
+            interval = Calendar.current.dateInterval(of: .day, for: date)
+        case .week:
+            interval = Calendar.current.dateInterval(of: .weekOfYear, for: date)
         case .month:
-            let dateComponents = Calendar.current.dateComponents([.year, .month], from: date ?? .now)
-            return Calendar.current.date(from: dateComponents)!
+            interval = Calendar.current.dateInterval(of: .month, for: date)
+        case .year:
+            interval = Calendar.current.dateInterval(of: .year, for: date)
+        }
+
+        let endOfToday = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
+
+        guard let interval else { fatalError() }
+
+        if interval.end > endOfToday {
+            return DateInterval(start: interval.start, end: endOfToday)
+        } else {
+            return interval
         }
     }
 
-    public func end(for date: Date? = nil) -> Date {
-        Calendar.current.startOfDay(for: (date ?? .now).addingTimeInterval(86_400))
-    }
-
-    public var id: Self {
+    var id: Self {
         self
     }
 }
