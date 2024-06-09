@@ -23,6 +23,7 @@ struct PricelistItemsReportingView: View {
         ReportingView("Услуги", for: $date, selectedPeriod: $selectedPeriod) {
             List(pricelistItemsUsage, id: \.self) { usage in
                 LabeledContent(usage.item.title, value: "\(usage.count)")
+                    .font(.footnote)
             }
             .listStyle(.plain)
             .scrollBounceBehavior(.basedOnSize)

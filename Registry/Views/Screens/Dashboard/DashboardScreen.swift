@@ -14,11 +14,18 @@ struct DashboardScreen: View {
                 PatientsReportingView()
                 PricelistItemsReportingView()
             }
-            .padding(8)
-            VStack {
-                
+            .frame(width: 400)
+
+            VStack(spacing: 4) {
+                LedgerReportingView()
+                    .frame(maxWidth: .infinity)
             }
-            .frame(width: 700)
+
+            VStack {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .foregroundStyle(.white)
+            }
+            .frame(width: 400)
         }
         .background(Color(.secondarySystemBackground))
     }
