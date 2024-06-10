@@ -103,7 +103,7 @@ struct LoginScreen: View {
             .padding()
         }
         .onAppear {
-//            versionController.updateVersion(.minor)
+//            versionController.updateVersion(.patch)
             versionController.getCurrentVersion()
         }
     }
