@@ -39,6 +39,7 @@ struct BalanceView: View {
                     .frame(width: 120)
             }
             .buttonStyle(.borderedProminent)
+            .disabled(person.balance <= 0)
         }
     }
 }

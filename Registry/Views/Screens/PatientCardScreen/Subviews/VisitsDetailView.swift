@@ -66,7 +66,7 @@ private extension VisitsDetailView {
 private extension VisitsDetailView {
     func visitView(_ appointment: PatientAppointment) -> some View {
         Section {
-            if let check = appointment.check {
+            if let check = appointment.check, check.payment != nil {
                 if !check.services.isEmpty {
                     DisclosureGroup {
                         ForEach(check.services) { service in

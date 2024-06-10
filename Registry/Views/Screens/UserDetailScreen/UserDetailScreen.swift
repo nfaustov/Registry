@@ -34,16 +34,6 @@ struct UserDetailScreen: View {
             Section("Должность") {
                 Text(user.accessLevel.title)
             }
-
-            if let doctor = user as? Doctor {
-                Section("Баланс") {
-                    LabeledContent("\(Int(doctor.balance)) ₽") {
-                        Button("Выплата") {
-                            coordinator.present(.updateBalance(for: doctor, kind: .payout))
-                        }
-                    }
-                }
-            }
         } detail: {
             detail
                 .disabled(user.accessLevel < .registrar)
