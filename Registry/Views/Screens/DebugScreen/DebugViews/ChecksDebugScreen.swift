@@ -28,7 +28,7 @@ struct ChecksDebugScreen: View {
                             Text(patient.initials)
                         }
                         ForEach(check.services) { service in
-                            Text(service.pricelistItem.title)
+                            Text(service.title)
                         }
                     }
                 }

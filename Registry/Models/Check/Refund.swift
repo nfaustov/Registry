@@ -27,7 +27,7 @@ final class Refund {
 
     var price: Double {
         services
-            .map { $0.pricelistItem.price }
+            .map { $0.price }
             .reduce(0.0, +)
     }
 

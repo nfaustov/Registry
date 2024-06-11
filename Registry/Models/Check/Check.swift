@@ -36,7 +36,7 @@ final class Check {
     }
 
     var price: Double {
-        services.reduce(0.0) { $0 + ($1.treatmentPlanPrice ?? $1.pricelistItem.price) }
+        services.reduce(0.0) { $0 + $1.price }
     }
 
     var totalPrice: Double {
@@ -98,7 +98,7 @@ final class Check {
 
         for service in services {
             if promotion.pricelistItems.contains(where: { $0.id == service.pricelistItem.id }) {
-                discount += service.pricelistItem.price * promotion.discountRate
+                discount += service.price * promotion.discountRate
             }
         }
 

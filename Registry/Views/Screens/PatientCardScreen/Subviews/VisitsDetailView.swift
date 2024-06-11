@@ -70,7 +70,7 @@ private extension VisitsDetailView {
                 if !check.services.isEmpty {
                     DisclosureGroup {
                         ForEach(check.services) { service in
-                            LabeledCurrency(service.pricelistItem.title, value: service.treatmentPlanPrice ?? service.pricelistItem.price)
+                            LabeledCurrency(service.title, value: service.price)
                         }
 
                         if check.discount > 0 {
@@ -88,7 +88,7 @@ private extension VisitsDetailView {
                 if let refund = check.refund {
                     DisclosureGroup {
                         ForEach(refund.services) { service in
-                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
+                            LabeledCurrency(service.title, value: service.price)
                         }
                     } label: {
                         LabeledCurrency("Возврат", value: -refund.totalAmount)

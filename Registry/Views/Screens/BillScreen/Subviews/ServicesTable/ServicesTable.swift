@@ -37,20 +37,24 @@ struct ServicesTable: View {
         VStack(spacing: 0) {
             Table(check.services, selection: $selection, sortOrder: $sortOrder) {
                 TableColumn("Услуга") { service in
-                    Text(service.pricelistItem.title)
+                    Text(service.title)
                         .lineLimit(4)
+                        .animation(.spring, value: service.quantity)
+                        .contentTransition(.numericText())
                 }.width(600)
                 TableColumn("Стоимость") { service in
                     if let treatmentPlanPrice = service.treatmentPlanPrice {
                         strikethroughDiscountView(service: service, discountPrice: treatmentPlanPrice)
                     } else if let promotion = check.promotion {
-                        let discount = service.pricelistItem.price * promotion.discountRate
-                        let discountPrice = service.pricelistItem.price - discount
+                        let discount = service.price * promotion.discountRate
+                        let discountPrice = service.price - discount
                         strikethroughDiscountView(service: service, discountPrice: discountPrice)
                     } else {
-                        CurrencyText(service.pricelistItem.price)
+                        CurrencyText(service.price)
                             .fontWeight(.medium)
                             .foregroundColor(.primary)
+                            .animation(.spring, value: service.quantity)
+                            .contentTransition(.numericText())
                     }
                 }.width(140)
                 TableColumn("Исполнитель") { service in
@@ -76,6 +80,20 @@ struct ServicesTable: View {
                     }
 
                     if purpose == .createAndPay {
+                        if let service = service(with: id) {
+                            Section {
+                                Stepper(
+                                    "Количество",
+                                    value: Binding(
+                                        get: { service.quantity },
+                                        set: { value in
+                                            if value >= 1 { service.quantity = value }
+                                        }
+                                    )
+                                )
+                            }
+                        }
+
                         Section {
                             Button(role: .destructive) {
                                 withAnimation {
@@ -170,12 +188,14 @@ private extension ServicesTable {
 
     func strikethroughDiscountView(service: MedicalService, discountPrice: Double) -> some View {
         HStack {
-            CurrencyText(service.pricelistItem.price)
+            CurrencyText(service.pricelistItem.price * Double(service.quantity))
                 .strikethrough()
-            CurrencyText(discountPrice)
+            CurrencyText(discountPrice * Double(service.quantity))
                 .fontWeight(.medium)
                 .foregroundColor(.primary)
         }
+        .animation(.spring, value: service.quantity)
+        .contentTransition(.numericText())
     }
 }
 
@@ -192,27 +212,31 @@ private extension ServicesTable {
     }
 
     func addToCheck(pricelistItem: PricelistItem) {
-        var agent: Doctor? = nil
+        if let service = check.services.first(where: { $0.pricelistItem.id == pricelistItem.id }) {
+            service.quantity += 1
+        } else {
+            var agent: Doctor? = nil
 
-        if pricelistItem.category == .laboratory, 
-            doctor.department != .procedure,
-            patient.currentTreatmentPlan == nil {
-            agent = doctor
+            if pricelistItem.category == .laboratory,
+                doctor.department != .procedure,
+                patient.currentTreatmentPlan == nil {
+                agent = doctor
+            }
+
+            var treatmentPlanPrice: Double? = nil
+
+            if let treatmentPlan = patient.currentTreatmentPlan {
+                treatmentPlanPrice = pricelistItem.treatmentPlanPrice(treatmentPlan.kind)
+            }
+
+            let medicalService = MedicalService(
+                pricelistItem: pricelistItem.snapshot,
+                treatmentPlanPrice: treatmentPlanPrice,
+                performer: pricelistItem.category == .laboratory ? nil : doctor,
+                agent: agent
+            )
+            check.services.insert(medicalService, at: 0)
         }
-
-        var treatmentPlanPrice: Double? = nil
-
-        if let treatmentPlan = patient.currentTreatmentPlan {
-            treatmentPlanPrice = pricelistItem.treatmentPlanPrice(treatmentPlan.kind)
-        }
-
-        let medicalService = MedicalService(
-            pricelistItem: pricelistItem.snapshot,
-            treatmentPlanPrice: treatmentPlanPrice,
-            performer: pricelistItem.category == .laboratory ? nil : doctor,
-            agent: agent
-        )
-        check.services.insert(medicalService, at: 0)
     }
 
     func getPricelistItems(with identifiers: [String]) -> [PricelistItem] {

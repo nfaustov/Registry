@@ -46,7 +46,7 @@ struct CompletedAppointmentView: View {
                         HStack {
                             if editMode { toggle(service: service).padding(.trailing) }
 
-                            LabeledCurrency(service.pricelistItem.title, value: service.treatmentPlanPrice ?? service.pricelistItem.price, unit: false)
+                            LabeledCurrency(service.title, value: service.price, unit: false)
                                 .foregroundStyle(serviceItemForegroudColor(service))
                         }
                     }
@@ -69,6 +69,7 @@ struct CompletedAppointmentView: View {
                         ForEach(payment.methods, id: \.self) { method in
                             LabeledCurrency(method.type.rawValue, value: method.value)
                         }
+
                         if payment.methods.count > 1 {
                             LabeledCurrency("Всего", value: payment.totalAmount)
                                 .font(.headline)

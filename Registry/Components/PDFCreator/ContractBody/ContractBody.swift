@@ -151,7 +151,7 @@ private extension ContractBody {
 
         check.services.forEach { service in
             let attributedService = NSAttributedString(
-                string: service.pricelistItem.title,
+                string: service.title,
                 attributes: Attributes.lightFont
             )
             let serviceWidth = separatorX - Size.textEdgeInset - Size.tabletextEdgeInset * 2
@@ -166,7 +166,7 @@ private extension ContractBody {
             attributedService.draw(in: serviceRect)
 
             let attributedPrice = NSAttributedString(
-                string: "\(String(format: "%.2f", service.pricelistItem.price))",
+                string: "\(String(format: "%.2f", service.price))",
                 attributes: Attributes.lightFont
             )
             let priceSize = attributedPrice.size()

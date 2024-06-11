@@ -149,7 +149,7 @@ private extension ContractBodyController {
     }
 
     func enumeratedServices() -> String {
-        var enumeratedServices = services.map { $0.pricelistItem.title }.reduce("") { $0 + ", " + $1 }
+        var enumeratedServices = services.map { $0.title }.reduce("") { $0 + ", " + $1 }
         if !enumeratedServices.isEmpty {
             enumeratedServices.removeFirst()
         }

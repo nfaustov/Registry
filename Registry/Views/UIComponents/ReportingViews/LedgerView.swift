@@ -91,7 +91,7 @@ struct LedgerView: View {
                                 if let subject = payment.subject {
                                     Section("Счет") {
                                         ForEach(subject.services) { service in
-                                            LabeledCurrency(service.pricelistItem.title, value: service.pricelistItem.price)
+                                            LabeledCurrency(service.title, value: service.price)
                                         }
                                         LabeledCurrency("Общий счет", value: subject.totalPrice)
                                             .font(.headline)

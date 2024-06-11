@@ -18,7 +18,7 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(medicalService: MedicalService) {
         id = UUID()
         self.date = medicalService.date ?? .now
-        self.description = medicalService.pricelistItem.title
+        self.description = medicalService.title
         value = medicalService.agentFee
         kind = .agentFee
         refunded = medicalService.refund != nil
@@ -27,7 +27,7 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(medicalService: MedicalService, doctorSalaryRate: Double) {
         id = UUID()
         self.date = medicalService.date ?? .now
-        self.description = medicalService.pricelistItem.title
+        self.description = medicalService.title
         value = medicalService.pieceRateSalary(doctorSalaryRate)
         kind = .performerFee
         refunded = medicalService.refund != nil

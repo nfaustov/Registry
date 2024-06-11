@@ -31,7 +31,7 @@ struct CreateBillTemplateView: View {
                 Section {
                     ForEach(services) { service in
                         HStack(spacing: 8) {
-                            Text(service.pricelistItem.title)
+                            Text(service.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text(service.performer?.initials ?? "-")
                                 .frame(width: 128, alignment: .leading)
@@ -53,7 +53,7 @@ struct CreateBillTemplateView: View {
 
                 Section {
                     let price = services
-                        .map{ $0.pricelistItem.price }
+                        .map { $0.price }
                         .reduce(0, +)
 
                     LabeledCurrency("Цена", value: price)
