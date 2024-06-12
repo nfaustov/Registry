@@ -40,9 +40,9 @@ enum StatisticsPeriod: String, CaseIterable, Identifiable {
         guard let interval else { fatalError() }
 
         if interval.end > endOfToday {
-            return DateInterval(start: interval.start, end: endOfToday)
+            return DateInterval(start: interval.start, end: endOfToday.addingTimeInterval(-1))
         } else {
-            return interval
+            return DateInterval(start: interval.start, end: interval.end.addingTimeInterval(-1))
         }
     }
 

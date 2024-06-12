@@ -12,27 +12,36 @@ struct PricelistItemsReportingView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    // MARK: - State
-
-    @State private var date: Date = .now
-    @State private var selectedPeriod: StatisticsPeriod = .day
+    let date: Date
+    let selectedPeriod: StatisticsPeriod
 
     // MARK: -
 
     var body: some View {
-        ReportingView("Услуги", for: $date, selectedPeriod: $selectedPeriod) {
-            List(pricelistItemsUsage, id: \.self) { usage in
-                LabeledContent(usage.item.title, value: "\(usage.count)")
+        GroupBox("Услуги") {
+            if pricelistItemsUsage.isEmpty {
+                ContentUnavailableView("Нет данных", systemImage: "tray")
+            } else {
+                ForEach(pricelistItemsUsage, id: \.self) { usage in
+                    LabeledContent(usage.item.title) {
+                        Text("\(usage.count)")
+                            .fontWeight(.medium)
+                            .foregroundStyle(.mint)
+                    }
                     .font(.footnote)
+                    .padding(10)
+                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+
+                Spacer()
             }
-            .listStyle(.plain)
-            .scrollBounceBehavior(.basedOnSize)
         }
+        .groupBoxStyle(.reporting)
     }
 }
 
 #Preview {
-    PricelistItemsReportingView()
+    PricelistItemsReportingView(date: .now, selectedPeriod: .day)
 }
 
 // MARK: - Calculation

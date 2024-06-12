@@ -12,65 +12,39 @@ struct LedgerReportingView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    // MARK: - State
-
-    @State private var date: Date = .now
-    @State private var selectedPeriod: StatisticsPeriod = .day
-    @State private var selectedReport: Report?
+    let date: Date
+    let selectedPeriod: StatisticsPeriod
 
     // MARK: -
 
     var body: some View {
-        ReportingView("Доходы", for: $date, selectedPeriod: $selectedPeriod) {
+        GroupBox("Доходы") {
             VStack {
-                if let selectedReport {
-                    GroupBox("Выручка") {
-                        LabeledCurrency("Наличные", value: selectedReport.billsIncome(of: .cash))
-                        LabeledCurrency("Терминал", value: selectedReport.billsIncome(of: .bank))
-                        LabeledCurrency("Карта", value: selectedReport.billsIncome(of: .card))
-                        LabeledCurrency("Всего", value: selectedReport.billsIncome())
-                            .font(.headline)
-                    }
-
-                    let sortedPayments = selectedReport.payments?
-                        .sorted(by: { $0.date > $1.date })
-                        .prefix(5)
-
-                    VStack {
-                        ForEach(sortedPayments ?? []) { payment in
-                            LabeledContent(payment.purpose.title) {
-                                CurrencyText(payment.totalAmount)
-                                    .foregroundStyle(paymentColor(payment))
-                            }
-                        }
-                    }
-                }
+                LabeledCurrency("Наличные", value: income(of: .cash))
+                LabeledCurrency("Терминал", value: income(of: .bank))
+                LabeledCurrency("Карта", value: income(of: .card))
+                Divider()
+                LabeledCurrency("Всего", value: income())
+                    .font(.headline)
             }
             .padding()
+            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
         }
-        .task {
-            let ledger = Ledger(modelContext: modelContext)
-            selectedReport = ledger.getReport(forDate: date)
-        }
+        .groupBoxStyle(.reporting)
     }
 }
 
 #Preview {
-    LedgerReportingView()
+    LedgerReportingView(date: .now, selectedPeriod: .day)
 }
 
 // MARK: - Subviews
 
 private extension LedgerReportingView {
-    func paymentColor(_ payment: Payment) -> Color {
-        if payment.totalAmount < 0 {
-            if payment.purpose == .collection {
-                return .purple
-            } else {
-                return .red
-            }
-        } else {
-            return .primary
-        }
+    @MainActor
+    func income(of type: PaymentType? = nil) -> Double {
+        let ledger = Ledger(modelContext: modelContext)
+        return ledger.income(for: date, period: selectedPeriod, of: type)
     }
 }
