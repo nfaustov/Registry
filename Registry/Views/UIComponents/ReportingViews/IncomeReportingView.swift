@@ -1,5 +1,5 @@
 //
-//  LedgerReportingView.swift
+//  IncomeReportingView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 09.06.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LedgerReportingView: View {
+struct IncomeReportingView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -20,10 +20,12 @@ struct LedgerReportingView: View {
     var body: some View {
         GroupBox("Доходы") {
             VStack {
-                LabeledCurrency("Наличные", value: income(of: .cash))
-                LabeledCurrency("Терминал", value: income(of: .bank))
-                LabeledCurrency("Карта", value: income(of: .card))
+                ForEach(PaymentType.allCases, id: \.self) { type in
+                    LabeledCurrency(type.rawValue, value: income(of: type))
+                }
+
                 Divider()
+
                 LabeledCurrency("Всего", value: income())
                     .font(.headline)
             }
@@ -36,12 +38,12 @@ struct LedgerReportingView: View {
 }
 
 #Preview {
-    LedgerReportingView(date: .now, selectedPeriod: .day)
+    IncomeReportingView(date: .now, selectedPeriod: .day)
 }
 
 // MARK: - Subviews
 
-private extension LedgerReportingView {
+private extension IncomeReportingView {
     @MainActor
     func income(of type: PaymentType? = nil) -> Double {
         let ledger = Ledger(modelContext: modelContext)

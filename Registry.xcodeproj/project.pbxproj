@@ -45,7 +45,7 @@
 		8B331EFD2BEA5920002298E6 /* PatientMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFC2BEA5920002298E6 /* PatientMoneyTransaction.swift */; };
 		8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFE2BEA5943002298E6 /* DoctorMoneyTransaction.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
-		8B3E786F2C15B022002CD007 /* LedgerReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E786E2C15B022002CD007 /* LedgerReportingView.swift */; };
+		8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E786E2C15B022002CD007 /* IncomeReportingView.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
 		8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6102BB5588800834AE6 /* AnonymousUser.swift */; };
 		8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B45E6142BB55E0900834AE6 /* UserKey.swift */; };
@@ -198,6 +198,7 @@
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
 		8BE3F21A2C1AB3F30038E369 /* DoctorsReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F2192C1AB3F30038E369 /* DoctorsReportingView.swift */; };
 		8BE3F21C2C1AD89E0038E369 /* RegistrarsReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F21B2C1AD89E0038E369 /* RegistrarsReportingView.swift */; };
+		8BE3F2202C1AF1830038E369 /* ExpenseReportintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F21F2C1AF1830038E369 /* ExpenseReportintView.swift */; };
 		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
 		8BE9D3592BE13EF8006B26FF /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3562BE13EF8006B26FF /* patients.json */; };
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
@@ -255,7 +256,7 @@
 		8B331EFC2BEA5920002298E6 /* PatientMoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientMoneyTransaction.swift; sourceTree = "<group>"; };
 		8B331EFE2BEA5943002298E6 /* DoctorMoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorMoneyTransaction.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		8B3E786E2C15B022002CD007 /* LedgerReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerReportingView.swift; sourceTree = "<group>"; };
+		8B3E786E2C15B022002CD007 /* IncomeReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeReportingView.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		8B45E6102BB5588800834AE6 /* AnonymousUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousUser.swift; sourceTree = "<group>"; };
 		8B45E6142BB55E0900834AE6 /* UserKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKey.swift; sourceTree = "<group>"; };
@@ -378,6 +379,7 @@
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
 		8BE3F2192C1AB3F30038E369 /* DoctorsReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsReportingView.swift; sourceTree = "<group>"; };
 		8BE3F21B2C1AD89E0038E369 /* RegistrarsReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarsReportingView.swift; sourceTree = "<group>"; };
+		8BE3F21F2C1AF1830038E369 /* ExpenseReportintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseReportintView.swift; sourceTree = "<group>"; };
 		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
 		8BE9D3562BE13EF8006B26FF /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
 		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
@@ -885,7 +887,8 @@
 				8BE145022BF0C92000991225 /* LedgerView.swift */,
 				8B91AE6A2C12DB1900472D8C /* PricelistItemsReportingView.swift */,
 				8B930C5A2C12F63200EFF8EE /* PatientsReportingView.swift */,
-				8B3E786E2C15B022002CD007 /* LedgerReportingView.swift */,
+				8B3E786E2C15B022002CD007 /* IncomeReportingView.swift */,
+				8BE3F21F2C1AF1830038E369 /* ExpenseReportintView.swift */,
 				8BE3F2192C1AB3F30038E369 /* DoctorsReportingView.swift */,
 				8BE3F21B2C1AD89E0038E369 /* RegistrarsReportingView.swift */,
 			);
@@ -1599,7 +1602,7 @@
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
 				8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */,
-				8B3E786F2C15B022002CD007 /* LedgerReportingView.swift in Sources */,
+				8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,
 				8B187E862BD0F30200611DC2 /* CheckTemplate.swift in Sources */,
@@ -1615,6 +1618,7 @@
 				8BE3F21C2C1AD89E0038E369 /* RegistrarsReportingView.swift in Sources */,
 				8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */,
 				8B0FE9E82B56F66D003F474B /* PhoneNumberTextField.swift in Sources */,
+				8BE3F2202C1AF1830038E369 /* ExpenseReportintView.swift in Sources */,
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
 				8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */,
 				8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */,

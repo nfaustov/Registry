@@ -47,14 +47,13 @@ struct DashboardScreen: View {
                     PatientsReportingView(date: date, selectedPeriod: selectedPeriod)
                     PricelistItemsReportingView(date: date, selectedPeriod: selectedPeriod)
                 }
-                .frame(width: 400)
 
                 VStack(spacing: 4) {
-                    LedgerReportingView(date: date, selectedPeriod: selectedPeriod)
-                        .frame(maxWidth: .infinity)
+                    IncomeReportingView(date: date, selectedPeriod: selectedPeriod)
+                    ExpenseReportintView(date: date, selectedPeriod: selectedPeriod)
                 }
 
-                VStack {
+                VStack(spacing: 4) {
                     DoctorsReportingView(date: date, selectedPeriod: selectedPeriod)
                     RegistrarsReportingView(date: date, selectedPeriod: selectedPeriod)
                 }

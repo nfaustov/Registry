@@ -13,7 +13,7 @@ extension Ledger {
         let methods = getReports(for: date, period: period)
             .compactMap { $0.payments }
             .flatMap { $0 }
-            .filter { $0.subject != nil && $0.subject?.refund == nil }
+            .filter { $0.subject != nil }
             .flatMap { $0.methods }
 
         if let type {
@@ -23,6 +23,28 @@ extension Ledger {
         } else {
             return methods.reduce(0.0) { $0 + $1.value }
         }
+    }
+
+    func expense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
+        var expenses: [PurposeExpense] = []
+
+        let payments = getReports(for: date, period: period)
+            .compactMap { $0.payments }
+            .flatMap { $0 }
+            .filter { $0.totalAmount < 0 }
+        let groupedPayments = Dictionary(grouping: payments, by: { $0.purpose })
+
+        for (purpose, payments) in groupedPayments {
+            var purposeExpense = PurposeExpense(purpose: purpose, amount: 0)
+
+            for payment in payments {
+                purposeExpense.amount += payment.totalAmount
+            }
+
+            expenses.append(purposeExpense)
+        }
+
+        return expenses
     }
 }
 
@@ -37,4 +59,9 @@ private extension Ledger {
             return reports
         } else { return [] }
     }
+}
+
+struct PurposeExpense: Hashable {
+    let purpose: Payment.Purpose
+    var amount: Double
 }
