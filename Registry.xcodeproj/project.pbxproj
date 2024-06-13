@@ -145,6 +145,7 @@
 		8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53D9E2B494E62006BE983 /* NavTitleViewModifier.swift */; };
 		8BA53DA22B494EBF006BE983 /* SideSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53DA12B494EBF006BE983 /* SideSheetView.swift */; };
 		8BA53DA62B494F5D006BE983 /* SheetToolbarViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */; };
+		8BA761892C1B39D40068C057 /* StatisticsPeriodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */; };
 		8BA8C8112BBD42B200F2BCDD /* AddProcedurePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */; };
 		8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2DD622B97396A00AD4749 /* Refund.swift */; };
 		8BB462122C16E3640003E809 /* PromotionsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB462112C16E3640003E809 /* PromotionsDebugView.swift */; };
@@ -356,6 +357,7 @@
 		8BA53D9E2B494E62006BE983 /* NavTitleViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavTitleViewModifier.swift; sourceTree = "<group>"; };
 		8BA53DA12B494EBF006BE983 /* SideSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideSheetView.swift; sourceTree = "<group>"; };
 		8BA53DA52B494F5D006BE983 /* SheetToolbarViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetToolbarViewModifier.swift; sourceTree = "<group>"; };
+		8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriodView.swift; sourceTree = "<group>"; };
 		8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProcedurePatientView.swift; sourceTree = "<group>"; };
 		8BB2DD622B97396A00AD4749 /* Refund.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refund.swift; sourceTree = "<group>"; };
 		8BB462112C16E3640003E809 /* PromotionsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionsDebugView.swift; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 			isa = PBXGroup;
 			children = (
 				8B1D90512C122C7E00954FF8 /* DashboardScreen.swift */,
+				8BA761872C1B399B0068C057 /* Subviews */,
 			);
 			path = DashboardScreen;
 			sourceTree = "<group>";
@@ -1350,6 +1353,14 @@
 			path = SheetToolbar;
 			sourceTree = "<group>";
 		};
+		8BA761872C1B399B0068C057 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		8BBB964E2B85EFF900CA242F /* PatientCardScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -1615,6 +1626,7 @@
 				8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
+				8BA761892C1B39D40068C057 /* StatisticsPeriodView.swift in Sources */,
 				8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */,
 				8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
