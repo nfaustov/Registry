@@ -56,6 +56,7 @@ struct DashboardScreen: View {
 
                 VStack {
                     DoctorsReportingView(date: date, selectedPeriod: selectedPeriod)
+                    RegistrarsReportingView(date: date, selectedPeriod: selectedPeriod)
                 }
             }
         }

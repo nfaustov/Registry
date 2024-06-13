@@ -10,6 +10,8 @@ import SwiftData
 
 extension Ledger {
     func topDoctorsByPatients(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [DoctorsPopularity] {
+        guard maxCount > 0 else { return [] }
+
         var doctorsPopularity: [DoctorsPopularity] = []
 
         let schedules = getSchedules(for: date, period: period)
@@ -25,6 +27,34 @@ extension Ledger {
             .prefix(maxCount)
 
         return Array(sortedPopularity)
+    }
+
+    func registrarActivity(for date: Date, period: StatisticsPeriod) -> [RegistrarActivity] {
+        var registrarsActivity: [RegistrarActivity] = []
+
+        let schedules = getSchedules(for: date, period: period)
+        let completedAppointments = schedules.flatMap { $0.completedAppointments }
+        let groupedAppointments = Dictionary(grouping: completedAppointments, by: { $0.registrar })
+
+        for (registrar, appointments) in groupedAppointments {
+            if let registrar, registrar.accessLevel < .boss {
+                var activity = RegistrarActivity(registrar: registrar, activity: 0)
+
+                for appointment in appointments {
+                    if let patient = appointment.patient {
+                        if patient.isNewPatient(for: date, period: period) {
+                            activity.activity += 3
+                        } else {
+                            activity.activity += 2
+                        }
+                    }
+                }
+
+                registrarsActivity.append(activity)
+            }
+        }
+
+        return registrarsActivity
     }
 
     func scheduledPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
@@ -55,4 +85,9 @@ private extension Ledger {
 struct DoctorsPopularity: Hashable {
     let doctor: Doctor
     let patientsCount: Int
+}
+
+struct RegistrarActivity: Hashable {
+    let registrar: AnyUser
+    var activity: Int
 }
