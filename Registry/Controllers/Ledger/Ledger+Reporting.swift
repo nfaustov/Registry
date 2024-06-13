@@ -13,7 +13,7 @@ extension Ledger {
         let methods = getReports(for: date, period: period)
             .compactMap { $0.payments }
             .flatMap { $0 }
-            .filter { $0.subject != nil }
+            .filter { $0.subject != nil && $0.subject?.refund == nil }
             .flatMap { $0.methods }
 
         if let type {

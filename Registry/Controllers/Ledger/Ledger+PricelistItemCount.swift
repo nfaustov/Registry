@@ -10,16 +10,23 @@ import SwiftData
 
 extension Ledger {
     func topPricelistItemsByUsage(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PricelistItemCount] {
+        guard maxCount > 0 else { return [] }
+
         var pricelistItemUsage: [PricelistItemCount] = []
 
-        countServices(for: date, period: period, maxCount: maxCount).forEach {
-            if let pricelistItem = getPricelistItem(by: $0.service.pricelistItem.id) {
-                pricelistItemUsage.append(PricelistItemCount(item: pricelistItem, count: $0.count))
+        let services = billsCollection(date: date, period: period)
+            .flatMap { $0.services }
+        let groupedServices = Dictionary(grouping: services, by: { $0.pricelistItem.id })
+            .sorted(by: { $0.value.count > $1.value.count })
+            .prefix(maxCount)
+
+        for (id, services) in groupedServices {
+            if let pricelistItem = getPricelistItem(by: id) {
+                pricelistItemUsage.append(PricelistItemCount(item: pricelistItem, count: services.count))
             }
         }
 
         return pricelistItemUsage
-            .sorted(by: { $0.count > $1.count })
     }
 }
 
@@ -29,25 +36,6 @@ private extension Ledger {
     func billsCollection(date: Date, period: StatisticsPeriod) -> [Check] {
         getChecks(forDate: date, period: period)
             .filter { $0.refund == nil }
-    }
-
-    func refundsCollection(date: Date, period: StatisticsPeriod) -> [Refund] {
-        getChecks(forDate: date, period: period)
-            .compactMap { $0.refund }
-    }
-
-    func countServices(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [ServiceCount] {
-        guard maxCount > 0 else { return [] }
-
-        let services = billsCollection(date: date, period: period)
-            .flatMap { $0.services }
-        let groupedServices = Dictionary(grouping: services, by: { $0.pricelistItem.id })
-            .sorted(by: { $0.value.count > $1.value.count })
-        let topFiveServices = groupedServices
-            .prefix(maxCount)
-            .compactMap { ServiceCount(service: $0.value.first!, count: $0.value.count) }
-
-        return topFiveServices
     }
 
     func getPricelistItem(by pricelistItemID: String) -> PricelistItem? {
@@ -68,11 +56,6 @@ private extension Ledger {
             return payments.compactMap { $0.subject }
         } else { return [] }
     }
-}
-
-struct ServiceCount {
-    let service: MedicalService
-    let count: Int
 }
 
 struct PricelistItemCount: Hashable {

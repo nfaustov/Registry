@@ -1,5 +1,5 @@
 //
-//  BillTemplatesController.swift
+//  BillTemplatesDebugScreen.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 02.04.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct BillTemplatesController: View {
+struct BillTemplatesDebugScreen: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -35,12 +35,12 @@ struct BillTemplatesController: View {
 }
 
 #Preview {
-    BillTemplatesController()
+    BillTemplatesDebugScreen()
 }
 
 // MARK: - Subviews
 
-private extension BillTemplatesController {
+private extension BillTemplatesDebugScreen {
     func trailingSwipeAction(for template: CheckTemplate) -> some View {
         Button(role: .destructive) {
             modelContext.delete(template)

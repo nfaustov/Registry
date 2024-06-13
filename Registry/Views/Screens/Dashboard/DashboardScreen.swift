@@ -55,9 +55,7 @@ struct DashboardScreen: View {
                 }
 
                 VStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .foregroundStyle(.regularMaterial)
-                        .frame(maxWidth: .infinity)
+                    DoctorsReportingView(date: date, selectedPeriod: selectedPeriod)
                 }
             }
         }

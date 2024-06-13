@@ -1,5 +1,5 @@
 //
-//  Ledger+Patients.swift
+//  Ledger+Schedules.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 07.06.2024.
@@ -9,6 +9,24 @@ import Foundation
 import SwiftData
 
 extension Ledger {
+    func topDoctorsByPatients(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [DoctorsPopularity] {
+        var doctorsPopularity: [DoctorsPopularity] = []
+
+        let schedules = getSchedules(for: date, period: period)
+        let groupedSchedules = Dictionary(grouping: schedules, by: { $0.doctor! })
+
+        for (doctor, schedules) in groupedSchedules {
+            let completedAppointments = schedules.flatMap { $0.completedAppointments }
+            doctorsPopularity.append(DoctorsPopularity(doctor: doctor, patientsCount: completedAppointments.count))
+        }
+
+        let sortedPopularity = doctorsPopularity
+            .sorted(by: { $0.patientsCount > $1.patientsCount })
+            .prefix(maxCount)
+
+        return Array(sortedPopularity)
+    }
+
     func scheduledPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
         getSchedules(for: date, period: period).flatMap { $0.scheduledPatients }
     }
@@ -32,4 +50,9 @@ private extension Ledger {
             return schedules
         } else { return [] }
     }
+}
+
+struct DoctorsPopularity: Hashable {
+    let doctor: Doctor
+    let patientsCount: Int
 }

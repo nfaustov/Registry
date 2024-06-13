@@ -1,13 +1,13 @@
 //
-//  PricelistItemsReportingView.swift
+//  DoctorsReportingView.swift
 //  Registry
 //
-//  Created by Николай Фаустов on 07.06.2024.
+//  Created by Николай Фаустов on 13.06.2024.
 //
 
 import SwiftUI
 
-struct PricelistItemsReportingView: View {
+struct DoctorsReportingView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -18,13 +18,13 @@ struct PricelistItemsReportingView: View {
     // MARK: -
 
     var body: some View {
-        GroupBox("Услуги") {
-            if pricelistItemsUsage.isEmpty {
+        GroupBox("Специалисты") {
+            if doctorsPopularity.isEmpty {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
-                ForEach(pricelistItemsUsage, id: \.self) { usage in
-                    LabeledContent(usage.item.title) {
-                        Text("\(usage.count)")
+                ForEach(doctorsPopularity, id: \.self) { popularity in
+                    LabeledContent(popularity.doctor.initials) {
+                        Text("\(popularity.patientsCount)")
                             .fontWeight(.medium)
                     }
                     .font(.footnote)
@@ -40,15 +40,15 @@ struct PricelistItemsReportingView: View {
 }
 
 #Preview {
-    PricelistItemsReportingView(date: .now, selectedPeriod: .day)
+    DoctorsReportingView(date: .now, selectedPeriod: .day)
 }
 
-// MARK: - Calculation
+// MARK: - Calculations
 
-private extension PricelistItemsReportingView {
+private extension DoctorsReportingView {
     @MainActor
-    var pricelistItemsUsage: [PricelistItemCount] {
+    var doctorsPopularity: [DoctorsPopularity] {
         let ledger = Ledger(modelContext: modelContext)
-        return ledger.topPricelistItemsByUsage(for: date, period: selectedPeriod, maxCount: 5)
+        return ledger.topDoctorsByPatients(for: date, period: selectedPeriod, maxCount: 5)
     }
 }
