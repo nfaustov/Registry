@@ -24,7 +24,20 @@ struct RegistrarsReportingView: View {
             } else {
                 VStack {
                     ForEach(registrarActivity, id: \.self) { activity in
-                        LabeledContent(activity.registrar.initials, value: "\(activity.activity)")
+                        LabeledContent {
+                            Text("\(activity.activity)")
+                                .fontWeight(.medium)
+                        } label: {
+                            HStack {
+                                PersonImageView(person: activity.registrar)
+                                    .frame(width: 64, height: 64, alignment: .top)
+                                    .clipShape(Circle())
+
+                                Text(activity.registrar.fullName)
+                                    .font(.headline)
+                                    .lineLimit(2)
+                            }
+                        }
                     }
                 }
                 .padding()

@@ -23,13 +23,12 @@ struct DoctorsReportingView: View {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
                 ForEach(doctorsPopularity, id: \.self) { popularity in
-                    LabeledContent(popularity.doctor.initials) {
+                    LabeledContent {
                         Text("\(popularity.patientsCount)")
                             .fontWeight(.medium)
+                    } label: {
+                        DoctorView(doctor: popularity.doctor, presentation: .listRow)
                     }
-                    .font(.footnote)
-                    .padding(10)
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
 
                 Spacer()
