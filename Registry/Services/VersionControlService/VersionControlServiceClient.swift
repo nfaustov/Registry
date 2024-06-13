@@ -14,16 +14,7 @@ final class VersionControlServiceClient: VersionControlService {
 
     func update(_ kind: VersionUpdateKind) throws {
         var version = try readVersion()
-
-        switch kind {
-        case .patch:
-            version.patchUpdate()
-        case .minor:
-            version.minorUpdate()
-        case .major:
-            version.majorUpdate()
-        }
-
+        version.update(kind)
         try save(version)
     }
 }

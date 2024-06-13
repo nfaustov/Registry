@@ -1,5 +1,5 @@
 //
-//  LedgerDebugScreen.swift
+//  LedgerDebugView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 12.05.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct LedgerDebugScreen: View {
+struct LedgerDebugView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -123,12 +123,12 @@ struct LedgerDebugScreen: View {
 }
 
 #Preview {
-    LedgerDebugScreen()
+    LedgerDebugView()
 }
 
 // MARK: - Subviews
 
-private extension LedgerDebugScreen {
+private extension LedgerDebugView {
     func paymentColor(_ payment: Payment) -> Color {
         if payment.totalAmount < 0 {
             if payment.purpose == .collection {
@@ -144,7 +144,7 @@ private extension LedgerDebugScreen {
 
 // MARK: - Calculations
 
-private extension LedgerDebugScreen {
+private extension LedgerDebugView {
     @MainActor func getReport(forDate date: Date) {
         isLoading = true
         let ledger = Ledger(modelContext: modelContext)

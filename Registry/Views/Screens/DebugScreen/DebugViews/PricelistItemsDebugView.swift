@@ -1,5 +1,5 @@
 //
-//  PricelistItemsDebugScreen.swift
+//  PricelistItemsDebugView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 30.05.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct PricelistItemsDebugScreen: View {
+struct PricelistItemsDebugView: View {
     // MARK: - Dependencies
 
     @Query private var pricelistItems: [PricelistItem]
@@ -40,5 +40,5 @@ struct PricelistItemsDebugScreen: View {
 }
 
 #Preview {
-    PricelistItemsDebugScreen()
+    PricelistItemsDebugView()
 }

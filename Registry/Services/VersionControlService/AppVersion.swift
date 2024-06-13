@@ -23,22 +23,20 @@ struct AppVersion: Codable {
     var description: String {
         "v\(major).\(minor).\(patch)\n\(DateFormat.dateTime.string(from: updatedAt))"
     }
-    
-    mutating func patchUpdate() {
-        patch += 1
-        updatedAt = .now
-    }
-    
-    mutating func minorUpdate() {
-        minor += 1
-        patch = 0
-        updatedAt = .now
-    }
-    
-    mutating func majorUpdate() {
-        major += 1
-        minor = 0
-        patch = 0
+
+    mutating func update(_ kind: VersionUpdateKind) {
+        switch kind {
+        case .patch:
+            patch += 1
+        case .minor:
+            minor += 1
+            patch = 0
+        case .major:
+            major += 1
+            minor = 0
+            patch = 0
+        }
+
         updatedAt = .now
     }
 }

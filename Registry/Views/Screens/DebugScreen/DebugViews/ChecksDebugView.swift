@@ -1,5 +1,5 @@
 //
-//  ChecksDebugScreen.swift
+//  ChecksDebugView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 26.05.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct ChecksDebugScreen: View {
+struct ChecksDebugView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -45,5 +45,5 @@ struct ChecksDebugScreen: View {
 }
 
 #Preview {
-    ChecksDebugScreen()
+    ChecksDebugView()
 }
