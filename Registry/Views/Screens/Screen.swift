@@ -14,7 +14,7 @@ enum Screen: CaseIterable, Hashable, Identifiable {
     case specialists
     case patients
     case medicalServices
-    case indicators
+    case dashboard
     case userDetail
     case debug
 
@@ -30,8 +30,8 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return "Пациенты"
         case .medicalServices:
             return "Услуги"
-        case .indicators:
-            return "Статистика"
+        case .dashboard:
+            return "Управление"
         case .userDetail:
             return "Пользователь"
         case .debug:
@@ -51,7 +51,7 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return "person.crop.square.filled.and.at.rectangle"
         case .medicalServices:
             return "list.bullet.clipboard"
-        case .indicators:
+        case .dashboard:
             return "chart.line.uptrend.xyaxis"
         case .userDetail:
             return ""
@@ -72,7 +72,7 @@ enum Screen: CaseIterable, Hashable, Identifiable {
             return .indigo
         case .medicalServices:
             return .teal
-        case .indicators:
+        case .dashboard:
             return .pink
         case .userDetail:
             return .black
@@ -90,6 +90,6 @@ enum Screen: CaseIterable, Hashable, Identifiable {
     }
 
     static var bossCases: [Screen] {
-        return [.schedule, .cashbox, .specialists, .patients, .medicalServices, .indicators, .debug]
+        return [.schedule, .cashbox, .specialists, .patients, .medicalServices, .dashboard, .debug]
     }
 }

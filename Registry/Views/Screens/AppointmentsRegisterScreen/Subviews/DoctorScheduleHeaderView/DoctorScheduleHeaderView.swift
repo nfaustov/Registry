@@ -113,7 +113,7 @@ private extension DoctorScheduleHeaderView {
                 } label: {
                     buttonImage("rublesign.circle")
                 }
-                .buttonStyle(DoctorScheduleButton(color: .purple))
+                .buttonStyle(ColoredIconButtonStyle(color: .purple))
                 .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
 
                 if doctor.department != .procedure {
@@ -122,7 +122,7 @@ private extension DoctorScheduleHeaderView {
                     } label: {
                         buttonImage("calendar")
                     }
-                    .buttonStyle(DoctorScheduleButton(color: .cyan))
+                    .buttonStyle(ColoredIconButtonStyle(color: .cyan))
                 }
 
                 Button {
@@ -130,7 +130,7 @@ private extension DoctorScheduleHeaderView {
                 } label: {
                     buttonImage(doctorSchedule.note == nil ? "note.text.badge.plus" : "note.text")
                 }
-                .buttonStyle(DoctorScheduleButton(color: .indigo))
+                .buttonStyle(ColoredIconButtonStyle(color: .indigo))
                 .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
 
                 Button {
@@ -138,7 +138,7 @@ private extension DoctorScheduleHeaderView {
                 } label: {
                     buttonImage("trash")
                 }
-                .buttonStyle(DoctorScheduleButton(color: .red))
+                .buttonStyle(ColoredIconButtonStyle(color: .red))
                 .disabled(doctorSchedule.scheduledPatients.count > 0)
             }
         }
@@ -147,29 +147,5 @@ private extension DoctorScheduleHeaderView {
     func buttonImage(_ systemName: String) -> some View {
         Image(systemName: systemName)
             .font(.title2)
-    }
-}
-
-struct DoctorScheduleButton: ButtonStyle {
-    // MARK: - Dependencies
-
-    @Environment(\.isEnabled) private var isEnabled
-
-    let color: Color
-
-    // MARK: -
-
-    func makeBody(configuration: Configuration) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .frame(width: 52, height: 52)
-                .foregroundStyle(color.opacity(configuration.isPressed ? 0.5 : 0.1))
-                .padding(.horizontal, 12)
-            configuration.label
-                .scaleEffect(configuration.isPressed ? 1.2 : 1)
-                .foregroundStyle(color)
-        }
-        .saturation(isEnabled ? 1 : 0)
-        .opacity(isEnabled ? 1 : 0.4)
     }
 }

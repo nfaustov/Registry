@@ -63,8 +63,8 @@ extension Coordinator {
             PatientsScreen()
         case .medicalServices:
             MedicalServicesScreen()
-        case .indicators:
-            IndicatorsScreen()
+        case .dashboard:
+            DashboardScreen()
         case .userDetail:
             UserDetailScreen()
         case .debug:

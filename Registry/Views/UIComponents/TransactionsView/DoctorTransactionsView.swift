@@ -11,6 +11,7 @@ struct DoctorTransactionsView: View {
     // MARK: - Dependencies
 
     let doctor: Doctor
+    var balanceActionsEnabled: Bool = true
 
     // MARK: - State
 
@@ -23,7 +24,9 @@ struct DoctorTransactionsView: View {
         let dates = Array(transactionsByDate.keys.sorted(by: >))
 
         Form {
-            BalanceView(person: doctor)
+            if balanceActionsEnabled {
+                BalanceView(person: doctor)
+            }
 
             ForEach(dates, id: \.self) { date in
                 Section {

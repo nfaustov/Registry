@@ -53,7 +53,7 @@ struct DoctorPayoutView: View {
                     }
                     .sheet(isPresented: $showLastTransactions) {
                         NavigationStack {
-                            DoctorTransactionsView(doctor: doctor)
+                            DoctorTransactionsView(doctor: doctor, balanceActionsEnabled: false)
                                 .sheetToolbar("Транзакции")
                         }
                     }
