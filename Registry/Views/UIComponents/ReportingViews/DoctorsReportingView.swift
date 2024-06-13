@@ -27,7 +27,14 @@ struct DoctorsReportingView: View {
                         Text("\(popularity.patientsCount)")
                             .fontWeight(.medium)
                     } label: {
-                        DoctorView(doctor: popularity.doctor, presentation: .listRow)
+                        HStack {
+                            PersonImageView(person: popularity.doctor)
+                                .frame(width: 48, height: 48, alignment: .top)
+                                .clipShape(Circle())
+
+                            Text(popularity.doctor.fullName)
+                                .lineLimit(2)
+                        }
                     }
                 }
 

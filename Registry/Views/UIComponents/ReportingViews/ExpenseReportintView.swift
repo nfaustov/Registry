@@ -35,6 +35,8 @@ struct ExpenseReportintView: View {
                 .padding()
                 .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+
+                Spacer()
             }
         }
         .groupBoxStyle(.reporting)

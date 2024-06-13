@@ -30,11 +30,10 @@ struct RegistrarsReportingView: View {
                         } label: {
                             HStack {
                                 PersonImageView(person: activity.registrar)
-                                    .frame(width: 64, height: 64, alignment: .top)
+                                    .frame(width: 48, height: 48, alignment: .top)
                                     .clipShape(Circle())
 
                                 Text(activity.registrar.fullName)
-                                    .font(.headline)
                                     .lineLimit(2)
                             }
                         }

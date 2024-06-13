@@ -23,11 +23,13 @@ struct PricelistItemsReportingView: View {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
                 ForEach(pricelistItemsUsage, id: \.self) { usage in
-                    LabeledContent(usage.item.title) {
+                    LabeledContent {
                         Text("\(usage.count)")
                             .fontWeight(.medium)
+                    } label: {
+                        Text(usage.item.title)
+                            .font(.footnote)
                     }
-                    .font(.footnote)
                     .padding(10)
                     .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
