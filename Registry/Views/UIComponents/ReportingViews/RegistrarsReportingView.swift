@@ -22,26 +22,21 @@ struct RegistrarsReportingView: View {
             if registrarActivity.isEmpty {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
-                VStack {
-                    ForEach(registrarActivity, id: \.self) { activity in
-                        LabeledContent {
-                            Text("\(activity.activity)")
-                                .fontWeight(.medium)
-                        } label: {
-                            HStack {
-                                PersonImageView(person: activity.registrar)
-                                    .frame(width: 48, height: 48, alignment: .top)
-                                    .clipShape(Circle())
+                ForEach(registrarActivity, id: \.self) { activity in
+                    LabeledContent {
+                        Text("\(activity.activity)")
+                            .fontWeight(.medium)
+                    } label: {
+                        HStack {
+                            PersonImageView(person: activity.registrar)
+                                .frame(width: 44, height: 44, alignment: .top)
+                                .clipShape(Circle())
 
-                                Text(activity.registrar.fullName)
-                                    .lineLimit(2)
-                            }
+                            Text(activity.registrar.fullName)
+                                .lineLimit(2)
                         }
                     }
                 }
-                .padding()
-                .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
             }
         }
         .groupBoxStyle(.reporting)

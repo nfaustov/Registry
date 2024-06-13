@@ -29,7 +29,7 @@ struct DoctorsReportingView: View {
                     } label: {
                         HStack {
                             PersonImageView(person: popularity.doctor)
-                                .frame(width: 48, height: 48, alignment: .top)
+                                .frame(width: 44, height: 44, alignment: .top)
                                 .clipShape(Circle())
 
                             Text(popularity.doctor.fullName)

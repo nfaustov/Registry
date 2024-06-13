@@ -34,10 +34,10 @@ extension Ledger {
 
         let schedules = getSchedules(for: date, period: period)
         let completedAppointments = schedules.flatMap { $0.completedAppointments }
-        let groupedAppointments = Dictionary(grouping: completedAppointments, by: { $0.registrar })
+        let groupedAppointments = Dictionary(grouping: completedAppointments, by: { $0.registrar?.id })
 
-        for (registrar, appointments) in groupedAppointments {
-            if let registrar, registrar.accessLevel < .boss {
+        for (id, appointments) in groupedAppointments {
+            if let id, let registrar = getDoctor(by: id), registrar.accessLevel < .boss {
                 var activity = RegistrarActivity(registrar: registrar, activity: 0)
 
                 for appointment in appointments {
@@ -54,7 +54,7 @@ extension Ledger {
             }
         }
 
-        return registrarsActivity
+        return registrarsActivity.sorted(by: { $0.activity > $1.activity})
     }
 
     func scheduledPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
@@ -80,6 +80,16 @@ private extension Ledger {
             return schedules
         } else { return [] }
     }
+
+    func getDoctor(by id: UUID) -> Doctor? {
+        let predicate = #Predicate<Doctor> { $0.id == id }
+        var descriptor = FetchDescriptor<Doctor>(predicate: predicate)
+        descriptor.fetchLimit = 1
+
+        if let doctor = try? modelContext.fetch(descriptor).first {
+            return doctor
+        } else { return nil }
+    }
 }
 
 struct DoctorsPopularity: Hashable {
@@ -88,6 +98,6 @@ struct DoctorsPopularity: Hashable {
 }
 
 struct RegistrarActivity: Hashable {
-    let registrar: AnyUser
+    let registrar: Doctor
     var activity: Int
 }
