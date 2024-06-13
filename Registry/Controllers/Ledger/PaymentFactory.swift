@@ -24,7 +24,7 @@ struct PaymentFactory {
             makeRefundPayment(refund: refund, paymentType: paymentType, includeBalance: includeBalance)
         case .balance(let kind, let person, let method):
             makeBalancePayment(kind, from: person, method: method)
-        case .spending(let purpose, let method):
+        case .spending(let purpose, let method, _):
             makeSpendingPayment(purpose: purpose, method: method)
         }
     }
@@ -95,9 +95,8 @@ private extension PaymentFactory {
     }
 
     func makeSpendingPayment(purpose: Payment.Purpose, method: Payment.Method) -> Payment {
-        var method = method
-        method.value = -abs(method.value)
-        return Payment(purpose: purpose, methods: [method], createdBy: producer.asAnyUser)
+        let paymentMethod = Payment.Method(method.type, value: -abs(method.value))
+        return Payment(purpose: purpose, methods: [paymentMethod], createdBy: producer.asAnyUser)
     }
 }
 
@@ -109,6 +108,6 @@ extension PaymentFactory {
         case doctorPayout(Doctor, methods: [Payment.Method])
         case refund(Refund, paymentType: PaymentType, includeBalance: Bool)
         case balance(UpdateBalanceKind, person: AccountablePerson, method: Payment.Method)
-        case spending(purpose: Payment.Purpose, method: Payment.Method)
+        case spending(purpose: Payment.Purpose, method: Payment.Method, admin: Bool = false)
     }
 }

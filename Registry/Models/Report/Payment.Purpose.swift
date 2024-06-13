@@ -20,6 +20,12 @@ extension Payment {
         case equipment(String = "")
         case consumables(String = "")
         case building(String = "")
+        case laboratory(String = "")
+        case taxes
+        case advertising(String = "")
+        case loan
+        case banking
+        case other(String = "")
 
         var title: String {
             switch self {
@@ -34,6 +40,12 @@ extension Payment {
             case .equipment: return "Оборудование"
             case .consumables: return "Расходники"
             case .building: return "Помещение"
+            case .laboratory: return "Лаборатория"
+            case .taxes: return "Налоги"
+            case .advertising: return "Реклама"
+            case .loan: return "Кредит"
+            case .banking: return "Банковские услуги"
+            case .other: return "Прочее"
             }
         }
 
@@ -51,6 +63,12 @@ extension Payment {
                 case .equipment(let description): return description
                 case .consumables(let description): return description
                 case .building(let description): return description
+                case .laboratory(let description): return description
+                case .taxes: return ""
+                case .advertising(let description): return description
+                case .loan: return ""
+                case .banking: return ""
+                case .other(let description): return description
                 }
             }
             set {

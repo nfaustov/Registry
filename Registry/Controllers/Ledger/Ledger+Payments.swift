@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 extension Ledger {
     func makePayment(_ sample: PaymentFactory.Sample, createdBy user: User) {
@@ -25,8 +26,12 @@ extension Ledger {
             refundPayment(payment, refund: refund, includeBalance: includeBalance)
         case .balance(_, let person, _):
             balancePayment(payment, for: person)
-        case .spending:
-            spendingPayment(payment)
+        case .spending(_, _, let admin):
+            if admin {
+                adminSpendingPayment(payment)
+            } else {
+                spendingPayment(payment)
+            }
         }
     }
 
@@ -71,6 +76,12 @@ extension Ledger {
         record(payment)
     }
 
+    private func adminSpendingPayment(_ payment: Payment) {
+        modelContext.insert(payment)
+        try? modelContext.save()
+        checkingAccount?.updateBalance(by: payment)
+    }
+
     private func spendingPayment(_ payment: Payment) {
         record(payment)
     }
@@ -81,11 +92,21 @@ extension Ledger {
         } else {
             createReport(with: payment)
         }
+
+        checkingAccount?.updateBalance(by: payment)
     }
 
     private func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
         let balancePayment = Payment(purpose: .toBalance(person.initials), methods: [.init(.cash, value: increment)], createdBy: user.asAnyUser)
         person.updateBalance(increment: increment)
         person.assignTransaction(balancePayment)
+    }
+
+    private var checkingAccount: CheckingAccount? {
+        let descriptor = FetchDescriptor<CheckingAccount>()
+
+        if let account = try? modelContext.fetch(descriptor).first {
+            return account
+        } else { return nil }
     }
 }
