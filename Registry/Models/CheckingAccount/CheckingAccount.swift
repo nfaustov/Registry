@@ -10,38 +10,36 @@ import SwiftData
 
 @Model
 final class CheckingAccount {
-    private(set) var cash: Double = Double.zero
-    private(set) var bank: Double = Double.zero
-    private(set) var card: Double = Double.zero
-    private(set) var creditLine: Double = Double.zero
+    var title: String
+    let type: AccountType
+    private(set) var balance: Double
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
+    private(set) var transactions: [AccountTransaction]?
 
-    init(cash: Double, bank: Double, card: Double, creditLine: Double) {
-        self.cash = cash
-        self.bank = bank
-        self.card = card
-        self.creditLine = creditLine
+    init(title: String, type: AccountType, balance: Double) {
+        self.title = title
+        self.type = type
+        self.balance = balance
     }
 
-    func updateBalance(by payment: Payment) {
-        for method in payment.methods {
-            switch method.type {
-            case .cash:
-                cash += method.value
-            case .bank:
-                bank += method.value
-            case .card:
-                card += method.value
-            }
+    func assignTransaction(_ transaction: AccountTransaction) {
+        transactions?.append(transaction)
+        balance += transaction.amount
+    }
+}
+
+enum AccountType: Codable, Hashable, CaseIterable {
+    case cash
+    case card
+    case bank
+    case credit
+
+    var title: String {
+        switch self {
+        case .cash: return "Наличные"
+        case .card: return "Карта"
+        case .bank: return "Расчетный счет"
+        case .credit: return "Кредитная линия"
         }
-    }
-
-    func borrow(_ amount: Double) {
-        creditLine -= amount
-        bank +=  amount
-    }
-
-    func returnLoan(_ amount: Double) {
-        creditLine += amount
-        bank -= amount
     }
 }

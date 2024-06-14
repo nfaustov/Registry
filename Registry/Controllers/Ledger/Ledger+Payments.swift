@@ -26,12 +26,8 @@ extension Ledger {
             refundPayment(payment, refund: refund, includeBalance: includeBalance)
         case .balance(_, let person, _):
             balancePayment(payment, for: person)
-        case .spending(_, _, let admin):
-            if admin {
-                adminSpendingPayment(payment)
-            } else {
-                spendingPayment(payment)
-            }
+        case .spending:
+            spendingPayment(payment)
         }
     }
 
@@ -76,12 +72,6 @@ extension Ledger {
         record(payment)
     }
 
-    private func adminSpendingPayment(_ payment: Payment) {
-        modelContext.insert(payment)
-        try? modelContext.save()
-        checkingAccount?.updateBalance(by: payment)
-    }
-
     private func spendingPayment(_ payment: Payment) {
         record(payment)
     }
@@ -92,8 +82,6 @@ extension Ledger {
         } else {
             createReport(with: payment)
         }
-
-        checkingAccount?.updateBalance(by: payment)
     }
 
     private func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {

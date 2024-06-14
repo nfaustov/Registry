@@ -24,7 +24,7 @@ struct PaymentFactory {
             makeRefundPayment(refund: refund, paymentType: paymentType, includeBalance: includeBalance)
         case .balance(let kind, let person, let method):
             makeBalancePayment(kind, from: person, method: method)
-        case .spending(let purpose, let method, _):
+        case .spending(let purpose, let method):
             makeSpendingPayment(purpose: purpose, method: method)
         }
     }
@@ -108,6 +108,6 @@ extension PaymentFactory {
         case doctorPayout(Doctor, methods: [Payment.Method])
         case refund(Refund, paymentType: PaymentType, includeBalance: Bool)
         case balance(UpdateBalanceKind, person: AccountablePerson, method: Payment.Method)
-        case spending(purpose: Payment.Purpose, method: Payment.Method, admin: Bool = false)
+        case spending(purpose: Payment.Purpose, method: Payment.Method)
     }
 }
