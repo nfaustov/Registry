@@ -42,5 +42,31 @@ extension AccountTransaction {
             case .other: return "Прочее"
             }
         }
+
+        var description: String {
+            switch self {
+            case .salary(let description):
+                return description
+            case .agentFee(let description):
+                return description
+            case .laboratory(let description):
+                return description
+            case .equipment(let description):
+                return description
+            case .consumables(let description):
+                return description
+            case .building(let description):
+                return description
+            case .advertising(let description):
+                return description
+            case .transferTo(let accountType):
+                return "Перевод на счет \(accountType.title.uppercased())"
+            case .transferFrom(let accountType):
+                return "Перевод со счета \(accountType.title.uppercased())"
+            case .other(let description):
+                return description
+            default: return ""
+            }
+        }
     }
 }

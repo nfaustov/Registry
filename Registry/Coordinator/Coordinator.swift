@@ -118,6 +118,8 @@ extension Coordinator {
             BillPaymentView(patient: patient, check: check, isPaid: isPaid)
         case .createNote(let kind):
             CreateNoteView(for: kind)
+        case .accountDetail(let account):
+            AccountTransactionsView(account: account)
         }
     }
 }

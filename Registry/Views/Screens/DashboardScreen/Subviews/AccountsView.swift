@@ -11,11 +11,9 @@ import SwiftData
 struct AccountsView: View {
     // MARK: - Dependencies
 
-//    @Query private var accounts: [CheckingAccount]
-    let account = CheckingAccount(title: "Наличные", type: .cash, balance: 39_500)
-    let account2 = CheckingAccount(title: "Карта", type: .card, balance: 45_800)
-    let account3 = CheckingAccount(title: "Счет СБЕР", type: .bank, balance: 388_865.55)
-    let account4 = CheckingAccount(title: "Кредитная линия", type: .credit, balance: -3_968_854.22)
+    @EnvironmentObject private var coordinator: Coordinator
+
+    @Query private var accounts: [CheckingAccount]
 
     // MARK: -
 
@@ -31,9 +29,9 @@ struct AccountsView: View {
             .frame(width: 152, alignment: .leading)
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            ForEach([account, account2, account3, account4]) { account in
+            ForEach(accounts) { account in
                 Button {
-                    
+                    coordinator.present(.accountDetail(account: account))
                 } label: {
                     VStack(alignment: .leading) {
                         HStack {

@@ -14,17 +14,28 @@ final class CheckingAccount {
     let type: AccountType
     private(set) var balance: Double
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
-    private(set) var transactions: [AccountTransaction]?
+    private var _transactions: [AccountTransaction]?
 
-    init(title: String, type: AccountType, balance: Double) {
+    var transactions: [AccountTransaction] {
+        _transactions?.sorted(by: { $0.date > $1.date }) ?? []
+    }
+
+    init(title: String, type: AccountType, balance: Double, transactions: [AccountTransaction]? = []) {
         self.title = title
         self.type = type
         self.balance = balance
+        _transactions = transactions
     }
 
     func assignTransaction(_ transaction: AccountTransaction) {
-        transactions?.append(transaction)
+        _transactions?.append(transaction)
         balance += transaction.amount
+    }
+
+    func removeTransactions(at offsets: IndexSet) {
+        let transaction = transactions[offsets.first ?? 0]
+        _transactions?.removeAll(where: { $0.id == transaction.id })
+        balance -= transaction.amount
     }
 }
 
