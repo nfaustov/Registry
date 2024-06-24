@@ -22,19 +22,20 @@ struct PricelistItemsReportingView: View {
             if pricelistItemsUsage.isEmpty {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
-                ForEach(pricelistItemsUsage, id: \.self) { usage in
-                    LabeledContent {
-                        Text("\(usage.count)")
-                            .fontWeight(.medium)
-                    } label: {
-                        Text(usage.item.title)
-                            .font(.footnote)
+                ScrollView(.vertical) {
+                    ForEach(pricelistItemsUsage, id: \.self) { usage in
+                        LabeledContent {
+                            Text("\(usage.count)")
+                                .fontWeight(.medium)
+                        } label: {
+                            Text(usage.item.title)
+                                .font(.footnote)
+                        }
+                        .padding(10)
+                        .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     }
-                    .padding(10)
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
-
-                Spacer()
+                .scrollBounceBehavior(.basedOnSize)
             }
         }
         .groupBoxStyle(.reporting)
@@ -51,6 +52,6 @@ private extension PricelistItemsReportingView {
     @MainActor
     var pricelistItemsUsage: [PricelistItemCount] {
         let ledger = Ledger(modelContext: modelContext)
-        return ledger.topPricelistItemsByUsage(for: date, period: selectedPeriod, maxCount: 5)
+        return ledger.topPricelistItemsByUsage(for: date, period: selectedPeriod, maxCount: 10)
     }
 }

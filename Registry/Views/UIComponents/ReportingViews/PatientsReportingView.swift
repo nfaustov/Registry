@@ -83,7 +83,7 @@ private extension PatientsReportingView {
 
     @MainActor
     var newPatientsCount: Int {
-        scheduledPatients
+        uniquedPatients
             .filter { $0.isNewPatient(for: date, period: selectedPeriod) }
             .count
     }
