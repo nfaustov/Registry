@@ -16,30 +16,29 @@ struct StatisticsPeriodView: View {
     // MARK: -
 
     var body: some View {
-        HStack(spacing: 32) {
-            DatePicker("", selection: $date, displayedComponents: .date)
-            HStack {
-                DateText(selectedPeriod.start(for: date), format: .date)
-                    .font(.subheadline)
-                Text("-")
-                    .font(.subheadline)
-                DateText(selectedPeriod.end(for: date), format: .date)
-                    .font(.subheadline)
-                Picker("Выбранный период", selection: $selectedPeriod) {
-                    ForEach(StatisticsPeriod.allCases) { period in
-                        Text(period.rawValue)
-                    }
+        HStack(spacing: 0) {
+            DatePicker("", selection: $date, in: .distantPast...Date.now, displayedComponents: .date)
+
+            Picker("Выбранный период", selection: $selectedPeriod) {
+                ForEach(StatisticsPeriod.allCases) { period in
+                    Text(period.rawValue)
                 }
-                .pickerStyle(.menu)
-                .tint(.secondary)
-                .frame(width: 100, alignment: .trailing)
             }
-            .padding(.horizontal, 8)
-            .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .pickerStyle(.menu)
+            .tint(.secondary)
+            .frame(width: 100)
+
+            HStack {
+                DateText(selectedPeriod.start(for: date), format: .dayMonth)
+                Text("-")
+                DateText(selectedPeriod.end(for: date), format: .dayMonth)
+            }
+            .font(.footnote)
+            .frame(width: 100)
         }
-        .padding(8)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 11)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .frame(maxWidth: .infinity)
     }
 }
 

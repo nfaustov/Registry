@@ -22,11 +22,7 @@ struct DashboardScreen: View {
     var body: some View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
-                HStack {
-                    Button("Новый платеж") {
-                        
-                    }
-                }
+                AccountsView()
                 StatisticsPeriodView(date: $date, selectedPeriod: $selectedPeriod)
             }
 
