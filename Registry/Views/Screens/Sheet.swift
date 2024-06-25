@@ -23,6 +23,8 @@ enum Sheet: Identifiable {
     case billPayment(patient: Patient, check: Check, isPaid: Binding<Bool>)
     case createNote(for: NoteKind)
     case accountDetail(account: CheckingAccount)
+    case balanceDetail(persons: [AccountablePerson])
+    case allTransactions
 
     var id: UUID {
         UUID()

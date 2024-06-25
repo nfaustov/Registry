@@ -25,6 +25,7 @@ struct DashboardScreen: View {
                 AccountsView()
                 StatisticsPeriodView(date: $date, selectedPeriod: $selectedPeriod)
             }
+            .frame(height: 60)
 
             HStack(spacing: 4) {
                 VStack(spacing: 4) {

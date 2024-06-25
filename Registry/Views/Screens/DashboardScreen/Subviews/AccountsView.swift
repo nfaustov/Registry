@@ -13,38 +13,56 @@ struct AccountsView: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query private var accounts: [CheckingAccount]
+    @Query(sort: [SortDescriptor(\CheckingAccount.balance, order: .reverse)])
+    private var accounts: [CheckingAccount]
+    @Query(filter: #Predicate<Patient> { $0.balance != 0 })
+    private var patients: [Patient]
+    @Query(filter: #Predicate<Doctor> { $0.balance != 0 })
+    private var doctors: [Doctor]
 
     // MARK: -
 
     var body: some View {
-        HStack(spacing: 4) {
-            VStack(alignment: .leading) {
-                Text("Баланс")
-                    .font(.caption)
-                CurrencyText(-3_158_435.34)
-                    .font(.headline)
-            }
-            .padding(8)
-            .frame(width: 152, alignment: .leading)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-
-            ForEach(accounts) { account in
+        ScrollView(.horizontal) {
+            HStack(spacing: 4) {
                 Button {
-                    coordinator.present(.accountDetail(account: account))
+                    coordinator.present(.allTransactions)
                 } label: {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            accountImage(account)
-                            Text(account.title)
-                                .font(.caption)
-                        }
-
-                        CurrencyText(account.balance)
-                            .font(.headline)
-                    }
+                    accountView("Баланс", amount: overallBalance)
                 }
-                .buttonStyle(AccountButtonStyle())
+                .buttonStyle(AccountButtonStyle(color: overallBalance < 0 ? .pink : .teal))
+
+                ForEach(accounts) { account in
+                    Button {
+                        coordinator.present(.accountDetail(account: account))
+                    } label: {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                accountImage(account)
+                                Text(account.title)
+                                    .font(.caption)
+                            }
+
+                            CurrencyText(account.balance)
+                                .font(.headline)
+                        }
+                    }
+                    .buttonStyle(AccountButtonStyle(color: .blue))
+                }
+
+                Button {
+                    coordinator.present(.balanceDetail(persons: doctors))
+                } label: {
+                    accountView("Баланс врачей", amount: doctorsBalance)
+                }
+                .buttonStyle(AccountButtonStyle(color: .cyan))
+
+                Button {
+                    coordinator.present(.balanceDetail(persons: patients))
+                } label: {
+                    accountView("Баланс пациентов", amount: patientsBalance)
+                }
+                .buttonStyle(AccountButtonStyle(color: .cyan))
             }
         }
     }
@@ -52,6 +70,23 @@ struct AccountsView: View {
 
 #Preview {
     AccountsView()
+}
+
+// MARK: - Calculations
+
+private extension AccountsView {
+    var patientsBalance: Double {
+        patients.reduce(0.0) { $0 + $1.balance }
+    }
+
+    var doctorsBalance: Double {
+        doctors.reduce(0.0) { $0 + $1.balance}
+    }
+
+    var overallBalance: Double {
+        let accountsBalance = accounts.reduce(0.0) { $0 + $1.balance }
+        return accountsBalance - patientsBalance - doctorsBalance
+    }
 }
 
 // MARK: - Subviews
@@ -65,15 +100,28 @@ private extension AccountsView {
         case .credit: Image(systemName: "rublesign.arrow.circlepath")
         }
     }
+
+    func accountView(_ title: String, amount: Double) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.caption)
+            CurrencyText(amount)
+                .font(.headline)
+        }
+    }
 }
 
 struct AccountButtonStyle: ButtonStyle {
+
+    let color: Color
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(8)
-            .frame(width: 160, alignment: .leading)
-            .background(.blue.opacity(configuration.isPressed ? 0.5 : 0.1), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .frame(width: 152, alignment: .leading)
+            .frame(maxHeight: .infinity)
+            .background(color.opacity(configuration.isPressed ? 0.5 : 0.1), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             .scaleEffect(configuration.isPressed ? 1.05 : 1)
-            .foregroundStyle(.blue)
+            .foregroundStyle(color)
     }
 }

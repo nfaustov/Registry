@@ -70,6 +70,8 @@
 		8B616DB02C2A6628006957F9 /* Counterparty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DAF2C2A6628006957F9 /* Counterparty.swift */; };
 		8B616DB22C2A7BE0006957F9 /* CounterpartiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */; };
 		8B616DB42C2AAC20006957F9 /* CreateCounterpartyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */; };
+		8B616DB62C2AD86D006957F9 /* BalanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB52C2AD86D006957F9 /* BalanceDetailView.swift */; };
+		8B616DB82C2AEABA006957F9 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB72C2AEABA006957F9 /* TransactionsView.swift */; };
 		8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
@@ -290,6 +292,8 @@
 		8B616DAF2C2A6628006957F9 /* Counterparty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counterparty.swift; sourceTree = "<group>"; };
 		8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartiesList.swift; sourceTree = "<group>"; };
 		8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCounterpartyView.swift; sourceTree = "<group>"; };
+		8B616DB52C2AD86D006957F9 /* BalanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetailView.swift; sourceTree = "<group>"; };
+		8B616DB72C2AEABA006957F9 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
 		8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorVacationView.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
@@ -1377,10 +1381,12 @@
 			children = (
 				8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */,
 				8B0B80982C1D816300541A0B /* AccountsView.swift */,
+				8B616DB52C2AD86D006957F9 /* BalanceDetailView.swift */,
 				8B0C1DEF2C29C70300D7C839 /* AccountTransactionsView.swift */,
 				8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */,
 				8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */,
 				8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */,
+				8B616DB72C2AEABA006957F9 /* TransactionsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1632,6 +1638,7 @@
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
 				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,
+				8B616DB62C2AD86D006957F9 /* BalanceDetailView.swift in Sources */,
 				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */,
@@ -1655,6 +1662,7 @@
 				8BA761892C1B39D40068C057 /* StatisticsPeriodView.swift in Sources */,
 				8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */,
 				8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */,
+				8B616DB82C2AEABA006957F9 /* TransactionsView.swift in Sources */,
 				8BA53D9F2B494E62006BE983 /* NavTitleViewModifier.swift in Sources */,
 				8BC342112C1B083A0030DAC0 /* ColoredIconButtonStyle.swift in Sources */,
 				8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */,

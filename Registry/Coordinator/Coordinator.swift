@@ -120,6 +120,10 @@ extension Coordinator {
             CreateNoteView(for: kind)
         case .accountDetail(let account):
             AccountTransactionsView(account: account)
+        case .balanceDetail(let persons):
+            BalanceDetailView(persons: persons)
+        case .allTransactions:
+            TransactionsView()
         }
     }
 }
