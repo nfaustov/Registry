@@ -17,7 +17,7 @@ final class CheckingAccount {
     private var _transactions: [AccountTransaction]?
 
     var transactions: [AccountTransaction] {
-        _transactions?.sorted(by: { $0.date > $1.date }) ?? []
+        _transactions ?? []
     }
 
     init(title: String, type: AccountType, balance: Double, transactions: [AccountTransaction]? = []) {
@@ -32,8 +32,7 @@ final class CheckingAccount {
         balance += transaction.amount
     }
 
-    func removeTransactions(at offsets: IndexSet) {
-        let transaction = transactions[offsets.first ?? 0]
+    func removeTransaction(_ transaction: AccountTransaction) {
         _transactions?.removeAll(where: { $0.id == transaction.id })
         balance -= transaction.amount
     }
