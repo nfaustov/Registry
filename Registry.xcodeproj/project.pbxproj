@@ -22,7 +22,6 @@
 		8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */; };
 		8B16C50A2C1C8D240004BD21 /* AccountTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C5092C1C8D240004BD21 /* AccountTransaction.swift */; };
 		8B16C50C2C1C926E0004BD21 /* AccountTransaction.Purpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C50B2C1C926E0004BD21 /* AccountTransaction.Purpose.swift */; };
-		8B16C50E2C1C941F0004BD21 /* Ledger+AccountTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C50D2C1C941F0004BD21 /* Ledger+AccountTransactions.swift */; };
 		8B183BA62B865F9700FA1D46 /* PaymentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */; };
 		8B183BA92B86601B00FA1D46 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BA82B86601B00FA1D46 /* Ledger.swift */; };
 		8B183BAB2B86605900FA1D46 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B183BAA2B86605900FA1D46 /* Payment.swift */; };
@@ -67,6 +66,10 @@
 		8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC162BF3E143006FB7CD /* VersionController.swift */; };
 		8B5EEC1A2BF3E194006FB7CD /* VersionControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */; };
 		8B5EEC1C2BF3E1F4006FB7CD /* VersionControlServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */; };
+		8B616DAE2C2A62B5006957F9 /* CreateTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */; };
+		8B616DB02C2A6628006957F9 /* Counterparty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DAF2C2A6628006957F9 /* Counterparty.swift */; };
+		8B616DB22C2A7BE0006957F9 /* CounterpartiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */; };
+		8B616DB42C2AAC20006957F9 /* CreateCounterpartyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */; };
 		8B6692AF2BF7AB6D0025E28F /* DoctorVacationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */; };
 		8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69A1412B8D134400458F33 /* BillScreen.swift */; };
 		8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BAA012B8DD193000FF417 /* ServicesTable.swift */; };
@@ -241,7 +244,6 @@
 		8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyText.swift; sourceTree = "<group>"; };
 		8B16C5092C1C8D240004BD21 /* AccountTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransaction.swift; sourceTree = "<group>"; };
 		8B16C50B2C1C926E0004BD21 /* AccountTransaction.Purpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransaction.Purpose.swift; sourceTree = "<group>"; };
-		8B16C50D2C1C941F0004BD21 /* Ledger+AccountTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ledger+AccountTransactions.swift"; sourceTree = "<group>"; };
 		8B183BA52B865F9700FA1D46 /* PaymentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailView.swift; sourceTree = "<group>"; };
 		8B183BA82B86601B00FA1D46 /* Ledger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ledger.swift; sourceTree = "<group>"; };
 		8B183BAA2B86605900FA1D46 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
@@ -284,6 +286,10 @@
 		8B5EEC162BF3E143006FB7CD /* VersionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionController.swift; sourceTree = "<group>"; };
 		8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlService.swift; sourceTree = "<group>"; };
 		8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlServiceClient.swift; sourceTree = "<group>"; };
+		8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTransactionView.swift; sourceTree = "<group>"; };
+		8B616DAF2C2A6628006957F9 /* Counterparty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counterparty.swift; sourceTree = "<group>"; };
+		8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartiesList.swift; sourceTree = "<group>"; };
+		8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCounterpartyView.swift; sourceTree = "<group>"; };
 		8B6692AE2BF7AB6D0025E28F /* DoctorVacationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorVacationView.swift; sourceTree = "<group>"; };
 		8B69A1412B8D134400458F33 /* BillScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillScreen.swift; sourceTree = "<group>"; };
 		8B6BAA012B8DD193000FF417 /* ServicesTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesTable.swift; sourceTree = "<group>"; };
@@ -961,6 +967,7 @@
 				8B84BB092C1B29D400B2022C /* CheckingAccount.swift */,
 				8B16C5092C1C8D240004BD21 /* AccountTransaction.swift */,
 				8B16C50B2C1C926E0004BD21 /* AccountTransaction.Purpose.swift */,
+				8B616DAF2C2A6628006957F9 /* Counterparty.swift */,
 			);
 			path = CheckingAccount;
 			sourceTree = "<group>";
@@ -1371,6 +1378,9 @@
 				8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */,
 				8B0B80982C1D816300541A0B /* AccountsView.swift */,
 				8B0C1DEF2C29C70300D7C839 /* AccountTransactionsView.swift */,
+				8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */,
+				8B616DB32C2AAC20006957F9 /* CreateCounterpartyView.swift */,
+				8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1459,7 +1469,6 @@
 			isa = PBXGroup;
 			children = (
 				8B183BA82B86601B00FA1D46 /* Ledger.swift */,
-				8B16C50D2C1C941F0004BD21 /* Ledger+AccountTransactions.swift */,
 				8BD6466B2C18C48500511958 /* Ledger+Reporting.swift */,
 				8B930C5C2C1303BD00EFF8EE /* Ledger+Schedules.swift */,
 				8B91AE6C2C12DF0600472D8C /* Ledger+PricelistItemCount.swift */,
@@ -1589,7 +1598,6 @@
 				8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */,
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
-				8B16C50E2C1C941F0004BD21 /* Ledger+AccountTransactions.swift in Sources */,
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B8A6E162BF534170026674D /* LabeledCurrency.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
@@ -1600,6 +1608,7 @@
 				8B3742652BA068BA00ED8DB7 /* User.swift in Sources */,
 				8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */,
 				8BA53D982B494DE6006BE983 /* ExampleData.swift in Sources */,
+				8B616DB02C2A6628006957F9 /* Counterparty.swift in Sources */,
 				8B5EEC1C2BF3E1F4006FB7CD /* VersionControlServiceClient.swift in Sources */,
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B0FA0602BC538C80077D4D9 /* NumPadView.swift in Sources */,
@@ -1653,6 +1662,7 @@
 				8B9673862B36187D00FD2E7C /* RegistryApp.swift in Sources */,
 				8B7A3C032B8C8EBC00A48646 /* DoctorFutureSchedulesView.swift in Sources */,
 				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,
+				8B616DB42C2AAC20006957F9 /* CreateCounterpartyView.swift in Sources */,
 				8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */,
 				8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
@@ -1668,6 +1678,7 @@
 				8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */,
 				8BD6466F2C19816A00511958 /* ReportingGroupBoxStyle.swift in Sources */,
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
+				8B616DB22C2A7BE0006957F9 /* CounterpartiesList.swift in Sources */,
 				8B45E6152BB55E0900834AE6 /* UserKey.swift in Sources */,
 				8BDCCFDB2B849F960086BF4D /* Patient.swift in Sources */,
 				8B56E3502C08C5A100504CFE /* PricelistItemsDebugView.swift in Sources */,
@@ -1738,6 +1749,7 @@
 				8B930C5B2C12F63200EFF8EE /* PatientsReportingView.swift in Sources */,
 				8B80FECA2BC256A700BB76E0 /* ContractBody.swift in Sources */,
 				8B183BAF2B8661C000FA1D46 /* Payment.Purpose.swift in Sources */,
+				8B616DAE2C2A62B5006957F9 /* CreateTransactionView.swift in Sources */,
 				8B1D90562C1238C300954FF8 /* Report+Reporting.swift in Sources */,
 				8B8B188A2B88D4B0006ABD82 /* SchedulesListView.swift in Sources */,
 				8B78014C2B87BFD70064DBFB /* CreateDoctorScheduleView.swift in Sources */,

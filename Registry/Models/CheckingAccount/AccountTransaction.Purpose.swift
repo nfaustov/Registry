@@ -8,65 +8,28 @@
 import Foundation
 
 extension AccountTransaction {
-    enum Purpose: Codable, Hashable {
-        case income
-        case salary(String = "")
-        case agentFee(String = "")
-        case laboratory(String = "")
-        case equipment(String = "")
-        case consumables(String = "")
-        case building(String = "")
-        case taxes
-        case advertising(String = "")
-        case loan
-        case banking
-        case transferTo(AccountType)
-        case transferFrom(AccountType)
-        case other(String = "")
+    enum Purpose: String, Codable, Hashable {
+        case income = "Поступление"
+        case salary = "Заработная плата"
+        case agentFee = "Агентские"
+        case laboratory = "Лаборатория"
+        case equipment = "Оборудование"
+        case consumables = "Расходники"
+        case building = "Помещение"
+        case taxes = "Налоги"
+        case advertising = "Реклама"
+        case loan = "Кредит"
+        case banking = "Банковские услуги"
+        case transferTo = "Перевод на счет"
+        case transferFrom = "Перевод со счета"
+        case other = "Прочее"
 
-        var title: String {
-            switch self {
-            case .income: return "Поступление"
-            case .salary: return "Заработная плата"
-            case .agentFee: return "Агентские"
-            case .equipment: return "Оборудование"
-            case .consumables: return "Расходники"
-            case .building: return "Помещение"
-            case .laboratory: return "Лаборатория"
-            case .taxes: return "Налоги"
-            case .advertising: return "Реклама"
-            case .loan: return "Кредит"
-            case .banking: return "Банковские услуги"
-            case .transferTo(let account): return "Перевод на счет \(account.title.uppercased())"
-            case .transferFrom(let account): return "Перевод со счета \(account.title.uppercased())"
-            case .other: return "Прочее"
-            }
+        static var descriptableCases: [AccountTransaction.Purpose] {
+            [.laboratory, .equipment, .consumables, .building, .advertising, .other]
         }
 
-        var description: String {
-            switch self {
-            case .salary(let description):
-                return description
-            case .agentFee(let description):
-                return description
-            case .laboratory(let description):
-                return description
-            case .equipment(let description):
-                return description
-            case .consumables(let description):
-                return description
-            case .building(let description):
-                return description
-            case .advertising(let description):
-                return description
-            case .transferTo(let accountType):
-                return "Перевод на счет \(accountType.title.uppercased())"
-            case .transferFrom(let accountType):
-                return "Перевод со счета \(accountType.title.uppercased())"
-            case .other(let description):
-                return description
-            default: return ""
-            }
+        static var expenseCases: [AccountTransaction.Purpose] {
+            [.salary, .agentFee, .laboratory, .equipment, .consumables, .building, .taxes, .advertising, .loan, .banking, .transferTo, .other]
         }
     }
 }

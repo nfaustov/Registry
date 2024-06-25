@@ -10,7 +10,13 @@ import SwiftUI
 struct AccountTransactionsView: View {
     // MARK: - Dependencies
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     let account: CheckingAccount
+
+    // MARK: - State
+
+    @State private var transactionKind: TransactionKind?
 
     // MARK: -
 
@@ -27,7 +33,7 @@ struct AccountTransactionsView: View {
                     Spacer()
 
                     Button {
-                        
+                        transactionKind = .income
                     } label: {
                         Text("Приход")
                             .frame(width: 120)
@@ -35,7 +41,7 @@ struct AccountTransactionsView: View {
                     .buttonStyle(.borderedProminent)
 
                     Button {
-                        
+                        transactionKind = .expense
                     } label: {
                         Text("Расход")
                             .frame(width: 120)
@@ -63,6 +69,9 @@ struct AccountTransactionsView: View {
                 }
             }
             .sheetToolbar(account.title)
+            .sheet(item: $transactionKind) { kind in
+                CreateTransactionView(account: account, kind: kind)
+            }
         }
     }
 }
@@ -72,11 +81,7 @@ struct AccountTransactionsView: View {
         account: .init(
             title: "Наличные",
             type: .bank,
-            balance: 39_500,
-            transactions: [
-                .init(purpose: .advertising("Сайт"), amount: 40_000),
-                .init(purpose: .income, amount: 30_000)
-            ]
+            balance: 39_500
         )
     )
 }
@@ -92,9 +97,9 @@ private extension AccountTransactionsView {
                 .cornerRadius(12)
 
             VStack(alignment: .leading) {
-                Text(transaction.purpose.title)
+                Text(transaction.purpose.rawValue)
                     .font(.headline)
-                Text(transaction.purpose.description)
+                Text(transaction.counterparty?.fullTitle ?? transaction.detail ?? "")
                     .font(.subheadline)
             }
 

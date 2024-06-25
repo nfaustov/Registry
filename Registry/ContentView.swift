@@ -117,5 +117,14 @@ struct ContentView: View {
 //                }
 //            }
 //        }
+//
+//        let account = CheckingAccount(title: "Счет СБЕР", type: .bank, balance: 388_543.21)
+//        let account2 = CheckingAccount(title: "Наличные", type: .cash, balance: 35_400)
+//        let account3 = CheckingAccount(title: "Карта", type: .card, balance: 11_200)
+//        let account4 = CheckingAccount(title: "Кредитная линия", type: .credit, balance: -3_854_232.11)
+//
+//        [account, account2, account3, account4].forEach { account in
+//            modelContext.insert(account)
+//        }
 //    }
 //}
