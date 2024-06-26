@@ -32,10 +32,10 @@ extension Ledger {
             .compactMap { $0.payments }
             .flatMap { $0 }
             .filter { $0.totalAmount < 0 }
-        let groupedPayments = Dictionary(grouping: payments, by: { $0.purp })
+        let groupedPayments = Dictionary(grouping: payments, by: { $0.purpose.title })
 
-        for (purpose, payments) in groupedPayments {
-            var purposeExpense = PurposeExpense(purpose: purpose, amount: 0)
+        for (title, payments) in groupedPayments {
+            var purposeExpense = PurposeExpense(purposeTitle: title, amount: 0)
 
             for payment in payments {
                 purposeExpense.amount += payment.totalAmount
@@ -62,6 +62,6 @@ private extension Ledger {
 }
 
 struct PurposeExpense: Hashable {
-    let purpose: PaymentPurpose
+    let purposeTitle: String
     var amount: Double
 }
