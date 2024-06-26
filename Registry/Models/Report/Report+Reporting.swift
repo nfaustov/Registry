@@ -14,7 +14,7 @@ extension Report {
 
     var collected: Double {
         payments?
-            .filter { $0.purpose == .collection }
+            .filter { $0.purp == .collection }
             .flatMap { $0.methods }
             .reduce(0.0) { $0 + $1.value } ?? 0
     }
@@ -86,7 +86,7 @@ enum Reporting: String, Hashable, Identifiable, CaseIterable {
 private extension Report {
     func paymentMethods(ofType type: PaymentType?) -> [Payment.Method] {
         let methods = payments?
-            .filter { $0.purpose != .collection }
+            .filter { $0.purp != .collection }
             .flatMap { $0.methods } ?? []
 
         if let type { return methods.filter { $0.type == type } }

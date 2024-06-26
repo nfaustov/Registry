@@ -10,13 +10,13 @@ import Foundation
 extension AccountTransaction {
     enum Purpose: String, Codable, Hashable {
         case income = "Поступление"
-        case salary = "Заработная плата" // -
-        case agentFee = "Агентские" // -
+        case salary = "Заработная плата"
+        case agentFee = "Агентские"
         case refund = "Возврат"
-        case laboratory = "Лаборатория" // -
-        case equipment = "Оборудование" // -
-        case consumables = "Расходники" // -
-        case building = "Помещение" // -
+        case laboratory = "Лаборатория"
+        case equipment = "Оборудование"
+        case consumables = "Расходники"
+        case building = "Помещение"
         case taxes = "Налоги"
         case advertising = "Реклама"
         case loan = "Кредит"

@@ -77,8 +77,7 @@ struct DoctorPayoutView: View {
             .sheetToolbar("Выплата", disabled: paymentMethod.value == 0 || disabled) {
                 if isSinglePatient, singlePatientFee > 0, !alreadyHasSinglePatientFeeForToday {
                     doctor.updateBalance(increment: singlePatientFee)
-                    let purpose: Payment.Purpose = .toBalance("Доплата за прием")
-                    let payment = Payment(purpose: purpose, methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
+                    let payment = Payment(purpose: .collection, purp: .toBalance, details: "Доплата за прием", methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                     doctor.assignTransaction(payment)
                 }
                 let ledger = Ledger(modelContext: modelContext)
@@ -119,7 +118,7 @@ private extension DoctorPayoutView {
         guard let doctorTransactions = doctor.transactions else { return false }
 
         return doctorTransactions.contains(where: {
-            $0.purpose == .toBalance("Доплата за прием") && Calendar.current.isDateInToday($0.date)
+            $0.details == "Доплата за прием" && Calendar.current.isDateInToday($0.date)
         })
     }
 }

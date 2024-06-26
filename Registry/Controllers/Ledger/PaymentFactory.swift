@@ -24,8 +24,8 @@ struct PaymentFactory {
             makeRefundPayment(refund: refund, paymentType: paymentType, includeBalance: includeBalance)
         case .balance(let kind, let person, let method):
             makeBalancePayment(kind, from: person, method: method)
-        case .spending(let purpose, let method):
-            makeSpendingPayment(purpose: purpose, method: method)
+        case .spending(let purpose, let details, let method):
+            makeSpendingPayment(purpose: purpose, details: details, method: method)
         }
     }
 }
@@ -36,14 +36,16 @@ private extension PaymentFactory {
     func makeMedicalServicePayment(from patient: Patient, check: Check, methods: [Payment.Method]) -> Payment {
         let paymentValue = methods.reduce(0.0) { $0 + $1.value }
         let paymentBalance = paymentValue - check.totalPrice
-        var purpose: Payment.Purpose = .medicalServices(patient.initials)
+        var details = patient.initials
 
         if paymentBalance != 0 {
-            purpose.descripiton.append(" (Записано на баланс \(Int(paymentBalance)) ₽)")
+            details.append(" (Записано на баланс \(Int(paymentBalance)) ₽)")
         }
 
         return Payment(
-            purpose: purpose,
+            purpose: .collection,
+            purp: .medicalServices,
+            details: details,
             methods: methods,
             subject: check,
             createdBy: producer.asAnyUser
@@ -56,7 +58,9 @@ private extension PaymentFactory {
         }
 
         return Payment(
-            purpose: .doctorPayout("Врач: \(doctor.initials)"),
+            purpose: .collection,
+            purp: .doctorPayout,
+            details: "Врач: \(doctor.initials)",
             methods: paymentMethods,
             createdBy: producer.asAnyUser
         )
@@ -64,23 +68,29 @@ private extension PaymentFactory {
 
     func makeRefundPayment(refund: Refund, paymentType: PaymentType, includeBalance: Bool) -> Payment {
         let patient = refund.check?.appointments?.first?.patient
-        var purpose: Payment.Purpose = .refund(patient?.initials ?? "")
+        var details = patient?.initials ?? ""
         let paymentValue = refund.totalAmount - (patient?.balance ?? 0)
 
         if includeBalance, patient?.balance != 0 {
-            purpose.descripiton.append(" (Записано на баланс \(Int(-(patient?.balance ?? 0))) ₽)")
+            details.append(" (Записано на баланс \(Int(-(patient?.balance ?? 0))) ₽)")
         }
 
         let refundMethod = Payment.Method(paymentType, value: paymentValue)
 
-        return Payment(purpose: purpose, methods: [refundMethod], createdBy: producer.asAnyUser)
+        return Payment(
+            purpose: .collection,
+            purp: .refund,
+            details: details,
+            methods: [refundMethod],
+            createdBy: producer.asAnyUser
+        )
     }
 
     func makeBalancePayment(_ kind: UpdateBalanceKind, from person: AccountablePerson, method: Payment.Method) -> Payment {
-        var description = person.initials
+        var details = person.initials
 
         if let doctor = person as? Doctor {
-            description = "Врач: \(doctor.initials)"
+            details = "Врач: \(doctor.initials)"
         }
 
         var paymentMethod = method
@@ -89,14 +99,20 @@ private extension PaymentFactory {
             paymentMethod.value = -abs(method.value)
         }
 
-        let purpose: Payment.Purpose = paymentMethod.value > 0 ? .toBalance(description) : .fromBalance(description)
+        let purpose: PaymentPurpose = paymentMethod.value > 0 ? .toBalance : .fromBalance
 
-        return Payment(purpose: purpose, methods: [paymentMethod], createdBy: producer.asAnyUser)
+        return Payment(
+            purpose: .collection,
+            purp: purpose,
+            details: details,
+            methods: [paymentMethod],
+            createdBy: producer.asAnyUser
+        )
     }
 
-    func makeSpendingPayment(purpose: Payment.Purpose, method: Payment.Method) -> Payment {
+    func makeSpendingPayment(purpose: PaymentPurpose, details: String, method: Payment.Method) -> Payment {
         let paymentMethod = Payment.Method(method.type, value: -abs(method.value))
-        return Payment(purpose: purpose, methods: [paymentMethod], createdBy: producer.asAnyUser)
+        return Payment(purpose: .collection, purp: purpose, details: details, methods: [paymentMethod], createdBy: producer.asAnyUser)
     }
 }
 
@@ -108,6 +124,6 @@ extension PaymentFactory {
         case doctorPayout(Doctor, methods: [Payment.Method])
         case refund(Refund, paymentType: PaymentType, includeBalance: Bool)
         case balance(UpdateBalanceKind, person: AccountablePerson, method: Payment.Method)
-        case spending(purpose: Payment.Purpose, method: Payment.Method)
+        case spending(purpose: PaymentPurpose, details: String, method: Payment.Method)
     }
 }

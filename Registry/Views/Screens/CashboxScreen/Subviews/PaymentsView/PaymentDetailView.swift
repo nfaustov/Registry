@@ -24,12 +24,12 @@ struct PaymentDetailView: View {
                 .padding(.bottom)
 
             HStack {
-                Text(payment.purpose.title)
+                Text(payment.purp.rawValue)
                     .font(.headline)
 
                 Spacer()
 
-                if Payment.Purpose.userSelectableCases.contains(where: { payment.purpose.title == $0.title }) {
+                if PaymentPurpose.userSelectableCases.contains(payment.purp) {
                     Menu {
                         Button("Удалить", role: .destructive) {
                             onDelete()
@@ -43,7 +43,7 @@ struct PaymentDetailView: View {
             .padding(.bottom)
 
             HStack {
-                Text(payment.purpose.descripiton)
+                Text(payment.details)
                     .lineLimit(3)
 
                 Spacer()
@@ -64,7 +64,7 @@ struct PaymentDetailView: View {
                 Spacer()
 
                 VStack(alignment: .trailing) {
-                    if !Payment.Purpose.userSelectableCases.contains(where: { payment.purpose.title == $0.title }) {
+                    if !PaymentPurpose.userSelectableCases.contains(payment.purp) {
                         ForEach(payment.methods, id: \.self) { method in
                             Menu {
                                 ForEach(PaymentType.allCases, id: \.self) { type in

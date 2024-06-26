@@ -73,10 +73,10 @@ struct LedgerDebugView: View {
                         Text(DateFormat.time.string(from: payment.date))
                     }
                     TableColumn("Назначение") { payment in
-                        Text(payment.purpose.title)
+                        Text(payment.purp.rawValue)
                     }
                     TableColumn("Описание") { payment in
-                        Text(payment.purpose.descripiton)
+                        Text(payment.details)
                     }
                     TableColumn("Оплата") { payment in
                         CurrencyText(payment.totalAmount)
@@ -110,7 +110,7 @@ struct LedgerDebugView: View {
                                     LabeledContent("Регистратор", value: payment.createdBy.initials)
                                 }
                             }
-                            .sheetToolbar(payment.purpose.title, subtitle: payment.purpose.descripiton)
+                            .sheetToolbar(payment.purp.rawValue, subtitle: payment.details)
                         }
                     }
                 }
@@ -131,7 +131,7 @@ struct LedgerDebugView: View {
 private extension LedgerDebugView {
     func paymentColor(_ payment: Payment) -> Color {
         if payment.totalAmount < 0 {
-            if payment.purpose == .collection {
+            if payment.purp == .collection {
                 return .purple
             } else {
                 return .red
