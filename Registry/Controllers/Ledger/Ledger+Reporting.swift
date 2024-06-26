@@ -32,10 +32,10 @@ extension Ledger {
             .compactMap { $0.payments }
             .flatMap { $0 }
             .filter { $0.totalAmount < 0 }
-        let groupedPayments = Dictionary(grouping: payments, by: { $0.purpose.title })
+        let groupedPayments = Dictionary(grouping: payments, by: { $0.purp })
 
-        for (title, payments) in groupedPayments {
-            var purposeExpense = PurposeExpense(purposeTitle: title, amount: 0)
+        for (purpose, payments) in groupedPayments {
+            var purposeExpense = PurposeExpense(purposeTitle: purpose.rawValue, amount: 0)
 
             for payment in payments {
                 purposeExpense.amount += payment.totalAmount

@@ -35,7 +35,7 @@ struct DashboardScreen: View {
 
                 VStack(spacing: 4) {
                     IncomeReportingView(date: date, selectedPeriod: selectedPeriod)
-                    ExpenseReportintView(date: date, selectedPeriod: selectedPeriod)
+                    ExpenseReportingView(date: date, selectedPeriod: selectedPeriod)
                 }
 
                 VStack(spacing: 4) {

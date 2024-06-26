@@ -1,5 +1,5 @@
 //
-//  ExpenseReportintView.swift
+//  ExpenseReportingView.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 13.06.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExpenseReportintView: View {
+struct ExpenseReportingView: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -44,12 +44,12 @@ struct ExpenseReportintView: View {
 }
 
 #Preview {
-    ExpenseReportintView(date: .now, selectedPeriod: .day)
+    ExpenseReportingView(date: .now, selectedPeriod: .day)
 }
 
 // MARK: - Calculations
 
-private extension ExpenseReportintView {
+private extension ExpenseReportingView {
     @MainActor
     var expenses: [PurposeExpense] {
         let ledger = Ledger(modelContext: modelContext)
