@@ -15,6 +15,8 @@ struct ContentView: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
+    @Query private var payments: [Payment]
+
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
@@ -69,6 +71,31 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
+//            .task {
+//                for payment in payments {
+//                    switch payment.purpose {
+//                    case .collection:
+//                        payment.purp = .collection
+//                    case .salary, .agentFee, .doctorPayout:
+//                        payment.purp = .doctorPayout
+//                    case .medicalServices:
+//                        payment.purp = .medicalServices
+//                    case .refund:
+//                        payment.purp = .refund
+//                    case .toBalance:
+//                        payment.purp = .toBalance
+//                    case .fromBalance:
+//                        payment.purp = .fromBalance
+//                    case .equipment:
+//                        payment.purp = .equipment
+//                    case .consumables:
+//                        payment.purp = .consumables
+//                    case .building:
+//                        payment.purp = .building
+//                    }
+//                    payment.details = payment.purpose.descripiton
+//                }
+//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }
@@ -116,6 +143,15 @@ struct ContentView: View {
 //                    pricelistItem.archived = true
 //                }
 //            }
+//        }
+//
+//        let account = CheckingAccount(title: "Счет СБЕР", type: .bank, balance: 388_543.21)
+//        let account2 = CheckingAccount(title: "Наличные", type: .cash, balance: 35_400)
+//        let account3 = CheckingAccount(title: "Карта", type: .card, balance: 11_200)
+//        let account4 = CheckingAccount(title: "Кредитная линия", type: .credit, balance: -3_854_232.11)
+//
+//        [account, account2, account3, account4].forEach { account in
+//            modelContext.insert(account)
 //        }
 //    }
 //}

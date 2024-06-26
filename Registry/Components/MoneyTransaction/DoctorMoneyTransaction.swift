@@ -36,7 +36,7 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(payment: Payment) {
         id = UUID()
         self.date = payment.date
-        self.description = payment.purpose.descripiton
+        self.description = payment.details
         self.value = payment.methods.reduce(0.0) { $0 + $1.value }
 
         if value > 0 {

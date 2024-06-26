@@ -18,10 +18,10 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(payment: Payment) {
         id = UUID()
         date = payment.date
-        description = payment.purpose.descripiton
+        description = payment.details
         value = payment.methods.reduce(0.0) { $0 + $1.value }
 
-        switch payment.purpose {
+        switch payment.purp {
         case .medicalServices:
             kind = .servicePayment
             refunded = false

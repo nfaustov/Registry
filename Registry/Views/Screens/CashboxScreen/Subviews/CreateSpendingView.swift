@@ -19,7 +19,8 @@ struct CreateSpendingView: View {
 
     @State private var cashBalance: Double = 0
     @State private var paymentMethod: Payment.Method = Payment.Method(.cash, value: 0)
-    @State private var paymentPurpose: Payment.Purpose = .collection
+    @State private var paymentPurpose: PaymentPurpose = .collection
+    @State private var paymentDetails: String = ""
 
     // MARK: -
 
@@ -27,14 +28,14 @@ struct CreateSpendingView: View {
         NavigationStack {
             List {
                 Section {
-                    Picker(paymentPurpose.title, selection: $paymentPurpose) {
-                        ForEach(Payment.Purpose.userSelectableCases, id: \.self) { purpose in
-                            Text(purpose.title)
+                    Picker(paymentPurpose.rawValue, selection: $paymentPurpose) {
+                        ForEach(PaymentPurpose.userSelectableCases, id: \.self) { purpose in
+                            Text(purpose.rawValue)
                         }
                     }
 
                     if paymentPurpose != .collection {
-                        TextField("Описание", text: $paymentPurpose.descripiton)
+                        TextField("Описание", text: $paymentDetails)
                     }
                 } header: {
                     Text("Назначение")
@@ -69,7 +70,7 @@ struct CreateSpendingView: View {
             ) {
                 let ledger = Ledger(modelContext: modelContext)
                 ledger.makePayment(
-                    .spending(purpose: paymentPurpose, method: paymentMethod),
+                    .spending(purpose: paymentPurpose, details: paymentDetails, method: paymentMethod),
                     createdBy: user
                 )
             }

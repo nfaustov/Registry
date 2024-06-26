@@ -34,9 +34,10 @@ struct DateText: View {
 enum DateFormat: String {
     case time = "H:mm"
     case date = "dd.MM.YYYY"
+    case dateTime = "dd.MM.YYYY H:mm"
     case weekDay = "d MMMM EEE"
     case timeWeekDay = "H:mm d MMMM EEE"
-    case dateTime = "dd.MM.YYYY H:mm"
+    case dayMonth = "d.MM"
     case birthDate = "d MMMM yyyy"
     case datePickerDate = "LLLL d EEEE"
 
