@@ -52,4 +52,15 @@ enum AccountType: Codable, Hashable, CaseIterable {
         case .credit: return "Кредитная линия"
         }
     }
+
+    static func correlatedAccount(with paymentType: PaymentType) -> AccountType {
+        switch paymentType {
+        case .cash:
+            return .cash
+        case .bank:
+            return .bank
+        case .card:
+            return .card
+        }
+    }
 }

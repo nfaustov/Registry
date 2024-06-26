@@ -48,7 +48,7 @@ struct CreateTransactionView: View {
                 Section("Назначение") {
                     if transactionKind == .expense {
                         Picker(purpose.rawValue, selection: $purpose) {
-                            ForEach(AccountTransaction.Purpose.expenseCases, id: \.self) { purpose in
+                            ForEach(AccountTransaction.Purpose.selectableExpenseCases, id: \.self) { purpose in
                                 Text(purpose.rawValue)
                             }
                         }

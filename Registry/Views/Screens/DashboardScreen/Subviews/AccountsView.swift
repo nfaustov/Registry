@@ -11,6 +11,8 @@ import SwiftData
 struct AccountsView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
 
     @Query(sort: [SortDescriptor(\CheckingAccount.balance, order: .reverse)])
@@ -19,6 +21,10 @@ struct AccountsView: View {
     private var patients: [Patient]
     @Query(filter: #Predicate<Doctor> { $0.balance != 0 })
     private var doctors: [Doctor]
+
+    // MARK: - State
+
+    @State private var cashboxBalance: Double = .zero
 
     // MARK: -
 
@@ -48,6 +54,29 @@ struct AccountsView: View {
                         }
                     }
                     .buttonStyle(AccountButtonStyle(color: .blue))
+                }
+
+                Button {
+                    
+                } label: {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "rublesign.square")
+                            Text("Касса")
+                                .font(.caption)
+                        }
+
+                        CurrencyText(cashboxBalance)
+                            .font(.headline)
+                    }
+                }
+                .buttonStyle(AccountButtonStyle(color: .cyan))
+                .onAppear {
+                    let ledger = Ledger(modelContext: modelContext)
+
+                    if let report = ledger.getReport() {
+                        cashboxBalance = report.cashBalance
+                    }
                 }
 
                 Button {

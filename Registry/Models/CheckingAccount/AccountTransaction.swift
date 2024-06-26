@@ -21,7 +21,7 @@ final class AccountTransaction {
 
     init(
         purpose: AccountTransaction.Purpose,
-        detail: String?,
+        detail: String? = nil,
         amount: Double,
         counterparty: Counterparty? = nil
     ) {
