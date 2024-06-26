@@ -83,6 +83,22 @@ enum PaymentPurpose: String, Codable, Hashable {
     case consumables = "Расходники"
     case building = "Помещение"
 
+    var expenseCategory: ExpenseCategory? {
+        switch self {
+        case .doctorPayout:
+            .doctorPayout
+        case .refund:
+            .refund
+        case .equipment:
+            .equipment
+        case .consumables:
+            .consumables
+        case .building:
+            .building
+        default: nil
+        }
+    }
+
     static var userSelectableCases: [PaymentPurpose] {
         [.collection, .equipment, .consumables, .building]
     }

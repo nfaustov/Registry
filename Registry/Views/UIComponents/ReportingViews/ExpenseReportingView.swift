@@ -24,7 +24,7 @@ struct ExpenseReportingView: View {
             } else {
                 VStack {
                     ForEach(expenses, id: \.self) { expense in
-                        LabeledCurrency(expense.purposeTitle, value: expense.amount)
+                        LabeledCurrency(expense.category.rawValue, value: expense.amount)
                     }
 
                     Divider()

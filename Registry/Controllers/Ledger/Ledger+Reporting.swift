@@ -10,6 +10,22 @@ import SwiftData
 
 extension Ledger {
     func income(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
+//        let transactions = getTransactions(for: date, period: period)
+//            .filter { $0.purpose == .income }
+//
+//        if let type {
+//            return transactions
+//                .filter { transaction in
+//                    if let account = transaction.account {
+//                        return account.type == AccountType.correlatedAccount(with: type)
+//                    } else {
+//                        return false
+//                    }
+//                }
+//                .reduce(0.0) { $0 + $1.amount }
+//        } else {
+//            return transactions.reduce(0.0) { $0 + $1.amount }
+//        }
         let methods = getReports(for: date, period: period)
             .compactMap { $0.payments }
             .flatMap { $0 }
@@ -26,25 +42,13 @@ extension Ledger {
     }
 
     func expense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
-        var expenses: [PurposeExpense] = []
-
-        let payments = getReports(for: date, period: period)
-            .compactMap { $0.payments }
-            .flatMap { $0 }
-            .filter { $0.totalAmount < 0 }
-        let groupedPayments = Dictionary(grouping: payments, by: { $0.purp })
-
-        for (purpose, payments) in groupedPayments {
-            var purposeExpense = PurposeExpense(purposeTitle: purpose.rawValue, amount: 0)
-
-            for payment in payments {
-                purposeExpense.amount += payment.totalAmount
+        let transactions = getTransactions(for: date, period: period).filter { $0.amount < 0 }
+        return Dictionary(grouping: transactions, by: { $0.purpose })
+            .compactMap { purpose, transactions in
+                if let expenseCategory = purpose.expenseCategory {
+                    return PurposeExpense(category: expenseCategory, amount: transactions.reduce(0.0) { $0 + $1.amount })
+                } else { return nil }
             }
-
-            expenses.append(purposeExpense)
-        }
-
-        return expenses
     }
 }
 
@@ -59,9 +63,34 @@ private extension Ledger {
             return reports
         } else { return [] }
     }
+
+    func getTransactions(for date: Date, period: StatisticsPeriod) -> [AccountTransaction] {
+        let start = period.start(for: date)
+        let end = period.end(for: date)
+        let predicate = #Predicate<AccountTransaction> { $0.date > start && $0.date < end }
+        let descriptor = FetchDescriptor(predicate: predicate)
+
+        if let transactions = try? modelContext.fetch(descriptor) {
+            return transactions
+        } else { return [] }
+    }
 }
 
 struct PurposeExpense: Hashable {
-    let purposeTitle: String
+    let category: ExpenseCategory
     var amount: Double
+}
+
+enum ExpenseCategory: String, CaseIterable {
+    case doctorPayout = "Выплаты врачам"
+    case refund = "Возвраты"
+    case laboratory = "Лаборатория"
+    case equipment = "Оборудование"
+    case consumables = "Расходники"
+    case building = "Помещение"
+    case taxes = "Налоги"
+    case advertising = "Реклама"
+    case loan = "Кредит"
+    case banking = "Банковские услуги"
+    case other = "Прочее"
 }

@@ -21,9 +21,37 @@ extension AccountTransaction {
         case advertising = "Реклама"
         case loan = "Кредит"
         case banking = "Банковские услуги"
-        case transferTo = "Перевод на"
-        case transferFrom = "Перевод с"
+        case transferTo = "Перевод на счет"
+        case transferFrom = "Перевод со счета"
         case other = "Прочее"
+
+        var expenseCategory: ExpenseCategory? {
+            switch self {
+            case .salary, .agentFee:
+                .doctorPayout
+            case .refund:
+                .refund
+            case .laboratory:
+                .laboratory
+            case .equipment:
+                .equipment
+            case .consumables:
+                .consumables
+            case .building:
+                .building
+            case .taxes:
+                .taxes
+            case .advertising:
+                .advertising
+            case .loan:
+                .loan
+            case .banking:
+                .banking
+            case .other:
+                .other
+            default: nil
+            }
+        }
 
         static var selectableExpenseCases: [AccountTransaction.Purpose] {
             [.salary, .agentFee, .laboratory, .equipment, .consumables, .building, .taxes, .advertising, .loan, .banking, .transferTo, .other]
