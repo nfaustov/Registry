@@ -22,23 +22,24 @@ struct DoctorsReportingView: View {
             if doctorsPopularity.isEmpty {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
-                ForEach(doctorsPopularity, id: \.self) { popularity in
-                    LabeledContent {
-                        Text("\(popularity.patientsCount)")
-                            .fontWeight(.medium)
-                    } label: {
-                        HStack {
-                            PersonImageView(person: popularity.doctor)
-                                .frame(width: 44, height: 44, alignment: .top)
-                                .clipShape(Circle())
+                ScrollView(.vertical) {
+                    ForEach(doctorsPopularity, id: \.self) { popularity in
+                        LabeledContent {
+                            Text("\(popularity.patientsCount)")
+                                .fontWeight(.medium)
+                        } label: {
+                            HStack {
+                                PersonImageView(person: popularity.doctor)
+                                    .frame(width: 44, height: 44, alignment: .top)
+                                    .clipShape(Circle())
 
-                            Text(popularity.doctor.fullName)
-                                .lineLimit(2)
+                                Text(popularity.doctor.fullName)
+                                    .lineLimit(2)
+                            }
                         }
                     }
                 }
-
-                Spacer()
+                .scrollBounceBehavior(.basedOnSize)
             }
         }
         .groupBoxStyle(.reporting)
@@ -55,6 +56,6 @@ private extension DoctorsReportingView {
     @MainActor
     var doctorsPopularity: [DoctorsPopularity] {
         let ledger = Ledger(modelContext: modelContext)
-        return ledger.topDoctorsByPatients(for: date, period: selectedPeriod, maxCount: 5)
+        return ledger.doctorsByPatients(for: date, period: selectedPeriod)
     }
 }

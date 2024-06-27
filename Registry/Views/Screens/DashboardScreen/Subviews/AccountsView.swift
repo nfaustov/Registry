@@ -38,24 +38,6 @@ struct AccountsView: View {
                 }
                 .buttonStyle(AccountButtonStyle(color: overallBalance < 0 ? .pink : .teal))
 
-                ForEach(accounts) { account in
-                    Button {
-                        coordinator.present(.accountDetail(account: account))
-                    } label: {
-                        VStack(alignment: .leading) {
-                            HStack {
-                                accountImage(account)
-                                Text(account.title)
-                                    .font(.caption)
-                            }
-
-                            CurrencyText(account.balance)
-                                .font(.headline)
-                        }
-                    }
-                    .buttonStyle(AccountButtonStyle(color: .blue))
-                }
-
                 Button {
                     
                 } label: {
@@ -77,6 +59,24 @@ struct AccountsView: View {
                     if let report = ledger.getReport() {
                         cashboxBalance = report.cashBalance
                     }
+                }
+
+                ForEach(accounts) { account in
+                    Button {
+                        coordinator.present(.accountDetail(account: account))
+                    } label: {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                accountImage(account)
+                                Text(account.title)
+                                    .font(.caption)
+                            }
+
+                            CurrencyText(account.balance)
+                                .font(.headline)
+                        }
+                    }
+                    .buttonStyle(AccountButtonStyle(color: .blue))
                 }
 
                 Button {

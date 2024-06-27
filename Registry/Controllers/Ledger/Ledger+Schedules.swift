@@ -9,9 +9,7 @@ import Foundation
 import SwiftData
 
 extension Ledger {
-    func topDoctorsByPatients(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [DoctorsPopularity] {
-        guard maxCount > 0 else { return [] }
-
+    func doctorsByPatients(for date: Date, period: StatisticsPeriod) -> [DoctorsPopularity] {
         var doctorsPopularity: [DoctorsPopularity] = []
 
         let schedules = getSchedules(for: date, period: period)
@@ -24,7 +22,6 @@ extension Ledger {
 
         let sortedPopularity = doctorsPopularity
             .sorted(by: { $0.patientsCount > $1.patientsCount })
-            .prefix(maxCount)
 
         return Array(sortedPopularity)
     }
