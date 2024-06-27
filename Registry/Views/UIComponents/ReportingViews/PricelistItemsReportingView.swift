@@ -36,6 +36,7 @@ struct PricelistItemsReportingView: View {
                     }
                 }
                 .scrollBounceBehavior(.basedOnSize)
+                .scrollIndicators(.hidden)
             }
         }
         .groupBoxStyle(.reporting)

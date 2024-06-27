@@ -40,6 +40,7 @@ struct DoctorsReportingView: View {
                     }
                 }
                 .scrollBounceBehavior(.basedOnSize)
+                .scrollIndicators(.hidden)
             }
         }
         .groupBoxStyle(.reporting)
