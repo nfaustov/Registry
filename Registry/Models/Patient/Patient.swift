@@ -20,6 +20,7 @@ final class Patient: AccountablePerson, Codable {
     var placeOfResidence: PlaceOfResidence = PlaceOfResidence()
     @Relationship(deleteRule: .cascade, inverse: \TreatmentPlan.patient)
     private(set) var treatmentPlans: [TreatmentPlan]?
+    var info: String = ""
     let createdAt: Date = Date.now
     @Attribute(.externalStorage)
     var image: Data?
@@ -38,6 +39,7 @@ final class Patient: AccountablePerson, Codable {
         passport: PassportData = PassportData(),
         placeOfResidence: PlaceOfResidence = PlaceOfResidence(),
         treatmentPlans: [TreatmentPlan]? = [],
+        info: String = "",
         image: Data? = nil,
         transactions: [Payment]? = []
     ) {
@@ -50,9 +52,21 @@ final class Patient: AccountablePerson, Codable {
         self.passport = passport
         self.placeOfResidence = placeOfResidence
         self.treatmentPlans = treatmentPlans
+        self.info = info
         self.createdAt = .now
         self.image = image
         self.transactions = transactions
+    }
+
+    var age: String? {
+        guard passport.birthday != Date(timeIntervalSinceReferenceDate: 0) else { return nil }
+
+        let timeInterval = Date.now.timeIntervalSince(passport.birthday)
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.year]
+        formatter.unitsStyle = .full
+
+        return formatter.string(from: timeInterval)
     }
 
     var currentTreatmentPlan: TreatmentPlan? {
@@ -124,7 +138,7 @@ final class Patient: AccountablePerson, Codable {
     // MARK: - Codable
 
     private enum CodingKeys: String, CodingKey {
-        case id, secondName, firstName, patronymicName, phoneNumber, balance, passport, placeOfResidence, treatmentPlans, createdAt, transactions
+        case id, secondName, firstName, patronymicName, phoneNumber, balance, passport, placeOfResidence, info, createdAt
     }
 
     required init(from decoder: any Decoder) throws {
@@ -137,6 +151,7 @@ final class Patient: AccountablePerson, Codable {
         self.balance = try container.decode(Double.self, forKey: .balance)
         self.passport = try container.decode(PassportData.self, forKey: .passport)
         self.placeOfResidence = try container.decode(PlaceOfResidence.self, forKey: .placeOfResidence)
+        self.info = try container.decode(String.self, forKey: .info)
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
     }
 
@@ -150,6 +165,7 @@ final class Patient: AccountablePerson, Codable {
         try container.encode(balance, forKey: .balance)
         try container.encode(passport, forKey: .passport)
         try container.encode(placeOfResidence, forKey: .placeOfResidence)
+        try container.encode(info, forKey: .info)
         try container.encode(createdAt, forKey: .createdAt)
     }
 }

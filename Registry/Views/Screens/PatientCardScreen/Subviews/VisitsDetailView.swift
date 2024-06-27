@@ -66,23 +66,21 @@ private extension VisitsDetailView {
 private extension VisitsDetailView {
     func visitView(_ appointment: PatientAppointment) -> some View {
         Section {
-            if let check = appointment.check, check.payment != nil {
-                if !check.services.isEmpty {
-                    DisclosureGroup {
-                        ForEach(check.services) { service in
-                            LabeledCurrency(service.title, value: service.price)
-                        }
-
-                        if check.discount > 0 {
-                            LabeledCurrency("Скидка", value: -check.discount)
-                                .foregroundStyle(.blue)
-                                .fontWeight(.light)
-                        }
-                    } label: {
-                        LabeledCurrency("Счет", value: check.totalPrice)
-                            .font(.headline)
-                            .foregroundStyle(.blue)
+            if appointment.status == .completed, let check = appointment.check {
+                DisclosureGroup {
+                    ForEach(check.services) { service in
+                        LabeledCurrency(service.title, value: service.price)
                     }
+
+                    if check.discount > 0 {
+                        LabeledCurrency("Скидка", value: -check.discount)
+                            .foregroundStyle(.blue)
+                            .fontWeight(.light)
+                    }
+                } label: {
+                    LabeledCurrency("Счет", value: check.totalPrice)
+                        .font(.headline)
+                        .foregroundStyle(.blue)
                 }
 
                 if let refund = check.refund {
@@ -96,16 +94,12 @@ private extension VisitsDetailView {
                             .foregroundStyle(.red)
                     }
                     .tint(.red)
-                }
-
-                if check.refund == nil, !check.services.isEmpty {
-                    if check.payment != nil {
-                        Button {
-                            coordinator.push(.contract(for: patient, check: check))
-                        } label: {
-                            Label("Договор", systemImage: "doc.text")
-                                .tint(.primary)
-                        }
+                } else {
+                    Button {
+                        coordinator.push(.contract(for: patient, check: check))
+                    } label: {
+                        Label("Договор", systemImage: "doc.text")
+                            .tint(.primary)
                     }
 
                     let uniqueDoctors = uniqueDoctors(from: check)

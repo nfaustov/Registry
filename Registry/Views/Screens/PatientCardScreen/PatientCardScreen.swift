@@ -30,8 +30,12 @@ struct PatientCardScreen: View {
                 nameButton(\.secondName)
                 nameButton(\.firstName)
                 nameButton(\.patronymicName)
-            } header: {
-                Text("Имя")
+            }
+
+            if let age = patient.age {
+                Section {
+                    Text(age)
+                }
             }
 
             Button(patient.phoneNumber) {
@@ -46,18 +50,21 @@ struct PatientCardScreen: View {
                     Label("Паспортные данные", systemImage: "person.crop.square.filled.and.at.rectangle")
                         .tint(.primary)
                 }
-            }
 
-            Section {
+                Button {
+                    currentDetail = .info
+                } label: {
+                    Label("Информация", systemImage: "info.square")
+                        .tint(.primary)
+                }
+
                 Button {
                     currentDetail = .visits
                 } label: {
                     Label("Визиты", systemImage: "figure.walk.arrival")
                         .tint(.primary)
                 }
-            }
 
-            Section {
                 Button {
                     currentDetail = .transactions
                 } label: {
@@ -70,7 +77,7 @@ struct PatientCardScreen: View {
                 }
             }
 
-            Section {
+            Section("Лечебный план") {
                 Button {
                     currentDetail = .treatmentPlan
                 } label: {
@@ -94,8 +101,6 @@ struct PatientCardScreen: View {
                     }
                 }
                 .listRowBackground(patient.currentTreatmentPlan != nil ? Color.appBlack : Color(.secondarySystemGroupedBackground))
-            } header: {
-                Text("Лечебный план")
             }
 
             if user.accessLevel == .boss, patient.balance == 0, patient.currentTreatmentPlan == nil {
@@ -130,6 +135,7 @@ private extension PatientCardScreen {
         case treatmentPlan
         case visits
         case transactions
+        case info
 
         var title: String {
             switch self {
@@ -145,6 +151,8 @@ private extension PatientCardScreen {
                 return "Последние визиты"
             case .transactions:
                 return "Транзакции"
+            case .info:
+                return "Информация о пациенте"
             }
         }
     }
@@ -175,6 +183,13 @@ private extension PatientCardScreen {
             VisitsDetailView(patient: patient)
         case .transactions:
             PatientTransactionsView(patient: patient)
+        case .info:
+            Form {
+                Section("Информация о пациенте") {
+                    TextEditor(text: $patient.info)
+                        .lineSpacing(6)
+                }
+            }
         }
     }
 
