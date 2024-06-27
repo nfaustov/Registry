@@ -31,12 +31,23 @@ struct AccountsView: View {
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 4) {
-                Button {
-                    coordinator.present(.allTransactions)
-                } label: {
-                    accountView("Баланс", amount: overallBalance)
+                ForEach(accounts) { account in
+                    Button {
+                        coordinator.present(.accountDetail(account: account))
+                    } label: {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                accountImage(account)
+                                Text(account.title)
+                                    .font(.caption)
+                            }
+
+                            CurrencyText(account.balance)
+                                .font(.headline)
+                        }
+                    }
+                    .buttonStyle(AccountButtonStyle(color: .blue))
                 }
-                .buttonStyle(AccountButtonStyle(color: overallBalance < 0 ? .pink : .teal))
 
                 Button {
                     
@@ -61,24 +72,6 @@ struct AccountsView: View {
                     }
                 }
 
-                ForEach(accounts) { account in
-                    Button {
-                        coordinator.present(.accountDetail(account: account))
-                    } label: {
-                        VStack(alignment: .leading) {
-                            HStack {
-                                accountImage(account)
-                                Text(account.title)
-                                    .font(.caption)
-                            }
-
-                            CurrencyText(account.balance)
-                                .font(.headline)
-                        }
-                    }
-                    .buttonStyle(AccountButtonStyle(color: .blue))
-                }
-
                 Button {
                     coordinator.present(.balanceDetail(persons: doctors))
                 } label: {
@@ -92,6 +85,13 @@ struct AccountsView: View {
                     accountView("Баланс пациентов", amount: patientsBalance)
                 }
                 .buttonStyle(AccountButtonStyle(color: .cyan))
+
+                Button {
+                    coordinator.present(.allTransactions)
+                } label: {
+                    accountView("Баланс", amount: overallBalance)
+                }
+                .buttonStyle(AccountButtonStyle(color: overallBalance < 0 ? .pink : .teal))
             }
         }
     }
