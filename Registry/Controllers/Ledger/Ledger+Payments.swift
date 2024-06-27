@@ -76,7 +76,7 @@ extension Ledger {
     }
 
     private func spendingPayment(_ payment: Payment) {
-        switch payment.purp {
+        switch payment.purpose {
         case .collection:
             distributePaymentforAccounts([.cash], payment: payment, purpose: .transferFrom, detail: "Касса")
         case .equipment:
@@ -101,8 +101,7 @@ extension Ledger {
 
     private func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
         let balancePayment = Payment(
-            purpose: .collection,
-            purp: .toBalance,
+            purpose: .toBalance,
             details: person.initials,
             methods: [.init(.cash, value: increment)],
             createdBy: user.asAnyUser

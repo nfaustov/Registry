@@ -21,7 +21,7 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
         description = payment.details
         value = payment.methods.reduce(0.0) { $0 + $1.value }
 
-        switch payment.purp {
+        switch payment.purpose {
         case .medicalServices:
             kind = .servicePayment
             refunded = false

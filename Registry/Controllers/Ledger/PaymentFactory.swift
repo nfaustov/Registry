@@ -43,8 +43,7 @@ private extension PaymentFactory {
         }
 
         return Payment(
-            purpose: .collection,
-            purp: .medicalServices,
+            purpose: .medicalServices,
             details: details,
             methods: methods,
             subject: check,
@@ -58,8 +57,7 @@ private extension PaymentFactory {
         }
 
         return Payment(
-            purpose: .collection,
-            purp: .doctorPayout,
+            purpose: .doctorPayout,
             details: "Врач: \(doctor.initials)",
             methods: paymentMethods,
             createdBy: producer.asAnyUser
@@ -78,8 +76,7 @@ private extension PaymentFactory {
         let refundMethod = Payment.Method(paymentType, value: paymentValue)
 
         return Payment(
-            purpose: .collection,
-            purp: .refund,
+            purpose: .refund,
             details: details,
             methods: [refundMethod],
             createdBy: producer.asAnyUser
@@ -102,8 +99,7 @@ private extension PaymentFactory {
         let purpose: PaymentPurpose = paymentMethod.value > 0 ? .toBalance : .fromBalance
 
         return Payment(
-            purpose: .collection,
-            purp: purpose,
+            purpose: purpose,
             details: details,
             methods: [paymentMethod],
             createdBy: producer.asAnyUser
@@ -112,7 +108,7 @@ private extension PaymentFactory {
 
     func makeSpendingPayment(purpose: PaymentPurpose, details: String, method: Payment.Method) -> Payment {
         let paymentMethod = Payment.Method(method.type, value: -abs(method.value))
-        return Payment(purpose: .collection, purp: purpose, details: details, methods: [paymentMethod], createdBy: producer.asAnyUser)
+        return Payment(purpose: purpose, details: details, methods: [paymentMethod], createdBy: producer.asAnyUser)
     }
 }
 

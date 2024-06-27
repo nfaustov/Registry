@@ -89,11 +89,11 @@ private extension PaymentsView {
         HStack(spacing: 16) {
             Image(systemName: payment.totalAmount >= 0 ? "arrow.left" : "arrow.right")
                 .padding()
-                .background(payment.totalAmount >= 0 ? .blue.opacity(0.1) : payment.purp == .collection ? .purple.opacity(0.1) : .red.opacity(0.1))
+                .background(payment.totalAmount >= 0 ? .blue.opacity(0.1) : payment.purpose == .collection ? .purple.opacity(0.1) : .red.opacity(0.1))
                 .cornerRadius(12)
 
             VStack(alignment: .leading) {
-                Text(payment.purp.rawValue)
+                Text(payment.purpose?.rawValue ?? "")
                     .font(.headline)
                 Text(payment.details)
                     .font(.subheadline)
@@ -102,7 +102,7 @@ private extension PaymentsView {
             Spacer()
 
             CurrencyText(payment.totalAmount)
-                .foregroundColor(payment.totalAmount >= 0 ? .primary : payment.purp == .collection ? .purple : .red)
+                .foregroundColor(payment.totalAmount >= 0 ? .primary : payment.purpose == .collection ? .purple : .red)
         }
     }
 }
@@ -121,8 +121,8 @@ private extension PaymentsView {
         switch operationType {
         case .all: return report.payments ?? []
         case .bills: return report.payments?.filter { $0.subject != nil } ?? []
-        case .spendings: return report.payments?.filter { $0.totalAmount < 0 && $0.purp != .collection } ?? []
-        case .collections: return report.payments?.filter { $0.purp == .collection } ?? []
+        case .spendings: return report.payments?.filter { $0.totalAmount < 0 && $0.purpose != .collection } ?? []
+        case .collections: return report.payments?.filter { $0.purpose == .collection } ?? []
         }
     }
 }

@@ -15,8 +15,6 @@ struct ContentView: View {
 
     @EnvironmentObject private var coordinator: Coordinator
 
-    @Query private var payments: [Payment]
-
     // MARK: - State
 
     @State private var rootScreen: Screen? = .schedule
@@ -71,31 +69,6 @@ struct ContentView: View {
                 }
             }
             .navigationSplitViewStyle(.prominentDetail)
-//            .task {
-//                for payment in payments {
-//                    switch payment.purpose {
-//                    case .collection:
-//                        payment.purp = .collection
-//                    case .salary, .agentFee, .doctorPayout:
-//                        payment.purp = .doctorPayout
-//                    case .medicalServices:
-//                        payment.purp = .medicalServices
-//                    case .refund:
-//                        payment.purp = .refund
-//                    case .toBalance:
-//                        payment.purp = .toBalance
-//                    case .fromBalance:
-//                        payment.purp = .fromBalance
-//                    case .equipment:
-//                        payment.purp = .equipment
-//                    case .consumables:
-//                        payment.purp = .consumables
-//                    case .building:
-//                        payment.purp = .building
-//                    }
-//                    payment.details = payment.purpose.descripiton
-//                }
-//            }
         } else {
             LoginScreen { coordinator.logIn($0) }
         }

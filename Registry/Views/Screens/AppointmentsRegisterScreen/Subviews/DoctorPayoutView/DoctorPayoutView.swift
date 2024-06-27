@@ -77,7 +77,7 @@ struct DoctorPayoutView: View {
             .sheetToolbar("Выплата", disabled: paymentMethod.value == 0 || disabled) {
                 if isSinglePatient, singlePatientFee > 0, !alreadyHasSinglePatientFeeForToday {
                     doctor.updateBalance(increment: singlePatientFee)
-                    let payment = Payment(purpose: .collection, purp: .toBalance, details: "Доплата за прием", methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
+                    let payment = Payment(purpose: .toBalance, details: "Доплата за прием", methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                     doctor.assignTransaction(payment)
                 }
                 let ledger = Ledger(modelContext: modelContext)

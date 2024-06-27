@@ -45,9 +45,9 @@ struct ExampleData {
         ]
     )
 
-    static let payment1 = Payment(purpose: .collection, purp: .medicalServices, details: "Фаустов Н.И.", methods: [.init(.card, value: 1200)], createdBy: doctor.asAnyUser)
-    static let payment2 = Payment(purpose: .collection, purp: .medicalServices, details: "Башкова М.Б.", methods: [.init(.cash, value: 2420)], createdBy: doctor.asAnyUser)
-    static let payment3 = Payment(purpose: .collection, purp: .consumables, details: "Аптека", methods: [.init(.cash, value: -1000)], createdBy: doctor.asAnyUser)
+    static let payment1 = Payment(purpose: .medicalServices, details: "Фаустов Н.И.", methods: [.init(.card, value: 1200)], createdBy: doctor.asAnyUser)
+    static let payment2 = Payment(purpose: .medicalServices, details: "Башкова М.Б.", methods: [.init(.cash, value: 2420)], createdBy: doctor.asAnyUser)
+    static let payment3 = Payment(purpose: .consumables, details: "Аптека", methods: [.init(.cash, value: -1000)], createdBy: doctor.asAnyUser)
 
     static let report = Report(date: .now, startingCash: 100, payments: [payment1, payment2, payment3])
 
