@@ -10,6 +10,7 @@ import Foundation
 extension AccountTransaction {
     enum Purpose: String, Codable, Hashable {
         case income = "Поступление"
+        case dividends = "Дивиденды"
         case salary = "Заработная плата"
         case agentFee = "Агентские"
         case refund = "Возврат"
@@ -27,6 +28,8 @@ extension AccountTransaction {
 
         var expenseCategory: ExpenseCategory? {
             switch self {
+            case .dividends:
+                .dividends
             case .salary, .agentFee:
                 .doctorPayout
             case .refund:
