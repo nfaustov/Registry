@@ -38,10 +38,12 @@ struct PatientCardScreen: View {
                 }
             }
 
-            Button(patient.phoneNumber) {
-                currentDetail = .phoneNumber
+            Section {
+                Button(patient.phoneNumber) {
+                    currentDetail = .phoneNumber
+                }
+                .tint(.primary)
             }
-            .tint(.primary)
 
             Section {
                 Button {

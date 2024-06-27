@@ -38,7 +38,7 @@ struct DoctorSettingsView: View {
 
     var body: some View {
         Form {
-            Section {
+            Section("Специализация") {
                 Picker("Специальность", selection: $doctor.department) {
                     ForEach(Department.allCases) { department in
                         Text(department.specialization)
@@ -53,27 +53,21 @@ struct DoctorSettingsView: View {
                     }
                 }
                 .tint(.primary)
-            } header: {
-                Text("Специализация")
             }
 
-            Section {
+            Section("Прием пациента") {
                 DurationLabel(doctor.serviceDuration, systemImage: "clock")
                 Slider(
                     value: $doctor.serviceDuration,
                     in: 300...7200,
                     step: 300
                 )
-            } header: {
-                Text("Прием пациента")
             }
 
-            Section {
+            Section("Кабинет (по умолчанию)") {
                 Stepper(value: $doctor.defaultCabinet, in: 1...3) {
                     Text("\(doctor.defaultCabinet)")
                 }
-            } header: {
-                Text("Кабинет (по умолчанию)")
             }
 
             if user.accessLevel == .boss {

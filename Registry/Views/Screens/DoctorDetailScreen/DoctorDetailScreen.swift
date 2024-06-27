@@ -49,8 +49,6 @@ struct DoctorDetailScreen: View {
                 nameButton(\.secondName)
                 nameButton(\.firstName)
                 nameButton(\.patronymicName)
-            } header: {
-                Text("Имя")
             }
 
             Section {
@@ -58,20 +56,37 @@ struct DoctorDetailScreen: View {
                     currentDetail = .phoneNumber
                 }
                 .tint(.primary)
-            } header: {
-                Text("Номер телефона")
             }
 
-            Section {
+            Section("Дата рождения") {
                 Button(DateFormat.birthDate.string(from: doctor.birthDate)) {
                     currentDetail = .birthDate
                 }
                 .tint(.primary)
-            } header: {
-                Text("Дата рождения")
             }
 
             Section {
+                Button {
+                    currentDetail = .doctorInfo
+                } label: {
+                    Label("Информация", systemImage: "info.square")
+                        .tint(.primary)
+                }
+
+                Button {
+                    currentDetail = .doctorSettings
+                } label: {
+                    Label("Настройки расписания", systemImage: "slider.horizontal.2.square")
+                        .tint(.primary)
+                }
+
+                Button {
+                    currentDetail = .vacationSchedule
+                } label: {
+                    Label("Отпуск", systemImage: "person.crop.circle.badge.moon")
+                        .tint(.primary)
+                }
+
                 Button {
                     currentDetail = .transactions
                 } label: {
@@ -82,25 +97,6 @@ struct DoctorDetailScreen: View {
                             .tint(.primary)
                     }
                 }
-            }
-
-            Section {
-                Button("Настройки расписания") {
-                    currentDetail = .doctorSettings
-                }
-            }
-
-            Section {
-                Button("Отпуск") {
-                    currentDetail = .vacationSchedule
-                }
-            }
-
-            Section {
-                Button("Информация") {
-                    currentDetail = .doctorInfo
-                }
-                .tint(.primary)
             }
         } detail: {
             detail
