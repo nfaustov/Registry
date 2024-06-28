@@ -33,7 +33,7 @@ enum Screen: CaseIterable, Hashable, Identifiable {
         case .dashboard:
             return "Управление"
         case .userDetail:
-            return "Пользователь"
+            return ""
         case .debug:
             return "Сервис"
         }

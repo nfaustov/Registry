@@ -16,7 +16,7 @@ struct UserDetailScreen: View {
 
     // MARK: - State
 
-    @State private var currentDetail: UserDetailContext = .main
+    @State private var currentDetail: UserDetailContext = .schedule
 
     // MARK: -
 
@@ -27,12 +27,28 @@ struct UserDetailScreen: View {
                     .clipShape(.rect(cornerRadius: 8, style: .continuous))
             }
 
-            Section("ФИО") {
+            Section {
                 Text(user.fullName)
             }
 
             Section("Должность") {
                 Text(user.accessLevel.title)
+            }
+
+            Section {
+                Button {
+                    currentDetail = .schedule
+                } label: {
+                    Label("График работы", systemImage: "chart.dots.scatter")
+                        .tint(.primary)
+                }
+
+                Button {
+                    currentDetail = .kpi
+                } label: {
+                    Label("Ключевые показатели", systemImage: "chart.line.uptrend.xyaxis.circle")
+                        .tint(.primary)
+                }
             }
         } detail: {
             detail
@@ -62,22 +78,25 @@ struct UserDetailScreen: View {
 
 private extension UserDetailScreen {
     enum UserDetailContext {
-        case main
+        case kpi
+        case schedule
 
         var title: String {
             switch self {
-            case .main:
-                return ""
+            case .kpi:
+                return "Ключевые показатели"
+            case .schedule:
+                return "График работы"
             }
         }
     }
 
     @ViewBuilder var detail: some View {
         switch currentDetail {
-        case .main:
-            Form {
-                Text(user.initials)
-            }
+        case .kpi:
+            RegistrarActivityView()
+        case .schedule:
+            RegistrarScheduleView()
         }
     }
 }

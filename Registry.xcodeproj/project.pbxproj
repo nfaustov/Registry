@@ -158,7 +158,9 @@
 		8BA761892C1B39D40068C057 /* StatisticsPeriodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */; };
 		8BA8C8112BBD42B200F2BCDD /* AddProcedurePatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */; };
 		8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2DD622B97396A00AD4749 /* Refund.swift */; };
+		8BB3BA082C2E9CD200632624 /* RegistrarActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3BA072C2E9CD200632624 /* RegistrarActivityView.swift */; };
 		8BB462122C16E3640003E809 /* PromotionsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB462112C16E3640003E809 /* PromotionsDebugView.swift */; };
+		8BB519DD2C2DF4E200B9230E /* RegistrarScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB519DC2C2DF4E200B9230E /* RegistrarScheduleView.swift */; };
 		8BBB96502B85F04700CA242F /* PatientCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */; };
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
 		8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */; };
@@ -380,7 +382,9 @@
 		8BA761882C1B39D40068C057 /* StatisticsPeriodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriodView.swift; sourceTree = "<group>"; };
 		8BA8C8102BBD42B200F2BCDD /* AddProcedurePatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProcedurePatientView.swift; sourceTree = "<group>"; };
 		8BB2DD622B97396A00AD4749 /* Refund.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refund.swift; sourceTree = "<group>"; };
+		8BB3BA072C2E9CD200632624 /* RegistrarActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarActivityView.swift; sourceTree = "<group>"; };
 		8BB462112C16E3640003E809 /* PromotionsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionsDebugView.swift; sourceTree = "<group>"; };
+		8BB519DC2C2DF4E200B9230E /* RegistrarScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarScheduleView.swift; sourceTree = "<group>"; };
 		8BBB964F2B85F04700CA242F /* PatientCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientCardScreen.swift; sourceTree = "<group>"; };
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
 		8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsDetailView.swift; sourceTree = "<group>"; };
@@ -711,6 +715,7 @@
 			isa = PBXGroup;
 			children = (
 				8B45E61E2BB56BC300834AE6 /* UserDetailScreen.swift */,
+				8BB519DB2C2DF4C400B9230E /*  Subviews */,
 			);
 			path = UserDetailScreen;
 			sourceTree = "<group>";
@@ -1391,6 +1396,15 @@
 			path = Subviews;
 			sourceTree = "<group>";
 		};
+		8BB519DB2C2DF4C400B9230E /*  Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				8BB519DC2C2DF4E200B9230E /* RegistrarScheduleView.swift */,
+				8BB3BA072C2E9CD200632624 /* RegistrarActivityView.swift */,
+			);
+			path = " Subviews";
+			sourceTree = "<group>";
+		};
 		8BBB964E2B85EFF900CA242F /* PatientCardScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -1619,6 +1633,7 @@
 				8B8AE98F2B58486A001A9143 /* CatalogToolbarViewModifier.swift in Sources */,
 				8B0FA0602BC538C80077D4D9 /* NumPadView.swift in Sources */,
 				8B6BAA022B8DD193000FF417 /* ServicesTable.swift in Sources */,
+				8BB519DD2C2DF4E200B9230E /* RegistrarScheduleView.swift in Sources */,
 				8B8B188C2B88D51C006ABD82 /* AppointmentsRegisterScreen.swift in Sources */,
 				8B99D81C2BDCCFF1004FA284 /* MoneyFieldSection.swift in Sources */,
 				8B1E353F2BC9A822003B448E /* CreatePaymentView.swift in Sources */,
@@ -1708,6 +1723,7 @@
 				8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */,
 				8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */,
 				8B187E822BD0D30D00611DC2 /* MedicalService.swift in Sources */,
+				8BB3BA082C2E9CD200632624 /* RegistrarActivityView.swift in Sources */,
 				8B6FBC082BFBC91C0086204E /* PredictionsView.swift in Sources */,
 				8BB462122C16E3640003E809 /* PromotionsDebugView.swift in Sources */,
 				8BDCCFDD2B84A0C40086BF4D /* PassportData.swift in Sources */,
