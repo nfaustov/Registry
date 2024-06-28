@@ -111,11 +111,9 @@ extension Ledger {
     }
 
     private func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
-        let predicate = #Predicate<CheckingAccount> { $0.type == type }
-        var descriptor = FetchDescriptor<CheckingAccount>(predicate: predicate)
-        descriptor.fetchLimit = 1
+        let descriptor = FetchDescriptor<CheckingAccount>()
         
-        if let account = try? modelContext.fetch(descriptor).first {
+        if let account = try? modelContext.fetch(descriptor).first(where: { $0.type == type }) {
             return account
         } else { return nil }
     }
