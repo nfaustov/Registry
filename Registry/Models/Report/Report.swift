@@ -14,7 +14,7 @@ final class Report {
     let startingCash: Double = Double.zero
     @Relationship(deleteRule: .cascade, inverse: \Payment.report)
     private(set) var payments: [Payment]?
-    private(set) var closed: Bool
+    private(set) var closed: Bool = false
 
     init(
         date: Date,

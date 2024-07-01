@@ -16,6 +16,7 @@ struct ServicesTableControls: View {
     @Bindable var check: Check
     @Binding var isPricelistPresented: Bool
     @Binding var predictions: Bool
+    @Binding var enabledTreatmentPlan: Bool
 
     static let now = Date.now
 
@@ -99,6 +100,16 @@ struct ServicesTableControls: View {
             .toggleStyle(.button)
             .tint(.indigo)
 
+            if let patient = check.appointments?.first?.patient,
+               let treatmentPlan = patient.currentTreatmentPlan {
+                Toggle(isOn: $enabledTreatmentPlan) {
+                    Text("Лечебный план: \(treatmentPlan.kind.rawValue)")
+                }
+                .padding(.horizontal)
+                .toggleStyle(.button)
+                .tint(.appBlack)
+            }
+
             Spacer()
 
             Button {
@@ -119,6 +130,7 @@ struct ServicesTableControls: View {
     ServicesTableControls(
         check: Check(services: []),
         isPricelistPresented: .constant(false),
-        predictions: .constant(true)
+        predictions: .constant(true),
+        enabledTreatmentPlan: .constant(true)
     )
 }

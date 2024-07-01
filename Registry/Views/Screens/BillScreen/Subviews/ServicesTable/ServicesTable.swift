@@ -30,6 +30,7 @@ struct ServicesTable: View {
     @State private var predictionsEnabled: Bool = true
     @State private var correlations: [PricelistItemsCorrelation] = []
     @State private var errorMessage: String?
+    @State private var enabledTreatmentPlan: Bool = false
 
     // MARK: -
 
@@ -114,6 +115,11 @@ struct ServicesTable: View {
                     makePredictions(basedOn: newValue)
                 }
             }
+            .onAppear {
+                if let treatmentPlan = patient.currentTreatmentPlan {
+                    enabledTreatmentPlan = true
+                }
+            }
             .task {
                 let checksController = ChecksController(modelContainer: modelContext.container)
                 correlations = await checksController.pricelistItemsCorrelations
@@ -134,9 +140,14 @@ struct ServicesTable: View {
                     .padding(.vertical, 8)
                 }
 
-                ServicesTableControls(check: check, isPricelistPresented: $editMode, predictions: $predictionsEnabled.animation())
-                    .padding()
-                    .background(.regularMaterial)
+                ServicesTableControls(
+                    check: check,
+                    isPricelistPresented: $editMode,
+                    predictions: $predictionsEnabled.animation(),
+                    enabledTreatmentPlan: $enabledTreatmentPlan
+                )
+                .padding()
+                .background(.regularMaterial)
             }
         }
     }
@@ -225,7 +236,7 @@ private extension ServicesTable {
 
             var treatmentPlanPrice: Double? = nil
 
-            if let treatmentPlan = patient.currentTreatmentPlan {
+            if let treatmentPlan = patient.currentTreatmentPlan, enabledTreatmentPlan {
                 treatmentPlanPrice = pricelistItem.treatmentPlanPrice(treatmentPlan.kind)
             }
 
