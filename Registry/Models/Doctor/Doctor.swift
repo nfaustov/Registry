@@ -31,6 +31,7 @@ final class Doctor: Accountable, User, Codable {
     var vacationSchedule: [DateInterval] = []
     @Relationship(inverse: \Payment.doctor)
     private(set) var transactions: [Payment]? = []
+    var achievements: [Achievement] = []
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -53,7 +54,8 @@ final class Doctor: Accountable, User, Codable {
         image: Data? = nil,
         accessLevel: UserAccessLevel = .doctor,
         vacationSchedule: [DateInterval] = [],
-        transactions: [Payment]? = []
+        transactions: [Payment]? = [],
+        achievements: [Achievement] = []
     ) {
         self.id = id
         self.secondName = secondName
@@ -73,6 +75,7 @@ final class Doctor: Accountable, User, Codable {
         self.accessLevel = accessLevel
         self.vacationSchedule = vacationSchedule
         self.transactions = transactions
+        self.achievements = achievements
     }
 
     func updateBalance(increment: Double) {

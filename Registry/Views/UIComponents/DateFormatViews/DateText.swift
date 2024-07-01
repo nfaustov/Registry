@@ -38,6 +38,7 @@ enum DateFormat: String {
     case weekDay = "d MMMM EEE"
     case timeWeekDay = "H:mm d MMMM EEE"
     case dayMonth = "d.MM"
+    case monthYear = "LLLL YYYY"
     case birthDate = "d MMMM yyyy"
     case datePickerDate = "LLLL d EEEE"
 

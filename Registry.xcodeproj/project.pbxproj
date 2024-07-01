@@ -83,6 +83,7 @@
 		8B6FBC082BFBC91C0086204E /* PredictionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FBC072BFBC91C0086204E /* PredictionsView.swift */; };
 		8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */; };
 		8B7491E22BBADE410016FDE9 /* DoctorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */; };
+		8B7768A02C33306800DE6332 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77689F2C33306800DE6332 /* Achievement.swift */; };
 		8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */; };
 		8B7801412B87B7EA0064DBFB /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801402B87B7EA0064DBFB /* OffsetKey.swift */; };
 		8B7801432B87B80D0064DBFB /* WeekdayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7801422B87B80D0064DBFB /* WeekdayPickerView.swift */; };
@@ -307,6 +308,7 @@
 		8B6FBC072BFBC91C0086204E /* PredictionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionsView.swift; sourceTree = "<group>"; };
 		8B7491DE2BBA943D0016FDE9 /* NameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEditView.swift; sourceTree = "<group>"; };
 		8B7491E12BBADE410016FDE9 /* DoctorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorSettingsView.swift; sourceTree = "<group>"; };
+		8B77689F2C33306800DE6332 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		8B78013D2B87B7A00064DBFB /* ScheduleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleScreen.swift; sourceTree = "<group>"; };
 		8B7801402B87B7EA0064DBFB /* OffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetKey.swift; sourceTree = "<group>"; };
 		8B7801422B87B80D0064DBFB /* WeekdayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayPickerView.swift; sourceTree = "<group>"; };
@@ -1213,6 +1215,7 @@
 			isa = PBXGroup;
 			children = (
 				8B96739C2B361BB200FD2E7C /* Doctor.swift */,
+				8B77689F2C33306800DE6332 /* Achievement.swift */,
 			);
 			path = Doctor;
 			sourceTree = "<group>";
@@ -1687,6 +1690,7 @@
 				8B7EA8612BA36F2E00DE722C /* SuperUser.swift in Sources */,
 				8B616DB42C2AAC20006957F9 /* CreateCounterpartyView.swift in Sources */,
 				8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */,
+				8B7768A02C33306800DE6332 /* Achievement.swift in Sources */,
 				8B1E35462BC9C80D003B448E /* PricelistSideSheetView.swift in Sources */,
 				8BA53D9A2B494DFC006BE983 /* WorkingHours.swift in Sources */,
 				8BDCCFD52B83BBEA0086BF4D /* PatientsScreen.swift in Sources */,

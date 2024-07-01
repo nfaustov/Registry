@@ -22,7 +22,20 @@ struct RegistrarActivityView: View {
 
     var body: some View {
         Form {
-            Section("Активность") {
+            if let doctor = user as? Doctor, !doctor.achievements.isEmpty {
+                Section("Награды") {
+                    ForEach(doctor.achievements.sorted(by: { $0.issueDate > $1.issueDate })) { achievement in
+                        LabeledContent {
+                            Text(achievement.period)
+                        } label: {
+                            Label(achievement.type.rawValue, systemImage: achievement.icon)
+                        }
+
+                    }
+                }
+            }
+
+            Section("Активность регистраторов") {
                 if isLoading {
                     HStack {
                         Spacer()
