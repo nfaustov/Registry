@@ -17,6 +17,7 @@ struct AddProcedurePatientView: View {
     @StateObject private var messageController = MessageController()
 
     @Query private var patients: [Patient]
+    @Query private var doctors: [Doctor]
 
     @Bindable var schedule: DoctorSchedule
 
@@ -30,6 +31,7 @@ struct AddProcedurePatientView: View {
     @State private var patronymicNameText = ""
     @State private var phoneNumberText = ""
     @State private var duration: TimeInterval
+    @State private var registrar: AnyUser = AnonymousUser().asAnyUser
     @FocusState private var isFocused: Bool
 
     // MARK: -
@@ -138,12 +140,27 @@ struct AddProcedurePatientView: View {
                 } header: {
                     Text("Длительность")
                 }
+
+                Section("Регистратор") {
+                    Picker(registrar.initials, selection: $registrar) {
+                        let registrars = doctors
+                            .filter({ $0.accessLevel == .registrar })
+                            .map { $0.asAnyUser }
+                        ForEach(registrars, id: \.self) { registrar in
+                            Text(registrar.initials)
+                                .tag(registrar.id)
+                        }
+                    }
+                }
+                .onAppear {
+                    registrar = user.asAnyUser
+                }
             }
             .listStyle(.insetGrouped)
             .sheetToolbar("Регистрация пациента", disabled: emptyTextDetection || !validPhoneNumber) {
                 if let selectedPatient {
                     schedule.createPatientAppointment(date: time) { appointment in
-                        appointment.registerPatient(selectedPatient, duration: duration, registrar: user.asAnyUser)
+                        appointment.registerPatient(selectedPatient, duration: duration, registrar: registrar)
                     }
                 } else {
                     let patient = Patient(
@@ -154,7 +171,7 @@ struct AddProcedurePatientView: View {
                     )
 
                     schedule.createPatientAppointment(date: time) { appointment in
-                        appointment.registerPatient(patient, duration: duration, registrar: user.asAnyUser)
+                        appointment.registerPatient(patient, duration: duration, registrar: registrar)
                     }
                 }
             }

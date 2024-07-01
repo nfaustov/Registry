@@ -116,7 +116,7 @@ struct ServicesTable: View {
                 }
             }
             .onAppear {
-                if let treatmentPlan = patient.currentTreatmentPlan {
+                if patient.currentTreatmentPlan != nil {
                     enabledTreatmentPlan = true
                 }
             }

@@ -17,6 +17,7 @@ struct AddPatientView: View {
     @StateObject private var messageController = MessageController()
 
     @Query private var patients: [Patient]
+    @Query private var doctors: [Doctor]
 
     @Bindable var appointment: PatientAppointment
 
@@ -31,6 +32,7 @@ struct AddPatientView: View {
     @State private var duration: TimeInterval
     @State private var selection: Check?
     @State private var smsNotification: Bool = false
+    @State private var registrar: AnyUser = AnonymousUser().asAnyUser
     @FocusState private var isFocused: Bool
 
     // MARK: -
@@ -174,6 +176,21 @@ struct AddPatientView: View {
                         Text("Текущие визиты на \(DateFormat.weekDay.string(from: appointment.scheduledTime))")
                     }
                 }
+
+                Section("Регистратор") {
+                    Picker(registrar.initials, selection: $registrar) {
+                        let registrars = doctors
+                            .filter({ $0.accessLevel == .registrar })
+                            .map { $0.asAnyUser }
+                        ForEach(registrars, id: \.self) { registrar in
+                            Text(registrar.initials)
+                                .tag(registrar.id)
+                        }
+                    }
+                }
+                .onAppear {
+                    registrar = user.asAnyUser
+                }
             }
             .listStyle(.insetGrouped)
             .sheetToolbar(
@@ -186,7 +203,7 @@ struct AddPatientView: View {
                     appointment.registerPatient(
                         selectedPatient,
                         duration: duration,
-                        registrar: user.asAnyUser,
+                        registrar: registrar,
                         mergedCheck: selection
                     )
                 } else {
@@ -197,7 +214,7 @@ struct AddPatientView: View {
                         phoneNumber: phoneNumberText
                     )
 
-                    appointment.registerPatient(patient, duration: duration, registrar: user.asAnyUser)
+                    appointment.registerPatient(patient, duration: duration, registrar: registrar)
                 }
 
                 if smsNotification {
