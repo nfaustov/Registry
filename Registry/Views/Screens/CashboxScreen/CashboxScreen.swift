@@ -53,6 +53,15 @@ struct CashboxScreen: View {
                         .disabled(user.accessLevel < .registrar)
                     }
                 }
+
+                Section {
+                    if reports.first != nil {
+                        Button("Закрыть смену") {
+                            let ledger = Ledger(modelContext: modelContext)
+                            ledger.closeReport()
+                        }
+                    }
+                }
             }
             .scrollBounceBehavior(.basedOnSize)
             .frame(width: 320)

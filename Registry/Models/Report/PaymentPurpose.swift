@@ -37,4 +37,21 @@ enum PaymentPurpose: String, Codable, Hashable {
     static var userSelectableCases: [PaymentPurpose] {
         [.collection, .equipment, .consumables, .building]
     }
+
+    func convertToAccountTransactionPurpose() -> AccountTransaction.Purpose? {
+        switch self {
+        case .doctorPayout:
+            .salary
+        case .refund:
+            .refund
+        case .equipment:
+            .equipment
+        case .consumables:
+            .consumables
+        case .building:
+            .building
+        default:
+            nil
+        }
+    }
 }

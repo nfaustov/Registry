@@ -16,12 +16,6 @@ final class Ledger {
         self.modelContext = modelContext
     }
 
-    private var lastReport: Report? {
-        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-        descriptor.fetchLimit = 1
-        return try? modelContext.fetch(descriptor).first
-    }
-
     func getReport(forDate date: Date = .now) -> Report? {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
@@ -38,5 +32,71 @@ final class Ledger {
         if let payment { report.makePayment(payment) }
 
         modelContext.insert(report)
+    }
+
+    func closeReport() {
+        makeIncomeTransactions()
+        makeExpenseTransactions()
+    }
+}
+
+private extension Ledger {
+    private var lastReport: Report? {
+        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+        descriptor.fetchLimit = 1
+        return try? modelContext.fetch(descriptor).first
+    }
+
+    func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
+        let descriptor = FetchDescriptor<CheckingAccount>()
+        
+        if let account = try? modelContext.fetch(descriptor).first(where: { $0.type == type }) {
+            return account
+        } else { return nil }
+    }
+
+    func makeIncomeTransactions() {
+        guard let report = getReport() else { return }
+
+        for type in PaymentType.allCases where type != .cash {
+            let accountType = AccountType.correlatedAccount(with: type)
+
+            guard let account = checkingAccount(ofType: accountType) else { return }
+
+            let typeIncome = report.billsIncome(of: type)
+            let transaction = AccountTransaction(purpose: .income, amount: typeIncome)
+            account.assignTransaction(transaction)
+        }
+    }
+
+    func makeExpenseTransactions() {
+        guard let report = getReport() else { return }
+
+        let expensePayments = report.payments?.filter { $0.totalAmount < 0 } ?? []
+        let groupedPayments = Dictionary(grouping: expensePayments, by: { $0.purpose })
+
+        for (purpose, payments) in groupedPayments {
+            if purpose == .collection {
+                let amount = payments
+                    .flatMap { $0.methods }
+                    .reduce(0.0) { $0 + $1.value }
+                let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -amount)
+
+                guard let account = checkingAccount(ofType: .cash) else { return }
+
+                account.assignTransaction(transaction)
+            } else {
+                if let accountTransactionPurpose = purpose?.convertToAccountTransactionPurpose() {
+                    for payment in payments {
+                        for method in payment.methods {
+                            guard let account = checkingAccount(ofType: AccountType.correlatedAccount(with: method.type)) else { return }
+
+                            let transaction = AccountTransaction(purpose: accountTransactionPurpose, detail: payment.details, amount: method.value)
+                            account.assignTransaction(transaction)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

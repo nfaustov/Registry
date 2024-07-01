@@ -44,7 +44,6 @@ extension Ledger {
         patient.assignTransaction(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
-        distributePaymentforAccounts([.bank, .card], payment: payment, purpose: .income)
         record(payment)
     }
 
@@ -52,7 +51,6 @@ extension Ledger {
         let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         doctor.assignTransaction(payment)
         doctor.updateBalance(increment: paymentValue)
-        distributePaymentforAccounts(payment: payment, purpose: .salary)
         record(payment)
     }
 
@@ -64,7 +62,6 @@ extension Ledger {
         }
 
         patient.assignTransaction(payment)
-        distributePaymentforAccounts(payment: payment, purpose: .refund)
         record(payment)
     }
 
@@ -76,18 +73,6 @@ extension Ledger {
     }
 
     private func spendingPayment(_ payment: Payment) {
-        switch payment.purpose {
-        case .collection:
-            distributePaymentforAccounts([.cash], payment: payment, purpose: .transferFrom, detail: "Касса")
-        case .equipment:
-            distributePaymentforAccounts(payment: payment, purpose: .equipment, detail: payment.details)
-        case .consumables:
-            distributePaymentforAccounts(payment: payment, purpose: .consumables, detail: payment.details)
-        case .building:
-            distributePaymentforAccounts(payment: payment, purpose: .building, detail: payment.details)
-        default: break
-        }
-
         record(payment)
     }
 
@@ -108,29 +93,5 @@ extension Ledger {
         )
         person.updateBalance(increment: increment)
         person.assignTransaction(balancePayment)
-    }
-
-    private func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
-        let descriptor = FetchDescriptor<CheckingAccount>()
-        
-        if let account = try? modelContext.fetch(descriptor).first(where: { $0.type == type }) {
-            return account
-        } else { return nil }
-    }
-
-    private func distributePaymentforAccounts(
-        _ accounts: [AccountType] = AccountType.allCases,
-        payment: Payment,
-        purpose: AccountTransaction.Purpose,
-        detail: String? = nil
-    ) {
-        for method in payment.methods {
-            let accountType = AccountType.correlatedAccount(with: method.type)
-
-            if accounts.contains(accountType), let account = checkingAccount(ofType: accountType) {
-                let transaction = AccountTransaction(purpose: purpose, detail: detail, amount: method.value)
-                account.assignTransaction(transaction)
-            }
-        }
     }
 }
