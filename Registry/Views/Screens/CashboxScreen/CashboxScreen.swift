@@ -18,6 +18,8 @@ struct CashboxScreen: View {
 
     @Query(todayReportDescriptor) private var reports: [Report]
 
+    @State private var closingInProgress: Bool = false
+
     // MARK: -
 
     var body: some View {
@@ -29,7 +31,7 @@ struct CashboxScreen: View {
                             Button("Списание") {
                                 coordinator.present(.createSpending(in: todayReport))
                             }
-                            .disabled(user.accessLevel < .registrar)
+                            .disabled(user.accessLevel < .registrar || todayReport.closed)
                         } label: {
                             HStack {
                                 CurrencyText(todayReport.cashBalance)
@@ -55,10 +57,20 @@ struct CashboxScreen: View {
                 }
 
                 Section {
-                    if reports.first != nil {
-                        Button("Закрыть смену") {
+                    if let report = reports.first, report.closed == false {
+                        Button {
+                            closingInProgress = true
                             let ledger = Ledger(modelContext: modelContext)
                             ledger.closeReport()
+                            closingInProgress = false
+                        } label: {
+                            HStack {
+                                Text("Закрыть смену")
+                                if closingInProgress {
+                                    CircularProgressView()
+                                        .padding(.horizontal)
+                                }
+                            }
                         }
                     }
                 }

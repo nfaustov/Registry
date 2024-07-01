@@ -10,35 +10,35 @@ import SwiftData
 
 extension Ledger {
     func income(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
-//        let transactions = getTransactions(for: date, period: period)
-//            .filter { $0.purpose == .income }
-//
-//        if let type {
-//            return transactions
-//                .filter { transaction in
-//                    if let account = transaction.account {
-//                        return account.type == AccountType.correlatedAccount(with: type)
-//                    } else {
-//                        return false
-//                    }
-//                }
-//                .reduce(0.0) { $0 + $1.amount }
-//        } else {
-//            return transactions.reduce(0.0) { $0 + $1.amount }
-//        }
-        let methods = getReports(for: date, period: period)
-            .compactMap { $0.payments }
-            .flatMap { $0 }
-            .filter { $0.subject != nil }
-            .flatMap { $0.methods }
+        let transactions = getTransactions(for: date, period: period)
+            .filter { $0.purpose == .income }
 
         if let type {
-            return methods
-                .filter { $0.type == type }
-                .reduce(0.0) { $0 + $1.value }
+            return transactions
+                .filter { transaction in
+                    if let account = transaction.account {
+                        return account.type == AccountType.correlatedAccount(with: type)
+                    } else {
+                        return false
+                    }
+                }
+                .reduce(0.0) { $0 + $1.amount }
         } else {
-            return methods.reduce(0.0) { $0 + $1.value }
+            return transactions.reduce(0.0) { $0 + $1.amount }
         }
+//        let methods = getReports(for: date, period: period)
+//            .compactMap { $0.payments }
+//            .flatMap { $0 }
+//            .filter { $0.subject != nil }
+//            .flatMap { $0.methods }
+//
+//        if let type {
+//            return methods
+//                .filter { $0.type == type }
+//                .reduce(0.0) { $0 + $1.value }
+//        } else {
+//            return methods.reduce(0.0) { $0 + $1.value }
+//        }
     }
 
     func expense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {

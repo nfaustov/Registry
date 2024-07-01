@@ -19,7 +19,7 @@ final class Ledger {
     func getReport(forDate date: Date = .now) -> Report? {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
-        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay }
+        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay && !$0.closed }
         var descriptor = FetchDescriptor<Report>(predicate: predicate)
         descriptor.fetchLimit = 1
 
@@ -35,8 +35,11 @@ final class Ledger {
     }
 
     func closeReport() {
-        makeIncomeTransactions()
-        makeExpenseTransactions()
+        guard let report = getReport() else { return }
+
+        makeIncomeTransactions(from: report)
+        makeExpenseTransactions(from: report)
+        report.close()
     }
 }
 
@@ -55,9 +58,7 @@ private extension Ledger {
         } else { return nil }
     }
 
-    func makeIncomeTransactions() {
-        guard let report = getReport() else { return }
-
+    func makeIncomeTransactions(from report: Report) {
         for type in PaymentType.allCases where type != .cash {
             let accountType = AccountType.correlatedAccount(with: type)
 
@@ -69,9 +70,7 @@ private extension Ledger {
         }
     }
 
-    func makeExpenseTransactions() {
-        guard let report = getReport() else { return }
-
+    func makeExpenseTransactions(from report: Report) {
         let expensePayments = report.payments?.filter { $0.totalAmount < 0 } ?? []
         let groupedPayments = Dictionary(grouping: expensePayments, by: { $0.purpose })
 

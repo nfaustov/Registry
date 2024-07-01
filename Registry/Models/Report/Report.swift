@@ -14,15 +14,18 @@ final class Report {
     let startingCash: Double = Double.zero
     @Relationship(deleteRule: .cascade, inverse: \Payment.report)
     private(set) var payments: [Payment]?
+    private(set) var closed: Bool
 
     init(
         date: Date,
         startingCash: Double,
-        payments: [Payment]? = []
+        payments: [Payment]? = [],
+        closed: Bool = false
     ) {
         self.date = date
         self.startingCash = startingCash
         self.payments = payments
+        self.closed = closed
     }
 
     func makePayment(_ payment: Payment) {
@@ -31,5 +34,9 @@ final class Report {
 
     func cancelPayment(_ paymentID: PersistentIdentifier) {
         payments?.removeAll(where: { $0.id == paymentID })
+    }
+
+    func close() {
+        closed = true
     }
 }
