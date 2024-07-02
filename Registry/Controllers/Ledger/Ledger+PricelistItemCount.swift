@@ -57,8 +57,3 @@ private extension Ledger {
         } else { return [] }
     }
 }
-
-struct PricelistItemCount: Hashable {
-    let item: PricelistItem
-    let count: Int
-}

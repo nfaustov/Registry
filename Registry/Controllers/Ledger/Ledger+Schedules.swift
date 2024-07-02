@@ -88,13 +88,3 @@ private extension Ledger {
         } else { return nil }
     }
 }
-
-struct DoctorsPopularity: Hashable {
-    let doctor: Doctor
-    let patientsCount: Int
-}
-
-struct RegistrarActivity: Hashable {
-    let registrar: Doctor
-    var activity: Int
-}

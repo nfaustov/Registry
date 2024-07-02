@@ -44,7 +44,7 @@ final class Ledger {
 }
 
 private extension Ledger {
-    private var lastReport: Report? {
+    var lastReport: Report? {
         var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
         descriptor.fetchLimit = 1
         return try? modelContext.fetch(descriptor).first
