@@ -33,8 +33,10 @@ struct MoneyFieldSection<Footer: View>: View {
             LabeledContent {
                 Image(systemName: "pencil")
             } label: {
-                Button("\(Int(value))") {
+                Button {
                     showKeyboard = true
+                } label: {
+                    CurrencyText(value, unit: false)
                 }
                 .tint(.primary)
                 .popover(isPresented: $showKeyboard) {
@@ -78,6 +80,7 @@ private extension MoneyFieldSection {
             .frame(height: 152)
 
             NumPadView(text: $valueText)
+                .environment(\.numPadStyle, .decimal)
                 .frame(width: 330, height: 360)
                 .padding()
                 .onChange(of: valueText) { _, newValue in

@@ -11,6 +11,8 @@ import AudioToolbox
 struct NumPadView: View {
     // MARK: - Dependencies
 
+    @Environment(\.numPadStyle) private var numPadStyle
+
     @Binding var text: String
 
     // MARK: -
@@ -36,7 +38,8 @@ struct NumPadView: View {
             }
 
             HStack {
-                numButton(0).opacity(0)
+                decimalPointButton
+                    .opacity(numPadStyle == .decimal ? 1 : 0)
                 numButton(0)
                 deleteButton
             }
@@ -57,18 +60,25 @@ private extension NumPadView {
             AudioServicesPlaySystemSound(1104)
             text.removeLast()
         } label: {
-            ZStack {
-                Circle()
-                    .frame(width: 80)
-                    .foregroundStyle(.ultraThinMaterial)
-                Label("", systemImage: "delete.backward")
-                    .labelStyle(.iconOnly)
-                    .font(.title2)
-                    .fontWeight(.light)
-            }
+            Label("", systemImage: "delete.backward")
+                .labelStyle(.iconOnly)
+                .font(.title2)
+                .fontWeight(.light)
         }
         .buttonStyle(CustomButtonStyle())
         .disabled(text.isEmpty)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var decimalPointButton: some View {
+        Button {
+            AudioServicesPlaySystemSound(1104)
+            if !text.contains(".") { text.append(".") }
+        } label: {
+            Text(".")
+                .font(.largeTitle)
+        }
+        .buttonStyle(CustomButtonStyle())
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
@@ -77,14 +87,9 @@ private extension NumPadView {
             AudioServicesPlaySystemSound(1104)
             text.append("\(n)")
         } label: {
-            ZStack {
-                Circle()
-                    .frame(width: 80)
-                    .foregroundStyle(.ultraThinMaterial)
-                Text("\(n)")
-                    .font(.title)
-                    .fontWeight(.light)
-            }
+            Text("\(n)")
+                .font(.title)
+                .fontWeight(.light)
         }
         .buttonStyle(CustomButtonStyle())
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -95,10 +100,34 @@ private extension NumPadView {
 
 struct CustomButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .overlay {
-                Circle()
-                    .foregroundStyle(.white.opacity(configuration.isPressed ? 0.6 : 0))
-            }
+        ZStack {
+            Circle()
+                .frame(width: 80)
+                .foregroundStyle(.ultraThinMaterial)
+            configuration.label
+        }
+        .overlay {
+            Circle()
+                .foregroundStyle(.white.opacity(configuration.isPressed ? 0.6 : 0))
+        }
+
     }
+}
+
+// MARK: - NumPadStyleKey
+
+private struct NumPadStyleKey: EnvironmentKey {
+    static let defaultValue: NumPadStyle = .integer
+}
+
+extension EnvironmentValues {
+    var numPadStyle: NumPadStyle {
+        get { self[NumPadStyleKey.self] }
+        set { self[NumPadStyleKey.self] = newValue }
+    }
+}
+
+enum NumPadStyle {
+    case integer
+    case decimal
 }
