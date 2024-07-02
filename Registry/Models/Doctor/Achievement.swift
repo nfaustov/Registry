@@ -9,22 +9,29 @@ import Foundation
 
 extension Doctor {
     struct Achievement: Codable, Hashable, Identifiable {
-        enum Kind: String, Codable, Hashable {
-            case registrarOFMonth = "РЕГИСТРАТОР МЕСЯЦА"
-        }
-
         let id: UUID
-        let type: Achievement.Kind
-        let icon: String
+        let kind: Achievement.Kind
         let period: String
         let issueDate: Date
 
-        init(id: UUID = UUID(), type: Achievement.Kind, icon: String, period: String) {
+        init(id: UUID = UUID(), kind: Achievement.Kind, period: String) {
             self.id = id
-            self.type = type
-            self.icon = icon
+            self.kind = kind
             self.period = period
             issueDate = .now
+        }
+    }
+}
+
+extension Doctor.Achievement {
+    enum Kind: String, Codable, Hashable {
+        case registrarOFMonth = "РЕГИСТРАТОР МЕСЯЦА"
+
+        var icon: String {
+            switch self {
+            case .registrarOFMonth:
+                "star.square"
+            }
         }
     }
 }

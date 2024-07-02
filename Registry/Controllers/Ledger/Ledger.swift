@@ -104,7 +104,7 @@ private extension Ledger {
         if let endOfMonth = Calendar.current.dateInterval(of: .month, for: .now)?.end,
            Calendar.current.isDate(.now, inSameDayAs: endOfMonth),
            let topRegistrar = registrarActivity(for: .now, period: .month).first?.registrar {
-            let achievement = Doctor.Achievement(type: .registrarOFMonth, icon: "star.square", period: DateFormat.monthYear.string(from: .now))
+            let achievement = Doctor.Achievement(kind: .registrarOFMonth, period: DateFormat.monthYear.string(from: .now))
             topRegistrar.achievements.append(achievement)
         }
     }
