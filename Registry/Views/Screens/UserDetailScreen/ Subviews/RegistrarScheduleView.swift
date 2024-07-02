@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RegistrarScheduleView: View {
+    // MARK: - Dependencies
 
     var body: some View {
         Form {
@@ -25,39 +26,14 @@ struct RegistrarScheduleView: View {
 // MARK: - Calculations
 
 private extension RegistrarScheduleView {
-    var monthDays: [WeekDay] {
+    func month(for date: Date) -> [WeekDay] {
         let calendar = Calendar(identifier: .iso8601)
 
-        var month = [WeekDay]()
+        guard let interval = calendar.dateInterval(of: .month, for: .now),
+              let days = calendar.dateComponents([.day], from: interval.start, to: interval.end).day else { return [] }
 
-        guard let firstMonthDay = calendar.dateInterval(of: .month, for: .now)?.start else { return [] }
-
-        for index in 0..<7 {
-            if let day = calendar.date(byAdding: .day, value: index, to: firstMonthDay) {
-                month.append(WeekDay(date: day))
-            }
-        }
-
-        return month
-    }
-}
-
-private extension RegistrarScheduleView {
-    struct WeekDay: Identifiable {
-        var id: UUID = UUID()
-        var date: Date
-
-        var label: String {
-            DateFormatter.shared.dateFormat = "EE, dd"
-            return DateFormatter.shared.string(from: date)
-        }
-
-        var isToday: Bool {
-            Calendar.current.isDate(date, inSameDayAs: .now)
-        }
-
-        func isSameDayAs(_ date: Date) -> Bool {
-            Calendar.current.isDate(self.date, inSameDayAs: date)
+        return (0..<days).map {
+            WeekDay(date: calendar.date(byAdding: .day, value: $0, to: interval.start)!)
         }
     }
 }

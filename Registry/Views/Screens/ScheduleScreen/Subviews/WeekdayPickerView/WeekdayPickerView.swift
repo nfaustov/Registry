@@ -127,40 +127,12 @@ private extension WeekdayPickerView {
     func week(for date: Date) -> [WeekDay] {
         let calendar = Calendar(identifier: .iso8601)
 
-        var week = [WeekDay]()
-
         guard let firstWeekDay = calendar.dateInterval(of: .weekOfMonth, for: date)?.start else {
             return []
         }
 
-        for index in 0..<7 {
-            if let weekDay = calendar.date(byAdding: .day, value: index, to: firstWeekDay) {
-                week.append(WeekDay(date: weekDay))
-            }
-        }
-
-        return week
-    }
-}
-
-// MARK: - WeekDay
-
-private extension WeekdayPickerView {
-    struct WeekDay: Identifiable {
-        var id: UUID = UUID()
-        var date: Date
-
-        var label: String {
-            DateFormatter.shared.dateFormat = "EE, dd"
-            return DateFormatter.shared.string(from: date)
-        }
-
-        var isToday: Bool {
-            Calendar.current.isDate(date, inSameDayAs: .now)
-        }
-
-        func isSameDayAs(_ date: Date) -> Bool {
-            Calendar.current.isDate(self.date, inSameDayAs: date)
+        return (0..<7).map {
+            WeekDay(date: calendar.date(byAdding: .day, value: $0, to: firstWeekDay)!)
         }
     }
 }

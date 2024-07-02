@@ -38,7 +38,6 @@ final class Ledger {
         guard let report = getReport() else { return }
 
         makeIncomeTransactions(from: report)
-        makeExpenseTransactions(from: report)
         report.close()
         rewardDoctors()
     }
@@ -66,36 +65,10 @@ private extension Ledger {
             guard let account = checkingAccount(ofType: accountType) else { return }
 
             let typeIncome = report.billsIncome(of: type)
-            let transaction = AccountTransaction(purpose: .income, amount: typeIncome)
-            account.assignTransaction(transaction)
-        }
-    }
 
-    func makeExpenseTransactions(from report: Report) {
-        let expensePayments = report.payments?.filter { $0.totalAmount < 0 } ?? []
-        let groupedPayments = Dictionary(grouping: expensePayments, by: { $0.purpose })
-
-        for (purpose, payments) in groupedPayments {
-            if purpose == .collection {
-                let amount = payments
-                    .flatMap { $0.methods }
-                    .reduce(0.0) { $0 + $1.value }
-                let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -amount)
-
-                guard let account = checkingAccount(ofType: .cash) else { return }
-
+            if typeIncome > 0 {
+                let transaction = AccountTransaction(purpose: .income, amount: typeIncome)
                 account.assignTransaction(transaction)
-            } else {
-                if let accountTransactionPurpose = purpose?.convertToAccountTransactionPurpose() {
-                    for payment in payments {
-                        for method in payment.methods {
-                            guard let account = checkingAccount(ofType: AccountType.correlatedAccount(with: method.type)) else { return }
-
-                            let transaction = AccountTransaction(purpose: accountTransactionPurpose, detail: payment.details, amount: method.value)
-                            account.assignTransaction(transaction)
-                        }
-                    }
-                }
             }
         }
     }

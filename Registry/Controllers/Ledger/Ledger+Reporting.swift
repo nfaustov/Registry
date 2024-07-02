@@ -10,45 +10,21 @@ import SwiftData
 
 extension Ledger {
     func income(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
-        let transactions = getTransactions(for: date, period: period)
-            .filter { $0.purpose == .income }
-
-        if let type {
-            return transactions
-                .filter { transaction in
-                    if let account = transaction.account {
-                        return account.type == AccountType.correlatedAccount(with: type)
-                    } else {
-                        return false
-                    }
-                }
-                .reduce(0.0) { $0 + $1.amount }
-        } else {
-            return transactions.reduce(0.0) { $0 + $1.amount }
-        }
-//        let methods = getReports(for: date, period: period)
-//            .compactMap { $0.payments }
-//            .flatMap { $0 }
-//            .filter { $0.subject != nil }
-//            .flatMap { $0.methods }
-//
-//        if let type {
-//            return methods
-//                .filter { $0.type == type }
-//                .reduce(0.0) { $0 + $1.value }
-//        } else {
-//            return methods.reduce(0.0) { $0 + $1.value }
-//        }
+        cashboxIncome(for: date, period: period, of: type) + transactionsIncome(for: date, period: period, of: type)
     }
 
     func expense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
-        let transactions = getTransactions(for: date, period: period).filter { $0.amount < 0 }
-        return Dictionary(grouping: transactions, by: { $0.purpose })
-            .compactMap { purpose, transactions in
-                if let expenseCategory = purpose.expenseCategory {
-                    return PurposeExpense(category: expenseCategory, amount: transactions.reduce(0.0) { $0 + $1.amount })
-                } else { return nil }
-            }
+        var expenses: [PurposeExpense] = []
+        let cashboxExpenses = cashboxExpense(for: date, period: period)
+        let transactionExpenses = transactionsExpense(for: date, period: period)
+
+        expenses.append(contentsOf: cashboxExpenses)
+        expenses.append(contentsOf: transactionExpenses)
+
+        let groupedExpenses = Dictionary(grouping: expenses, by: { $0.category })
+            .map { PurposeExpense(category: $0, amount: $1.reduce(0.0) { $0 + $1.amount }) }
+
+        return groupedExpenses
     }
 }
 
@@ -73,6 +49,70 @@ private extension Ledger {
         if let transactions = try? modelContext.fetch(descriptor) {
             return transactions
         } else { return [] }
+    }
+
+    func cashboxIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
+        let methods = getReports(for: date, period: period)
+            .compactMap { $0.payments }
+            .flatMap { $0 }
+            .filter { $0.subject != nil }
+            .flatMap { $0.methods }
+
+        if let type {
+            return methods
+                .filter { $0.type == type }
+                .reduce(0.0) { $0 + $1.value }
+        } else {
+            return methods.reduce(0.0) { $0 + $1.value }
+        }
+    }
+
+    func cashboxExpense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
+        var expenses: [PurposeExpense] = []
+
+        let payments = getReports(for: date, period: period)
+            .compactMap { $0.payments }
+            .flatMap { $0 }
+        let groupedPayments = Dictionary(grouping: payments, by: { $0.purpose })
+
+        for (purpose, payments) in groupedPayments {
+            if let category = purpose?.expenseCategory {
+                let amount = payments.reduce(0.0) { $0 + $1.totalAmount }
+                let purposeExpense = PurposeExpense(category: category, amount: amount)
+                expenses.append(purposeExpense)
+            }
+        }
+
+        return expenses
+    }
+
+    func transactionsIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
+        let transactions = getTransactions(for: date, period: period)
+            .filter { $0.purpose == .income }
+
+        if let type {
+            return transactions
+                .filter { transaction in
+                    if let account = transaction.account {
+                        return account.type == AccountType.correlatedAccount(with: type)
+                    } else {
+                        return false
+                    }
+                }
+                .reduce(0.0) { $0 + $1.amount }
+        } else {
+            return transactions.reduce(0.0) { $0 + $1.amount }
+        }
+    }
+
+    func transactionsExpense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
+        let transactions = getTransactions(for: date, period: period).filter { $0.amount < 0 }
+        return Dictionary(grouping: transactions, by: { $0.purpose })
+            .compactMap { purpose, transactions in
+                if let expenseCategory = purpose.expenseCategory {
+                    return PurposeExpense(category: expenseCategory, amount: transactions.reduce(0.0) { $0 + $1.amount })
+                } else { return nil }
+            }
     }
 }
 

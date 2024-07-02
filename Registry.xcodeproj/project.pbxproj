@@ -166,6 +166,7 @@
 		8BBB96532B85F1EB00CA242F /* PassportDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */; };
 		8BBB96552B85F1F600CA242F /* VisitsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */; };
 		8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
+		8BC053952C33FA9B006419B7 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC053942C33FA9B006419B7 /* WeekDay.swift */; };
 		8BC342112C1B083A0030DAC0 /* ColoredIconButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC342102C1B083A0030DAC0 /* ColoredIconButtonStyle.swift */; };
 		8BC3A78E2C0035250055CA27 /* TreatmentPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3A78D2C0035250055CA27 /* TreatmentPlanView.swift */; };
 		8BC803B72C0F3A3D0019B744 /* PatientTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC803B62C0F3A3D0019B744 /* PatientTransactionsView.swift */; };
@@ -391,6 +392,7 @@
 		8BBB96522B85F1EB00CA242F /* PassportDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportDetailView.swift; sourceTree = "<group>"; };
 		8BBB96542B85F1F600CA242F /* VisitsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsDetailView.swift; sourceTree = "<group>"; };
 		8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
+		8BC053942C33FA9B006419B7 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		8BC342102C1B083A0030DAC0 /* ColoredIconButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredIconButtonStyle.swift; sourceTree = "<group>"; };
 		8BC3A78D2C0035250055CA27 /* TreatmentPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentPlanView.swift; sourceTree = "<group>"; };
 		8BC803B62C0F3A3D0019B744 /* PatientTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientTransactionsView.swift; sourceTree = "<group>"; };
@@ -1356,6 +1358,7 @@
 				8BA53D972B494DE6006BE983 /* ExampleData.swift */,
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
 				8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */,
+				8BC053942C33FA9B006419B7 /* WeekDay.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1653,6 +1656,7 @@
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
 				8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */,
 				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
+				8BC053952C33FA9B006419B7 /* WeekDay.swift in Sources */,
 				8B96739F2B361C0900FD2E7C /* Department.swift in Sources */,
 				8B92B5702B87AC80004E0675 /* CreateSpendingView.swift in Sources */,
 				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,
