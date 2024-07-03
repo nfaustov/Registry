@@ -10,7 +10,11 @@ import SwiftData
 
 extension Ledger {
     func income(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
-        cashboxIncome(for: date, period: period, of: type) + transactionsIncome(for: date, period: period, of: type)
+        if type == .cash || type == nil {
+            cashboxIncome(for: date, period: period) + transactionsIncome(for: date, period: period, of: type)
+        } else {
+            transactionsIncome(for: date, period: period, of: type)
+        }
     }
 
     func expense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
@@ -51,8 +55,8 @@ private extension Ledger {
         } else { return [] }
     }
 
-    func cashboxIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
-        getReports(for: date, period: period).reduce(0.0) { $0 + $1.billsIncome(of: type) }
+    func cashboxIncome(for date: Date, period: StatisticsPeriod) -> Double {
+        getReports(for: date, period: period).reduce(0.0) { $0 + $1.billsIncome(of: .cash) }
     }
 
     func cashboxExpense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {

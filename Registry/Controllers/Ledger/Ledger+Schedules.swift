@@ -41,7 +41,10 @@ extension Ledger {
                     let discount = (service.check?.discountRate ?? 0) * service.price
                     return partialResult + service.price - discount
                 }
-                doctorsRevenue.append(DoctorIndicator(doctor: doctor, indicator: Int(revenue)))
+
+                if revenue > 0 {
+                    doctorsRevenue.append(DoctorIndicator(doctor: doctor, indicator: Int(revenue)))
+                }
             }
         }
 
