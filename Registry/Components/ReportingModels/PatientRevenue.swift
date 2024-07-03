@@ -9,5 +9,5 @@ import Foundation
 
 struct PatientRevenue: Hashable {
     let patient: Patient
-    let revenue: Double
+    let revenue: Int
 }

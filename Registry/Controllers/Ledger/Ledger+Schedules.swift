@@ -32,7 +32,12 @@ extension Ledger {
 
         for doctor in doctors {
             if let services = doctor.performedServices {
-                let revenue = services.reduce(0.0) { partialResult, service in
+                let filteredServices = services.filter { service in
+                    if let serviceDate = service.date {
+                        return serviceDate > period.start(for: date) && serviceDate < period.end(for: date)
+                    } else { return false }
+                }
+                let revenue = filteredServices.reduce(0.0) { partialResult, service in
                     let discount = (service.check?.discountRate ?? 0) * service.price
                     return partialResult + service.price - discount
                 }
@@ -87,13 +92,14 @@ extension Ledger {
         let patients = schedules
             .flatMap { $0.completedAppointments }
             .compactMap { $0.patient }
+            .uniqued()
 
         var patientsRevenue: [PatientRevenue] = []
 
         for patient in patients {
             if let transactions = patient.transactions {
                 let revenue = transactions.reduce(0.0) { $0 + $1.totalAmount }
-                patientsRevenue.append(PatientRevenue(patient: patient, revenue: revenue))
+                patientsRevenue.append(PatientRevenue(patient: patient, revenue: Int(revenue)))
             }
         }
 
