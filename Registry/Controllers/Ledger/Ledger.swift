@@ -37,7 +37,7 @@ final class Ledger {
     func closeReport() {
         guard let report = getReport() else { return }
 
-        makeIncomeTransactions(from: report)
+        makeTransfers(from: report)
         report.close()
         rewardDoctors()
     }
@@ -58,7 +58,7 @@ private extension Ledger {
         } else { return nil }
     }
 
-    func makeIncomeTransactions(from report: Report) {
+    func makeTransfers(from report: Report) {
         for type in PaymentType.allCases where type != .cash {
             let accountType = AccountType.correlatedAccount(with: type)
 
@@ -67,7 +67,7 @@ private extension Ledger {
             let typeIncome = report.billsIncome(of: type)
 
             if typeIncome > 0 {
-                let transaction = AccountTransaction(purpose: .income, amount: typeIncome)
+                let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: typeIncome)
                 account.assignTransaction(transaction)
             }
         }
