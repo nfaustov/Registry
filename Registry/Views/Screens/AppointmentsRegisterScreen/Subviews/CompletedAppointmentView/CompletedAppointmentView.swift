@@ -24,7 +24,7 @@ struct CompletedAppointmentView: View {
 
     @State private var editMode: Bool = false
     @State private var includeBalance: Bool
-    @State private var paymentType: PaymentType = .cash
+    @State private var paymentType: PaymentType
     @State private var createdRefund: Refund = Refund()
 
     // MARK: -
@@ -32,10 +32,12 @@ struct CompletedAppointmentView: View {
     init(appointment: PatientAppointment) {
         self.appointment = appointment
 
-        guard let patient = appointment.patient else { fatalError() }
+        guard let patient = appointment.patient,
+              let paymentMethod = appointment.check?.payment?.methods.first else { fatalError() }
 
         self.patient = patient
         _includeBalance = State(initialValue: patient.balance < 0)
+        _paymentType = State(initialValue: paymentMethod.type)
     }
 
     var body: some View {
