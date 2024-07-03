@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PaymentsView: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
+    @Query private var accounts: [CheckingAccount]
 
     @Bindable var report: Report
 
@@ -67,6 +68,17 @@ struct PaymentsView: View {
                         onDelete: {
                             report.cancelPayment(selectedPayment.id)
                             self.selectedPayment = nil
+
+                            if selectedPayment.purpose == .collection,
+                               let account = accounts.first(where: { $0.type == .cash }) {
+                                let transaction = account.transactions
+                                     .filter { Calendar.current.isDate($0.date, inSameDayAs: selectedPayment.date) }
+                                     .first(where: { $0.purpose == .transferFrom && $0.amount == -selectedPayment.totalAmount })
+
+                                if let transaction {
+                                    account.removeTransaction(transaction)
+                                }
+                            }
                         }
                     )
                     .padding([.horizontal, .bottom])

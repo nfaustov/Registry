@@ -34,8 +34,7 @@ extension Ledger {
     private func medicalServicePayment(_ payment: Payment, patient: Patient) {
         guard let check = payment.subject else { return }
 
-        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
-        let paymentBalance = paymentValue - check.totalPrice
+        let paymentBalance = payment.totalAmount - check.totalPrice
 
         if paymentBalance != 0 {
             updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: payment.createdBy)
@@ -48,9 +47,8 @@ extension Ledger {
     }
 
     private func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
-        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         doctor.assignTransaction(payment)
-        doctor.updateBalance(increment: paymentValue)
+        doctor.updateBalance(increment: payment.totalAmount)
         record(payment)
     }
 
@@ -66,16 +64,14 @@ extension Ledger {
     }
 
     private func balancePayment(_ payment: Payment, for person: AccountablePerson) {
-        let paymentValue = payment.methods.reduce(0.0) { $0 + $1.value }
         person.assignTransaction(payment)
-        person.updateBalance(increment: paymentValue)
+        person.updateBalance(increment: payment.totalAmount)
         record(payment)
     }
 
     private func spendingPayment(_ payment: Payment) {
         if payment.purpose == .collection {
-            let amount = payment.methods.reduce(0.0) { $0 + $1.value }
-            let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -amount)
+            let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -payment.totalAmount)
 
             guard let account = try? modelContext.fetch(FetchDescriptor<CheckingAccount>()).first(where: { $0.type == .cash }) else { return }
 

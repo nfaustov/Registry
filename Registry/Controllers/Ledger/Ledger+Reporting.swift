@@ -52,19 +52,7 @@ private extension Ledger {
     }
 
     func cashboxIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {
-        let methods = getReports(for: date, period: period)
-            .compactMap { $0.payments }
-            .flatMap { $0 }
-            .filter { $0.subject != nil }
-            .flatMap { $0.methods }
-
-        if let type {
-            return methods
-                .filter { $0.type == type }
-                .reduce(0.0) { $0 + $1.value }
-        } else {
-            return methods.reduce(0.0) { $0 + $1.value }
-        }
+        getReports(for: date, period: period).reduce(0.0) { $0 + $1.billsIncome(of: type) }
     }
 
     func cashboxExpense(for date: Date, period: StatisticsPeriod) -> [PurposeExpense] {
