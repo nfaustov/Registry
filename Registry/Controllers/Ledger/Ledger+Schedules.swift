@@ -9,26 +9,45 @@ import Foundation
 import SwiftData
 
 extension Ledger {
-    func doctorsByPatients(for date: Date, period: StatisticsPeriod) -> [DoctorsPopularity] {
-        var doctorsPopularity: [DoctorsPopularity] = []
-
+    func doctorsByPatients(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
+        var doctorsPopularity: [DoctorIndicator] = []
         let schedules = getSchedules(for: date, period: period)
         let groupedSchedules = Dictionary(grouping: schedules, by: { $0.doctor! })
 
         for (doctor, schedules) in groupedSchedules {
             let completedAppointments = schedules.flatMap { $0.completedAppointments }
-            doctorsPopularity.append(DoctorsPopularity(doctor: doctor, patientsCount: completedAppointments.count))
+            doctorsPopularity.append(DoctorIndicator(doctor: doctor, indicator: completedAppointments.count))
         }
 
         let sortedPopularity = doctorsPopularity
-            .sorted(by: { $0.patientsCount > $1.patientsCount })
+            .sorted(by: { $0.indicator > $1.indicator })
 
-        return Array(sortedPopularity)
+        return sortedPopularity
+    }
+
+    func doctorsRevenue(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
+        var doctorsRevenue: [DoctorIndicator] = []
+
+        guard let doctors = try? modelContext.fetch(FetchDescriptor<Doctor>()) else { return [] }
+
+        for doctor in doctors {
+            if let services = doctor.performedServices {
+                let revenue = services.reduce(0.0) { partialResult, service in
+                    let discount = (service.check?.discountRate ?? 0) * service.price
+                    return partialResult + service.price - discount
+                }
+                doctorsRevenue.append(DoctorIndicator(doctor: doctor, indicator: Int(revenue)))
+            }
+        }
+
+        let sortedRevenue = doctorsRevenue
+            .sorted(by: { $0.indicator > $1.indicator })
+
+        return sortedRevenue
     }
 
     func registrarActivity(for date: Date, period: StatisticsPeriod) -> [RegistrarActivity] {
         var registrarsActivity: [RegistrarActivity] = []
-
         let schedules = getSchedules(for: date, period: period)
         let completedAppointments = schedules.flatMap { $0.completedAppointments }
         let groupedAppointments = Dictionary(grouping: completedAppointments, by: { $0.registrar?.id })
@@ -61,6 +80,28 @@ extension Ledger {
     func completedVisitPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
         getSchedules(for: date, period: period)
             .flatMap { $0.completedAppointments.compactMap { $0.patient } }
+    }
+
+    func patientsRevenue(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PatientRevenue] {
+        let schedules = getSchedules(for: date, period: period)
+        let patients = schedules
+            .flatMap { $0.completedAppointments }
+            .compactMap { $0.patient }
+
+        var patientsRevenue: [PatientRevenue] = []
+
+        for patient in patients {
+            if let transactions = patient.transactions {
+                let revenue = transactions.reduce(0.0) { $0 + $1.totalAmount }
+                patientsRevenue.append(PatientRevenue(patient: patient, revenue: revenue))
+            }
+        }
+
+        let sortedPatientsRevenue = patientsRevenue
+            .sorted(by: { $0.revenue > $1.revenue })
+            .prefix(maxCount)
+
+        return Array(sortedPatientsRevenue)
     }
 }
 

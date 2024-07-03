@@ -15,35 +15,31 @@ struct DoctorsReportingView: View {
     let date: Date
     let selectedPeriod: StatisticsPeriod
 
+    // MARK: - State
+
+    @State private var reportingType: ReportingType = .popularity
+
     // MARK: -
 
     var body: some View {
-        GroupBox("Специалисты") {
-            if doctorsPopularity.isEmpty {
-                ContentUnavailableView("Нет данных", systemImage: "tray")
-            } else {
-                ScrollView(.vertical) {
-                    ForEach(doctorsPopularity, id: \.self) { popularity in
-                        LabeledContent {
-                            Text("\(popularity.patientsCount)")
-                                .fontWeight(.medium)
-                        } label: {
-                            HStack {
-                                PersonImageView(person: popularity.doctor)
-                                    .frame(width: 44, height: 44, alignment: .top)
-                                    .clipShape(Circle())
-
-                                Text(popularity.doctor.fullName)
-                                    .lineLimit(2)
-                            }
-                        }
+        GroupBox {
+            if reportingType == .popularity {
+                indicatorView(indicator: doctorsPopularity)
+            } else if reportingType == .revenue {
+                indicatorView(indicator: doctorsRevenue)
+            }
+        } label: {
+            LabeledContent("Специалисты") {
+                Picker("", selection: $reportingType) {
+                    ForEach(ReportingType.allCases, id: \.self) { type in
+                        Text(type.rawValue)
                     }
                 }
-                .scrollBounceBehavior(.basedOnSize)
-                .scrollIndicators(.hidden)
+                .tint(.secondary)
             }
         }
         .groupBoxStyle(.reporting)
+        .animation(.spring, value: reportingType)
     }
 }
 
@@ -54,9 +50,50 @@ struct DoctorsReportingView: View {
 // MARK: - Calculations
 
 private extension DoctorsReportingView {
+    enum ReportingType: String, CaseIterable {
+        case popularity = "Популярность"
+        case revenue = "Выручка"
+    }
+
     @MainActor
-    var doctorsPopularity: [DoctorsPopularity] {
+    var doctorsPopularity: [DoctorIndicator] {
         let ledger = Ledger(modelContext: modelContext)
         return ledger.doctorsByPatients(for: date, period: selectedPeriod)
+    }
+
+    @MainActor
+    var doctorsRevenue: [DoctorIndicator] {
+        let ledger = Ledger(modelContext: modelContext)
+        return ledger.doctorsRevenue(for: date, period: selectedPeriod)
+    }
+}
+
+// MARK: - Subviews
+
+private extension DoctorsReportingView {
+    @ViewBuilder func indicatorView(indicator: [DoctorIndicator]) -> some View {
+        if indicator.isEmpty {
+            ContentUnavailableView("Нет данных", systemImage: "tray")
+        } else {
+            ScrollView(.vertical) {
+                ForEach(indicator, id: \.self) { indicator in
+                    LabeledContent {
+                        Text("\(indicator.indicator)")
+                            .fontWeight(.medium)
+                    } label: {
+                        HStack {
+                            PersonImageView(person: indicator.doctor)
+                                .frame(width: 44, height: 44, alignment: .top)
+                                .clipShape(Circle())
+
+                            Text(indicator.doctor.fullName)
+                                .lineLimit(2)
+                        }
+                    }
+                }
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollIndicators(.hidden)
+        }
     }
 }

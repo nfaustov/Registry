@@ -43,6 +43,7 @@
 		8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F432B4DC81800C29E20 /* PersonImageView.swift */; };
 		8B285F472B4DCD3D00C29E20 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F462B4DCD3D00C29E20 /* DateText.swift */; };
 		8B285F492B4DCD7B00C29E20 /* DurationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */; };
+		8B2E4B662C353F9D00E266AF /* PatientRevenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E4B652C353F9D00E266AF /* PatientRevenue.swift */; };
 		8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */; };
 		8B331EF52BE82D5A002298E6 /* DoctorTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */; };
 		8B331EFA2BEA5845002298E6 /* MoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF92BEA5845002298E6 /* MoneyTransaction.swift */; };
@@ -168,7 +169,7 @@
 		8BBE1B1D2BA88BCF00E91140 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */; };
 		8BC053952C33FA9B006419B7 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC053942C33FA9B006419B7 /* WeekDay.swift */; };
 		8BC0539A2C346F5D006419B7 /* PurposeExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC053992C346F5D006419B7 /* PurposeExpense.swift */; };
-		8BC0539E2C34701B006419B7 /* DoctorsPopularity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0539D2C34701B006419B7 /* DoctorsPopularity.swift */; };
+		8BC0539E2C34701B006419B7 /* DoctorIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0539D2C34701B006419B7 /* DoctorIndicator.swift */; };
 		8BC053A02C347047006419B7 /* RegistrarActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0539F2C347047006419B7 /* RegistrarActivity.swift */; };
 		8BC053A22C347082006419B7 /* PricelistItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC053A12C347082006419B7 /* PricelistItemCount.swift */; };
 		8BC342112C1B083A0030DAC0 /* ColoredIconButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC342102C1B083A0030DAC0 /* ColoredIconButtonStyle.swift */; };
@@ -275,6 +276,7 @@
 		8B285F432B4DC81800C29E20 /* PersonImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageView.swift; sourceTree = "<group>"; };
 		8B285F462B4DCD3D00C29E20 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		8B285F482B4DCD7B00C29E20 /* DurationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationLabel.swift; sourceTree = "<group>"; };
+		8B2E4B652C353F9D00E266AF /* PatientRevenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientRevenue.swift; sourceTree = "<group>"; };
 		8B2E70A52BB9ACAE00012C09 /* PhoneNumberEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberEditView.swift; sourceTree = "<group>"; };
 		8B331EF42BE82D5A002298E6 /* DoctorTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorTransactionsView.swift; sourceTree = "<group>"; };
 		8B331EF92BEA5845002298E6 /* MoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyTransaction.swift; sourceTree = "<group>"; };
@@ -398,7 +400,7 @@
 		8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
 		8BC053942C33FA9B006419B7 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		8BC053992C346F5D006419B7 /* PurposeExpense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurposeExpense.swift; sourceTree = "<group>"; };
-		8BC0539D2C34701B006419B7 /* DoctorsPopularity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsPopularity.swift; sourceTree = "<group>"; };
+		8BC0539D2C34701B006419B7 /* DoctorIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorIndicator.swift; sourceTree = "<group>"; };
 		8BC0539F2C347047006419B7 /* RegistrarActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarActivity.swift; sourceTree = "<group>"; };
 		8BC053A12C347082006419B7 /* PricelistItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemCount.swift; sourceTree = "<group>"; };
 		8BC342102C1B083A0030DAC0 /* ColoredIconButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredIconButtonStyle.swift; sourceTree = "<group>"; };
@@ -1444,9 +1446,10 @@
 			isa = PBXGroup;
 			children = (
 				8BC053992C346F5D006419B7 /* PurposeExpense.swift */,
-				8BC0539D2C34701B006419B7 /* DoctorsPopularity.swift */,
+				8BC0539D2C34701B006419B7 /* DoctorIndicator.swift */,
 				8BC0539F2C347047006419B7 /* RegistrarActivity.swift */,
 				8BC053A12C347082006419B7 /* PricelistItemCount.swift */,
+				8B2E4B652C353F9D00E266AF /* PatientRevenue.swift */,
 			);
 			path = ReportingModels;
 			sourceTree = "<group>";
@@ -1676,6 +1679,7 @@
 				8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */,
 				8B7801462B87B8BC0064DBFB /* ScheduleChart.swift in Sources */,
 				8BA0AAEC2B5FA49500E9FD7E /* CreatePricelistItemView.swift in Sources */,
+				8B2E4B662C353F9D00E266AF /* PatientRevenue.swift in Sources */,
 				8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */,
 				8B0FFCD82BEBA15F00A24998 /* CurrencyText.swift in Sources */,
 				8BC053952C33FA9B006419B7 /* WeekDay.swift in Sources */,
@@ -1704,7 +1708,7 @@
 				8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
-				8BC0539E2C34701B006419B7 /* DoctorsPopularity.swift in Sources */,
+				8BC0539E2C34701B006419B7 /* DoctorIndicator.swift in Sources */,
 				8BA761892C1B39D40068C057 /* StatisticsPeriodView.swift in Sources */,
 				8B5EEC172BF3E143006FB7CD /* VersionController.swift in Sources */,
 				8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */,

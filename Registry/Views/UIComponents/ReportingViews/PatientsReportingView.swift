@@ -15,33 +15,67 @@ struct PatientsReportingView: View {
     let date: Date
     let selectedPeriod: StatisticsPeriod
 
+    // MARK: - State
+
+    @State private var reportingType: ReportingType = .visits
+
     // MARK: -
 
     var body: some View {
-        GroupBox("Пациенты") {
-            HStack {
-                VStack {
-                    Text("\(uniquedPatients.count)")
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundStyle(.white)
-                    Text("Пациенты")
-                        .foregroundStyle(.white)
-                }
-                .padding()
-                .background(.indigo.gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        GroupBox {
+            if reportingType == .visits {
+                HStack {
+                    VStack {
+                        Text("\(uniquedPatients.count)")
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundStyle(.white)
+                        Text("Пациенты")
+                            .foregroundStyle(.white)
+                    }
+                    .padding()
+                    .background(.indigo.gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
 
-                VStack {
-                    reportLabel("Регистрации", value: scheduledPatients.count)
-                    reportLabel("Визиты", value: completedVisitPatients.count)
-                    reportLabel("Новые пациенты", value: newPatientsCount)
+                    VStack {
+                        reportLabel("Регистрации", value: scheduledPatients.count)
+                        reportLabel("Визиты", value: completedVisitPatients.count)
+                        reportLabel("Новые пациенты", value: newPatientsCount)
+                    }
+                    .padding(10)
+                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
                 }
-                .padding(10)
-                .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+            } else if reportingType == .revenue {
+                if patientsRevenue.isEmpty {
+                    ContentUnavailableView("Нет данных", systemImage: "tray")
+                } else {
+                    ScrollView(.vertical) {
+                        ForEach(patientsRevenue, id: \.self) { revenue in
+                            LabeledContent {
+                                Text("\(revenue.revenue)")
+                                    .fontWeight(.medium)
+                            } label: {
+                                Text(revenue.patient.fullName)
+                                    .lineLimit(2)
+                            }
+                        }
+                    }
+                    .scrollBounceBehavior(.basedOnSize)
+                    .scrollIndicators(.hidden)
+                }
+            }
+        } label: {
+            LabeledContent("Пациенты") {
+                Picker("", selection: $reportingType) {
+                    ForEach(ReportingType.allCases, id: \.self) { type in
+                        Text(type.rawValue)
+                    }
+                }
+                .tint(.secondary)
             }
         }
         .groupBoxStyle(.reporting)
+        .animation(.spring, value: reportingType)
     }
 }
 
@@ -64,6 +98,11 @@ private extension PatientsReportingView {
 // MARK: - Calculation
 
 private extension PatientsReportingView {
+    enum ReportingType: String, CaseIterable {
+        case visits = "Посещаемость"
+        case revenue = "Выручка"
+    }
+
     @MainActor
     var completedVisitPatients: [Patient] {
         let ledger = Ledger(modelContext: modelContext)
@@ -86,5 +125,11 @@ private extension PatientsReportingView {
         uniquedPatients
             .filter { $0.isNewPatient(for: date, period: selectedPeriod) }
             .count
+    }
+
+    @MainActor
+    var patientsRevenue: [PatientRevenue] {
+        let ledger = Ledger(modelContext: modelContext)
+        return ledger.patientsRevenue(for: date, period: selectedPeriod, maxCount: 10)
     }
 }
