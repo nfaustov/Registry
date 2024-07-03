@@ -54,6 +54,32 @@ extension Ledger {
         return sortedRevenue
     }
 
+    func doctorsAgentFee(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
+        var doctorsAgentFee: [DoctorIndicator] = []
+
+        guard let doctors = try? modelContext.fetch(FetchDescriptor<Doctor>()) else { return [] }
+
+        for doctor in doctors {
+            if let services = doctor.appointedServices {
+                let filteredServices = services.filter { service in
+                    if let serviceDate = service.date {
+                        return serviceDate > period.start(for: date) && serviceDate < period.end(for: date)
+                    } else { return false }
+                }
+                let agentFee = filteredServices.reduce(0.0) { $0 + $1.agentFee }
+
+                if agentFee > 0 {
+                    doctorsAgentFee.append(DoctorIndicator(doctor: doctor, indicator: Int(agentFee)))
+                }
+            }
+        }
+
+        let sortedAgentFee = doctorsAgentFee
+            .sorted(by: { $0.indicator > $1.indicator })
+
+        return sortedAgentFee
+    }
+
     func registrarActivity(for date: Date, period: StatisticsPeriod) -> [RegistrarActivity] {
         var registrarsActivity: [RegistrarActivity] = []
         let schedules = getSchedules(for: date, period: period)

@@ -75,7 +75,7 @@ struct PatientsReportingView: View {
             }
         }
         .groupBoxStyle(.reporting)
-        .animation(.spring, value: reportingType)
+        .animation(.linear, value: reportingType)
     }
 }
 

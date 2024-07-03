@@ -27,6 +27,8 @@ struct DoctorsReportingView: View {
                 indicatorView(indicator: doctorsPopularity)
             } else if reportingType == .revenue {
                 indicatorView(indicator: doctorsRevenue)
+            } else if reportingType == .agentFee {
+                indicatorView(indicator: doctorsAgentFee)
             }
         } label: {
             LabeledContent("Специалисты") {
@@ -39,7 +41,7 @@ struct DoctorsReportingView: View {
             }
         }
         .groupBoxStyle(.reporting)
-        .animation(.spring, value: reportingType)
+        .animation(.linear, value: reportingType)
     }
 }
 
@@ -53,6 +55,7 @@ private extension DoctorsReportingView {
     enum ReportingType: String, CaseIterable {
         case popularity = "Популярность"
         case revenue = "Выручка"
+        case agentFee = "Агентские"
     }
 
     @MainActor
@@ -65,6 +68,12 @@ private extension DoctorsReportingView {
     var doctorsRevenue: [DoctorIndicator] {
         let ledger = Ledger(modelContext: modelContext)
         return ledger.doctorsRevenue(for: date, period: selectedPeriod)
+    }
+
+    @MainActor
+    var doctorsAgentFee: [DoctorIndicator] {
+        let ledger = Ledger(modelContext: modelContext)
+        return ledger.doctorsAgentFee(for: date, period: selectedPeriod)
     }
 }
 
