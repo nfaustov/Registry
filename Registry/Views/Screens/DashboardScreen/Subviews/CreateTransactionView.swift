@@ -77,19 +77,19 @@ struct CreateTransactionView: View {
                                     }
                                 }
                             }
-                        } else {
-                            Button {
-                                selectCounterparty = true
-                            } label: {
-                                if let counterparty {
-                                    LabeledContent("Контрагент", value: counterparty.title)
-                                } else {
-                                    Text("Выбрать контрагента")
-                                }
-                            }
                         }
                     } else {
                         Text(purpose.rawValue)
+                    }
+
+                    Button {
+                        selectCounterparty = true
+                    } label: {
+                        if let counterparty {
+                            LabeledContent("Контрагент", value: counterparty.title)
+                        } else {
+                            Text("Выбрать контрагента")
+                        }
                     }
                 }
 
@@ -103,7 +103,7 @@ struct CreateTransactionView: View {
             .sheetToolbar(
                 transactionKind.rawValue,
                 subtitle: account.title,
-                disabled: amount == 0 || (transactionKind == .expense && amount > account.balance)
+                disabled: amount == 0
             ) {
                 if purpose == .income {
                     amount = abs(amount)
