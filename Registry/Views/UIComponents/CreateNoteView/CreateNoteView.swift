@@ -83,8 +83,10 @@ struct CreateNoteView: View {
                 if let note {
                     Section {
                         Button("Удалить", role: .destructive) {
-                            modelContext.delete(note)
-                            dismiss()
+                            withAnimation {
+                                modelContext.delete(note)
+                                dismiss()
+                            }
                         }
                     }
                 }
@@ -93,23 +95,23 @@ struct CreateNoteView: View {
                 if let note {
                     note.updateText(noteText)
                 } else {
-                    switch kind {
-                    case .patientAppointment(let appointment):
-                        let patientInitials = appointment.patient?.initials ?? ""
-                        let scheduledTime = DateFormat.dateTime.string(from: appointment.scheduledTime)
-                        let title = "Прием пациента: \(patientInitials) \(scheduledTime)"
-                        let note = Note(title: title, text: noteText, createdBy: user)
-                        appointment.note = note
-                    case .doctorSchedule(let schedule):
-                        let doctorInitials = schedule.doctor?.initials ?? ""
-                        let scheduleStarting = DateFormat.dateTime.string(from: schedule.starting)
-                        let title = "Врач: \(doctorInitials) \(scheduleStarting)"
-                        let note = Note(title: title, text: noteText, createdBy: user)
-                        schedule.note = note
+                    withAnimation {
+                        switch kind {
+                        case .patientAppointment(let appointment):
+                            let patientInitials = appointment.patient?.initials ?? ""
+                            let scheduledTime = DateFormat.dateTime.string(from: appointment.scheduledTime)
+                            let title = "Прием пациента: \(patientInitials) \(scheduledTime)"
+                            let note = Note(title: title, text: noteText, createdBy: user)
+                            appointment.note = note
+                        case .doctorSchedule(let schedule):
+                            let doctorInitials = schedule.doctor?.initials ?? ""
+                            let scheduleStarting = DateFormat.dateTime.string(from: schedule.starting)
+                            let title = "Врач: \(doctorInitials) \(scheduleStarting)"
+                            let note = Note(title: title, text: noteText, createdBy: user)
+                            schedule.note = note
+                        }
                     }
                 }
-
-                dismiss()
             }
         }
     }

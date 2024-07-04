@@ -125,21 +125,38 @@ private extension DoctorScheduleHeaderView {
                     .buttonStyle(ColoredIconButtonStyle(color: .cyan))
                 }
 
-                Button {
-                    coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
-                } label: {
-                    buttonImage(doctorSchedule.note == nil ? "note.text.badge.plus" : "note.text")
+                if doctorSchedule.note != nil {
+                    Button {
+                        coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
+                    } label: {
+                        buttonImage("note.text")
+                    }
+                    .buttonStyle(ColoredIconButtonStyle(color: .indigo))
+                    .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
                 }
-                .buttonStyle(ColoredIconButtonStyle(color: .indigo))
-                .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
 
-                Button {
-                    deleteSchedule()
+                Menu {
+                    Section {
+                        Button {
+                            coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
+                        } label: {
+                            Label("Добавить заметку", systemImage: "note.text.badge.plus")
+                        }
+                    }
+
+                    Section {
+                        Button(role: .destructive) {
+                            deleteSchedule()
+                        } label: {
+                            Label("Удалить", systemImage: "trash")
+                        }
+                        .disabled(doctorSchedule.scheduledPatients.count > 0)
+                    }
                 } label: {
-                    buttonImage("trash")
+                    buttonImage("gear")
                 }
-                .buttonStyle(ColoredIconButtonStyle(color: .red))
-                .disabled(doctorSchedule.scheduledPatients.count > 0)
+                .buttonStyle(ColoredIconButtonStyle(color: Color(.darkGray)))
+                .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
             }
         }
     }
