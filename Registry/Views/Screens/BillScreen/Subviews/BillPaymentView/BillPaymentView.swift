@@ -55,7 +55,7 @@ struct BillPaymentView: View {
                 disabled: check.totalPrice - patient.balance == 0 ? false : undefinedPaymentValues
             ) {
                 let ledger = Ledger(modelContext: modelContext)
-                ledger.makePayment(
+                try ledger.makePayment(
                     .medicalService(patient: patient, check: check, methods: paymentMethods),
                     createdBy: user
                 )

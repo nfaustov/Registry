@@ -69,7 +69,7 @@ struct CreateSpendingView: View {
                 disabled: paymentMethod.value == 0 || abs(paymentMethod.value) > cashBalance
             ) {
                 let ledger = Ledger(modelContext: modelContext)
-                ledger.makePayment(
+                try ledger.makePayment(
                     .spending(purpose: paymentPurpose, details: paymentDetails, method: paymentMethod),
                     createdBy: user
                 )

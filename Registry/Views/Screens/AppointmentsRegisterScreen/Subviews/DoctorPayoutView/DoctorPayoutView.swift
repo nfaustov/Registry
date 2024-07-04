@@ -80,8 +80,9 @@ struct DoctorPayoutView: View {
                     let payment = Payment(purpose: .toBalance, details: "Доплата за прием", methods: [.init(.cash, value: singlePatientFee)], createdBy: user.asAnyUser)
                     doctor.assignTransaction(payment)
                 }
+
                 let ledger = Ledger(modelContext: modelContext)
-                ledger.makePayment(
+                try ledger.makePayment(
                     .doctorPayout(doctor, methods: paymentMethods),
                     createdBy: user
                 )

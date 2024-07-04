@@ -9,32 +9,34 @@ import Foundation
 import SwiftData
 
 extension Ledger {
-    func makePayment(_ sample: PaymentFactory.Sample, createdBy user: User) {
+    func makePayment(_ sample: PaymentFactory.Sample, createdBy user: User) throws {
         let factory = PaymentFactory(producer: user)
         let payment = factory.make(from: sample)
 
-        proceedPayment(payment, as: sample)
+        try proceedPayment(payment, as: sample)
     }
 
-    private func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) {
+    private func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) throws {
         switch sample {
         case .medicalService(let patient, _, _):
-            medicalServicePayment(payment, patient: patient)
+            try medicalServicePayment(payment, patient: patient)
         case .doctorPayout(let doctor, _):
-            doctorPayoutPayment(payment, for: doctor)
+            try doctorPayoutPayment(payment, for: doctor)
         case .refund(let refund, _, let includeBalance):
-            refundPayment(payment, refund: refund, includeBalance: includeBalance)
+            try refundPayment(payment, refund: refund, includeBalance: includeBalance)
         case .balance(_, let person, _):
-            balancePayment(payment, for: person)
+            try balancePayment(payment, for: person)
         case .spending:
-            spendingPayment(payment)
+            try spendingPayment(payment)
         }
     }
 
-    private func medicalServicePayment(_ payment: Payment, patient: Patient) {
+    private func medicalServicePayment(_ payment: Payment, patient: Patient) throws {
         guard let check = payment.subject else { return }
 
         let paymentBalance = payment.totalAmount - check.totalPrice
+
+        try record(payment)
 
         if paymentBalance != 0 {
             updateBalanceWithoutRecord(person: patient, increment: paymentBalance, createdBy: payment.createdBy)
@@ -43,50 +45,54 @@ extension Ledger {
         patient.assignTransaction(payment)
         check.makeChargesForServices()
         check.appointments?.forEach { $0.status = .completed }
-        record(payment)
     }
 
-    private func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) {
+    private func doctorPayoutPayment(_ payment: Payment, for doctor: Doctor) throws {
+        try record(payment)
         doctor.assignTransaction(payment)
         doctor.updateBalance(increment: payment.totalAmount)
-        record(payment)
     }
 
-    private func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) {
+    private func refundPayment(_ payment: Payment, refund: Refund, includeBalance: Bool) throws {
         guard let patient = refund.check?.appointments?.first?.patient else { return }
+
+        try record(payment)
 
         if includeBalance, patient.balance != 0 {
             updateBalanceWithoutRecord(person: patient, increment: -patient.balance, createdBy: payment.createdBy)
         }
 
         patient.assignTransaction(payment)
-        record(payment)
     }
 
-    private func balancePayment(_ payment: Payment, for person: AccountablePerson) {
+    private func balancePayment(_ payment: Payment, for person: AccountablePerson) throws {
+        try record(payment)
         person.assignTransaction(payment)
         person.updateBalance(increment: payment.totalAmount)
-        record(payment)
     }
 
-    private func spendingPayment(_ payment: Payment) {
+    private func spendingPayment(_ payment: Payment) throws {
+        try record(payment)
+
         if payment.purpose == .collection {
-            let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -payment.totalAmount)
+            let transaction = AccountTransaction(
+                purpose: .transferFrom,
+                detail: "Касса",
+                amount: -payment.totalAmount
+            )
 
             guard let account: CheckingAccount = database.getModels().first(where: { $0.type == .cash }) else { return }
 
             account.assignTransaction(transaction)
         }
-
-        record(payment)
     }
 
-    private func record(_ payment: Payment) {
+    private func record(_ payment: Payment) throws {
         if let todayReport = getReport() {
             if !todayReport.closed {
                 todayReport.makePayment(payment)
             } else {
-                // throw error
+                throw RegistryError.closedReport
             }
         } else {
             createReport(with: payment)

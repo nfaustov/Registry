@@ -15,15 +15,22 @@ struct SheetToolbarViewModifier: ViewModifier {
     var title: String
     var subtitle: String? = nil
     var disabled: Bool = false
-    var onConfirm: (() -> Void)? = nil
+    var onConfirm: (() throws -> Void)? = nil
 
     //MARK: - State
 
     @State private var inProcess: Bool = false
+    @State private var showErrorMessage: Bool = false
+    @State private var error: RegistryError? = nil
 
     // MARK: -
 
-    init(_ title: String, subtitle: String? = nil, disabled: Bool = false, onConfirm: (() -> Void)? = nil) {
+    init(
+        _ title: String,
+        subtitle: String? = nil,
+        disabled: Bool = false,
+        onConfirm: (() throws -> Void)? = nil
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.disabled = disabled
@@ -45,8 +52,15 @@ struct SheetToolbarViewModifier: ViewModifier {
                     ToolbarItem(placement: .confirmationAction) {
                         Button {
                             inProcess = true
-                            onConfirm()
-                            dismiss()
+
+                            do {
+                                try onConfirm()
+                                dismiss()
+                            } catch {
+                                self.error = error as? RegistryError
+                                inProcess = false
+                                showErrorMessage = true
+                            }
                         } label: {
                             if inProcess {
                                 CircularProgressView()
@@ -60,6 +74,16 @@ struct SheetToolbarViewModifier: ViewModifier {
                 }
             }
             .navTitle(title: title, subTitle: subtitle)
+            .alert(
+                isPresented: $showErrorMessage,
+                error: error,
+                actions: { _ in
+                    Button("Ok") {
+                        showErrorMessage = false
+                    }
+                }, 
+                message: { Text($0.message) }
+            )
     }
 }
 
@@ -68,7 +92,7 @@ extension View {
         _ title: String,
         subtitle: String? = nil,
         disabled: Bool = false,
-        onConfirm: (() -> Void)? = nil
+        onConfirm: (() throws -> Void)? = nil
     ) -> some View {
         modifier(SheetToolbarViewModifier(
             title,

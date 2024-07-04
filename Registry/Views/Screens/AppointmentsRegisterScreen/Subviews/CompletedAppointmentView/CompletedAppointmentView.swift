@@ -109,7 +109,7 @@ struct CompletedAppointmentView: View {
                     if let check = appointment.check {
                         let ledger = Ledger(modelContext: modelContext)
                         check.makeRefund(createdRefund)
-                        ledger.makePayment(
+                        try ledger.makePayment(
                             .refund(createdRefund, paymentType: paymentType, includeBalance: includeBalance),
                             createdBy: user
                         )
