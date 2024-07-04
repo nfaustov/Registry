@@ -19,7 +19,7 @@ final class Ledger {
     func getReport(forDate date: Date = .now) -> Report? {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
-        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay && !$0.closed }
+        let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay }
 
         return database.getModel(predicate: predicate)
     }
@@ -33,7 +33,7 @@ final class Ledger {
     }
 
     func closeReport() {
-        guard let report = getReport() else { return }
+        guard let report = getReport(), !report.closed else { return }
 
         makeTransfers(from: report)
         report.close()

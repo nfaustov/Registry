@@ -83,7 +83,11 @@ extension Ledger {
 
     private func record(_ payment: Payment) {
         if let todayReport = getReport() {
-            todayReport.makePayment(payment)
+            if !todayReport.closed {
+                todayReport.makePayment(payment)
+            } else {
+                // throw error
+            }
         } else {
             createReport(with: payment)
         }
