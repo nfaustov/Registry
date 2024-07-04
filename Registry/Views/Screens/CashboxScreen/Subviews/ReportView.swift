@@ -10,12 +10,15 @@ import SwiftUI
 struct ReportView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     let report: Report
 
     // MARK: - State
 
     @State private var isCashBalanceLoading: Bool = true
     @State private var isCollectedLoading: Bool = true
+    @State private var isClosingInProgress: Bool = false
 
     // MARK: -
 
@@ -71,6 +74,28 @@ struct ReportView: View {
                 Section {
                     LabeledCurrency("Остаток в кассе", value: report.cashBalance)
                         .foregroundStyle(.secondary)
+                }
+
+                Section {
+                    Button {
+                        isClosingInProgress = true
+                        let ledger = Ledger(modelContext: modelContext)
+                        ledger.closeReport()
+                        isClosingInProgress = false
+                    } label: {
+                        HStack {
+                            Text("Закрыть смену")
+
+                            if isClosingInProgress {
+                                CircularProgressView()
+                                    .padding(.horizontal)
+                            }
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .frame(maxWidth: .infinity)
+                    .listRowBackground(Color.clear)
+                    .disabled(report.closed)
                 }
             }
             .sheetToolbar(
