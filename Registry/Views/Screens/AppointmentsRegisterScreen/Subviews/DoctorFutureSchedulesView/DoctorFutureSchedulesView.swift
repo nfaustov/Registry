@@ -87,9 +87,11 @@ private extension DoctorFutureSchedulesView {
     var futureSchedules: [DoctorSchedule] {
         let today = Calendar.current.startOfDay(for: .now)
         let predicate = #Predicate<DoctorSchedule> { $0.starting > today }
-        let descriptor = FetchDescriptor<DoctorSchedule>(predicate: predicate, sortBy: [SortDescriptor(\.starting, order: .forward)])
-
-        guard let schedules = try? modelContext.fetch(descriptor) else { return [] }
+        let database = DatabaseController(modelContext: modelContext)
+        let schedules = database.getModels(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.starting, order: .forward)]
+        )
 
         return schedules.filter { $0.doctor == doctorSchedule.doctor }
     }

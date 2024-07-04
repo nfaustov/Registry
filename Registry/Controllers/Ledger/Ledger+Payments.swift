@@ -73,7 +73,7 @@ extension Ledger {
         if payment.purpose == .collection {
             let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: -payment.totalAmount)
 
-            guard let account = try? modelContext.fetch(FetchDescriptor<CheckingAccount>()).first(where: { $0.type == .cash }) else { return }
+            guard let account: CheckingAccount = database.getModels().first(where: { $0.type == .cash }) else { return }
 
             account.assignTransaction(transaction)
         }

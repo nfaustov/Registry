@@ -9,11 +9,11 @@ import Foundation
 import SwiftData
 
 @MainActor
-final class ChecksController: PersistentController {
-    let modelContext: ModelContext
+final class ChecksController {
+    let database: PersistentController
 
     init(modelContext: ModelContext) {
-        self.modelContext = modelContext
+        database = DatabaseController(modelContext: modelContext)
     }
 
     var pricelistItemsCorrelations: [PricelistItemsCorrelation] {
@@ -41,7 +41,7 @@ final class ChecksController: PersistentController {
 
 private extension ChecksController {
     var checks: [Check] {
-        getModels()
+        database.getModels()
     }
 }
 

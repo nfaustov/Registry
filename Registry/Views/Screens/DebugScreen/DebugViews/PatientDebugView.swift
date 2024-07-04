@@ -49,14 +49,13 @@ struct PatientDebugView: View {
 
 private extension PatientDebugView {
     func getPatients() -> [Patient] {
-        var descriptor = FetchDescriptor<Patient>(sortBy: [
-            SortDescriptor(\.secondName, order: .forward),
-            SortDescriptor(\.firstName, order: .forward)
-        ])
-        descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
-
-        if let patients = try? modelContext.fetch(descriptor) {
-            return patients
-        } else { return [] }
+        let database = DatabaseController(modelContext: modelContext)
+        return database.getModels(
+            sortBy: [
+                SortDescriptor(\.secondName, order: .forward),
+                SortDescriptor(\.firstName, order: .forward)
+            ],
+            properties: [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
+        )
     }
 }

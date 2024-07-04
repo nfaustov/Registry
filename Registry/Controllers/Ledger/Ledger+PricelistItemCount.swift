@@ -40,7 +40,7 @@ private extension Ledger {
 
     func getPricelistItem(by pricelistItemID: String) -> PricelistItem? {
         let predicate = #Predicate<PricelistItem> { $0.id == pricelistItemID }
-        return getModel(predicate: predicate)
+        return database.getModel(predicate: predicate)
     }
 
     func getChecks(forDate date: Date = .now, period: StatisticsPeriod) -> [Check] {
@@ -48,6 +48,6 @@ private extension Ledger {
         let end = period.end(for: date)
         let predicate = #Predicate<Payment> { $0.date > start && $0.date < end }
 
-        return getModels(predicate: predicate).compactMap { $0.subject }
+        return database.getModels(predicate: predicate).compactMap { $0.subject }
     }
 }

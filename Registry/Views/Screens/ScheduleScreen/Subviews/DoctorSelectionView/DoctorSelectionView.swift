@@ -51,22 +51,7 @@ struct DoctorSelectionView: View {
                     dismiss()
                 }
             }
-            .task {
-                let predicate = #Predicate<Doctor> { doctor in
-                    searchText.isEmpty ? true :
-                    doctor.secondName.localizedStandardContains(searchText) ||
-                    doctor.firstName.localizedStandardContains(searchText) ||
-                    doctor.patronymicName.localizedStandardContains(searchText)
-                }
-                let descriptor = FetchDescriptor<Doctor>(predicate: predicate)
-
-                if let searchedDoctors = try? modelContext.fetch(descriptor) {
-                    doctors = searchedDoctors
-                        .sorted(by: { $0.schedules?.count ?? 0 > $1.schedules?.count ?? 0 })
-                        .sorted(by: { !$0.isInVacation(for: date) && $1.isInVacation(for: date) })
-                        .sorted(by: { !alreadyHasTodaySchedule($0) && alreadyHasTodaySchedule($1) })
-                }
-            }
+            .onAppear(perform: searchDoctors)
             .sheetToolbar("Выберите специалиста")
         }
     }
@@ -85,5 +70,21 @@ private extension DoctorSelectionView {
         return !schedules
             .filter { Calendar.current.isDate(date, inSameDayAs: $0.starting) }
             .isEmpty
+    }
+
+    @MainActor
+    func searchDoctors() {
+        let predicate = #Predicate<Doctor> { doctor in
+            searchText.isEmpty ? true :
+            doctor.secondName.localizedStandardContains(searchText) ||
+            doctor.firstName.localizedStandardContains(searchText) ||
+            doctor.patronymicName.localizedStandardContains(searchText)
+        }
+        let database = DatabaseController(modelContext: modelContext)
+        let searchedDoctors = database.getModels(predicate: predicate)
+        doctors = searchedDoctors
+            .sorted(by: { $0.schedules?.count ?? 0 > $1.schedules?.count ?? 0 })
+            .sorted(by: { !$0.isInVacation(for: date) && $1.isInVacation(for: date) })
+            .sorted(by: { !alreadyHasTodaySchedule($0) && alreadyHasTodaySchedule($1) })
     }
 }

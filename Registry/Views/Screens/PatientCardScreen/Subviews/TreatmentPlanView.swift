@@ -152,10 +152,9 @@ private extension TreatmentPlanView {
     func pricelistItem(forTreatmentPlanOfKind kind: TreatmentPlan.Kind) -> PricelistItem? {
         let id = kind.id
         let predicate = #Predicate<PricelistItem> { $0.id == id }
-        var descriptor = FetchDescriptor(predicate: predicate)
-        descriptor.fetchLimit = 1
+        let database = DatabaseController(modelContext: modelContext)
 
-        return try? modelContext.fetch(descriptor).first
+        return database.getModel(predicate: predicate)
     }
 
     func createAppointment(with pricelistItem: PricelistItem) -> PatientAppointment {

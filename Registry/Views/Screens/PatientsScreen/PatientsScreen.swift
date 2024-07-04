@@ -69,27 +69,26 @@ struct PatientsScreen: View {
 
 private extension PatientsScreen {
     func getLastPatients() -> [Patient] {
-        var descriptor = FetchDescriptor<Patient>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
-        descriptor.fetchLimit = 100
-        descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
-
-        if let patients = try? modelContext.fetch(descriptor) {
-            return patients
-        } else { return [] }
+        let database = DatabaseController(modelContext: modelContext)
+        return database.getModels(
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)],
+            limit: 100,
+            properties: [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
+        )
     }
 
     func getSearchedPatients() -> [Patient] {
-        let patientsPredicate = #Predicate<Patient> { patient in
+        let predicate = #Predicate<Patient> { patient in
             searchText.isEmpty ? false :
             patient.secondName.localizedStandardContains(searchText) ||
             patient.firstName.localizedStandardContains(searchText) ||
             patient.patronymicName.localizedStandardContains(searchText)
         }
-        var descriptor = FetchDescriptor(predicate: patientsPredicate)
-        descriptor.propertiesToFetch = [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
+        let database = DatabaseController(modelContext: modelContext)
 
-        if let patients = try? modelContext.fetch(descriptor) {
-            return patients
-        } else { return [] }
+        return database.getModels(
+            predicate: predicate,
+            properties: [\.secondName, \.firstName, \.patronymicName, \.phoneNumber]
+        )
     }
 }

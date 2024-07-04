@@ -34,7 +34,7 @@ private extension Ledger {
         let end = period.end(for: date)
         let predicate = #Predicate<Report> { $0.date > start && $0.date < end }
 
-        return getModels(predicate: predicate)
+        return database.getModels(predicate: predicate)
     }
 
     func getTransactions(for date: Date, period: StatisticsPeriod) -> [AccountTransaction] {
@@ -42,7 +42,7 @@ private extension Ledger {
         let end = period.end(for: date)
         let predicate = #Predicate<AccountTransaction> { $0.date > start && $0.date < end }
 
-        return getModels(predicate: predicate)
+        return database.getModels(predicate: predicate)
     }
 
     func cashboxIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {

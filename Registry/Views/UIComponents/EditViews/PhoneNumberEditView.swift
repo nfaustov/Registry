@@ -64,10 +64,11 @@ struct PhoneNumberEditView: View {
 // MARK: - Calculations
 
 private extension PhoneNumberEditView {
+    @MainActor
     func alreadyExistingPatient(with phoneNumber: String) -> Patient? {
         let predicate = #Predicate<Patient> { $0.phoneNumber == phoneNumber }
-        let descriptor = FetchDescriptor(predicate: predicate)
+        let database = DatabaseController(modelContext: modelContext)
 
-        return try? modelContext.fetch(descriptor).first
+        return database.getModel(predicate: predicate)
     }
 }

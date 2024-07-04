@@ -66,17 +66,17 @@ struct CounterpartiesList: View {
 // MARK: - Calculations
 
 private extension CounterpartiesList {
+    @MainActor
     var searchedCounterparties: [Counterparty] {
         let predicate = #Predicate<Counterparty> { counterparty in
             searchText.isEmpty ? true : counterparty.title.localizedStandardContains(searchText)
         }
-        let descriptor = FetchDescriptor(predicate: predicate)
+        let database = DatabaseController(modelContext: modelContext)
 
-        if let counterparties = try? modelContext.fetch(descriptor) {
-            return counterparties
-        } else { return [] }
+        return database.getModels(predicate: predicate)
     }
 
+    @MainActor
     func removeCounterparty(at offsets: IndexSet) {
         offsets.forEach { index in
             modelContext.delete(searchedCounterparties[index])

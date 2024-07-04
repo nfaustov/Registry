@@ -9,11 +9,11 @@ import Foundation
 import SwiftData
 
 @MainActor
-final class Ledger: PersistentController {
-    let modelContext: ModelContext
+final class Ledger {
+    let database: PersistentController
 
     init(modelContext: ModelContext) {
-        self.modelContext = modelContext
+        database = DatabaseController(modelContext: modelContext)
     }
 
     func getReport(forDate date: Date = .now) -> Report? {
@@ -21,7 +21,7 @@ final class Ledger: PersistentController {
         let endOfDay = startOfDay.addingTimeInterval(86_400)
         let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay && !$0.closed }
 
-        return getModel(predicate: predicate)
+        return database.getModel(predicate: predicate)
     }
 
     func createReport(with payment: Payment? = nil) {
@@ -29,7 +29,7 @@ final class Ledger: PersistentController {
 
         if let payment { report.makePayment(payment) }
 
-        modelContext.insert(report)
+        database.modelContext.insert(report)
     }
 
     func closeReport() {
@@ -43,11 +43,11 @@ final class Ledger: PersistentController {
 
 private extension Ledger {
     var lastReport: Report? {
-        getModel(sortBy: [SortDescriptor(\.date, order: .reverse)])
+        database.getModel(sortBy: [SortDescriptor(\.date, order: .reverse)])
     }
 
     func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
-        getModels().first(where: { $0.type == type })
+        database.getModels().first(where: { $0.type == type })
     }
 
     func makeTransfers(from report: Report) {

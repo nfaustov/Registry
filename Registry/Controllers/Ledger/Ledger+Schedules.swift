@@ -27,8 +27,7 @@ extension Ledger {
 
     func doctorsRevenue(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
         var doctorsRevenue: [DoctorIndicator] = []
-
-        guard let doctors = try? modelContext.fetch(FetchDescriptor<Doctor>()) else { return [] }
+        let doctors: [Doctor] = database.getModels()
 
         for doctor in doctors {
             if let services = doctor.performedServices {
@@ -56,8 +55,7 @@ extension Ledger {
 
     func doctorsAgentFee(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
         var doctorsAgentFee: [DoctorIndicator] = []
-
-        guard let doctors = try? modelContext.fetch(FetchDescriptor<Doctor>()) else { return [] }
+        let doctors: [Doctor] = database.getModels()
 
         for doctor in doctors {
             if let services = doctor.appointedServices {
@@ -148,11 +146,11 @@ private extension Ledger {
         let end = period.end(for: date)
         let predicate = #Predicate<DoctorSchedule> { $0.starting > start && $0.ending < end }
 
-        return getModels(predicate: predicate)
+        return database.getModels(predicate: predicate)
     }
 
     func getDoctor(by id: UUID) -> Doctor? {
         let predicate = #Predicate<Doctor> { $0.id == id }
-        return getModel(predicate: predicate)
+        return database.getModel(predicate: predicate)
     }
 }

@@ -249,15 +249,15 @@ private extension ServicesTable {
         }
     }
 
+    @MainActor
     func getPricelistItems(with identifiers: [String]) -> [PricelistItem] {
         let predicate = #Predicate<PricelistItem> { identifiers.contains($0.id) }
-        let descriptor = FetchDescriptor(predicate: predicate)
+        let database = DatabaseController(modelContext: modelContext)
 
-        if let items = try? modelContext.fetch(descriptor) {
-            return items
-        } else { return [] }
+        return database.getModels(predicate: predicate)
     }
 
+    @MainActor
     func makePredictions(basedOn services: [MedicalService]) {
         let itemsIDs = services.map { $0.pricelistItem.id }
         var predictionsIDs = correlations
