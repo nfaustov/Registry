@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 final class DoctorSchedule {
-    let id: UUID = UUID()
     @Relationship(inverse: \Doctor.schedules)
     var doctor: Doctor?
     var cabinet: Int = 1
@@ -22,7 +21,6 @@ final class DoctorSchedule {
     var patientAppointments: [PatientAppointment]?
 
     init(
-        id: UUID = UUID(),
         doctor: Doctor,
         cabinet: Int,
         starting: Date,
@@ -30,7 +28,6 @@ final class DoctorSchedule {
         note: Note? = nil,
         patientAppointments: [PatientAppointment] = []
     ) {
-        self.id = id
         self.doctor = doctor
         self.cabinet = cabinet
         self.starting = starting

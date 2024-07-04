@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 final class PatientAppointment {
-    let id: UUID = UUID()
     let scheduledTime: Date = Date.now
     private(set) var duration: TimeInterval = TimeInterval.zero
     @Relationship(inverse: \Patient.appointments)
@@ -30,7 +29,6 @@ final class PatientAppointment {
     }
 
     init(
-        id: UUID = UUID(),
         scheduledTime: Date,
         duration: TimeInterval,
         patient: Patient? = nil,
@@ -40,7 +38,6 @@ final class PatientAppointment {
         registrar: AnyUser? = nil,
         check: Check? = nil
     ) {
-        self.id = id
         self.scheduledTime = scheduledTime
         self.duration = duration
         self.patient = patient
