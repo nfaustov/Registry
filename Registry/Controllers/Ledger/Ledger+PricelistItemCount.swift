@@ -40,20 +40,14 @@ private extension Ledger {
 
     func getPricelistItem(by pricelistItemID: String) -> PricelistItem? {
         let predicate = #Predicate<PricelistItem> { $0.id == pricelistItemID }
-        var descriptor = FetchDescriptor<PricelistItem>(predicate: predicate)
-        descriptor.fetchLimit = 1
-
-        return try? modelContext.fetch(descriptor).first
+        return getModel(predicate: predicate)
     }
 
     func getChecks(forDate date: Date = .now, period: StatisticsPeriod) -> [Check] {
         let start = period.start(for: date)
         let end = period.end(for: date)
         let predicate = #Predicate<Payment> { $0.date > start && $0.date < end }
-        let descriptor = FetchDescriptor<Payment>(predicate: predicate)
 
-        if let payments = try? modelContext.fetch(descriptor) {
-            return payments.compactMap { $0.subject }
-        } else { return [] }
+        return getModels(predicate: predicate).compactMap { $0.subject }
     }
 }

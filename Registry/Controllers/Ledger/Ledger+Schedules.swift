@@ -147,20 +147,12 @@ private extension Ledger {
         let start = period.start(for: date)
         let end = period.end(for: date)
         let predicate = #Predicate<DoctorSchedule> { $0.starting > start && $0.ending < end }
-        let descriptor = FetchDescriptor<DoctorSchedule>(predicate: predicate)
 
-        if let schedules = try? modelContext.fetch(descriptor) {
-            return schedules
-        } else { return [] }
+        return getModels(predicate: predicate)
     }
 
     func getDoctor(by id: UUID) -> Doctor? {
         let predicate = #Predicate<Doctor> { $0.id == id }
-        var descriptor = FetchDescriptor<Doctor>(predicate: predicate)
-        descriptor.fetchLimit = 1
-
-        if let doctor = try? modelContext.fetch(descriptor).first {
-            return doctor
-        } else { return nil }
+        return getModel(predicate: predicate)
     }
 }

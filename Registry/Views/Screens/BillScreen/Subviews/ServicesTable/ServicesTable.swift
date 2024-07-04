@@ -119,10 +119,9 @@ struct ServicesTable: View {
                 if patient.currentTreatmentPlan != nil {
                     enabledTreatmentPlan = true
                 }
-            }
-            .task {
-                let checksController = ChecksController(modelContainer: modelContext.container)
-                correlations = await checksController.pricelistItemsCorrelations
+
+                let checksController = ChecksController(modelContext: modelContext)
+                correlations = checksController.pricelistItemsCorrelations
 
                 withAnimation {
                     makePredictions(basedOn: check.services)

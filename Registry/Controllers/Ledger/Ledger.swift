@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @MainActor
-final class Ledger {
+final class Ledger: PersistentController {
     let modelContext: ModelContext
 
     init(modelContext: ModelContext) {
@@ -20,10 +20,8 @@ final class Ledger {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = startOfDay.addingTimeInterval(86_400)
         let predicate = #Predicate<Report> { $0.date > startOfDay && $0.date < endOfDay && !$0.closed }
-        var descriptor = FetchDescriptor<Report>(predicate: predicate)
-        descriptor.fetchLimit = 1
 
-        return try? modelContext.fetch(descriptor).first
+        return getModel(predicate: predicate)
     }
 
     func createReport(with payment: Payment? = nil) {
@@ -45,17 +43,11 @@ final class Ledger {
 
 private extension Ledger {
     var lastReport: Report? {
-        var descriptor = FetchDescriptor<Report>(sortBy: [SortDescriptor(\.date, order: .reverse)])
-        descriptor.fetchLimit = 1
-        return try? modelContext.fetch(descriptor).first
+        getModel(sortBy: [SortDescriptor(\.date, order: .reverse)])
     }
 
     func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
-        let descriptor = FetchDescriptor<CheckingAccount>()
-        
-        if let account = try? modelContext.fetch(descriptor).first(where: { $0.type == type }) {
-            return account
-        } else { return nil }
+        getModels().first(where: { $0.type == type })
     }
 
     func makeTransfers(from report: Report) {

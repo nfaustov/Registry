@@ -8,8 +8,14 @@
 import Foundation
 import SwiftData
 
-@ModelActor
-actor ChecksController {
+@MainActor
+final class ChecksController: PersistentController {
+    let modelContext: ModelContext
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+    }
+
     var pricelistItemsCorrelations: [PricelistItemsCorrelation] {
         var temp: [PricelistItemsCorrelation] = []
 
@@ -35,11 +41,7 @@ actor ChecksController {
 
 private extension ChecksController {
     var checks: [Check] {
-        let descriptor = FetchDescriptor<Check>()
-
-        if let fetchedChecks = try? modelContext.fetch(descriptor) {
-            return fetchedChecks
-        } else { return [] }
+        getModels()
     }
 }
 

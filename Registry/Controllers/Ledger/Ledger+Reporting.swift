@@ -33,22 +33,16 @@ private extension Ledger {
         let start = period.start(for: date)
         let end = period.end(for: date)
         let predicate = #Predicate<Report> { $0.date > start && $0.date < end }
-        let descriptor = FetchDescriptor<Report>(predicate: predicate)
 
-        if let reports = try? modelContext.fetch(descriptor) {
-            return reports
-        } else { return [] }
+        return getModels(predicate: predicate)
     }
 
     func getTransactions(for date: Date, period: StatisticsPeriod) -> [AccountTransaction] {
         let start = period.start(for: date)
         let end = period.end(for: date)
         let predicate = #Predicate<AccountTransaction> { $0.date > start && $0.date < end }
-        let descriptor = FetchDescriptor(predicate: predicate)
 
-        if let transactions = try? modelContext.fetch(descriptor) {
-            return transactions
-        } else { return [] }
+        return getModels(predicate: predicate)
     }
 
     func cashboxIncome(for date: Date, period: StatisticsPeriod, of type: PaymentType? = nil) -> Double {

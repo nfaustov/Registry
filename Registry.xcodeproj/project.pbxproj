@@ -13,6 +13,7 @@
 		8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */; };
 		8B0B80992C1D816300541A0B /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0B80982C1D816300541A0B /* AccountsView.swift */; };
 		8B0C1DF02C29C70300D7C839 /* AccountTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0C1DEF2C29C70300D7C839 /* AccountTransactionsView.swift */; };
+		8B0DF2E82C365E3100D0BAB7 /* PersistentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0DF2E72C365E3100D0BAB7 /* PersistentController.swift */; };
 		8B0FA0602BC538C80077D4D9 /* NumPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FA05F2BC538C80077D4D9 /* NumPadView.swift */; };
 		8B0FE9E22B56F553003F474B /* SideBySideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */; };
 		8B0FE9E52B56F5B8003F474B /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FE9E42B56F5B8003F474B /* SearchBar.swift */; };
@@ -246,6 +247,7 @@
 		8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsList.swift; sourceTree = "<group>"; };
 		8B0B80982C1D816300541A0B /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		8B0C1DEF2C29C70300D7C839 /* AccountTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransactionsView.swift; sourceTree = "<group>"; };
+		8B0DF2E72C365E3100D0BAB7 /* PersistentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentController.swift; sourceTree = "<group>"; };
 		8B0FA05F2BC538C80077D4D9 /* NumPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumPadView.swift; sourceTree = "<group>"; };
 		8B0FE9E12B56F553003F474B /* SideBySideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBySideScreen.swift; sourceTree = "<group>"; };
 		8B0FE9E42B56F5B8003F474B /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -1280,6 +1282,7 @@
 				8B8DA96E2BA213BD00F6F847 /* MessageController.swift */,
 				8B5EEC162BF3E143006FB7CD /* VersionController.swift */,
 				8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */,
+				8B0DF2E72C365E3100D0BAB7 /* PersistentController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1735,6 +1738,7 @@
 				8B6BAA072B8DD508000FF417 /* PriceCalculationView.swift in Sources */,
 				8B2E70A62BB9ACAE00012C09 /* PhoneNumberEditView.swift in Sources */,
 				8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */,
+				8B0DF2E82C365E3100D0BAB7 /* PersistentController.swift in Sources */,
 				8BD6466F2C19816A00511958 /* ReportingGroupBoxStyle.swift in Sources */,
 				8B183BAD2B86606400FA1D46 /* Report.swift in Sources */,
 				8B616DB22C2A7BE0006957F9 /* CounterpartiesList.swift in Sources */,
