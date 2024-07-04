@@ -18,7 +18,10 @@ protocol PersistentController: AnyObject {
         limit: Int?,
         properties: [PartialKeyPath<T>]
     ) -> [T] where T: PersistentModel
-    func getModel<T>(predicate: Predicate<T>?, sortBy: [SortDescriptor<T>]) -> T? where T: PersistentModel
+    func getModel<T>(
+        predicate: Predicate<T>?,
+        sortBy: [SortDescriptor<T>]
+    ) -> T? where T: PersistentModel
 }
 
 extension PersistentController {
@@ -28,7 +31,7 @@ extension PersistentController {
         limit: Int? = nil,
         properties: [PartialKeyPath<T>] = []
     ) -> [T] where T: PersistentModel {
-        var descriptor = FetchDescriptor<T>(predicate: predicate)
+        var descriptor = FetchDescriptor<T>(predicate: predicate, sortBy: sort)
         descriptor.fetchLimit = limit
         descriptor.propertiesToFetch = properties
 
