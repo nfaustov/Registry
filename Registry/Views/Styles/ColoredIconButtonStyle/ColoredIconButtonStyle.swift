@@ -21,7 +21,6 @@ struct ColoredIconButtonStyle: ButtonStyle {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .frame(width: 52, height: 52)
                 .foregroundStyle(color.opacity(configuration.isPressed ? 0.5 : 0.1))
-                .padding(.horizontal, 12)
             configuration.label
                 .scaleEffect(configuration.isPressed ? 1.2 : 1)
                 .foregroundStyle(color)
