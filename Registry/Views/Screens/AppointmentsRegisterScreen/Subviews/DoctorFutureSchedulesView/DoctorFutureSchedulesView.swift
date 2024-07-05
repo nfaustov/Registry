@@ -29,7 +29,7 @@ struct DoctorFutureSchedulesView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(alignment: .leading) {
                 HStack {
                     ForEach(calendar.shortWeekdaySymbols, id: \.self) { weekDay in
                         Text(weekDay)
@@ -43,12 +43,18 @@ struct DoctorFutureSchedulesView: View {
                     ForEach(days) { day in
                         if let schedule = schedule(on: day) {
                             VStack {
-                                Text(day.dayLabel)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(day.isToday ? .orange : .primary)
+                                HStack(alignment: .firstTextBaseline) {
+                                    Text(day.dayLabel)
+                                        .font(.largeTitle)
+                                        .foregroundStyle(day.isToday ? .orange : .primary)
+                                    Text(day.monthLabel)
+                                        .font(.caption)
+                                        .foregroundStyle(day.isToday ? .orange : .primary)
+                                }
+
                                 Text(scheduleBounds(schedule))
                                     .font(.caption)
-                                    .padding(.vertical, 4)
+                                    .padding(4)
                             }
                             .padding(8)
                             .background(
@@ -65,6 +71,7 @@ struct DoctorFutureSchedulesView: View {
                             }
                         } else {
                             Text(day.dayLabel)
+                                .font(.title2)
                                 .padding(8)
                         }
                     }
@@ -107,7 +114,7 @@ private extension DoctorFutureSchedulesView {
             to: endOfWeek!
         ).day!
 
-        return (0..<max(14, days)).map {
+        return (0..<max(28, days)).map {
             WeekDay(date: calendar.date(byAdding: .day, value: $0, to: startOfWeek!)!)
         }
     }

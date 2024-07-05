@@ -21,6 +21,11 @@ struct WeekDay: Identifiable {
         return DateFormatter.shared.string(from: date)
     }
 
+    var monthLabel: String {
+        DateFormatter.shared.dateFormat = "MMMM"
+        return DateFormatter.shared.string(from: date)
+    }
+
     var isToday: Bool {
         Calendar.current.isDate(date, inSameDayAs: .now)
     }
