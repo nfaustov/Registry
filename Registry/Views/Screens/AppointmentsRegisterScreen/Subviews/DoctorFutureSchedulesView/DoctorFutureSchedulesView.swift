@@ -18,40 +18,71 @@ struct DoctorFutureSchedulesView: View {
 
     let doctorSchedule: DoctorSchedule
 
+    private let columns = Array(repeating: GridItem(.flexible()), count: 7)
+    private let calendar = Calendar(identifier: .iso8601)
+
+    // MARK: - State
+
+    @State private var futureSchedules: [DoctorSchedule] = []
+
     // MARK: -
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                Color(.systemGroupedBackground)
-                if futureSchedules.isEmpty {
-                    VStack {
-                        Spacer()
-
-                        Text("У выбранного врача пока нет других расписаний.")
-
-                        Spacer()
+            VStack {
+                HStack {
+                    ForEach(calendar.shortWeekdaySymbols, id: \.self) { weekDay in
+                        Text(weekDay)
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity)
                     }
-                } else {
-                    ScrollView(.vertical) {
-                        VStack {
-                            ForEach(futureSchedules) { schedule in
-                                scheduleView(schedule)
-                                    .onTapGesture {
-                                        if schedule.id != doctorSchedule.id {
-                                            scheduleController.date = schedule.starting
-                                            scheduleController.selectedSchedule = schedule
-                                        }
-                                        dismiss()
-                                    }
-                            }
-                        }
-                        .padding(.top)
-                    }
-                    .scrollBounceBehavior(.basedOnSize)
                 }
+
+                LazyVGrid(columns: columns, spacing: 8) {
+                    ForEach(days) { day in
+                        if let schedule = schedule(on: day) {
+                            VStack {
+                                Text(day.dayLabel)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(day.isToday ? .orange : .primary)
+                                Text(scheduleBounds(schedule))
+                                    .font(.caption)
+                                    .padding(.vertical, 4)
+                            }
+                            .padding(8)
+                            .background(
+                                doctorSchedule.id == schedule.id ? .blue.opacity(0.2) : Color(.systemFill),
+                                in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            )
+                            .onTapGesture {
+                                if schedule.id != doctorSchedule.id {
+                                    scheduleController.date = day.date
+                                    scheduleController.selectedSchedule = schedule
+                                }
+
+                                dismiss()
+                            }
+                        } else {
+                            Text(day.dayLabel)
+                                .padding(8)
+                        }
+                    }
+                }
+
+                Spacer()
             }
-            .sheetToolbar("Расписания врача", subtitle: doctorSchedule.doctor?.initials ?? "")
+            .padding()
+            .onAppear {
+                let today = calendar.startOfDay(for: .now)
+                let predicate = #Predicate<DoctorSchedule> { $0.starting > today }
+                let database = DatabaseController(modelContext: modelContext)
+                futureSchedules = database.getModels(
+                    predicate: predicate,
+                    sortBy: [SortDescriptor(\.starting, order: .forward)]
+                ).filter { $0.doctor == doctorSchedule.doctor }
+            }
+            .sheetToolbar("Расписание врача", subtitle: doctorSchedule.doctor?.initials ?? "")
         }
     }
 }
@@ -61,39 +92,28 @@ struct DoctorFutureSchedulesView: View {
         .environmentObject(ScheduleController())
 }
 
-// MARK: - Subviews
-
-private extension DoctorFutureSchedulesView {
-    func scheduleView(_ schedule: DoctorSchedule) -> some View {
-        VStack(alignment: .leading) {
-            HStack {
-                DatePickerDateView(date: schedule.starting)
-                Spacer()
-            }
-
-            Text(scheduleBounds(schedule))
-        }
-        .padding()
-        .background(doctorSchedule.id == schedule.id ? .blue.opacity(0.2) : Color(.secondarySystemGroupedBackground))
-        .cornerRadius(12)
-        .padding(.vertical, 8)
-        .padding(.horizontal)
-    }
-}
-
 // MARK: - Calculations
 
 private extension DoctorFutureSchedulesView {
-    var futureSchedules: [DoctorSchedule] {
-        let today = Calendar.current.startOfDay(for: .now)
-        let predicate = #Predicate<DoctorSchedule> { $0.starting > today }
-        let database = DatabaseController(modelContext: modelContext)
-        let schedules = database.getModels(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.starting, order: .forward)]
-        )
+    var days: [WeekDay] {
+        guard let firstSchedule = futureSchedules.first,
+              let lastSchedule = futureSchedules.last else { return [] }
 
-        return schedules.filter { $0.doctor == doctorSchedule.doctor }
+        let startOfWeek = calendar.dateInterval(of: .weekOfMonth, for: firstSchedule.starting)?.start
+        let endOfWeek = calendar.dateInterval(of: .weekOfMonth, for: lastSchedule.starting)?.end
+        let days = calendar.dateComponents(
+            [.day],
+            from: startOfWeek!,
+            to: endOfWeek!
+        ).day!
+
+        return (0..<max(14, days)).map {
+            WeekDay(date: calendar.date(byAdding: .day, value: $0, to: startOfWeek!)!)
+        }
+    }
+
+    func schedule(on day: WeekDay) -> DoctorSchedule? {
+        futureSchedules.first(where: { calendar.isDate(day.date, inSameDayAs: $0.starting) })
     }
 
     func scheduleBounds(_ schedule: DoctorSchedule) -> String {

@@ -108,9 +108,10 @@ private extension DoctorScheduleHeaderView {
         let startOfTomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
         let predicate = #Predicate<DoctorSchedule> { $0.starting > startOfTomorrow }
         let database = DatabaseController(modelContext: modelContext)
-        let schedule = database.getModel(predicate: predicate)
+        let schedules = database.getModels(predicate: predicate)
+            .filter { $0.doctor == doctorSchedule.doctor }
 
-        return schedule != nil
+        return !schedules.isEmpty
     }
 }
 
