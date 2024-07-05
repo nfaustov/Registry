@@ -35,7 +35,6 @@ struct BillScreen: View {
                     HStack {
                         Text(patient.fullName)
                             .font(.title3)
-                            .padding(.horizontal)
 
                         if patient.currentTreatmentPlan != nil {
                             Image(systemName: "cross.case.circle")
@@ -44,6 +43,10 @@ struct BillScreen: View {
                     }
                 }
                 .padding()
+                .background()
+                .clipShape(.rect(cornerRadius: 12, style: .continuous))
+                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+                .padding(.horizontal)
             }
 
             if let check = appointment.check {

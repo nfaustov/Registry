@@ -17,11 +17,12 @@ struct AppointmentView: View {
     // MARK: - State
 
     @State private var showNote: Bool = false
+    @State private var showBalance: Bool = false
 
     // MARK: -
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             Circle()
                 .frame(width: 8)
                 .foregroundStyle(style)
@@ -30,6 +31,7 @@ struct AppointmentView: View {
                 .foregroundColor(appointment.status == .completed ? .secondary : .primary)
                 .bold()
                 .frame(width: 50)
+                .padding(8)
 
             if let patient = appointment.patient {
                 VStack(alignment: .leading) {
@@ -62,6 +64,23 @@ struct AppointmentView: View {
                         }
                     }
                 } else {
+                    if patient.balance != 0 {
+                        Image(systemName: "briefcase.fill")
+                            .font(.headline)
+                            .foregroundStyle(showBalance ? .gray.opacity(0.4) : patient.balance > 0 ? .green : .pink)
+                            .padding(8)
+                            .background(patient.balance > 0 ? .green.opacity(0.1) : .pink.opacity(0.1))
+                            .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                            .padding(.horizontal, 4)
+                            .onTapGesture {
+                                showBalance = true
+                            }
+                            .popover(isPresented: $showBalance) {
+                                LabeledCurrency("Баланс", value: patient.balance)
+                                    .padding()
+                            }
+                    }
+
                     if let note = appointment.note {
                         Image(systemName: "note.text")
                             .font(.headline)
@@ -80,7 +99,7 @@ struct AppointmentView: View {
                     }
 
                     if appointment.status == .notified {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 2) {
                             Image(systemName: "checkmark.circle")
                             Text("SMS")
                         }
@@ -95,6 +114,7 @@ struct AppointmentView: View {
                         }
                     }
                     .tint(.secondary)
+                    .frame(width: 212)
                 }
             } else {
                 Spacer()

@@ -105,6 +105,7 @@
 		8B80FED42BC25D1B00BB76E0 /* ContractScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */; };
 		8B80FED72BC2A6C800BB76E0 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */; };
 		8B84BB0A2C1B29D400B2022C /* CheckingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84BB092C1B29D400B2022C /* CheckingAccount.swift */; };
+		8B88778F2C36CCE300914396 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88778E2C36CCE300914396 /* RegistryError.swift */; };
 		8B8A6E112BF4A4F70026674D /* DebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A6E102BF4A4F70026674D /* DebugScreen.swift */; };
 		8B8A6E142BF4A82D0026674D /* PatientDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */; };
 		8B8A6E162BF534170026674D /* LabeledCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A6E152BF534170026674D /* LabeledCurrency.swift */; };
@@ -336,6 +337,7 @@
 		8B80FED32BC25D1B00BB76E0 /* ContractScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractScreen.swift; sourceTree = "<group>"; };
 		8B80FED62BC2A6C800BB76E0 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		8B84BB092C1B29D400B2022C /* CheckingAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckingAccount.swift; sourceTree = "<group>"; };
+		8B88778E2C36CCE300914396 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
 		8B8A6E102BF4A4F70026674D /* DebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugScreen.swift; sourceTree = "<group>"; };
 		8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientDebugView.swift; sourceTree = "<group>"; };
 		8B8A6E152BF534170026674D /* LabeledCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledCurrency.swift; sourceTree = "<group>"; };
@@ -1381,6 +1383,7 @@
 				8BA53D992B494DFC006BE983 /* WorkingHours.swift */,
 				8BBE1B1C2BA88BCF00E91140 /* StatisticsPeriod.swift */,
 				8BC053942C33FA9B006419B7 /* WeekDay.swift */,
+				8B88778E2C36CCE300914396 /* RegistryError.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1808,6 +1811,7 @@
 				8BA53D9C2B494E28006BE983 /* DateFormatter+Shared.swift in Sources */,
 				8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */,
 				8B997A582BFC8DF800DB50CB /* UpdateBalanceKind.swift in Sources */,
+				8B88778F2C36CCE300914396 /* RegistryError.swift in Sources */,
 				8B8AE9832B57F9F9001A9143 /* DoctorDetailScreen.swift in Sources */,
 				8B1D90522C122C7E00954FF8 /* DashboardScreen.swift in Sources */,
 				8B6BAA102B8DE9B4000FF417 /* CompletedAppointmentView.swift in Sources */,

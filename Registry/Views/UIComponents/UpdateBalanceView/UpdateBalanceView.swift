@@ -60,7 +60,7 @@ struct UpdateBalanceView: View {
             }
             .sheetToolbar(kind.rawValue, disabled: paymentMethod.value == 0) {
                 let ledger = Ledger(modelContext: modelContext)
-                ledger.makePayment(
+                try ledger.makePayment(
                     .balance(kind, person: person, method: paymentMethod),
                     createdBy: user
                 )

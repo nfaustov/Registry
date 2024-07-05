@@ -18,8 +18,6 @@ struct CashboxScreen: View {
 
     @Query(todayReportDescriptor) private var reports: [Report]
 
-    @State private var closingInProgress: Bool = false
-
     // MARK: -
 
     var body: some View {
@@ -53,25 +51,6 @@ struct CashboxScreen: View {
                             ledger.createReport()
                         }
                         .disabled(user.accessLevel < .registrar)
-                    }
-                }
-
-                Section {
-                    if let report = reports.first, report.closed == false {
-                        Button {
-                            closingInProgress = true
-                            let ledger = Ledger(modelContext: modelContext)
-                            ledger.closeReport()
-                            closingInProgress = false
-                        } label: {
-                            HStack {
-                                Text("Закрыть смену")
-                                if closingInProgress {
-                                    CircularProgressView()
-                                        .padding(.horizontal)
-                                }
-                            }
-                        }
                     }
                 }
             }

@@ -16,7 +16,7 @@ final class Counterparty {
     var transactions: [AccountTransaction]?
 
     var fullTitle: String {
-        "\(status.rawValue) \(title)"
+        "\(status.rawValue) \"\(title)\""
     }
 
     init(title: String, status: Counterparty.Status) {

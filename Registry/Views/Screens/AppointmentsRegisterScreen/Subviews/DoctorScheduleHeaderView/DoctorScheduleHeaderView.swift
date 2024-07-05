@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DoctorScheduleHeaderView: View {
     // MARK: - Dependencies
+
+    @Environment(\.modelContext) private var modelContext
 
     @EnvironmentObject private var coordinator: Coordinator
 
@@ -18,7 +21,7 @@ struct DoctorScheduleHeaderView: View {
     // MARK: -
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 0) {
+        HStack(spacing: 0) {
             if let doctor = doctorSchedule.doctor {
                 PersonImageView(person: doctor)
                     .frame(width: 120, height: 150, alignment: .top)
@@ -33,34 +36,38 @@ struct DoctorScheduleHeaderView: View {
 
                     Spacer()
 
-                    Label(" \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
-                        .padding(.bottom, 4)
+                    HStack(alignment: .bottom) {
+                        VStack(alignment: .leading) {
+                            Label(" \(doctorSchedule.cabinet)", systemImage: "door.left.hand.closed")
+                                .padding(.bottom, 4)
 
-                    Label(duration, systemImage: "timer")
-                        .padding(.bottom, 4)
+                            Label(duration, systemImage: "timer")
+                                .padding(.bottom, 4)
 
-                    HStack {
-                        if !doctorSchedule.completedAppointments.isEmpty {
-                            Label("\(doctorSchedule.completedAppointments.count)", systemImage: "person.fill.checkmark")
-                            Divider()
+                            HStack {
+                                if !doctorSchedule.completedAppointments.isEmpty {
+                                    Label("\(doctorSchedule.completedAppointments.count)", systemImage: "person.fill.checkmark")
+                                    Divider()
+                                }
+
+                                Label("\(incompletedAppointments)", systemImage: "person.badge.clock.fill")
+
+                                if doctorSchedule.availableAppointments > 0 {
+                                    Divider()
+                                    Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
+                                }
+                            }
+                            .frame(height: 20)
                         }
+                        .font(.subheadline)
 
-                        Label("\(incompletedAppointments)", systemImage: "person.badge.clock.fill")
+                        Spacer()
 
-                        if doctorSchedule.availableAppointments > 0 {
-                            Divider()
-                            Label("\(doctorSchedule.availableAppointments)", systemImage: "person")
-                        }
+                        controlsStackView
+                            .padding(.horizontal)
                     }
-                    .frame(height: 20)
                 }
-                .font(.subheadline)
-                .padding(.horizontal)
-
-                Spacer()
-
-                controlsStackView
-                    .padding(.horizontal)
+                .padding(.leading)
             }
         }
     }
@@ -96,13 +103,23 @@ private extension DoctorScheduleHeaderView {
 
         return result
     }
+
+    var hasFutureSchedules: Bool {
+        let startOfTomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86_400))
+        let predicate = #Predicate<DoctorSchedule> { $0.starting > startOfTomorrow }
+        let database = DatabaseController(modelContext: modelContext)
+        let schedules = database.getModels(predicate: predicate)
+            .filter { $0.doctor == doctorSchedule.doctor }
+
+        return !schedules.isEmpty
+    }
 }
 
 // MARK: - Subviews
 
 private extension DoctorScheduleHeaderView {
     var controlsStackView: some View {
-        HStack(alignment: .bottom, spacing: 0) {
+        HStack(spacing: 20) {
             if let doctor = doctorSchedule.doctor {
                 Button {
                     if doctor.department == .procedure {
@@ -116,7 +133,7 @@ private extension DoctorScheduleHeaderView {
                 .buttonStyle(ColoredIconButtonStyle(color: .purple))
                 .disabled(!Calendar.current.isDateInToday(doctorSchedule.starting))
 
-                if doctor.department != .procedure {
+                if doctor.department != .procedure, hasFutureSchedules {
                     Button {
                         coordinator.present(.doctorFutureSchedules(doctorSchedule: doctorSchedule))
                     } label: {
@@ -125,21 +142,39 @@ private extension DoctorScheduleHeaderView {
                     .buttonStyle(ColoredIconButtonStyle(color: .cyan))
                 }
 
-                Button {
-                    coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
-                } label: {
-                    buttonImage(doctorSchedule.note == nil ? "note.text.badge.plus" : "note.text")
+                if doctorSchedule.note != nil {
+                    Button {
+                        coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
+                    } label: {
+                        buttonImage("note.text")
+                    }
+                    .buttonStyle(ColoredIconButtonStyle(color: .indigo))
+                    .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
                 }
-                .buttonStyle(ColoredIconButtonStyle(color: .indigo))
-                .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
 
-                Button {
-                    deleteSchedule()
+                Menu {
+                    Section {
+                        Button {
+                            coordinator.present(.createNote(for: .doctorSchedule(doctorSchedule)))
+                        } label: {
+                            Label("Добавить заметку", systemImage: "note.text.badge.plus")
+                        }
+                        .disabled(doctorSchedule.note != nil)
+                    }
+
+                    Section {
+                        Button(role: .destructive) {
+                            deleteSchedule()
+                        } label: {
+                            Label("Удалить", systemImage: "trash")
+                        }
+                        .disabled(doctorSchedule.scheduledPatients.count > 0)
+                    }
                 } label: {
-                    buttonImage("trash")
+                    buttonImage("gear")
                 }
-                .buttonStyle(ColoredIconButtonStyle(color: .red))
-                .disabled(doctorSchedule.scheduledPatients.count > 0)
+                .buttonStyle(ColoredIconButtonStyle(color: Color(.darkGray)))
+                .disabled(doctorSchedule.starting < Calendar.current.startOfDay(for: .now))
             }
         }
     }
