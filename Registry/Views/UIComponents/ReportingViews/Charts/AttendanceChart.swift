@@ -19,7 +19,7 @@ struct AttendanceChart: View {
     // MARK: -
 
     var body: some View {
-        LineAreaMarkChart(data: attendanceData)
+        LineAreaMarkChart(data: attendanceData, color: .indigo)
             .frame(height: 100)
     }
 }

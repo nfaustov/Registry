@@ -12,6 +12,7 @@ struct LineAreaMarkChart: View {
     // MARK: - Dependencies
 
     let data: [DayIndicator]
+    let color: Color
 
     // MARK: - State
 
@@ -25,7 +26,7 @@ struct LineAreaMarkChart: View {
                 x: .value("День", item.day),
                 y: .value("Индикатор", item.indicator)
             )
-            .foregroundStyle(.blue.gradient)
+            .foregroundStyle(color.gradient)
             .interpolationMethod(.catmullRom)
 
             AreaMark(
@@ -38,6 +39,7 @@ struct LineAreaMarkChart: View {
             if let currentIndicator, currentIndicator.id == item.id {
                 RuleMark(x: .value("День", currentIndicator.day))
                     .lineStyle(.init(lineWidth: 2, miterLimit: 2, dash: [2], dashPhase: 5))
+                    .foregroundStyle(color)
                     .annotation(position: .top) {
                         Text(item.indicator, format: .number)
                             .font(.title3).bold()
@@ -58,14 +60,14 @@ struct LineAreaMarkChart: View {
 }
 
 #Preview {
-    LineAreaMarkChart(data: [])
+    LineAreaMarkChart(data: [], color: .blue)
 }
 
 // MARK: - Subviews {
 
 private extension LineAreaMarkChart {
     var gradient: LinearGradient {
-        LinearGradient(colors: [.blue.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom)
+        LinearGradient(colors: [color.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom)
     }
 
     @MainActor
