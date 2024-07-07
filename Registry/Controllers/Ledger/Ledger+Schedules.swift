@@ -114,6 +114,21 @@ extension Ledger {
             .flatMap { $0.completedAppointments.compactMap { $0.patient } }
     }
 
+    func attendance(for date: Date, period: StatisticsPeriod) -> [Attendance] {
+        let groupedSchedules = Dictionary(
+            grouping: getSchedules(for: date, period: period),
+            by: { Calendar.current.startOfDay(for: $0.starting) }
+        )
+        var dayPatients = [Date: [Patient]]()
+
+        for (date, schedules) in groupedSchedules {
+            let patients = schedules.flatMap { $0.completedAppointments.compactMap { $0.patient } }
+            dayPatients[date] = Array(patients.uniqued())
+        }
+
+        return dayPatients.map { Attendance(day: $0.key, patientsCount: $0.value.count) }
+    }
+
     func patientsRevenue(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PatientRevenue] {
         let schedules = getSchedules(for: date, period: period)
         let patients = schedules

@@ -24,26 +24,35 @@ struct PatientsReportingView: View {
     var body: some View {
         GroupBox {
             if reportingType == .visits {
-                HStack {
-                    VStack {
-                        Text("\(uniquedPatients.count)")
-                            .font(.largeTitle)
-                            .bold()
-                            .foregroundStyle(.white)
-                        Text("Пациенты")
-                            .foregroundStyle(.white)
-                    }
-                    .padding()
-                    .background(.indigo.gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                VStack {
+                    HStack {
+                        VStack {
+                            Text("\(uniquedPatients.count)")
+                                .font(.largeTitle)
+                                .bold()
+                                .foregroundStyle(.white)
+                            Text("Пациенты")
+                                .foregroundStyle(.white)
+                        }
+                        .padding()
+                        .background(.indigo.gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
 
-                    VStack {
-                        reportLabel("Регистрации", value: scheduledPatients.count)
-                        reportLabel("Визиты", value: completedVisitPatients.count)
-                        reportLabel("Новые пациенты", value: newPatientsCount)
+                        VStack {
+                            reportLabel("Регистрации", value: scheduledPatients.count)
+                            reportLabel("Визиты", value: completedVisitPatients.count)
+                            reportLabel("Новые пациенты", value: newPatientsCount)
+                        }
+                        .padding(10)
+                        .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
                     }
-                    .padding(10)
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+
+                    if selectedPeriod != .day {
+                        AttendanceChart(date: date, selectedPeriod: selectedPeriod)
+                            .padding()
+                            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+                    }
                 }
             } else if reportingType == .revenue {
                 if patientsRevenue.isEmpty {
