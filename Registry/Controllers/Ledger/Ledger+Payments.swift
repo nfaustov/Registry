@@ -16,6 +16,35 @@ extension Ledger {
         try proceedPayment(payment, as: sample)
     }
 
+    func cancelPayment(payment: Payment) {
+        guard let report = getReport() else { return }
+
+        if payment.purpose == .collection, let account = checkingAccount(ofType: .cash) {
+            guard let transaction = account.transactions
+                .filter({ Calendar.current.isDate($0.date, inSameDayAs: payment.date) })
+                .first(where: { $0.purpose == .transferFrom && $0.amount == -payment.totalAmount }) else { return }
+
+            account.removeTransaction(transaction)
+        } else if payment.purpose == .medicalServices,
+            let check = payment.subject,
+            let patient = payment.patient {
+            let paymentBalance = payment.totalAmount - check.totalPrice
+
+            if paymentBalance != 0 {
+                patient.cancelTransaction(where: {
+                    Calendar.current.isDateInToday($0.date) && $0.totalAmount == paymentBalance
+                })
+                patient.updateBalance(increment: -paymentBalance)
+            }
+
+            patient.cancelTransaction(where: { $0 == payment })
+            check.cancelChargesForServices()
+            check.appointments?.forEach { $0.status = .came }
+        }
+
+        report.cancelPayment(payment.id)
+    }
+
     private func proceedPayment(_ payment: Payment, as sample: PaymentFactory.Sample) throws {
         switch sample {
         case .medicalService(let patient, _, _):
@@ -101,7 +130,7 @@ extension Ledger {
 
     private func updateBalanceWithoutRecord(person: AccountablePerson, increment: Double, createdBy user: User) {
         let balancePayment = Payment(
-            purpose: .toBalance,
+            purpose: increment < 0 ? .fromBalance : .toBalance,
             details: person.initials,
             methods: [.init(.cash, value: increment)],
             createdBy: user.asAnyUser

@@ -11,9 +11,9 @@ import SwiftData
 struct PaymentsView: View {
     // MARK: - Dependencies
 
-    @Query private var accounts: [CheckingAccount]
+    @Environment(\.modelContext) private var modelContext
 
-    @Bindable var report: Report
+    let payments: [Payment]
 
     // MARK: - State
 
@@ -66,19 +66,9 @@ struct PaymentsView: View {
                     PaymentDetailView(
                         payment: selectedPayment,
                         onDelete: {
-                            report.cancelPayment(selectedPayment.id)
+                            let ledger = Ledger(modelContext: modelContext)
+                            ledger.cancelPayment(payment: selectedPayment)
                             self.selectedPayment = nil
-
-                            if selectedPayment.purpose == .collection,
-                               let account = accounts.first(where: { $0.type == .cash }) {
-                                let transaction = account.transactions
-                                     .filter { Calendar.current.isDate($0.date, inSameDayAs: selectedPayment.date) }
-                                     .first(where: { $0.purpose == .transferFrom && $0.amount == -selectedPayment.totalAmount })
-
-                                if let transaction {
-                                    account.removeTransaction(transaction)
-                                }
-                            }
                         }
                     )
                     .padding([.horizontal, .bottom])
@@ -91,7 +81,7 @@ struct PaymentsView: View {
 }
 
 #Preview {
-    PaymentsView(report: ExampleData.report)
+    PaymentsView(payments: [])
 }
 
 // MARK: - Subviews
@@ -131,10 +121,10 @@ private extension PaymentsView {
 
     var filteredPayments: [Payment] {
         switch operationType {
-        case .all: return report.payments ?? []
-        case .bills: return report.payments?.filter { $0.subject != nil } ?? []
-        case .spendings: return report.payments?.filter { $0.totalAmount < 0 && $0.purpose != .collection } ?? []
-        case .collections: return report.payments?.filter { $0.purpose == .collection } ?? []
+        case .all: return payments
+        case .bills: return payments.filter { $0.subject != nil }
+        case .spendings: return payments.filter { $0.totalAmount < 0 && $0.purpose != .collection }
+        case .collections: return payments.filter { $0.purpose == .collection }
         }
     }
 }

@@ -60,8 +60,8 @@ struct CashboxScreen: View {
             Divider()
                 .edgesIgnoringSafeArea(.all)
 
-            if let todayReport = reports.first {
-                PaymentsView(report: todayReport)
+            if let payments = reports.first?.payments {
+                PaymentsView(payments: payments)
                     .padding()
                     .edgesIgnoringSafeArea([.all])
                     .disabled(user.accessLevel < .registrar)

@@ -10,9 +10,7 @@ import SwiftUI
 struct PaymentDetailView: View {
     // MARK: - Dependencies
 
-    @Environment(\.modelContext) private var modelContext
-
-    var payment: Payment
+    let payment: Payment
 
     var onDelete: () -> Void
 
@@ -29,7 +27,7 @@ struct PaymentDetailView: View {
 
                 Spacer()
 
-                if let purpose = payment.purpose, PaymentPurpose.userSelectableCases.contains(purpose) {
+                if let purpose = payment.purpose, PaymentPurpose.userSelectableCases.contains(purpose) || purpose == .medicalServices {
                     Menu {
                         Button("Удалить", role: .destructive) {
                             onDelete()

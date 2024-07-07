@@ -39,15 +39,15 @@ final class Ledger {
         report.close()
         rewardDoctors()
     }
+
+    func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
+        database.getModels().first(where: { $0.type == type })
+    }
 }
 
 private extension Ledger {
     var lastReport: Report? {
         database.getModel(sortBy: [SortDescriptor(\.date, order: .reverse)])
-    }
-
-    func checkingAccount(ofType type: AccountType) -> CheckingAccount? {
-        database.getModels().first(where: { $0.type == type })
     }
 
     func makeTransfers(from report: Report) {

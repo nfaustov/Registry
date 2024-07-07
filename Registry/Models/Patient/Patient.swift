@@ -104,6 +104,10 @@ final class Patient: AccountablePerson, Codable {
         transactions?.append(transaction)
     }
 
+    func cancelTransaction(where shouldBeRemoved: (Payment) -> Bool) {
+        transactions?.removeAll(where: shouldBeRemoved)
+    }
+
     func getTransactions(from date: Date) -> [PatientMoneyTransaction] {
         if let transactions {
             return transactions
@@ -151,7 +155,7 @@ final class Patient: AccountablePerson, Codable {
         self.balance = try container.decode(Double.self, forKey: .balance)
         self.passport = try container.decode(PassportData.self, forKey: .passport)
         self.placeOfResidence = try container.decode(PlaceOfResidence.self, forKey: .placeOfResidence)
-        self.info = try container.decode(String.self, forKey: .info)
+        self.info = try container.decodeIfPresent(String.self, forKey: .info) ?? ""
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
     }
 
