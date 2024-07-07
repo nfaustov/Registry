@@ -28,6 +28,27 @@ extension Ledger {
 
         return pricelistItemUsage
     }
+
+    func categoriesRevenue(for date: Date, period: StatisticsPeriod) -> [CategoryRevenue] {
+        let services = billsCollection(date: date, period: period)
+            .flatMap { $0.services }
+        let groupedServices = Dictionary(grouping: services, by: { $0.pricelistItem.category })
+        var categoriesRevenue: [CategoryRevenue] = []
+
+        for (category, services) in groupedServices {
+            let revenue = services.reduce(0.0) { partialResult, service in
+                let discount = (service.check?.discountRate ?? 0) * service.price
+                return partialResult + service.price - discount
+            }
+
+            if revenue > 0 {
+                categoriesRevenue.append(CategoryRevenue(category: category, revenue: Int(revenue)))
+            }
+        }
+
+        return categoriesRevenue
+            .sorted(by: { $0.revenue > $1.revenue })
+    }
 }
 
 // MARK: - Private methods

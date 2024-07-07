@@ -47,10 +47,8 @@ extension Ledger {
             }
         }
 
-        let sortedRevenue = doctorsRevenue
+        return doctorsRevenue
             .sorted(by: { $0.indicator > $1.indicator })
-
-        return sortedRevenue
     }
 
     func doctorsAgentFee(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {

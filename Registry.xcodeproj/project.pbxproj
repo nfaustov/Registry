@@ -250,6 +250,7 @@
 		8BE9D3582BE13EF8006B26FF /* pricelistItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3552BE13EF8006B26FF /* pricelistItems.json */; };
 		8BE9D3592BE13EF8006B26FF /* patients.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3562BE13EF8006B26FF /* patients.json */; };
 		8BE9D35A2BE13EF8006B26FF /* doctors.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE9D3572BE13EF8006B26FF /* doctors.json */; };
+		8BEAF3582C3B038E001368C3 /* CategoryRevenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEAF3572C3B038E001368C3 /* CategoryRevenue.swift */; };
 		8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */; };
 		8BF10FDE2B8F220D003AD57E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF10FDD2B8F220D003AD57E /* Loader.swift */; };
 		8BF5570E2BFE455800402037 /* PaymentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5570D2BFE455800402037 /* PaymentFactory.swift */; };
@@ -459,6 +460,7 @@
 		8BE9D3552BE13EF8006B26FF /* pricelistItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pricelistItems.json; sourceTree = "<group>"; };
 		8BE9D3562BE13EF8006B26FF /* patients.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = patients.json; sourceTree = "<group>"; };
 		8BE9D3572BE13EF8006B26FF /* doctors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doctors.json; sourceTree = "<group>"; };
+		8BEAF3572C3B038E001368C3 /* CategoryRevenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRevenue.swift; sourceTree = "<group>"; };
 		8BEE3CAC2BFB38B200BD57C4 /* ChecksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksController.swift; sourceTree = "<group>"; };
 		8BF10FDD2B8F220D003AD57E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		8BF5570D2BFE455800402037 /* PaymentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFactory.swift; sourceTree = "<group>"; };
@@ -1504,6 +1506,7 @@
 				8BC053A12C347082006419B7 /* PricelistItemCount.swift */,
 				8B2E4B652C353F9D00E266AF /* PatientRevenue.swift */,
 				8B5FCE992C3AE5F80055C3D2 /* DayIndicator.swift */,
+				8BEAF3572C3B038E001368C3 /* CategoryRevenue.swift */,
 			);
 			path = ReportingModels;
 			sourceTree = "<group>";
@@ -1699,6 +1702,7 @@
 				8B8AE9892B57FAA3001A9143 /* PhotosPickerViewModel.swift in Sources */,
 				8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */,
 				8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */,
+				8BEAF3582C3B038E001368C3 /* CategoryRevenue.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */,
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
 				8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */,
