@@ -90,7 +90,9 @@
 		8B5FCE962C3AD0060055C3D2 /* Ledger+Schedules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B930C5C2C1303BD00EFF8EE /* Ledger+Schedules.swift */; };
 		8B5FCE972C3AD0090055C3D2 /* Ledger+Reporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD6466B2C18C48500511958 /* Ledger+Reporting.swift */; };
 		8B5FCE982C3AD00D0055C3D2 /* Ledger+PricelistItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91AE6C2C12DF0600472D8C /* Ledger+PricelistItemCount.swift */; };
-		8B5FCE9A2C3AE5F80055C3D2 /* Attendance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCE992C3AE5F80055C3D2 /* Attendance.swift */; };
+		8B5FCE9A2C3AE5F80055C3D2 /* DayIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCE992C3AE5F80055C3D2 /* DayIndicator.swift */; };
+		8B5FCE9C2C3AEF160055C3D2 /* IncomeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCE9B2C3AEF160055C3D2 /* IncomeChart.swift */; };
+		8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCE9D2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift */; };
 		8B616DAE2C2A62B5006957F9 /* CreateTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */; };
 		8B616DB02C2A6628006957F9 /* Counterparty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DAF2C2A6628006957F9 /* Counterparty.swift */; };
 		8B616DB22C2A7BE0006957F9 /* CounterpartiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */; };
@@ -324,7 +326,9 @@
 		8B5EEC192BF3E194006FB7CD /* VersionControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlService.swift; sourceTree = "<group>"; };
 		8B5EEC1B2BF3E1F4006FB7CD /* VersionControlServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionControlServiceClient.swift; sourceTree = "<group>"; };
 		8B5FCE822C3AC5040055C3D2 /* AttendanceChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceChart.swift; sourceTree = "<group>"; };
-		8B5FCE992C3AE5F80055C3D2 /* Attendance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attendance.swift; sourceTree = "<group>"; };
+		8B5FCE992C3AE5F80055C3D2 /* DayIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayIndicator.swift; sourceTree = "<group>"; };
+		8B5FCE9B2C3AEF160055C3D2 /* IncomeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeChart.swift; sourceTree = "<group>"; };
+		8B5FCE9D2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineAreaMarkChart.swift; sourceTree = "<group>"; };
 		8B616DAD2C2A62B5006957F9 /* CreateTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTransactionView.swift; sourceTree = "<group>"; };
 		8B616DAF2C2A6628006957F9 /* Counterparty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counterparty.swift; sourceTree = "<group>"; };
 		8B616DB12C2A7BE0006957F9 /* CounterpartiesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartiesList.swift; sourceTree = "<group>"; };
@@ -801,6 +805,8 @@
 			isa = PBXGroup;
 			children = (
 				8B5FCE822C3AC5040055C3D2 /* AttendanceChart.swift */,
+				8B5FCE9B2C3AEF160055C3D2 /* IncomeChart.swift */,
+				8B5FCE9D2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -1497,7 +1503,7 @@
 				8BC0539F2C347047006419B7 /* RegistrarActivity.swift */,
 				8BC053A12C347082006419B7 /* PricelistItemCount.swift */,
 				8B2E4B652C353F9D00E266AF /* PatientRevenue.swift */,
-				8B5FCE992C3AE5F80055C3D2 /* Attendance.swift */,
+				8B5FCE992C3AE5F80055C3D2 /* DayIndicator.swift */,
 			);
 			path = ReportingModels;
 			sourceTree = "<group>";
@@ -1695,6 +1701,7 @@
 				8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */,
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
+				8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B8A6E162BF534170026674D /* LabeledCurrency.swift in Sources */,
@@ -1741,6 +1748,7 @@
 				8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */,
 				8B9673AF2B3623F200FD2E7C /* Person.swift in Sources */,
 				8BEE3CAD2BFB38B200BD57C4 /* ChecksController.swift in Sources */,
+				8B5FCE9C2C3AEF160055C3D2 /* IncomeChart.swift in Sources */,
 				8B187E7E2BCFAA8000611DC2 /* Note.swift in Sources */,
 				8B0DF2EA2C36701600D0BAB7 /* DatabaseController.swift in Sources */,
 				8B9FA3712B8CFAF200FF3C0B /* ScheduleController.swift in Sources */,
@@ -1823,7 +1831,7 @@
 				8B4ECD522BC85C9400A82A2A /* PaymentMethodView.swift in Sources */,
 				8B45E61C2BB5650500834AE6 /* UserView.swift in Sources */,
 				8BDCCFE12B84A2540086BF4D /* TreatmentPlan.swift in Sources */,
-				8B5FCE9A2C3AE5F80055C3D2 /* Attendance.swift in Sources */,
+				8B5FCE9A2C3AE5F80055C3D2 /* DayIndicator.swift in Sources */,
 				8B78013E2B87B7A00064DBFB /* ScheduleScreen.swift in Sources */,
 				8BE145032BF0C92000991225 /* LedgerDebugView.swift in Sources */,
 				8B8E63FA2C10B8EE001993E1 /* Promotion.swift in Sources */,

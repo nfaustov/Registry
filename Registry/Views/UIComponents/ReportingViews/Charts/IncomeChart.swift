@@ -1,5 +1,5 @@
 //
-//  AttendanceChart.swift
+//  IncomeChart.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 07.07.2024.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-struct AttendanceChart: View {
+struct IncomeChart: View {
     // MARK: - Dependencies
 
     @Environment(\.modelContext) private var modelContext
@@ -19,21 +19,21 @@ struct AttendanceChart: View {
     // MARK: -
 
     var body: some View {
-        LineAreaMarkChart(data: attendanceData)
+        LineAreaMarkChart(data: incomeData)
             .frame(height: 100)
     }
 }
 
 #Preview {
-    AttendanceChart(date: .now, selectedPeriod: .week)
+    IncomeChart(date: .now, selectedPeriod: .week)
 }
 
 // MARK: - Calculation
 
-private extension AttendanceChart {
+private extension IncomeChart {
     @MainActor
-    var attendanceData: [DayIndicator] {
+    var incomeData: [DayIndicator] {
         let ledger = Ledger(modelContext: modelContext)
-        return ledger.attendance(for: date, period: selectedPeriod)
+        return ledger.incomeByDays(for: date, period: selectedPeriod)
     }
 }

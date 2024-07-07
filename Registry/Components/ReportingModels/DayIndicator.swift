@@ -1,5 +1,5 @@
 //
-//  Attendance.swift
+//  DayIndicator.swift
 //  Registry
 //
 //  Created by Николай Фаустов on 07.07.2024.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Attendance: Hashable, Identifiable {
+struct DayIndicator: Hashable, Identifiable {
     let id: UUID = UUID()
     let day: Date
-    let patientsCount: Int
+    let indicator: Int
 }
