@@ -40,6 +40,7 @@ extension Ledger {
             patient.cancelTransaction(where: { $0 == payment })
             check.cancelChargesForServices()
             check.appointments?.forEach { $0.status = .came }
+            database.modelContext.delete(payment)
         }
 
         report.cancelPayment(payment.id)

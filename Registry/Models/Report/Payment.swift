@@ -14,7 +14,7 @@ final class Payment {
     let purpose: PaymentPurpose?
     let details: String = ""
     private(set) var methods: [Payment.Method] = [Payment.Method(.cash, value: 0)]
-    @Relationship(inverse: \Check.payment)
+    @Relationship(deleteRule: .cascade, inverse: \Check.payment)
     var subject: Check?
     let createdBy: AnyUser = AnonymousUser().asAnyUser
 
