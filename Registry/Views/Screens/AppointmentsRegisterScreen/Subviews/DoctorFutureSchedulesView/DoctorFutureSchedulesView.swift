@@ -39,13 +39,13 @@ struct DoctorFutureSchedulesView: View {
                     }
                 }
 
-                LazyVGrid(columns: columns, spacing: 8) {
+                LazyVGrid(columns: columns, spacing: 4) {
                     ForEach(days) { day in
                         if let schedule = schedule(on: day) {
                             VStack {
-                                HStack(alignment: .firstTextBaseline) {
+                                HStack(alignment: .firstTextBaseline, spacing: 4) {
                                     Text(day.dayLabel)
-                                        .font(.largeTitle)
+                                        .font(.title)
                                         .foregroundStyle(day.isToday ? .orange : .primary)
                                     Text(day.monthLabel)
                                         .font(.caption)
@@ -53,8 +53,8 @@ struct DoctorFutureSchedulesView: View {
                                 }
 
                                 Text(scheduleBounds(schedule))
-                                    .font(.caption)
-                                    .padding(4)
+                                    .font(.caption2)
+                                    .padding(.bottom, 4)
                             }
                             .padding(8)
                             .background(
