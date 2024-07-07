@@ -57,7 +57,7 @@ extension AccountTransaction {
         }
 
         static var selectableExpenseCases: [AccountTransaction.Purpose] {
-            [.salary, .agentFee, .laboratory, .equipment, .consumables, .building, .taxes, .advertising, .loan, .banking, .transferTo, .other]
+            [.dividends, .salary, .agentFee, .laboratory, .equipment, .consumables, .building, .taxes, .advertising, .loan, .banking, .transferTo, .other]
         }
     }
 }

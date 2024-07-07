@@ -19,7 +19,7 @@ struct DoctorFutureSchedulesView: View {
     let doctorSchedule: DoctorSchedule
 
     private let columns = Array(repeating: GridItem(.flexible()), count: 7)
-    private let calendar = Calendar(identifier: .iso8601)
+    private let calendar = Calendar.current
 
     // MARK: - State
 
@@ -31,8 +31,8 @@ struct DoctorFutureSchedulesView: View {
         NavigationStack {
             VStack(alignment: .leading) {
                 HStack {
-                    ForEach(calendar.shortWeekdaySymbols, id: \.self) { weekDay in
-                        Text(weekDay)
+                    ForEach(symbols, id: \.self) { weekDay in
+                        Text(weekDay.localizedCapitalized)
                             .font(.headline)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity)
@@ -102,6 +102,14 @@ struct DoctorFutureSchedulesView: View {
 // MARK: - Calculations
 
 private extension DoctorFutureSchedulesView {
+    var symbols: [String] {
+        var symbols = calendar.shortWeekdaySymbols
+        let sunday = symbols.removeFirst()
+        symbols.append(sunday)
+
+        return symbols
+    }
+
     var days: [WeekDay] {
         guard let firstSchedule = futureSchedules.first,
               let lastSchedule = futureSchedules.last else { return [] }
