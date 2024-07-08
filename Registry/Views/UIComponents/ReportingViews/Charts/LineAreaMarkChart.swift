@@ -45,17 +45,15 @@ struct LineAreaMarkChart: View {
                             .font(.title3).bold()
                             .padding(8)
                             .background {
-                                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(.white.shadow(.drop(radius: 2, y: 1)))
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 1.5, y: 1)))
                             }
                     }
             }
         }
         .chartYScale(domain: 0...(Int(1.3 * Double(maxValue))))
         .chartXScale(domain: (sortedData.first?.day ?? .now)...(sortedData.last?.day ?? .now))
-        .chartOverlay { proxy in
-            chartOverlay(proxy)
-        }
+        .chartOverlay { chartOverlay($0) }
     }
 }
 

@@ -37,7 +37,6 @@ extension Ledger {
         let dates = (0..<days).map {
             Calendar.current.date(byAdding: .day, value: $0, to: period.start(for: date))!
         }
-
         let reportsIndicator = getReports(for: date, period: period)
             .map { report in
                 DayIndicator(
@@ -50,7 +49,6 @@ extension Ledger {
             by: { Calendar.current.startOfDay(for: $0.date) }
         )
         .map { DayIndicator(day: $0.key, indicator: $0.value.reduce(0) { $0 + Int($1.amount) }) }
-
         var indicator = [DayIndicator]()
 
         for date in dates {
