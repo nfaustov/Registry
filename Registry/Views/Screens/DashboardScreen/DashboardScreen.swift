@@ -20,10 +20,11 @@ struct DashboardScreen: View {
     // MARK: -
 
     var body: some View {
-        VStack(spacing: 4) {
-            HStack(spacing: 4) {
+        VStack(spacing: 0) {
+            HStack(spacing: -12) {
                 AccountsView()
                 StatisticsPeriodView(date: $date, selectedPeriod: $selectedPeriod)
+                    .padding(.trailing, 4)
             }
             .frame(height: 60)
 
@@ -43,8 +44,8 @@ struct DashboardScreen: View {
                     RegistrarsReportingView(date: date, selectedPeriod: selectedPeriod)
                 }
             }
+            .padding(4)
         }
-        .padding(4)
     }
 }
 

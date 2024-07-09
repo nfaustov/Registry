@@ -11,6 +11,7 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     let id: UUID
     let date: Date
     let description: String
+    let patient: String?
     let value: Double
     let kind: DoctorMoneyTransaction.Kind
     let refunded: Bool
@@ -22,6 +23,10 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
         value = medicalService.agentFee
         kind = .agentFee
         refunded = medicalService.refund != nil
+
+        if let patient = medicalService.check?.appointments?.first?.patient {
+            self.patient = patient.initials
+        } else { patient = nil }
     }
 
     init(medicalService: MedicalService, doctorSalaryRate: Double) {
@@ -31,12 +36,17 @@ struct DoctorMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
         value = medicalService.pieceRateSalary(doctorSalaryRate)
         kind = .performerFee
         refunded = medicalService.refund != nil
+
+        if let patient = medicalService.check?.appointments?.first?.patient {
+            self.patient = patient.initials
+        } else { patient = nil }
     }
 
     init(payment: Payment) {
         id = UUID()
         self.date = payment.date
         self.description = payment.details
+        self.patient = nil
         self.value = payment.methods.reduce(0.0) { $0 + $1.value }
 
         if value > 0 {

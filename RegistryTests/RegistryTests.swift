@@ -22,7 +22,7 @@ final class RegistryTests: XCTestCase {
     @MainActor 
     override func setUp() {
         context = mockContainer.mainContext
-        
+
         doctor = Doctor(
             secondName: "Петров",
             firstName: "Петр",
@@ -34,29 +34,29 @@ final class RegistryTests: XCTestCase {
             defaultCabinet: 1,
             doctorSalary: Salary.pieceRate(rate: 0.4, minAmount: 1000)
         )
-        
+
         patient = Patient(
             secondName: "Ivanov",
             firstName: "Ivan",
             patronymicName: "Ivanovich",
             phoneNumber: "+7 (999) 999-99-99"
         )
-        
+
         doctorSchedule = DoctorSchedule(
             doctor: doctor,
             cabinet: 1,
             starting: .now,
             ending: .now.addingTimeInterval(3600)
         )
-        
+
         context.insert(doctorSchedule)
-        
+
         guard let appointment = doctorSchedule.patientAppointments?.first else { return }
-        
+
         appointment.registerPatient(patient, duration: 600, registrar: SuperUser.boss.asAnyUser)
-        
+
         guard let check = appointment.check else { return }
-        
+
         let pricelistItem = PricelistItem(
             id: "100",
             category: .cardiology,
@@ -64,28 +64,28 @@ final class RegistryTests: XCTestCase {
             price: 1500
         )
         medicalService = MedicalService(pricelistItem: pricelistItem.snapshot, performer: doctor, agent: doctor)
-        
+
         check.services.append(medicalService)
-        
+
         ledger = Ledger(modelContext: context)
     }
-    
+
     override func tearDownWithError() throws {
         try context.delete(model: DoctorSchedule.self)
         try context.delete(model: Doctor.self)
         try context.delete(model: Patient.self)
         try context.delete(model: Report.self)
     }
-    
-    @MainActor func testMedicalServicePayment() {
+
+    @MainActor func testMedicalServicePayment() throws {
         guard let appointment = doctorSchedule.patientAppointments?.first,
               let check = appointment.check else { return }
-        
+
         let method = Payment.Method(.cash, value: 1550)
-        
-        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method]), createdBy: SuperUser.boss)
+
+        try ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
-        
+
         XCTAssertEqual(appointment.status, .completed)
         XCTAssertEqual(patient.balance, 50)
         XCTAssertEqual(patient.transactions?.count, 2)
@@ -95,14 +95,14 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testMedicalServicePayment2() {
+    func testMedicalServicePayment2() throws {
         guard let appointment = doctorSchedule.patientAppointments?.first,
               let check = appointment.check else { return }
-        
+
         let method1 = Payment.Method(.bank, value: 1400)
         let method2 = Payment.Method(.cash, value: 300)
 
-        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method1, method2]), createdBy: SuperUser.boss)
+        try ledger.makePayment(.medicalService(patient: patient, check: check, methods: [method1, method2]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(appointment.status, .completed)
@@ -115,12 +115,12 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testDoctorPayoutPayment() {
+    func testDoctorPayoutPayment() throws {
         doctor.updateBalance(increment: 1200)
 
         let method = Payment.Method(.cash, value: -800)
 
-        ledger.makePayment(.doctorPayout(doctor, methods: [method]), createdBy: SuperUser.boss)
+        try ledger.makePayment(.doctorPayout(doctor, methods: [method]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(doctor.transactions?.count, 1)
@@ -130,13 +130,13 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testDoctorPayoutPayment2() {
+    func testDoctorPayoutPayment2() throws {
         doctor.updateBalance(increment: 1200)
 
         let method1 = Payment.Method(.cash, value: -800)
         let method2 = Payment.Method(.card, value: -400)
 
-        ledger.makePayment(.doctorPayout(doctor, methods: [method1, method2]), createdBy: SuperUser.boss)
+        try ledger.makePayment(.doctorPayout(doctor, methods: [method1, method2]), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(doctor.transactions?.count, 1)
@@ -147,17 +147,17 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testRefundPayment() {
+    func testRefundPayment() throws {
         guard let appointment = doctorSchedule.patientAppointments?.first,
               let check = appointment.check else { return }
 
         let paymentMethod = Payment.Method(.bank, value: 1300)
 
-        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
+        try ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
 
         let refund = Refund(services: [medicalService])
         check.makeRefund(refund)
-        ledger.makePayment(.refund(refund, paymentType: .cash, includeBalance: false), createdBy: SuperUser.boss)
+        try ledger.makePayment(.refund(refund, paymentType: .cash, includeBalance: false), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(doctor.balance, 0)
@@ -168,17 +168,17 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testRefundPayment2() {
+    func testRefundPayment2() throws {
         guard let appointment = doctorSchedule.patientAppointments?.first,
               let check = appointment.check else { return }
 
         let paymentMethod = Payment.Method(.bank, value: 1300)
 
-        ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
+        try ledger.makePayment(.medicalService(patient: patient, check: check, methods: [paymentMethod]), createdBy: SuperUser.boss)
 
         let refund = Refund(services: [medicalService])
         check.makeRefund(refund)
-        ledger.makePayment(.refund(refund, paymentType: .cash, includeBalance: true), createdBy: SuperUser.boss)
+        try ledger.makePayment(.refund(refund, paymentType: .cash, includeBalance: true), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(doctor.balance, 0)
@@ -189,8 +189,8 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testBalancePayment() {
-        ledger.makePayment(.balance(.payout, person: patient, method: .init(.cash, value: 200)), createdBy: SuperUser.boss)
+    func testBalancePayment() throws {
+        try ledger.makePayment(.balance(.payout, person: patient, method: .init(.cash, value: 200)), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(report?.payments?.count, 1)
@@ -200,8 +200,8 @@ final class RegistryTests: XCTestCase {
     }
 
     @MainActor
-    func testSpendingPayment() {
-        ledger.makePayment(.spending(purpose: .building(""), method: .init(.cash, value: 450)), createdBy: SuperUser.boss)
+    func testSpendingPayment() throws {
+        try ledger.makePayment(.spending(purpose: .building, details: "", method: .init(.cash, value: 450)), createdBy: SuperUser.boss)
         let report = ledger.getReport()
 
         XCTAssertEqual(report?.payments?.count, 1)

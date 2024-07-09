@@ -47,6 +47,7 @@ struct AccountsView: View {
                         }
                     }
                     .buttonStyle(AccountButtonStyle(color: .blue))
+                    .padding(.leading, account == accounts.first ? 4 : 0 )
                 }
 
                 Button {
@@ -92,6 +93,7 @@ struct AccountsView: View {
                     accountView("Баланс", amount: overallBalance)
                 }
                 .buttonStyle(AccountButtonStyle(color: overallBalance < 0 ? .pink : .teal))
+                .padding(.trailing, 16)
             }
         }
     }

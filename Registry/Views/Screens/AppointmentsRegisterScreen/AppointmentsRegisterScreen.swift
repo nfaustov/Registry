@@ -17,6 +17,10 @@ struct AppointmentsRegisterScreen: View {
     @EnvironmentObject private var coordinator: Coordinator
     @EnvironmentObject private var scheduleController: ScheduleController
 
+    // MARK: - State
+
+    @State private var daySchedules: [DoctorSchedule] = []
+
     // MARK: -
 
     var body: some View {
@@ -51,10 +55,33 @@ struct AppointmentsRegisterScreen: View {
             subTitle: DateFormat.weekDay.string(from: scheduleController.date)
         )
         .onAppear {
+            daySchedules = schedules
+
             if scheduleController.selectedSchedule == nil {
                 scheduleController.selectedSchedule = daySchedules.first
             }
         }
+        .onChange(of: scheduleController.date) {
+            withAnimation {
+                daySchedules = schedules
+            }
+
+            scheduleController.selectedSchedule = daySchedules.first
+        }
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.width < 0 {
+                        if let date = nextDateWithSchedule {
+                            scheduleController.date = date
+                        }
+                    } else if value.translation.width > 0 {
+                        if let date = previousDateWithSchedule {
+                            scheduleController.date = date
+                        }
+                    }
+                }
+        )
     }
 }
 
@@ -68,7 +95,7 @@ struct AppointmentsRegisterScreen: View {
 // MARK: - Calculations
 
 private extension AppointmentsRegisterScreen {
-    var daySchedules: [DoctorSchedule] {
+    var schedules: [DoctorSchedule] {
         let startOfDay = Calendar.current.startOfDay(for: scheduleController.date)
         let endOfDay = Calendar.current.startOfDay(for: scheduleController.date.addingTimeInterval(86_400))
         let predicate = #Predicate<DoctorSchedule> { $0.starting > startOfDay && $0.ending < endOfDay }
@@ -81,5 +108,29 @@ private extension AppointmentsRegisterScreen {
                 SortDescriptor(\.ending, order: .forward)
             ]
         )
+    }
+
+    var nextDateWithSchedule: Date? {
+        let referrenceDate = Calendar.current.startOfDay(for: scheduleController.date).addingTimeInterval(86_400)
+        let predicate = #Predicate<DoctorSchedule> { $0.starting > referrenceDate }
+        let database = DatabaseController(modelContext: modelContext)
+        let schedule = database.getModel(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.starting, order: .forward)]
+        )
+
+        return schedule?.starting
+    }
+
+    var previousDateWithSchedule: Date? {
+        let referrenceDate = Calendar.current.startOfDay(for: scheduleController.date)
+        let predicate = #Predicate<DoctorSchedule> { $0.starting < referrenceDate }
+        let database = DatabaseController(modelContext: modelContext)
+        let schedule = database.getModel(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.starting, order: .reverse)]
+        )
+
+        return schedule?.starting
     }
 }

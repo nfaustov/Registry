@@ -20,18 +20,27 @@ struct IncomeReportingView: View {
     var body: some View {
         GroupBox("Доходы") {
             VStack {
-                ForEach(PaymentType.allCases, id: \.self) { type in
-                    LabeledCurrency(type.rawValue, value: income(of: type))
+                VStack {
+                    ForEach(PaymentType.allCases, id: \.self) { type in
+                        LabeledCurrency(type.rawValue, value: income(of: type))
+                    }
+
+                    Divider()
+
+                    LabeledCurrency("Всего", value: income())
+                        .font(.headline)
                 }
-
-                Divider()
-
-                LabeledCurrency("Всего", value: income())
-                    .font(.headline)
+                .padding()
+                .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
             }
-            .padding()
-            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-            .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+
+            if selectedPeriod != .day {
+                IncomeChart(date: date, selectedPeriod: selectedPeriod)
+                    .padding()
+                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+            }
         }
         .groupBoxStyle(.reporting)
     }

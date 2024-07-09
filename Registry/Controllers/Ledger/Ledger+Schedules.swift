@@ -47,10 +47,8 @@ extension Ledger {
             }
         }
 
-        let sortedRevenue = doctorsRevenue
+        return doctorsRevenue
             .sorted(by: { $0.indicator > $1.indicator })
-
-        return sortedRevenue
     }
 
     func doctorsAgentFee(for date: Date, period: StatisticsPeriod) -> [DoctorIndicator] {
@@ -112,6 +110,21 @@ extension Ledger {
     func completedVisitPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
         getSchedules(for: date, period: period)
             .flatMap { $0.completedAppointments.compactMap { $0.patient } }
+    }
+
+    func attendance(for date: Date, period: StatisticsPeriod) -> [DayIndicator] {
+        let groupedSchedules = Dictionary(
+            grouping: getSchedules(for: date, period: period),
+            by: { Calendar.current.startOfDay(for: $0.starting) }
+        )
+        var dayPatients = [Date: [Patient]]()
+
+        for (date, schedules) in groupedSchedules {
+            let patients = schedules.flatMap { $0.completedAppointments.compactMap { $0.patient } }
+            dayPatients[date] = Array(patients.uniqued())
+        }
+
+        return dayPatients.map { DayIndicator(day: $0.key, indicator: $0.value.count) }
     }
 
     func patientsRevenue(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PatientRevenue] {

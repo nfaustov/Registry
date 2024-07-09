@@ -26,6 +26,41 @@ extension Ledger {
 
         return groupedExpenses
     }
+
+    func incomeByDays(for date: Date, period: StatisticsPeriod) -> [DayIndicator] {
+        guard let days = Calendar.current.dateComponents(
+            [.day],
+            from: period.start(for: date),
+            to: period.end(for: date)
+        ).day else { return [] }
+
+        let dates = (0..<days).map {
+            Calendar.current.date(byAdding: .day, value: $0, to: period.start(for: date))!
+        }
+        let reportsIndicator = getReports(for: date, period: period)
+            .map { report in
+                DayIndicator(
+                    day: Calendar.current.startOfDay(for: report.date),
+                    indicator: Int(report.billsIncome())
+                )
+            }
+        let transactionsIndicator = Dictionary(
+            grouping: getTransactions(for: date, period: period),
+            by: { Calendar.current.startOfDay(for: $0.date) }
+        )
+        .map { DayIndicator(day: $0.key, indicator: $0.value.reduce(0) { $0 + Int($1.amount) }) }
+        var indicator = [DayIndicator]()
+
+        for date in dates {
+            let reportIndicator = reportsIndicator
+                .first(where: { Calendar.current.isDate(date, inSameDayAs: $0.day) })?.indicator ?? 0
+            let transactionIndicator = transactionsIndicator
+                .first(where: { Calendar.current.isDate(date, inSameDayAs: $0.day) })?.indicator ?? 0
+            indicator.append(DayIndicator(day: date, indicator: reportIndicator + transactionIndicator))
+        }
+
+        return indicator
+    }
 }
 
 private extension Ledger {
