@@ -68,19 +68,56 @@ private extension DoctorTransactionsView {
                 Text(kind.title)
                     .font(.headline)
                     .foregroundStyle(colorStyle(forTransactionOfKind: kind))
-                    .padding(.bottom)
-                ForEach(transactions) { transaction in
-                    Divider()
-                        .overlay(colorStyle(forTransactionOfKind: kind))
-                        .padding(.vertical, 8)
-
-                    LabeledCurrency(transaction.description, value: transaction.value)
-                        .foregroundStyle(transaction.refunded ? .secondary : .primary)
+                if kind == .agentFee || kind == .performerFee {
+                    salaryTransactionsView(transactions, ofKind: kind)
+                } else {
+                    balanceTransactionsView(transactions, ofKind: kind)
                 }
             }
             .padding()
             .background(colorStyle(forTransactionOfKind: kind).opacity(0.1))
             .clipShape(.rect(cornerRadius: 4, style: .continuous))
+        }
+    }
+
+    func balanceTransactionsView(
+        _ transactions: [DoctorMoneyTransaction],
+        ofKind kind: DoctorMoneyTransaction.Kind
+    ) -> some View {
+        ForEach(transactions) { transaction in
+            Divider()
+                .overlay(colorStyle(forTransactionOfKind: kind))
+                .padding(.vertical, 8)
+
+            LabeledCurrency(transaction.description, value: transaction.value)
+        }
+    }
+
+    @ViewBuilder func salaryTransactionsView(
+        _ transactions: [DoctorMoneyTransaction],
+        ofKind kind: DoctorMoneyTransaction.Kind
+    ) -> some View {
+        let groupedTransactions = Dictionary(grouping: transactions, by: { $0.patient })
+        let patients = groupedTransactions.compactMap { $0.key }
+
+        ForEach(patients, id: \.self) { patient in
+            Divider()
+                .overlay(colorStyle(forTransactionOfKind: kind))
+                .padding(.vertical, 8)
+
+            VStack(alignment: .leading) {
+                let patientTransactions = groupedTransactions[patient] ?? []
+                let totalValue = patientTransactions
+                    .filter { $0.refunded == false }
+                    .reduce(0.0) { $0 + $1.value }
+                LabeledCurrency(patient, value: totalValue)
+                    .font(.headline)
+
+                ForEach(groupedTransactions[patient] ?? []) { payment in
+                    LabeledCurrency(payment.description, value: payment.value)
+                        .strikethrough(payment.refunded)
+                }
+            }
         }
     }
 
