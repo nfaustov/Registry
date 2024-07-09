@@ -41,7 +41,7 @@ struct StatisticsPeriodView: View {
         .frame(width: 360)
         .frame(maxHeight: .infinity)
         .colorInvert()
-        .background(.black, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(Color(.appBlack), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }
 

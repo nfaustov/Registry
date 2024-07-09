@@ -14,7 +14,7 @@ struct PurposeExpense: Hashable {
 
 enum ExpenseCategory: String, CaseIterable {
     case dividends = "Дивиденды"
-    case doctorPayout = "Выплаты врачам"
+    case doctorPayout = "Заработная плата"
     case refund = "Возвраты"
     case laboratory = "Лаборатория"
     case equipment = "Оборудование"

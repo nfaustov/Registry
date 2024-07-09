@@ -35,12 +35,12 @@ struct IncomeReportingView: View {
                 .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
             }
 
-            if selectedPeriod != .day {
-                IncomeChart(date: date, selectedPeriod: selectedPeriod)
-                    .padding()
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
-            }
+//            if selectedPeriod != .day {
+//                IncomeChart(date: date, selectedPeriod: selectedPeriod)
+//                    .padding()
+//                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+//            }
         }
         .groupBoxStyle(.reporting)
     }
