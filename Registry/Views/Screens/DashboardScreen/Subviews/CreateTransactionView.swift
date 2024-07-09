@@ -58,15 +58,17 @@ struct CreateTransactionView: View {
                         }
 
                         if purpose == .salary {
-                            Menu("Выбрать врача") {
+                            Menu {
                                 ForEach(doctors) { doctor in
                                     Button(doctor.initials) {
                                         doctorForSalary = doctor
                                     }
                                 }
+                            } label: {
+                                Text(doctorForSalary?.initials ?? "Выбоать врача")
                             }
                         } else if purpose == .transferTo {
-                            Menu("Выбрать счет") {
+                            Menu {
                                 ForEach(accounts) { account in
                                     if account != self.account {
                                         Button {
@@ -76,6 +78,8 @@ struct CreateTransactionView: View {
                                         }
                                     }
                                 }
+                            } label: {
+                                Text(accountForTransfer?.type.title ?? "Выбрать счет")
                             }
                         }
                     } else {

@@ -27,6 +27,7 @@ final class Counterparty {
 
 extension Counterparty {
     enum Status: String, Codable, Hashable, CaseIterable {
+        case publicCompany = "ПАО"
         case entity = "ООО"
         case entrepreneur = "ИП"
     }
