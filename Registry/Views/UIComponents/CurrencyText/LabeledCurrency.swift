@@ -25,6 +25,7 @@ struct LabeledCurrency: View {
     var body: some View {
         LabeledContent(titleKey) {
             CurrencyText(value, unit: unit)
+                .foregroundStyle(.gray)
         }
     }
 }

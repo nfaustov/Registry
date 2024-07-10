@@ -23,9 +23,13 @@ struct ExpenseReportingView: View {
                 ContentUnavailableView("Нет данных", systemImage: "tray")
             } else {
                 VStack {
-                    ForEach(expenses, id: \.self) { expense in
-                        LabeledCurrency(expense.category.rawValue, value: expense.amount)
+                    ScrollView(.vertical) {
+                        ForEach(expenses, id: \.self) { expense in
+                            LabeledCurrency(expense.category.rawValue, value: expense.amount)
+                        }
                     }
+                    .scrollBounceBehavior(.basedOnSize)
+                    .scrollIndicators(.hidden)
 
                     Divider()
 
@@ -54,5 +58,6 @@ private extension ExpenseReportingView {
     var expenses: [PurposeExpense] {
         let ledger = Ledger(modelContext: modelContext)
         return ledger.expense(for: date, period: selectedPeriod)
+            .sorted(by: { $0.amount < $1.amount})
     }
 }
