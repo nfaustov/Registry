@@ -40,11 +40,19 @@ struct LedgerDebugView: View {
 
             if let selectedReport {
                 HStack {
-                    GroupBox("Общая информация") {
+                    GroupBox {
                         LabeledCurrency("Открытие смены", value: selectedReport.startingCash)
                         LabeledCurrency("Остаток", value: selectedReport.cashBalance)
                         LabeledCurrency("Пополнения", value: selectedReport.othersIncome())
                         LabeledCurrency("Инкасация", value: selectedReport.collected)
+                    } label: {
+                        LabeledContent("Общая информация") {
+                            if selectedReport.closed {
+                                Label("Закрыт", systemImage: "checkmark")
+                            } else {
+                                Label("Открыт", systemImage: "xmark")
+                            }
+                        }
                     }
                     .padding(.leading)
 

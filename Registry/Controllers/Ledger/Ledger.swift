@@ -32,8 +32,8 @@ final class Ledger {
         database.modelContext.insert(report)
     }
 
-    func closeReport() {
-        guard let report = getReport(), !report.closed else { return }
+    func closeReport(forDate date: Date = .now) {
+        guard let report = getReport(forDate: date), !report.closed else { return }
 
         makeTransfers(from: report)
         report.close()
@@ -52,15 +52,22 @@ private extension Ledger {
 
     func makeTransfers(from report: Report) {
         for type in PaymentType.allCases where type != .cash {
-            let accountType = AccountType.correlatedAccount(with: type)
+            if type == .bank {
+                let accountType = AccountType.correlatedAccount(with: type)
+                let typeIncome = report.billsIncome(of: type)
 
-            guard let account = checkingAccount(ofType: accountType) else { return }
+                if typeIncome > 0, let account = checkingAccount(ofType: accountType) {
+                    let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: typeIncome)
+                    account.assignTransaction(transaction)
+                }
+            } else if type == .card {
+                let accountType = AccountType.correlatedAccount(with: type)
+                let typeProfit = report.reporting(.profit, of: .card)
 
-            let typeIncome = report.billsIncome(of: type)
-
-            if typeIncome > 0 {
-                let transaction = AccountTransaction(purpose: .transferFrom, detail: "Касса", amount: typeIncome)
-                account.assignTransaction(transaction)
+                if typeProfit != 0, let account = checkingAccount(ofType: accountType) {
+                    let transaction = AccountTransaction(purpose: typeProfit > 0 ? .transferFrom : .transferTo, detail: "Касса", amount: typeProfit)
+                    account.assignTransaction(transaction)
+                }
             }
         }
     }
