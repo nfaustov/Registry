@@ -68,20 +68,20 @@ struct AppointmentsRegisterScreen: View {
 
             scheduleController.selectedSchedule = daySchedules.first
         }
-        .gesture(
-            DragGesture()
-                .onEnded { value in
-                    if value.translation.width < 0 {
-                        if let date = nextDateWithSchedule {
-                            scheduleController.date = date
-                        }
-                    } else if value.translation.width > 0 {
-                        if let date = previousDateWithSchedule {
-                            scheduleController.date = date
-                        }
-                    }
-                }
-        )
+//        .gesture(
+//            DragGesture()
+//                .onEnded { value in
+//                    if value.translation.width < -300 {
+//                        if let date = nextDateWithSchedule {
+//                            scheduleController.date = date
+//                        }
+//                    } else if value.translation.width > 300 {
+//                        if let date = previousDateWithSchedule {
+//                            scheduleController.date = date
+//                        }
+//                    }
+//                }
+//        )
     }
 }
 

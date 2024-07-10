@@ -75,7 +75,8 @@ struct BillScreen: View {
                             } label: {
                                 LabeledContent("Промоакция", value: promotion.title)
                             }
-                            .padding(.leading)                        }
+                            .padding(.leading)
+                        }
                     }
                     .padding([.horizontal, .bottom])
                     .frame(maxHeight: 140)
