@@ -28,9 +28,13 @@ struct RegistrarActivityView: View {
                         LabeledContent {
                             Text(achievement.period)
                         } label: {
-                            Label(achievement.kind.rawValue, systemImage: achievement.kind.icon)
+                            Label {
+                                Text(achievement.kind.rawValue)
+                            } icon: {
+                                Image(systemName: achievement.kind.icon)
+                                    .foregroundStyle(.yellow)
+                            }
                         }
-
                     }
                 }
             }
