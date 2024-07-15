@@ -96,6 +96,7 @@ struct AccountsView: View {
                 .padding(.trailing, 16)
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 
