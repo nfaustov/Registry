@@ -85,6 +85,8 @@ extension Coordinator {
             PatientCardScreen(patient: patient)
         case .contract(let patient, let check):
             ContractScreen(patient: patient, check: check)
+        case .patientsReportingDetail:
+            PatientsReportingDetail()
         }
     }
 

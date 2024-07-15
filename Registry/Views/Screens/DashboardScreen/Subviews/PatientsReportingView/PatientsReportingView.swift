@@ -12,6 +12,8 @@ struct PatientsReportingView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @EnvironmentObject private var coordinator: Coordinator
+
     let date: Date
     let selectedPeriod: StatisticsPeriod
 
@@ -47,12 +49,17 @@ struct PatientsReportingView: View {
                         .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
                     }
 
-//                    if selectedPeriod != .day {
-//                        AttendanceChart(date: date, selectedPeriod: selectedPeriod)
-//                            .padding()
-//                            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                            .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
-//                    }
+                    Button {
+                        coordinator.push(.patientsReportingDetail)
+                    } label: {
+                        LabeledContent("Побробнее") {
+                            Image(systemName: "chevron.right")
+                        }
+                        .foregroundStyle(.indigo)
+                    }
+                    .padding(10)
+                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
                 }
             } else if reportingType == .revenue {
                 if patientsRevenue.isEmpty {
