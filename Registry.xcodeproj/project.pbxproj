@@ -244,6 +244,7 @@
 		8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCCFE52B84A3EC0086BF4D /* Check.swift */; };
 		8BE145032BF0C92000991225 /* LedgerDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE145022BF0C92000991225 /* LedgerDebugView.swift */; };
 		8BE377122BAC741200DBAE43 /* PricelistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE377112BAC741200DBAE43 /* PricelistItemView.swift */; };
+		8BE385342C4537EB00AA6D40 /* CurrencyTextKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE385332C4537EB00AA6D40 /* CurrencyTextKey.swift */; };
 		8BE3F21A2C1AB3F30038E369 /* DoctorsReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F2192C1AB3F30038E369 /* DoctorsReportingView.swift */; };
 		8BE3F21C2C1AD89E0038E369 /* RegistrarsReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F21B2C1AD89E0038E369 /* RegistrarsReportingView.swift */; };
 		8BE3F2202C1AF1830038E369 /* ExpenseReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3F21F2C1AF1830038E369 /* ExpenseReportingView.swift */; };
@@ -454,6 +455,7 @@
 		8BDCCFE52B84A3EC0086BF4D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
 		8BE145022BF0C92000991225 /* LedgerDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDebugView.swift; sourceTree = "<group>"; };
 		8BE377112BAC741200DBAE43 /* PricelistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricelistItemView.swift; sourceTree = "<group>"; };
+		8BE385332C4537EB00AA6D40 /* CurrencyTextKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextKey.swift; sourceTree = "<group>"; };
 		8BE3F2192C1AB3F30038E369 /* DoctorsReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsReportingView.swift; sourceTree = "<group>"; };
 		8BE3F21B2C1AD89E0038E369 /* RegistrarsReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrarsReportingView.swift; sourceTree = "<group>"; };
 		8BE3F21F2C1AF1830038E369 /* ExpenseReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseReportingView.swift; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 			children = (
 				8B0FFCD72BEBA15F00A24998 /* CurrencyText.swift */,
 				8B8A6E152BF534170026674D /* LabeledCurrency.swift */,
+				8BE385332C4537EB00AA6D40 /* CurrencyTextKey.swift */,
 			);
 			path = CurrencyText;
 			sourceTree = "<group>";
@@ -1703,6 +1706,7 @@
 				8B4ECD4E2BC8506500A82A2A /* CircularProgressView.swift in Sources */,
 				8B285F442B4DC81800C29E20 /* PersonImageView.swift in Sources */,
 				8BEAF3582C3B038E001368C3 /* CategoryRevenue.swift in Sources */,
+				8BE385342C4537EB00AA6D40 /* CurrencyTextKey.swift in Sources */,
 				8BDCCFE62B84A3EC0086BF4D /* Check.swift in Sources */,
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
 				8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */,

@@ -26,6 +26,7 @@ struct ExpenseReportingView: View {
                     ScrollView(.vertical) {
                         ForEach(expenses, id: \.self) { expense in
                             LabeledCurrency(expense.category.rawValue, value: expense.amount)
+                                .environment(\.currencyAppearance, .floating)
                         }
                     }
                     .scrollBounceBehavior(.basedOnSize)
@@ -35,6 +36,7 @@ struct ExpenseReportingView: View {
 
                     LabeledCurrency("Всего", value: expenses.reduce(0.0) { $0 + $1.amount })
                         .font(.headline)
+                        .environment(\.currencyAppearance, .floating)
                 }
                 .padding()
                 .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))

@@ -10,6 +10,8 @@ import SwiftUI
 struct CurrencyText: View {
     // MARK: - Dependencies
 
+    @Environment(\.currencyAppearance) private var currencyAppearance
+
     let value: Double
     let unit: Bool
 
@@ -33,7 +35,7 @@ struct CurrencyText: View {
 
 private extension CurrencyText {
     var valueString: String {
-        if value > floor(value) {
+        if value > floor(value) || currencyAppearance == .floating {
             return "\(value.formatted(.currency(code: unit ? "RUB" : "")))"
         } else {
             return "\(Int(value))".appending(unit ? " ₽" : "")
