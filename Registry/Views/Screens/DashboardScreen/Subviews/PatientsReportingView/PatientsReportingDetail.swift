@@ -25,14 +25,13 @@ struct PatientsReportingDetail: View {
                     .padding()
                     .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
-                    .padding()
 
                 AttendanceChart(date: date, selectedPeriod: .week)
                     .padding()
                     .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
-                    .padding()
             }
+            .padding()
 
             LabeledContent("Выберите дату") {
                 DatePicker("", selection: $date, displayedComponents: .date)

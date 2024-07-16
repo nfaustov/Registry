@@ -124,7 +124,9 @@ extension Ledger {
             dayPatients[date] = Array(patients.uniqued())
         }
 
-        return dayPatients.map { DayIndicator(day: $0.key, indicator: $0.value.count) }
+        return dayPatients
+            .map { DayIndicator(day: $0.key, indicator: $0.value.count) }
+            .sorted(by: { $0.day < $1.day })
     }
 
     func patientsRevenue(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PatientRevenue] {

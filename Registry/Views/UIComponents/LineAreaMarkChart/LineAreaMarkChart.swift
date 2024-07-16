@@ -51,8 +51,8 @@ struct LineAreaMarkChart: View {
                     }
             }
         }
-        .chartYScale(domain: 0...(Int(1.3 * Double(maxValue))))
-        .chartXScale(domain: (sortedData.first?.day ?? .now)...(sortedData.last?.day ?? .now))
+        .chartYScale(domain: 0...(Int(1.3 * Double(maxValue)) + 1))
+        .chartXScale(domain: (data.first?.day ?? .now)...(data.last?.day ?? .now))
         .chartOverlay { chartOverlay($0) }
     }
 }
@@ -71,11 +71,6 @@ private extension LineAreaMarkChart {
     @MainActor
     var maxValue: Int {
         data.sorted(by: { $0.indicator > $1.indicator }).first?.indicator ?? 0
-    }
-
-    @MainActor
-    var sortedData: [DayIndicator] {
-        data.sorted(by: { $0.day < $1.day })
     }
 
     @MainActor
