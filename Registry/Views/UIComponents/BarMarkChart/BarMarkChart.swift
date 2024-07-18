@@ -34,18 +34,13 @@ struct BarMarkChart: View {
                     .lineStyle(.init(lineWidth: 2, miterLimit: 2, dash: [2], dashPhase: 5))
                     .foregroundStyle(color)
                     .annotation(position: .top) {
-                        VStack {
-                            DateText(item.day, format: .datePickerDate)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            Text(item.indicator, format: .number)
-                                .font(.title3).bold()
-                        }
-                        .padding(8)
-                        .background {
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(.white.shadow(.drop(radius: 1.5, y: 1)))
-                        }
+                        Text(item.indicator, format: .number)
+                            .font(.title3).bold()
+                            .padding(8)
+                            .background {
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 1.5, y: 1)))
+                            }
                     }
             }
         }
