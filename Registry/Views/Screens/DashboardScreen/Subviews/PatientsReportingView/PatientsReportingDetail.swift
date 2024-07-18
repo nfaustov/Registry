@@ -21,14 +21,16 @@ struct PatientsReportingDetail: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack {
-                AttendanceChart(date: date, selectedPeriod: .month)
+                AttendanceChart(date: date, selectedPeriod: .month, chartType: .lineArea)
                     .padding()
                     .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .frame(height: 320)
                     .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
 
-                AttendanceChart(date: date, selectedPeriod: .week)
+                AttendanceChart(date: date, selectedPeriod: .week, chartType: .bar)
                     .padding()
                     .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .frame(height: 320)
                     .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
             }
             .padding()

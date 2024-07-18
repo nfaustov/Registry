@@ -21,6 +21,17 @@ enum StatisticsPeriod: String, CaseIterable, Identifiable {
         dateInterval(for: date ?? .now).end
     }
 
+    func days(for date: Date? = nil) -> [Date] {
+        guard let days = Calendar.current.dateComponents([.day], from: start(for: date), to: end(for: date)).day else { return [] }
+
+        if self == .week && days < 7 {
+            return(0...days).map { Calendar.current.date(byAdding: .day, value: $0, to: start(for: date))! }
+        } else {
+            return(0..<days).map { Calendar.current.date(byAdding: .day, value: $0, to: start(for: date))! }
+        }
+        
+    }
+
     private func dateInterval(for date: Date) -> DateInterval {
         var interval: DateInterval? = DateInterval(start: .distantPast, end: .distantFuture)
 

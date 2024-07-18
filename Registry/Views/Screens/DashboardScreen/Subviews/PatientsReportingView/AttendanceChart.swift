@@ -15,17 +15,22 @@ struct AttendanceChart: View {
 
     let date: Date
     let selectedPeriod: StatisticsPeriod
+    let chartType: AttendanceChartType
 
     // MARK: -
 
     var body: some View {
-        LineAreaMarkChart(data: attendanceData, color: .indigo)
-            .frame(height: 320)
+        switch chartType {
+        case .bar:
+            BarMarkChart(data: attendanceData, color: .indigo)
+        case .lineArea:
+            LineAreaMarkChart(data: attendanceData, color: .indigo)
+        }
     }
 }
 
 #Preview {
-    AttendanceChart(date: .now, selectedPeriod: .week)
+    AttendanceChart(date: .now, selectedPeriod: .week, chartType: .lineArea)
 }
 
 // MARK: - Calculation
@@ -36,4 +41,9 @@ private extension AttendanceChart {
         let ledger = Ledger(modelContext: modelContext)
         return ledger.attendance(for: date, period: selectedPeriod)
     }
+}
+
+enum AttendanceChartType {
+    case bar
+    case lineArea
 }

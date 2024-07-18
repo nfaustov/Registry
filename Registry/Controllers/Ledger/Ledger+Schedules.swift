@@ -117,15 +117,19 @@ extension Ledger {
             grouping: getSchedules(for: date, period: period),
             by: { Calendar.current.startOfDay(for: $0.starting) }
         )
-        var dayPatients = [Date: [Patient]]()
+        var dayPatients = [Date: Int]()
 
-        for (date, schedules) in groupedSchedules {
-            let patients = schedules.flatMap { $0.completedAppointments.compactMap { $0.patient } }
-            dayPatients[date] = Array(patients.uniqued())
+        for day in period.days(for: date) {
+            if let schedules = groupedSchedules[day] {
+                let patients = schedules.flatMap { $0.completedAppointments.compactMap { $0.patient } }
+                dayPatients[day] = Array(patients.uniqued()).count
+            } else {
+                dayPatients[day] = 0
+            }
         }
 
         return dayPatients
-            .map { DayIndicator(day: $0.key, indicator: $0.value.count) }
+            .map { DayIndicator(day: $0.key, indicator: $0.value) }
             .sorted(by: { $0.day < $1.day })
     }
 
