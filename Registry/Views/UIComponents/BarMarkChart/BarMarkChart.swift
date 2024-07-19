@@ -16,7 +16,7 @@ struct BarMarkChart: View {
 
     // MARK: - State
 
-    @State private var currentIndicator: DayIndicator?
+    @State private var showAnnotation: Bool = false
 
     // MARK: -
 
@@ -28,20 +28,13 @@ struct BarMarkChart: View {
             )
             .foregroundStyle(color.gradient)
             .opacity(Calendar.current.isDate(item.day, inSameDayAs: .now) ? 0.4 : 1)
-
-            if let currentIndicator, currentIndicator.id == item.id {
-                RuleMark(x: .value("День", currentIndicator.day, unit: .day))
-                    .lineStyle(.init(lineWidth: 2, miterLimit: 2, dash: [2], dashPhase: 5))
-                    .foregroundStyle(color)
-                    .annotation(position: .top) {
-                        Text(item.indicator, format: .number)
-                            .font(.title3).bold()
-                            .padding(8)
-                            .background {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(.white.shadow(.drop(radius: 1.5, y: 1)))
-                            }
-                    }
+            .annotation(position: .overlay, alignment: .top) {
+                if showAnnotation && item.indicator > 0 {
+                    Text(item.indicator, format: .number)
+                        .font(.title3).bold()
+                        .foregroundStyle(.white.gradient)
+                        .padding(4)
+                }
             }
         }
         .chartXAxis {
@@ -50,7 +43,7 @@ struct BarMarkChart: View {
             }
         }
         .chartYScale(domain: 0...(Int(1.3 * Double(maxValue)) + 1))
-        .chartOverlay { chartOverlay($0) }
+        .chartOverlay { _ in chartOverlay }
     }
 }
 
@@ -67,23 +60,13 @@ private extension BarMarkChart {
     }
 
     @MainActor
-    func chartOverlay(_ proxy: ChartProxy) -> some View {
+    var chartOverlay: some View {
         Rectangle()
             .fill(.clear).contentShape(Rectangle())
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        let location = value.location
-
-                        if let date: Date = proxy.value(atX: location.x) {
-                            if let currentItem = data.first(where: { Calendar.current.isDate(date, inSameDayAs: $0.day) }) {
-                                currentIndicator = currentItem
-                            }
-                        }
-                    }
-                    .onEnded { value in
-                        currentIndicator = nil
-                    }
-            )
+            .onTapGesture {
+                withAnimation {
+                    showAnnotation.toggle()
+                }
+            }
     }
 }
