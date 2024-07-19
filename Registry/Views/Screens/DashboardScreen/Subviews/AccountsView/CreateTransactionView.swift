@@ -38,7 +38,14 @@ struct CreateTransactionView: View {
         if transactionKind == .income {
             _purpose = State(initialValue: .income)
         } else {
-            _purpose = State(initialValue: .other)
+            switch account.type {
+            case .cash, .card:
+                _purpose = State(initialValue: .dividends)
+            case .bank:
+                _purpose = State(initialValue: .banking)
+            case .credit:
+                _purpose = State(initialValue: .other)
+            }
         }
     }
 
@@ -133,6 +140,10 @@ struct CreateTransactionView: View {
             }
             .sheet(isPresented: $selectCounterparty) {
                 CounterpartiesList(selectedCounterparty: $counterparty)
+                    .onChange(of: counterparty) { _, newValue in
+                        guard let counterpartyPurpose = newValue?.purposes.first else { return }
+                        purpose = counterpartyPurpose
+                    }
             }
         }
     }

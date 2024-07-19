@@ -64,9 +64,7 @@ private extension BarMarkChart {
         Rectangle()
             .fill(.clear).contentShape(Rectangle())
             .onTapGesture {
-                withAnimation {
-                    showAnnotation.toggle()
-                }
+                showAnnotation.toggle()
             }
     }
 }

@@ -16,7 +16,16 @@ final class Counterparty {
     var transactions: [AccountTransaction]?
 
     var fullTitle: String {
-        "\(status.rawValue) \"\(title)\""
+        if status == .entrepreneur {
+            "\(status.rawValue) \(title)"
+        } else {
+            "\(status.rawValue) \"\(title)\""
+        }
+    }
+
+    var purposes: [AccountTransaction.Purpose] {
+        let purposes = transactions?.map { $0.purpose } ?? []
+        return Array(purposes.uniqued())
     }
 
     init(title: String, status: Counterparty.Status) {
