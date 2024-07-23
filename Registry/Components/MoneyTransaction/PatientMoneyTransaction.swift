@@ -18,8 +18,14 @@ struct PatientMoneyTransaction: MoneyTransaction, Hashable, Identifiable {
     init(payment: Payment) {
         id = UUID()
         date = payment.date
-        description = payment.details
-        value = payment.methods.reduce(0.0) { $0 + $1.value }
+
+        if payment.purpose == .medicalServices {
+            description = payment.patient?.initials ?? ""
+            value = payment.subject?.totalPrice ?? 0
+        } else {
+            description = payment.details
+            value = payment.methods.reduce(0.0) { $0 + $1.value }
+        }
 
         switch payment.purpose {
         case .medicalServices:
