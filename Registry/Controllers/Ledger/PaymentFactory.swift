@@ -16,8 +16,8 @@ struct PaymentFactory {
 
     func make(from sample: PaymentFactory.Sample) -> Payment {
         switch sample {
-        case .medicalService(let patient, let check, let methods):
-            makeMedicalServicePayment(from: patient, check: check, methods: methods)
+        case .medicalService(let person, let check, let methods):
+            makeMedicalServicePayment(from: person, check: check, methods: methods)
         case .doctorPayout(let doctor, let methods):
             makeDoctorPayoutPayment(doctor: doctor, methods: methods)
         case .refund(let refund, let paymentType, let includeBalance):
@@ -33,10 +33,10 @@ struct PaymentFactory {
 // MARK: - Private methods
 
 private extension PaymentFactory {
-    func makeMedicalServicePayment(from patient: Patient, check: Check, methods: [Payment.Method]) -> Payment {
+    func makeMedicalServicePayment(from person: AccountablePerson, check: Check, methods: [Payment.Method]) -> Payment {
         let paymentValue = methods.reduce(0.0) { $0 + $1.value }
         let paymentBalance = paymentValue - check.totalPrice
-        var details = patient.initials
+        var details = person.initials
 
         if paymentBalance != 0 {
             details.append(" (Записано на баланс \(Int(paymentBalance)) ₽)")
@@ -116,7 +116,7 @@ private extension PaymentFactory {
 
 extension PaymentFactory {
     enum Sample {
-        case medicalService(patient: Patient, check: Check, methods: [Payment.Method])
+        case medicalService(person: AccountablePerson, check: Check, methods: [Payment.Method])
         case doctorPayout(Doctor, methods: [Payment.Method])
         case refund(Refund, paymentType: PaymentType, includeBalance: Bool)
         case balance(UpdateBalanceKind, person: AccountablePerson, method: Payment.Method)

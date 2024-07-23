@@ -28,8 +28,13 @@ struct BillScreen: View {
             if let patient = appointment.patient {
                 LabeledContent {
                     if patient.balance != 0 {
-                        Text("Баланс: \(Int(patient.balance)) ₽")
-                            .foregroundStyle(patient.balance < 0 ? .red : .primary)
+                        Label("\(Int(patient.balance)) ₽", systemImage: "briefcase.fill")
+                            .foregroundStyle(patient.balance < 0 ? .pink : .green)
+                            .padding(8)
+                            .background(
+                                patient.balance < 0 ? .pink.opacity(0.2) : .green.opacity(0.2) ,
+                                in: RoundedRectangle(cornerRadius: 6, style: .continuous)
+                            )
                     }
                 } label: {
                     HStack {
@@ -42,7 +47,8 @@ struct BillScreen: View {
                         }
                     }
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 12)
                 .background()
                 .clipShape(.rect(cornerRadius: 12, style: .continuous))
                 .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
@@ -61,11 +67,8 @@ struct BillScreen: View {
 
                 if servicesTablePurpose == .createAndPay, let patient = appointment.patient {
                     HStack(alignment: .bottom) {
-                        PriceCalculationView(
-                            patient: patient,
-                            check: check
-                        )
-                        .disabled(paymentDisabled)
+                        PriceCalculationView(patient: patient, check: check)
+                            .disabled(paymentDisabled)
 
                         if let promotion = check.promotion {
                             GroupBox {

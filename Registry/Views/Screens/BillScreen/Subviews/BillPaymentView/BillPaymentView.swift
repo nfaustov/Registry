@@ -15,7 +15,8 @@ struct BillPaymentView: View {
     @Environment(\.modelContext) private var modelContext
 
     private let check: Check
-    private let patient: Patient
+    private let person: AccountablePerson
+    private let paymentAmount: Double
     @Binding private var isPaid: Bool
 
     // MARK: - State
@@ -25,12 +26,12 @@ struct BillPaymentView: View {
 
     // MARK: -
 
-    init(patient: Patient, check: Check, isPaid: Binding<Bool>) {
-        self.patient = patient
+    init(person: AccountablePerson, check: Check, isPaid: Binding<Bool>) {
+        self.person = person
         self.check = check
+        let balancePayment = person.balance > check.totalPrice ? check.totalPrice : person.balance
+        self.paymentAmount = check.totalPrice - balancePayment
         _isPaid = isPaid
-
-        let paymentAmount = check.totalPrice - patient.balance
         _paymentMethod = State(initialValue: Payment.Method(.cash, value: paymentAmount))
     }
 
@@ -38,13 +39,13 @@ struct BillPaymentView: View {
         NavigationStack {
             Form {
                 Section("Пациент") {
-                    Text(patient.fullName)
-                    LabeledCurrency("К оплате", value: check.totalPrice - patient.balance)
+                    Text(person.fullName)
+                    LabeledCurrency("К оплате", value: paymentAmount)
                             .font(.headline)
                 }
 
                 CreatePaymentView(
-                    account: patient,
+                    account: person,
                     paymentMethod: $paymentMethod,
                     additionalPaymentMethod: $additionalPaymentMethod
                 )
@@ -52,11 +53,11 @@ struct BillPaymentView: View {
             }
             .sheetToolbar(
                 "Оплата счёта",
-                disabled: check.totalPrice - patient.balance == 0 ? false : undefinedPaymentValues
+                disabled: paymentAmount == 0 ? false : undefinedPaymentValues
             ) {
                 let ledger = Ledger(modelContext: modelContext)
                 try ledger.makePayment(
-                    .medicalService(patient: patient, check: check, methods: paymentMethods),
+                    .medicalService(person: person, check: check, methods: paymentMethods),
                     createdBy: user
                 )
 
@@ -68,7 +69,7 @@ struct BillPaymentView: View {
 
 #Preview {
     BillPaymentView(
-        patient: ExampleData.patient,
+        person: ExampleData.patient,
         check: ExampleData.check,
         isPaid: .constant(false)
     )

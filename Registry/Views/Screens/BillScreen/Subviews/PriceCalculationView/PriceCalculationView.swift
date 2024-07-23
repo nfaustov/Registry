@@ -44,7 +44,7 @@ struct PriceCalculationView: View {
                         Text(patient.balance > 0 ? "С баланса:" : "Долг:")
                             .font(.headline)
                         Spacer()
-                        CurrencyText(-patient.balance)
+                        CurrencyText(-balancePayment)
                             .font(.title3)
                     }
                 }
@@ -70,7 +70,7 @@ struct PriceCalculationView: View {
                             onDisappear: { if isPaid { dismiss() } }
                         )
                     } label: {
-                        CurrencyText(check.totalPrice - patient.balance)
+                        CurrencyText(check.totalPrice - balancePayment)
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 28)
@@ -140,5 +140,9 @@ private extension PriceCalculationView {
 private extension PriceCalculationView {
     var discountPercent: Int {
         Int(check.discountRate * 100)
+    }
+
+    var balancePayment: Double {
+        patient.balance > check.totalPrice ? check.totalPrice : patient.balance
     }
 }
