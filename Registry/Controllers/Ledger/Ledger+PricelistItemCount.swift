@@ -9,26 +9,6 @@ import Foundation
 import SwiftData
 
 extension Ledger {
-    func topPricelistItemsByUsage(for date: Date, period: StatisticsPeriod, maxCount: Int) -> [PricelistItemCount] {
-        guard maxCount > 0 else { return [] }
-
-        var pricelistItemUsage: [PricelistItemCount] = []
-
-        let services = billsCollection(date: date, period: period)
-            .flatMap { $0.services }
-        let groupedServices = Dictionary(grouping: services, by: { $0.pricelistItem.id })
-            .sorted(by: { $0.value.count > $1.value.count })
-            .prefix(maxCount)
-
-        for (id, services) in groupedServices {
-            if let pricelistItem = getPricelistItem(by: id) {
-                pricelistItemUsage.append(PricelistItemCount(item: pricelistItem, count: services.count))
-            }
-        }
-
-        return pricelistItemUsage
-    }
-
     func categoriesRevenue(for date: Date, period: StatisticsPeriod) -> [CategoryRevenue] {
         let services = billsCollection(date: date, period: period)
             .flatMap { $0.services }
@@ -48,6 +28,32 @@ extension Ledger {
 
         return categoriesRevenue
             .sorted(by: { $0.revenue > $1.revenue })
+    }
+
+    func categoryTopServices(
+        _ category: Department,
+        for date: Date,
+        period: StatisticsPeriod,
+        maxCount: Int
+    ) -> [PricelistItemCount] {
+        guard maxCount > 0 else { return [] }
+
+        var pricelistItemUsage: [PricelistItemCount] = []
+
+        let services = billsCollection(date: date, period: period)
+            .flatMap { $0.services }
+            .filter { $0.pricelistItem.category == category }
+        let groupedServices = Dictionary(grouping: services, by: { $0.pricelistItem.id })
+            .sorted(by: { $0.value.count > $1.value.count })
+            .prefix(maxCount)
+
+        for (id, services) in groupedServices {
+            if let pricelistItem = getPricelistItem(by: id) {
+                pricelistItemUsage.append(PricelistItemCount(item: pricelistItem, count: services.count))
+            }
+        }
+
+        return pricelistItemUsage
     }
 }
 

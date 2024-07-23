@@ -17,38 +17,20 @@ struct PricelistItemsReportingView: View {
 
     // MARK: - State
 
-    @State private var reportingType: ReportingType = .pricelistItems
+    @State private var selectedCategory: Department?
 
     // MARK: -
 
     var body: some View {
         GroupBox {
-            if reportingType == .pricelistItems {
-                if pricelistItemsUsage.isEmpty {
-                    ContentUnavailableView("Нет данных", systemImage: "tray")
-                } else {
-                    ScrollView(.vertical) {
-                        ForEach(pricelistItemsUsage, id: \.self) { usage in
-                            LabeledContent {
-                                Text("\(usage.count)")
-                                    .fontWeight(.medium)
-                            } label: {
-                                Text(usage.item.title)
-                                    .font(.footnote)
-                            }
-                            .padding(10)
-                            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        }
-                    }
-                    .scrollBounceBehavior(.basedOnSize)
-                    .scrollIndicators(.hidden)
-                }
-            } else if reportingType == .categories {
-                if categoriesRevenue.isEmpty {
-                    ContentUnavailableView("Нет данных", systemImage: "tray")
-                } else {
-                    ScrollView(.vertical) {
-                        ForEach(categoriesRevenue, id: \.self) { revenue in
+            if categoriesRevenue.isEmpty {
+                ContentUnavailableView("Нет данных", systemImage: "tray")
+            } else {
+                ScrollView(.vertical) {
+                    ForEach(categoriesRevenue, id: \.self) { revenue in
+                        Button {
+                            selectedCategory = revenue.category
+                        } label: {
                             LabeledContent {
                                 Text("\(revenue.revenue, format: .number)")
                                     .fontWeight(.medium)
@@ -59,23 +41,34 @@ struct PricelistItemsReportingView: View {
                             .padding(10)
                             .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         }
+                        .tint(.primary)
                     }
-                    .scrollBounceBehavior(.basedOnSize)
-                    .scrollIndicators(.hidden)
                 }
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollIndicators(.hidden)
             }
         } label: {
-            LabeledContent("Услуги") {
-                Picker("", selection: $reportingType) {
-                    ForEach(ReportingType.allCases, id: \.self) { type in
-                        Text(type.rawValue)
-                    }
-                }
-                .tint(.secondary)
-            }
+            Text("Категории услуг")
         }
         .groupBoxStyle(.reporting)
-        .animation(.linear, value: reportingType)
+        .sheet(item: $selectedCategory) { category in
+            NavigationStack {
+                Form {
+                    ForEach(categoryTopServices(category), id: \.self) { usage in
+                        LabeledContent {
+                            Text("\(usage.count)")
+                                .fontWeight(.medium)
+                        } label: {
+                            Text(usage.item.title)
+                                .font(.footnote)
+                        }
+                        .padding(10)
+                        .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    }
+                }
+                .sheetToolbar(category.rawValue)
+            }
+        }
     }
 }
 
@@ -86,20 +79,15 @@ struct PricelistItemsReportingView: View {
 // MARK: - Calculation
 
 private extension PricelistItemsReportingView {
-    enum ReportingType: String, CaseIterable {
-        case pricelistItems = "Услуги"
-        case categories = "Категории"
-    }
-
-    @MainActor
-    var pricelistItemsUsage: [PricelistItemCount] {
-        let ledger = Ledger(modelContext: modelContext)
-        return ledger.topPricelistItemsByUsage(for: date, period: selectedPeriod, maxCount: 10)
-    }
-
     @MainActor
     var categoriesRevenue: [CategoryRevenue] {
         let ledger = Ledger(modelContext: modelContext)
         return ledger.categoriesRevenue(for: date, period: selectedPeriod)
+    }
+
+    @MainActor
+    func categoryTopServices(_ category: Department) -> [PricelistItemCount] {
+        let ledger = Ledger(modelContext: modelContext)
+        return ledger.categoryTopServices(category, for: date, period: selectedPeriod, maxCount: 20)
     }
 }
