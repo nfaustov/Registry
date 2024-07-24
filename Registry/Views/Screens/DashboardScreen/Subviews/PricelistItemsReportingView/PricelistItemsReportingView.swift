@@ -53,20 +53,15 @@ struct PricelistItemsReportingView: View {
         .groupBoxStyle(.reporting)
         .sheet(item: $selectedCategory) { category in
             NavigationStack {
-                Form {
-                    ForEach(categoryTopServices(category), id: \.self) { usage in
-                        LabeledContent {
-                            Text("\(usage.count)")
-                                .fontWeight(.medium)
-                        } label: {
-                            Text(usage.item.title)
-                                .font(.footnote)
-                        }
-                        .padding(10)
-                        .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                List(categoryTopServices(category), id: \.self) { usage in
+                    LabeledContent {
+                        Text("\(usage.count)")
+                            .fontWeight(.medium)
+                    } label: {
+                        Text(usage.item.title)
                     }
                 }
-                .sheetToolbar(category.rawValue)
+                .sheetToolbar(category.rawValue, subtitle: statisticPeriodLabel)
             }
         }
     }
@@ -79,6 +74,17 @@ struct PricelistItemsReportingView: View {
 // MARK: - Calculation
 
 private extension PricelistItemsReportingView {
+    var statisticPeriodLabel: String {
+        if selectedPeriod == .day {
+            return DateFormat.date.string(from: date)
+        } else {
+            let start = selectedPeriod.start(for: date)
+            let end = selectedPeriod.end(for: date)
+
+            return "\(DateFormat.date.string(from: start)) - \(DateFormat.date.string(from: end))"
+        }
+    }
+
     @MainActor
     var categoriesRevenue: [CategoryRevenue] {
         let ledger = Ledger(modelContext: modelContext)

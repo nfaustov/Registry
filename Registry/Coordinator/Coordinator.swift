@@ -85,8 +85,6 @@ extension Coordinator {
             PatientCardScreen(patient: patient)
         case .contract(let patient, let check):
             ContractScreen(patient: patient, check: check)
-        case .patientsReportingDetail:
-            PatientsReportingDetail()
         }
     }
 
@@ -126,6 +124,8 @@ extension Coordinator {
             BalanceDetailView(persons: persons)
         case .allTransactions:
             TransactionsView()
+        case .patientsReportingDetail:
+            PatientsReportingDetail()
         }
     }
 }

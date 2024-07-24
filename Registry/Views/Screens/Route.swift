@@ -13,5 +13,4 @@ enum Route: Hashable {
     case doctorDetail(Doctor)
     case patientCard(Patient)
     case contract(for: Patient, check: Check)
-    case patientsReportingDetail
 }

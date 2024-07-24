@@ -19,26 +19,31 @@ struct PatientsReportingDetail: View {
     // MARK: -
 
     var body: some View {
-        HStack(alignment: .top) {
-            VStack {
-                AttendanceChart(date: date, selectedPeriod: .month, chartType: .lineArea)
-                    .padding()
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .frame(height: 320)
-                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
+        NavigationStack {
+            Form {
+                Section {
+                    DatePicker("Выберите дату", selection: $date, displayedComponents: .date)
+                }
 
-                AttendanceChart(date: date, selectedPeriod: .week, chartType: .bar)
-                    .padding()
-                    .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .frame(height: 320)
-                    .shadow(color: .black.opacity(0.05), radius: 3, y: 2)
-            }
-            .padding()
+                Section {
+                    VStack {
+                        GroupBox("Посещаемость (квартал)") {
+                            AttendanceChart(date: date, selectedPeriod: .month, chartType: .bar)
+                                .padding()
+                                .frame(height: 200)
+                        }
+                        .groupBoxStyle(.reporting)
 
-            LabeledContent("Выберите дату") {
-                DatePicker("", selection: $date, displayedComponents: .date)
+                        GroupBox("Посещаемость (неделя)") {
+                            AttendanceChart(date: date, selectedPeriod: .week, chartType: .bar)
+                                .padding()
+                                .frame(height: 200)
+                        }
+                        .groupBoxStyle(.reporting)
+                    }
+                }
             }
-            .padding()
+            .sheetToolbar("Статистика по пациентам")
         }
     }
 }

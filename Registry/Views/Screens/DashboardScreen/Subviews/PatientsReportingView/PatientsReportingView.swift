@@ -50,7 +50,7 @@ struct PatientsReportingView: View {
                     }
 
                     Button {
-                        coordinator.push(.patientsReportingDetail)
+                        coordinator.present(.patientsReportingDetail)
                     } label: {
                         LabeledContent("Побробнее") {
                             Image(systemName: "chevron.right")

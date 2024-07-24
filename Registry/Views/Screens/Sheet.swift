@@ -25,6 +25,7 @@ enum Sheet: Identifiable {
     case accountDetail(account: CheckingAccount)
     case balanceDetail(persons: [AccountablePerson])
     case allTransactions
+    case patientsReportingDetail
 
     var id: UUID {
         UUID()
