@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B0034022C512A5100D92C1F /* NapopravkuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0034012C512A5100D92C1F /* NapopravkuService.swift */; };
+		8B0034042C512B5800D92C1F /* NapopravkuServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0034032C512B5800D92C1F /* NapopravkuServiceClient.swift */; };
+		8B0034062C512E1A00D92C1F /* AppointmentsListEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0034052C512E1A00D92C1F /* AppointmentsListEntity.swift */; };
 		8B01B9B32B8B96B5008A0AA7 /* AppointmentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */; };
 		8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */; };
 		8B01B9B82B8BB89F008A0AA7 /* PatientsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */; };
@@ -270,6 +273,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B0034012C512A5100D92C1F /* NapopravkuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NapopravkuService.swift; sourceTree = "<group>"; };
+		8B0034032C512B5800D92C1F /* NapopravkuServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NapopravkuServiceClient.swift; sourceTree = "<group>"; };
+		8B0034052C512E1A00D92C1F /* AppointmentsListEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsListEntity.swift; sourceTree = "<group>"; };
 		8B01B9B22B8B96B5008A0AA7 /* AppointmentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsListView.swift; sourceTree = "<group>"; };
 		8B01B9B52B8BB7C6008A0AA7 /* AddPatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPatientView.swift; sourceTree = "<group>"; };
 		8B01B9B72B8BB89F008A0AA7 /* PatientsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsList.swift; sourceTree = "<group>"; };
@@ -491,6 +497,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B0034002C512A3A00D92C1F /* NapopravkuService */ = {
+			isa = PBXGroup;
+			children = (
+				8B0034012C512A5100D92C1F /* NapopravkuService.swift */,
+				8B0034032C512B5800D92C1F /* NapopravkuServiceClient.swift */,
+				8B0034052C512E1A00D92C1F /* AppointmentsListEntity.swift */,
+			);
+			path = NapopravkuService;
+			sourceTree = "<group>";
+		};
 		8B01B9B12B8B96A4008A0AA7 /* AppointmentsListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1157,6 +1173,7 @@
 				8B8DA96B2BA210C400F6F847 /* ArtmedicsServices */,
 				8B5EEC182BF3E15F006FB7CD /* VersionControlService */,
 				8B8DA96A2BA210B000F6F847 /* MessageService */,
+				8B0034002C512A3A00D92C1F /* NapopravkuService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1774,6 +1791,7 @@
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
 				8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
+				8B0034042C512B5800D92C1F /* NapopravkuServiceClient.swift in Sources */,
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B8A6E162BF534170026674D /* LabeledCurrency.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
@@ -1814,6 +1832,7 @@
 				8B7491DF2BBA943D0016FDE9 /* NameEditView.swift in Sources */,
 				8B616DB62C2AD86D006957F9 /* BalanceDetailView.swift in Sources */,
 				8B45E6112BB5588800834AE6 /* AnonymousUser.swift in Sources */,
+				8B0034062C512E1A00D92C1F /* AppointmentsListEntity.swift in Sources */,
 				8B0FE9EF2B56F81C003F474B /* DatePickerDateView.swift in Sources */,
 				8B01B9B62B8BB7C6008A0AA7 /* AddPatientView.swift in Sources */,
 				8B8B18922B88D8F0006ABD82 /* AppointmentView.swift in Sources */,
@@ -1835,6 +1854,7 @@
 				8B0C1DF02C29C70300D7C839 /* AccountTransactionsView.swift in Sources */,
 				8BC053A22C347082006419B7 /* PricelistItemCount.swift in Sources */,
 				8B80FECC2BC256C100BB76E0 /* ContractBodyController.swift in Sources */,
+				8B0034022C512A5100D92C1F /* NapopravkuService.swift in Sources */,
 				8B5EEC0E2BF35A4C006FB7CD /* AppVersion.swift in Sources */,
 				8B9673AD2B361FD200FD2E7C /* Sheet.swift in Sources */,
 				8B9673A52B361CD400FD2E7C /* DoctorsScreen.swift in Sources */,
