@@ -10,6 +10,8 @@ import SwiftUI
 struct AccountTransactionsView: View {
     // MARK: - Dependencies
 
+    @Environment(\.modelContext) private var modelContext
+
     @EnvironmentObject private var coordinator: Coordinator
 
     let account: CheckingAccount
@@ -58,6 +60,7 @@ struct AccountTransactionsView: View {
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
                                         account.removeTransaction(transaction)
+                                        modelContext.delete(transaction)
                                     } label: {
                                         Label("Удалить", systemImage: "trash")
                                     }
