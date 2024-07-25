@@ -71,6 +71,7 @@ struct AccountTransactionsView: View {
                         HStack {
                             Text("Итого:")
                             CurrencyText(dateTransactions.reduce(0) { $0 + $1.amount })
+                                .environment(\.currencyAppearance, .floating)
                         }
                         .font(.body)
                         .frame(minWidth: 120, maxWidth: .infinity, alignment: .trailing)
@@ -115,6 +116,7 @@ private extension AccountTransactionsView {
             Spacer()
 
             CurrencyText(transaction.amount)
+                .environment(\.currencyAppearance, .floating)
                 .foregroundStyle(transaction.amount >= 0 ? .black : .red)
         }
     }
