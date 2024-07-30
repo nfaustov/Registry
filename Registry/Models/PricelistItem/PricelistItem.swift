@@ -92,7 +92,14 @@ final class PricelistItem: Codable {
             if treatmentPlan.isPregnancyAI {
                 return 0
             } else {
-                let estimatedPrice = costPrice + 50
+                var estimatedPrice = Double.zero
+
+                if category == .laboratory || category == .procedure {
+                    estimatedPrice = costPrice + 20
+                } else {
+                    estimatedPrice = costPrice + 50
+                }
+
                 return estimatedPrice >= price ? price : estimatedPrice
             }
         } else { return nil }

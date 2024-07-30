@@ -68,7 +68,7 @@ extension TreatmentPlan {
             Self.pregnancyAICases.contains(self)
         }
 
-        static var pregnancyAICases:  [TreatmentPlan.Kind] {
+        static var pregnancyAICases: [TreatmentPlan.Kind] {
             [
                 .pregnancyAI,
                 .pregnancyAIFirstHalf,

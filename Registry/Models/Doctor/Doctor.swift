@@ -32,6 +32,8 @@ final class Doctor: Accountable, User, Codable {
     @Relationship(inverse: \Payment.doctor)
     private(set) var transactions: [Payment]? = []
     var achievements: [Achievement] = []
+    @Relationship(deleteRule: .cascade, inverse: \Patient.asDoctor)
+    var asPatient: Patient?
 
     var schedules: [DoctorSchedule]?
     var performedServices: [MedicalService]?
@@ -78,8 +80,9 @@ final class Doctor: Accountable, User, Codable {
         self.achievements = achievements
     }
 
-    func updateBalance(increment: Double) {
+    func updateBalance(increment: Double, allRoles: Bool = true) {
         balance += increment
+        if allRoles { asPatient?.updateBalance(increment: increment, allRoles: false) }
     }
 
     func assignTransaction(_ transaction: Payment) {

@@ -28,6 +28,7 @@ final class Patient: AccountablePerson, Codable {
     private(set) var transactions: [Payment]? = []
 
     var appointments: [PatientAppointment]?
+    var asDoctor: Doctor?
 
     init(
         id: UUID = UUID(),
@@ -96,8 +97,9 @@ final class Patient: AccountablePerson, Codable {
         treatmentPlans?.removeAll(where: { $0.id == currentTreatmentPlan.id })
     }
 
-    func updateBalance(increment: Double) {
+    func updateBalance(increment: Double, allRoles: Bool = true) {
         balance += increment
+        if allRoles { asDoctor?.updateBalance(increment: increment, allRoles: false) }
     }
 
     func assignTransaction(_ transaction: Payment) {

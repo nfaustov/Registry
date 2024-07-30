@@ -98,7 +98,7 @@ extension Ledger {
     private func balancePayment(_ payment: Payment, for person: AccountablePerson) throws {
         try record(payment)
         person.assignTransaction(payment)
-        person.updateBalance(increment: payment.totalAmount)
+        person.updateBalance(increment: payment.totalAmount, allRoles: true)
     }
 
     private func spendingPayment(_ payment: Payment) throws {
@@ -136,7 +136,7 @@ extension Ledger {
             methods: [.init(.cash, value: increment)],
             createdBy: user.asAnyUser
         )
-        person.updateBalance(increment: increment)
+        person.updateBalance(increment: increment, allRoles: true)
         person.assignTransaction(balancePayment)
     }
 }

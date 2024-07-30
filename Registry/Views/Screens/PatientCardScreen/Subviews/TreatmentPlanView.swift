@@ -62,29 +62,44 @@ struct TreatmentPlanView: View {
                     }
                 }
             } else {
-                Section {
-                    LabeledContent("Врач") {
-                        Menu(agent?.initials ?? "Выберите врача") {
-                            Button("-") {
-                                agent = nil
-                            }
-                            ForEach(doctors) { doctor in
-                                Button(doctor.initials) {
-                                    agent = doctor
+                if patient.asDoctor == nil {
+                    Section {
+                        LabeledContent("Врач") {
+                            Menu(agent?.initials ?? "Выберите врача") {
+                                Button("-") {
+                                    agent = nil
+                                }
+                                ForEach(doctors) { doctor in
+                                    Button(doctor.initials) {
+                                        agent = doctor
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                Section("Лечебные планы") {
-                    ForEach(TreatmentPlan.Kind.allCases.filter { !$0.isPregnancyAI }, id: \.self) { kind in
-                        treatmentPlanButton(treatmentPlanOfKind: kind)
+                    Section("Лечебные планы") {
+                        ForEach(TreatmentPlan.Kind.allCases.filter { !$0.isPregnancyAI }, id: \.self) { kind in
+                            treatmentPlanButton(treatmentPlanOfKind: kind)
+                        }
                     }
-                }
-                Section("Ведение беременности") {
-                    ForEach(TreatmentPlan.Kind.pregnancyAICases, id: \.self) { kind in
-                        treatmentPlanButton(treatmentPlanOfKind: kind)
+                    Section("Ведение беременности") {
+                        ForEach(TreatmentPlan.Kind.pregnancyAICases, id: \.self) { kind in
+                            treatmentPlanButton(treatmentPlanOfKind: kind)
+                        }
+                    }
+                } else {
+                    Section("Лечебные планы") {
+                        ForEach(TreatmentPlan.Kind.allCases.filter { !$0.isPregnancyAI }, id: \.self) { kind in
+                            Button {
+                                withAnimation {
+                                    patient.activateTreatmentPlan(ofKind: kind)
+                                }
+                            } label: {
+                                LabeledContent(kind.rawValue, value: "Активировать")
+                            }
+                            .tint(.primary)
+                        }
                     }
                 }
             }
@@ -114,7 +129,7 @@ private extension TreatmentPlanView {
                                 patient.activateTreatmentPlan(ofKind: kind)
                             }
 
-                            if !TreatmentPlan.Kind.pregnancyAICases.contains(kind) {
+                            if !kind.isPregnancyAI {
                                 Task {
                                     await messageController.send(.treatmentPlanActivation(patient))
                                 }

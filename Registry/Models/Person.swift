@@ -11,7 +11,7 @@ protocol Accountable: AnyObject {
     var balance: Double { get }
     var transactions: [Payment]? { get }
 
-    func updateBalance(increment: Double)
+    func updateBalance(increment: Double, allRoles: Bool)
     func assignTransaction(_ transaction: Payment)
 }
 

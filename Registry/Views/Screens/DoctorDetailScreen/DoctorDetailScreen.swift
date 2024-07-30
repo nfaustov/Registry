@@ -98,6 +98,27 @@ struct DoctorDetailScreen: View {
                     }
                 }
             }
+
+            if doctor.asPatient == nil {
+                Section {
+                    Button("Добавить как пациента") {
+                        let treatmentPlan = TreatmentPlan(kind: .basic)
+                        let patient = Patient(
+                            secondName: doctor.secondName,
+                            firstName: doctor.firstName,
+                            patronymicName: doctor.patronymicName,
+                            phoneNumber: doctor.phoneNumber,
+                            balance: doctor.balance,
+                            passport: Patient.PassportData(birthday: doctor.birthDate),
+                            treatmentPlans: [treatmentPlan]
+                        )
+                        doctor.asPatient = patient
+                        patient.passport.birthday = doctor.birthDate
+
+                        coordinator.push(.patientCard(patient))
+                    }
+                }
+            }
         } detail: {
             detail
                 .disabled(user.accessLevel < .registrar)
