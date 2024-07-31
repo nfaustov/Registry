@@ -10,7 +10,8 @@ import SwiftUI
 struct DebugScreen: View {
 
     var body: some View {
-        LedgerDebugView()
+        DiscountsDubugView()
+//        LedgerDebugView()
     }
 }
 

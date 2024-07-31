@@ -50,6 +50,8 @@
 		8B331EFA2BEA5845002298E6 /* MoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EF92BEA5845002298E6 /* MoneyTransaction.swift */; };
 		8B331EFD2BEA5920002298E6 /* PatientMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFC2BEA5920002298E6 /* PatientMoneyTransaction.swift */; };
 		8B331EFF2BEA5943002298E6 /* DoctorMoneyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B331EFE2BEA5943002298E6 /* DoctorMoneyTransaction.swift */; };
+		8B36CCBB2C5A1488006EFE41 /* PromotionChecksDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36CCBA2C5A1488006EFE41 /* PromotionChecksDebugView.swift */; };
+		8B36CCBD2C5A1CDD006EFE41 /* DiscountsDubugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36CCBC2C5A1CDD006EFE41 /* DiscountsDubugView.swift */; };
 		8B3742652BA068BA00ED8DB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3742642BA068BA00ED8DB7 /* User.swift */; };
 		8B3E786F2C15B022002CD007 /* IncomeReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E786E2C15B022002CD007 /* IncomeReportingView.swift */; };
 		8B40CF052BB5B26C00D3832B /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CF042BB5B26C00D3832B /* MessageError.swift */; };
@@ -313,6 +315,8 @@
 		8B331EF92BEA5845002298E6 /* MoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyTransaction.swift; sourceTree = "<group>"; };
 		8B331EFC2BEA5920002298E6 /* PatientMoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientMoneyTransaction.swift; sourceTree = "<group>"; };
 		8B331EFE2BEA5943002298E6 /* DoctorMoneyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorMoneyTransaction.swift; sourceTree = "<group>"; };
+		8B36CCBA2C5A1488006EFE41 /* PromotionChecksDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionChecksDebugView.swift; sourceTree = "<group>"; };
+		8B36CCBC2C5A1CDD006EFE41 /* DiscountsDubugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountsDubugView.swift; sourceTree = "<group>"; };
 		8B3742642BA068BA00ED8DB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B3E786E2C15B022002CD007 /* IncomeReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeReportingView.swift; sourceTree = "<group>"; };
 		8B40CF042BB5B26C00D3832B /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
@@ -1065,6 +1069,8 @@
 				8B8A6E132BF4A82D0026674D /* PatientDebugView.swift */,
 				8B56E34F2C08C5A100504CFE /* PricelistItemsDebugView.swift */,
 				8BB462112C16E3640003E809 /* PromotionsDebugView.swift */,
+				8B36CCBA2C5A1488006EFE41 /* PromotionChecksDebugView.swift */,
+				8B36CCBC2C5A1CDD006EFE41 /* DiscountsDubugView.swift */,
 			);
 			path = DebugViews;
 			sourceTree = "<group>";
@@ -1774,6 +1780,7 @@
 				8B91AE6B2C12DB1900472D8C /* PricelistItemsReportingView.swift in Sources */,
 				8B5FCE9E2C3AF7AF0055C3D2 /* LineAreaMarkChart.swift in Sources */,
 				8B78014F2B87C32B0064DBFB /* DoctorSelectionView.swift in Sources */,
+				8B36CCBB2C5A1488006EFE41 /* PromotionChecksDebugView.swift in Sources */,
 				8B187E842BD0F21E00611DC2 /* PricelistItem.Snapshot.swift in Sources */,
 				8B8A6E162BF534170026674D /* LabeledCurrency.swift in Sources */,
 				8B9673882B36187D00FD2E7C /* ContentView.swift in Sources */,
@@ -1887,6 +1894,7 @@
 				8B80FECE2BC257F800BB76E0 /* PDFCreator.swift in Sources */,
 				8BC803B72C0F3A3D0019B744 /* PatientTransactionsView.swift in Sources */,
 				8B16C50A2C1C8D240004BD21 /* AccountTransaction.swift in Sources */,
+				8B36CCBD2C5A1CDD006EFE41 /* DiscountsDubugView.swift in Sources */,
 				8B69A1422B8D134400458F33 /* BillScreen.swift in Sources */,
 				8BB2DD632B97396A00AD4749 /* Refund.swift in Sources */,
 				8B187E822BD0D30D00611DC2 /* MedicalService.swift in Sources */,

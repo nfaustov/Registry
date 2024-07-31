@@ -15,7 +15,7 @@ struct PromotionsDebugView: View {
 
     var body: some View {
         List(promotions) { promotion in
-            Text("\(promotion.discountRate)")
+            Text("\(Int(promotion.discountRate * 100)) %")
             Button {
                 selectedPromotion = promotion
             } label: {
