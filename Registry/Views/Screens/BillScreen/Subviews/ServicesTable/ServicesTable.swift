@@ -69,30 +69,27 @@ struct ServicesTable: View {
             }
             .overlay { if editMode { tableOverlay } }
             .contextMenu(forSelectionType: PersistentIdentifier.self) { selectionIdentifiers in
-                if let id = selectionIdentifiers.first {
+                if let id = selectionIdentifiers.first, let service = service(with: id) {
                     Section {
-                        if let service = service(with: id), service.pricelistItem.category != .laboratory {
+                        if service.pricelistItem.category != .laboratory {
                             menu(of: \.performer, for: id)
                         }
-
-                        if patient.currentTreatmentPlan == nil {
+                        if service.treatmentPlanPrice == nil {
                             menu(of: \.agent, for: id)
                         }
                     }
 
                     if purpose == .createAndPay {
-                        if let service = service(with: id) {
-                            Section {
-                                Stepper(
-                                    "Количество",
-                                    value: Binding(
-                                        get: { service.quantity },
-                                        set: { value in
-                                            if value >= 1 { service.quantity = value }
-                                        }
-                                    )
+                        Section {
+                            Stepper(
+                                "Количество",
+                                value: Binding(
+                                    get: { service.quantity },
+                                    set: { value in
+                                        if value >= 1 { service.quantity = value }
+                                    }
                                 )
-                            }
+                            )
                         }
 
                         Section {
@@ -116,9 +113,7 @@ struct ServicesTable: View {
                 }
             }
             .onAppear {
-                if patient.currentTreatmentPlan != nil {
-                    enabledTreatmentPlan = true
-                }
+                enabledTreatmentPlan = patient.currentTreatmentPlan != nil
 
                 let checksController = ChecksController(modelContext: modelContext)
                 correlations = checksController.pricelistItemsCorrelations

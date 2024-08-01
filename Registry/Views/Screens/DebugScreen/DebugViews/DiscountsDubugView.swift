@@ -32,7 +32,7 @@ struct DiscountsDubugView: View {
 
         return checks
             .filter { $0.payment != nil }
-            .filter { Calendar.current.date(from: components)! < $0.payment!.date }
+            .filter { date! < $0.payment!.date }
             .filter { $0.discount > 0 }
             .sorted(by: { $0.payment!.date < $1.payment!.date })
     }
