@@ -11,3 +11,8 @@ struct RegistrarActivity: Hashable {
     let registrar: Doctor
     var activity: Int
 }
+
+struct RegistrarAppointments: Hashable {
+    let registrar: Doctor
+    var appointments: [PatientAppointment]
+}

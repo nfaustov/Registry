@@ -85,10 +85,15 @@ extension Ledger {
         for (id, appointments) in groupedAppointments {
             if let id, let registrar = getDoctor(by: id), registrar.accessLevel < .boss {
                 var activity = RegistrarActivity(registrar: registrar, activity: 0)
+                let dailyAppointments = Dictionary(grouping: appointments, by: { Calendar.current.startOfDay(for: $0.scheduledTime) })
 
-                for appointment in appointments {
-                    if let patient = appointment.patient {
-                        if patient.isNewPatient(for: date, period: period) {
+                for (day, appointments) in dailyAppointments {
+                    let uniquedDailyPatients = appointments
+                        .compactMap { $0.patient }
+                        .uniqued()
+
+                    for patient in uniquedDailyPatients {
+                        if patient.isNewPatient(for: day, period: .day) {
                             activity.activity += 3
                         } else {
                             activity.activity += 2
@@ -101,6 +106,14 @@ extension Ledger {
         }
 
         return registrarsActivity.sorted(by: { $0.activity > $1.activity})
+    }
+
+    func registrarAppointments(_ registrar: Doctor, for date: Date, period: StatisticsPeriod) -> [PatientAppointment] {
+        let schedules = getSchedules(for: date, period: period)
+
+        return schedules
+            .flatMap { $0.completedAppointments }
+            .filter { $0.registrar?.id == registrar.id }
     }
 
     func scheduledPatients(for date: Date, period: StatisticsPeriod) -> [Patient] {
