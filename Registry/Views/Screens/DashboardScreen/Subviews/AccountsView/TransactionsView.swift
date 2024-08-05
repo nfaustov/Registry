@@ -21,8 +21,10 @@ struct TransactionsView: View {
         NavigationStack {
             Form {
                 ForEach(dates, id: \.self) { date in
+                    let dateTransactions = dateTransactions(date)
+
                     Section {
-                        ForEach(dateTransactions(date)) { transaction in
+                        ForEach(dateTransactions) { transaction in
                             transactionView(transaction)
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
@@ -37,6 +39,14 @@ struct TransactionsView: View {
                         DateText(date, format: .date)
                             .font(.headline)
                             .foregroundStyle(.secondary)
+                    } footer: {
+                        HStack {
+                            Text("Итого:")
+                            CurrencyText(dateTransactions.reduce(0) { $0 + $1.amount })
+                                .environment(\.currencyAppearance, .floating)
+                        }
+                        .font(.body)
+                        .frame(minWidth: 120, maxWidth: .infinity, alignment: .trailing)
                     }
                 }
             }
