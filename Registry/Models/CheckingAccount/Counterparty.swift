@@ -18,6 +18,8 @@ final class Counterparty {
     var fullTitle: String {
         if status == .entrepreneur {
             "\(status.rawValue) \(title)"
+        } else if status == .none {
+            title
         } else {
             "\(status.rawValue) \"\(title)\""
         }
@@ -39,5 +41,6 @@ extension Counterparty {
         case publicCompany = "ПАО"
         case entity = "ООО"
         case entrepreneur = "ИП"
+        case none = "-"
     }
 }
