@@ -99,8 +99,12 @@ struct DoctorDetailScreen: View {
                 }
             }
 
-            if doctor.asPatient == nil {
-                Section {
+            Section {
+                if let patient = doctor.asPatient {
+                    Button("Карта пациента") {
+                        coordinator.push(.patientCard(patient))
+                    }
+                } else {
                     Button("Добавить как пациента") {
                         let treatmentPlan = TreatmentPlan(kind: .basic)
                         let patient = Patient(
